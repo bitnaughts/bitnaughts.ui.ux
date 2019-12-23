@@ -21,6 +21,10 @@ public class InteractionController : MonoBehaviour {
         camera = Camera.main;
     }
     void Update () {
+        if (Input.GetKey ("backspace")) {
+            SceneManager.LoadScene ("Overview");
+        }
+
         if (Input.GetMouseButtonDown (0)) {
             click_position = Input.mousePosition;
 
@@ -32,6 +36,11 @@ public class InteractionController : MonoBehaviour {
                     print ("HIT: " + interactable.trigger);
 
                     if (interactable.trigger.Contains ("Planet")) {
+
+                        data = Referencer.database.Visit (
+                            int.Parse (interactable.trigger.Split (' ') [1]), 0, 1
+                        );
+                        current_interaction = interactable;
 
                         break;
                     } else if (interactable.trigger.Contains ("Asteroid")) {
@@ -57,7 +66,7 @@ public class InteractionController : MonoBehaviour {
             if (data.IsCompleted) {
                 Debug.Log (data.Result);
                 if (data.Result.Contains ("Not")) {
-                    Destroy(current_interaction.obj);
+                    Destroy (current_interaction.obj);
                 }
             } else {
                 Debug.Log (data.Status);
