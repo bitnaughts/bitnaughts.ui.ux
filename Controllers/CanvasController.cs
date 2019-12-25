@@ -14,16 +14,28 @@ public class CanvasController : MonoBehaviour {
     void Start () {
         interaction_controller = this.GetComponent<InteractionController> ();
 
-        var shipyard_panel = new ShipyardPanel (
-            new PointF (0, 0),
-            new SizeF (40, 40),
+        // panels.Add() //menu?, etc.
 
-        );
-        panels.Add (shipyard_panel);
+        panels.Add (new ShipyardPanel (
+            new PointF (0, 0),
+            new SizeF (10, 10),
+            this.gameObject
+        ));
+    }
+    void Visualize (List<PanelObject> panels) {
+        foreach (var panel in panels) {
+            Visualize(panel, panel.position);
+        }
+    }
+    void Visualize (PanelObject panel, PointF center) {
+        Referencer.prefab_controller.Add(panel, panel.obj.transform);
+        foreach (var child_panel in panel.children) {
+            Visualize(child_panel, center + child_panel.position);
+        }
     }
 
     void Update () {
-
+        
     }
 
     // public void AddPanel(PointF position, SizeF size) {
