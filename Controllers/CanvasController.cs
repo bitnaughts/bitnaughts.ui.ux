@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class CanvasController : MonoBehaviour {
 
     InteractionController interaction_controller;
-    List<PanelObject> panels = new List<PanelObject> ();
+    List<Panel> panels = new List<Panel> ();
 
     void Start () {
         interaction_controller = this.GetComponent<InteractionController> ();
@@ -22,12 +22,12 @@ public class CanvasController : MonoBehaviour {
             this.gameObject
         ));
     }
-    void Visualize (List<PanelObject> panels) {
+    void Visualize (List<Panel> panels) {
         foreach (var panel in panels) {
             Visualize(panel, panel.position);
         }
     }
-    void Visualize (PanelObject panel, PointF center) {
+    void Visualize (Panel panel, PointF center) {
         Referencer.prefab_controller.Add(panel, panel.obj.transform);
         foreach (var child_panel in panel.children) {
             Visualize(child_panel, center + child_panel.position);
@@ -39,9 +39,9 @@ public class CanvasController : MonoBehaviour {
     }
 
     // public void AddPanel(PointF position, SizeF size) {
-    //     AddPanel(new PanelObject(position, size));
+    //     AddPanel(new Panel(position, size));
     // }
-    // public void AddPanel(PanelObject panel) {
+    // public void AddPanel(Panel panel) {
     //     panels.Add(panel);
     // }
 }

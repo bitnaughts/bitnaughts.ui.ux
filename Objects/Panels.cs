@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PanelObject {
+public class Panel {
 
     public int id;
 
@@ -16,34 +16,35 @@ public class PanelObject {
 
     public GameObject obj;
 
-    public List<PanelObject> children;
-    public List<InteractionObject> interactivity;
+    public List<Panel> children;
+    public List<Interaction> interactivity;
 
     // List<SpriteObject> sprites = new List<SpriteObject> ();
 
-    public PanelObject (PointF position, SizeF size, GameObject obj) {
+    public Panel (PointF position, SizeF size, GameObject obj) {
         this.id = 10;
         this.prefab_path = "Prefabs/Panels/Generic";
         this.position = position;
         this.size = size;
         this.obj = obj;
 
-        interactivity = new List<InteractionObject> ();
+        interactivity = new List<Interaction> ();
         // PrefabHandler.Instantiate (path, position, size); // something here to build panels onto scene with proper nesting
     }
 
-    public void Add (PanelObject panel) {
+    public void Add (Panel panel) {
         Add (panel, false);
     }
-    public void Add (PanelObject panel, bool interactive) {
+    public void Add (Panel panel, bool interactive) {
         children.Add (panel);
         if (interactive) {
-            interactivity.Add (panel);
+            // interactivity.Add (panel);
         }
     }
+
 }
 
-public class ShipyardPanel : PanelObject {
+public class ShipyardPanel : Panel {
 
     public PointF cursor; // { get; set; };
 
@@ -54,12 +55,12 @@ public class ShipyardPanel : PanelObject {
             for (int j = 0; j < size.y; j++) {
                 /* Add clickable locations for each element in the grid */
                 // Add (panel, ref interactivity);
-                interactivity.Add (
-                    new PointF (i, j),
-                    new SizeF (10, 10),
-                    "Shipyard " + id + " clicked " + i + " " + j,
-                    null
-                );
+                // interactivity.Add (
+                //     new PointF (i, j),
+                //     new SizeF (10, 10),
+                //     "Shipyard " + id + " clicked " + i + " " + j,
+                //     null
+                // );
             }
         }
         /* Add close, open, menu, etc? */

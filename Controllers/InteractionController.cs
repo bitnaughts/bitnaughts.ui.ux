@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class InteractionController : MonoBehaviour {
 
-    List<InteractionObject> interactables = new List<InteractionObject> ();
+    List<Interaction> interactables = new List<Interaction> ();
 
     Vector3 click_position = new Vector3 ();
     Vector3 world_position = new Vector3 ();
@@ -15,7 +15,7 @@ public class InteractionController : MonoBehaviour {
     Camera camera;
 
     Task<string> data { get; set; }
-    InteractionObject current_interaction;
+    Interaction current_interaction;
 
     void Start () {
         camera = Camera.main;
@@ -76,34 +76,34 @@ public class InteractionController : MonoBehaviour {
 
     }
     public void Add (PointF point, float radius, string trigger, GameObject obj) {
-        Add (new InteractionObject (point, new SizeF (radius, radius), trigger, obj));
+        Add (new Interaction (point, new SizeF (radius, radius), trigger, obj));
     }
     public void Add (float x, float y, float radius, string trigger, GameObject obj) {
-        Add (new InteractionObject (new PointF (x, y), new SizeF (radius, radius), trigger, obj));
+        Add (new Interaction (new PointF (x, y), new SizeF (radius, radius), trigger, obj));
     }
-    public void Add (PanelObject panel) {
-        Add (new InteractionObject (panel.position, panel.bounds, "yes", null));
+    public void Add (Panel panel) {
+        Add (new Interaction (panel.position, panel.size, "yes", null));
     }
-    public void Add (InteractionObject interactable) {
+    public void Add (Interaction interactable) {
         interactables.Add (interactable);
     }
 }
 
-public class InteractionObject {
+public class Interaction {
     public PointF point;
-    public SizeF bounds;
+    public SizeF size;
     public string trigger;
     public GameObject obj;
-    public InteractionObject (PointF point, SizeF bounds, string trigger, GameObject obj) {
+    public Interaction (PointF point, SizeF size, string trigger, GameObject obj) {
         this.point = point;
-        this.bounds = bounds;
+        this.size = size;
         this.trigger = trigger;
         this.obj = obj;
     }
     public bool Contains (PointF target) {
-        return target.x > point.x - bounds.x / 2 &&
-            target.x < point.x + bounds.x / 2 &&
-            target.y > point.y - bounds.y / 2 &&
-            target.y < point.y + bounds.y / 2;
+        return target.x > point.x - size.x / 2 &&
+            target.x < point.x + size.x / 2 &&
+            target.y > point.y - size.y / 2 &&
+            target.y < point.y + size.y / 2;
     }
 }
