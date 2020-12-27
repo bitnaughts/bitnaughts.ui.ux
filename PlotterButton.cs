@@ -19,6 +19,10 @@ public class PlotterButton : MonoBehaviour
 
     void OnMouseUp()
     {
+        if (controller.Selected() == "")
+        {
+            controller.Deselect();
+        }
         switch (this.name)
         {
             /* Shift */
