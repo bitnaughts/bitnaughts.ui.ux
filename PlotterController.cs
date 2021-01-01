@@ -43,19 +43,19 @@ public class PlotterController : MonoBehaviour
 
 
     string[] components_menu = {
-            Carat + Processor, Carat + Girder, Carat + Grid, Carat + Bulkhead, Carat + Printer, Carat + Gimbal, Carat + Engine, Carat + Thruster, Carat + Cannon, Carat + Sensor },
+            Processor, Girder, Grid, Bulkhead, Printer, Gimbal, Engine, Thruster, Cannon, Sensor },
         syntax_init_menu = { 
-            UpCarat + Scroll_Up, PlusCarat + Add_Above, Carat + Arithmetic, Carat + Flow_Control, Carat + Boolean, Carat + Trigonometry, Carat + Interactivity, MinusCarat + Delete, PlusCarat + Add_Below, DownCarat + Scroll_Down },
+            Scroll_Up, Add_Above, Arithmetic, Flow_Control, Boolean, Trigonometry, Interactivity, Delete, Add_Below, Scroll_Down },
         syntax_arthimetic_menu = { 
-            Carat + Set, Carat + Add, Carat + Subtract, Carat + Absolute, Carat + Multiply, Carat + Divide, Carat + Modulo, Carat + Exponential, Carat + Root, MinusCarat + Back },
+            Set, Add, Subtract, Absolute, Multiply, Divide, Modulo, Exponential, Root },
         syntax_flow_control_menu = { 
-            Carat + JumpLabel, Carat + Jump, Carat + Jump_If_Equal, Carat + Jump_If_Not_Equal, Carat + Jump_If_Greater, Carat + Jump_If_Less, Carat, Carat, Carat, MinusCarat + Back },
+            JumpLabel, Jump, Jump_If_Equal, Jump_If_Not_Equal, Jump_If_Greater, Jump_If_Less },
         syntax_boolean_menu = { 
-            Carat + And, Carat + Or, Carat + Not, Carat + Nand, Carat + Nor, Carat + Xnor, Carat, Carat, Carat, MinusCarat + Back },
+            And, Or, Not, Nand, Nor, Xnor },
         syntax_trigonometry_menu = { 
-            Carat + Sine, Carat + Cosine, Carat + Tangent, Carat + Secant, Carat + Cosecant, Carat + Cotangent, Carat + Arcsine, Carat + Arccosine, Carat + Arctangent, MinusCarat + Back },
+            Sine, Cosine, Tangent, Secant, Cosecant, Cotangent, Arcsine, Arccosine, Arctangent },
         syntax_interactivity_menu = { 
-            Carat + Function, Carat + Plot, Carat + Print, Carat + Ping, Carat + Parse, Carat, Carat, Carat, Carat, MinusCarat + Back };
+            Function };
 
 
     int num_toggles = 10;
@@ -73,7 +73,7 @@ public class PlotterController : MonoBehaviour
         }
         ship = GameObject.Find("Ship").GetComponent<StructureController>();
         placement_overlay = GameObject.Find("PlacementOverlay");
-        toggle_group = GameObject.Find("Left").GetComponent<ToggleGroup>();
+        toggle_group = GameObject.Find("LeftCanvas").GetComponent<ToggleGroup>();
         right_input = GameObject.Find("RightInput").GetComponent<InputField>();
         interpreter = GameObject.Find("RightViewContent").GetComponent<Text>();
         left_title = GameObject.Find("LeftTitle").GetComponent<Text>();
@@ -84,6 +84,7 @@ public class PlotterController : MonoBehaviour
         Deselect();
     }
     string selected = "";
+    ProcessorController selected_processor;
     bool clicked = false;
     string focused = "";
     float recently_unfocused = 0f;
@@ -99,16 +100,23 @@ public class PlotterController : MonoBehaviour
         pos.x = Mathf.Round(pos.x);
         pos.y = Mathf.Round(pos.y);
 
-        if (focused == "") { placement_overlay.transform.position = pos; 
-            interpreter.text = "";
+        if (selected != "") 
+        {
+            interpreter.text = ship.GetComponentToString(selected);
             interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
-
         }
-        if (focused != "") 
+        else if (focused != "") 
         {
             interpreter.text = ship.GetComponentToString(focused);
             interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
         }
+        else {
+            placement_overlay.transform.position = pos; 
+            interpreter.text = "";
+            interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
+        }
+        
+        
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -117,7 +125,8 @@ public class PlotterController : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0) && Time.time - click_duration < .5f)
         {
-            if (selected != "" && Input.mousePosition.x > 3 * Screen.width / 4 && Input.mousePosition.y < 9 * Screen.height / 10)
+            selected_processor = ship.GetProcessorController(selected);
+            if (selected_processor != null && Input.mousePosition.x > 3 * Screen.width / 4 && Input.mousePosition.y < 9 * Screen.height / 10)
             {
                 SwitchLeftView(Syntax);
                 toggles[GetActiveToggle()].isOn = false;
@@ -136,6 +145,11 @@ public class PlotterController : MonoBehaviour
                     component_gameObject.name = object_reference.name + component_count;
                     component_gameObject.GetComponent<SpriteRenderer>().size = object_reference.GetComponent<ComponentController>().GetMinimumSize();
                     component_gameObject.transform.SetParent(ship.transform.Find("Rotator"));
+                    component_gameObject.transform.localPosition = new Vector2(
+                        Mathf.Round(component_gameObject.transform.localPosition.x),
+                        Mathf.Round(component_gameObject.transform.localPosition.y)
+                    );
+                    component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
                     
                     // Focus(component_gameObject.name);
                 }
@@ -152,7 +166,7 @@ public class PlotterController : MonoBehaviour
         {
             right_input.text = component;
             focused = component;
-
+            component_content.GetComponent<Text>().text = ship.GetComponentDescription(focused);
             placement_overlay.transform.position = ship.GetPosition(component);
             placement_overlay.GetComponent<SpriteRenderer>().size = ship.GetSize(component);
             placement_overlay.GetComponent<SpriteRenderer>().sprite = OverlaySelected;
@@ -165,6 +179,7 @@ public class PlotterController : MonoBehaviour
             right_input.text = "";
             focused = "";
             recently_unfocused = .25f;
+            component_content.GetComponent<Text>().text = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetDescription();
             placement_overlay.GetComponent<SpriteRenderer>().sprite = Overlay;
             placement_overlay.GetComponent<SpriteRenderer>().size = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetMinimumSize();
         }
@@ -172,20 +187,25 @@ public class PlotterController : MonoBehaviour
 
     public void Rename()
     {
-        if (left_title.text == Interpreter.Jump_Label_Text)
+        if (transition_time < 0)
         {
-            ship.SetOperand(selected, right_input.text);
-            return;
+            if (left_title.text == Interpreter.Jump_Label_Text)
+            {
+                ship.SetOperand(selected, right_input.text);
+                SwitchLeftView(Syntax);
+                return;
+            }
+            if (left_title.text == Interpreter.Set_Text)
+            {
+                ship.SetOperand(selected, Interpreter.Set + " " + right_input.text);
+                return;
+            }
+            GameObject.Find(selected).name = right_input.text;
+            selected = right_input.text;
+            ship.Start();
+            Select(selected);
+            // Will want to update scripts that contain old component references with new component references... TODO
         }
-        if (left_title.text == Interpreter.Set_Text)
-        {
-            ship.SetOperand(selected, Interpreter.Set + " " + right_input.text);
-            return;
-        }
-        GameObject.Find(selected).name = right_input.text;
-        selected = right_input.text;
-        ship.Start();
-        Select();
     }
     public string GetTitleRaw(string title_in)
     {
@@ -202,15 +222,26 @@ public class PlotterController : MonoBehaviour
         right_input.text = selected;
         switch (left_title.text)
         {
+            case Scroll_Up:
+                ship.Scroll(selected, -1);
+                break;
+            case Scroll_Down:
+                ship.Scroll(selected, 1);
+                break;
+            case Add_Above:
+                ship.AddLine(selected, 0);
+                break;
+            case Add_Below:
+                ship.AddLine(selected, 1);
+                break;
+            case Delete:
+                ship.DeleteLine(selected);
+                break;
             case Components: 
                 component_content.GetComponent<Text>().text = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetDescription();
                 SetActiveToggles(components_menu); break;
             case Syntax:
                 SetActiveToggles(syntax_init_menu); break;
-            case Arithmetic: 
-                SetActiveToggles(syntax_arthimetic_menu); break;
-            case Flow_Control: 
-                SetActiveToggles(syntax_flow_control_menu); break;
             case Interpreter.Jump_Label_Text:
                 SetActiveToggles(syntax_flow_control_menu);
                 string label = ship.GetNextLabel(selected);
@@ -218,21 +249,100 @@ public class PlotterController : MonoBehaviour
                 right_input.text = label;
                 break;
             case Interpreter.Set_Text:
-                SetActiveToggles(syntax_arthimetic_menu);
                 string variable = ship.GetNextVariable(selected);
                 ship.SetOperand(selected, Interpreter.Set + " " + variable);
                 right_input.text = variable;
+                SetActiveToggles(new string[] {"Constant", "Variable", "User Input", "Random"});
                 break;
-            case Boolean: 
-                SetActiveToggles(syntax_boolean_menu); break;
-            case Trigonometry: 
-                SetActiveToggles(syntax_trigonometry_menu); break;
-            case Interactivity: 
-                SetActiveToggles(syntax_interactivity_menu); break;
+            case "Random":
+                ship.AddOperand(selected, " rnd");
+                if (ship.GetEditInstructionCategory(selected) == Interpreter.Flow_Control)
+                {
+                    SetActiveToggles(ship.GetLabels(selected));
+                    break;
+                }
+                SwitchLeftView(Syntax);
+                break;
+            case "Constant":
+                ship.AddOperand(selected, " 0");
+                SetActiveToggles(new string[] {"Enter", "+ 100", "+ 10", "+ 1", "+ .1", "- .1", "- 1", "- 10", "- 100"});
+                //-100, -10, -1, -.1, +.1, +1, +10, +100, enter, back
+                break;
+            case "+ 100": ship.ModifyConstantOperand(selected, 100); break;
+            case "- 100": ship.ModifyConstantOperand(selected, -100); break;
+            case "+ 10": ship.ModifyConstantOperand(selected, 10); break;         
+            case "- 10": ship.ModifyConstantOperand(selected, -10); break;         
+            case "+ 1": ship.ModifyConstantOperand(selected, 1); break;
+            case "- 1": ship.ModifyConstantOperand(selected, -1); break;
+            case "+ .1": ship.ModifyConstantOperand(selected, .1f); break;
+            case "- .1": ship.ModifyConstantOperand(selected, -.1f); break;
+            case "Enter":
+                if (ship.GetEditInstructionCategory(selected) == Interpreter.Flow_Control)
+                {
+                    SetActiveToggles(ship.GetLabels(selected));
+                    break;
+                }
+                SwitchLeftView(Syntax);
+                break;
+            case Back:
+                SwitchLeftView(Syntax);
+                break;
+            case "Variable":
+                SetActiveToggles(ship.GetVariables(selected));
+                // ^, ptr, res, ... , v, back
+                break;
+            case "User Input":
+                SetActiveToggles(new string[] {"Q Key", "W Key", "E Key", "A Key", "S Key", "D Key", "Z Key", "X Key", "C Key"});
+                break;
+                
+            case Interpreter.Component_Text:
+                ship.SetOperand(selected, Interpreter.GetTextCode(left_title.text));
+                
+                string[] components = ship.GetOtherComponents(selected);
+                // if (components.Length > 7)
+                //components[0] = ^
+                //components[8] = v
+                //components[9] == "Back"
+                SetActiveToggles(components); break;
+                break;
             default:
-                // component_content.GetComponent<Text>().text = Interpreter.GetTextDescription(left_title.text);
-                ship.SetOperand(selected, Interpreter.GetTextCode(left_title.text)); break;
-
+                if (Interpreter.IsCategory(left_title.text))
+                {
+                    SetActiveToggles(Interpreter.GetOperations(left_title.text)); 
+                    break;      
+                }
+                if (left_title.text.Contains (" Key"))
+                {
+                    ship.AddOperand(selected, " in" + left_title.text.Split(' ')[0].ToLower());
+                    if (ship.GetEditInstructionCategory(selected) == Interpreter.Flow_Control)
+                    {
+                        SetActiveToggles(ship.GetLabels(selected));
+                        break;
+                    }
+                    else SwitchLeftView(Syntax);
+                    break;
+                }
+                if (ship.IsComponent(left_title.text)) 
+                {
+                    ship.SetOperand(selected, Interpreter.Component + " " + left_title.text);
+                    SetActiveToggles(new string[] {"Constant", "Variable", "User Input", "Random"});
+                    break;
+                }
+                if (ship.IsVariable(selected, left_title.text))
+                {
+                    ship.AddOperand(selected, " " + left_title.text);
+                    SetActiveToggles(new string[] {"Constant", "Variable", "User Input", "Random"});
+                    break;
+                }
+                if (ship.IsLabel(selected, left_title.text))
+                {
+                    ship.AddOperand(selected, " " + left_title.text);
+                    SwitchLeftView(Syntax);
+                    break;
+                }
+                ship.SetOperand(selected, Interpreter.GetTextCode(left_title.text)); 
+                SetActiveToggles(ship.GetVariables(selected));
+                break;
         }
     }
 
@@ -241,7 +351,13 @@ public class PlotterController : MonoBehaviour
         string category = ship.GetEditInstructionCategory(selected), text = ship.GetEditInstructionText(selected);
         for (int i = 0; i < num_toggles; i++)
         {
-            toggle_labels[i].text = toggle_labels_text[i];
+            if (i >= toggle_labels_text.Length && i == num_toggles - 1) toggle_labels[i].text = MinusCarat + Back;
+            else if (i >= toggle_labels_text.Length) toggle_labels[i].text = Carat;
+            else if (toggle_labels_text[i].Contains(Add_Above) || toggle_labels_text[i].Contains(Add_Below)) toggle_labels[i].text = PlusCarat + toggle_labels_text[i];
+            else if (toggle_labels_text[i].Contains(Delete)) toggle_labels[i].text = MinusCarat + toggle_labels_text[i];
+            else if (toggle_labels_text[i].Contains(Scroll_Up)) toggle_labels[i].text = UpCarat + toggle_labels_text[i];
+            else if (toggle_labels_text[i].Contains(Scroll_Down)) toggle_labels[i].text = DownCarat + toggle_labels_text[i];
+            else toggle_labels[i].text = Carat + toggle_labels_text[i];
             if (category != "" && text != "" && (toggle_labels[i].text.EndsWith(category) || toggle_labels[i].text.EndsWith(text)))
             {
                 toggle_labels[i].text = "<b>" + toggle_labels[i].text + "</b>";
@@ -264,50 +380,24 @@ public class PlotterController : MonoBehaviour
         {
             case Components:
                 Deselect(); break; 
-            case Syntax:
-                
-                transition_time = .1f;
-                toggles[active].isOn = false;
-                switch (active)
-                {
-                    case 0:
-                        ship.Scroll(selected, -1);
-                        SwitchLeftView(Syntax);
-                        break;
-                    case 1:
-                        ship.AddLine(selected, 0);
-                        SwitchLeftView(Syntax);
-                        break;
-                    case 7:
-                        ship.DeleteLine(selected);
-                        SwitchLeftView(Syntax);
-                        break;
-                    case 8:
-                        ship.AddLine(selected, 1);
-                        SwitchLeftView(Syntax);
-                        break;
-                    case 9:
-                        ship.Scroll(selected, 1);
-                        SwitchLeftView(Syntax);
-                        break;
-                    default:
-                        SwitchLeftView(toggle_labels[active].text);
-                        break;
-                }
-                break;
             default:
                 transition_time = .1f;
                 toggles[active].isOn = false;
-                switch (active)
-                {
-                    case 9:
-                        SwitchLeftView(Syntax);
-                        break;
-                    default:
-                        SwitchLeftView(toggle_labels[active].text);
-                    break;
-                }
+                SwitchLeftView(toggle_labels[active].text);
                 break;
+            // default:
+            //     transition_time = .1f;
+            //     toggles[active].isOn = false;
+            //     switch (active)
+            //     {
+            //         case 9:
+            //             SwitchLeftView(Syntax);
+            //             break;
+            //         default:
+            //             SwitchLeftView(toggle_labels[active].text);
+            //             break;
+            //     }
+            //     break;
         }
     }
 
@@ -318,13 +408,10 @@ public class PlotterController : MonoBehaviour
 
         right_input.text = selected;
         right_input.interactable = false;
-        // interpreter.interactable = false;
         component_content.GetComponent<Text>().text = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetDescription();
         placement_overlay.GetComponent<SpriteRenderer>().sprite = Overlay;
         ship.EnableColliders();
-
         recently_unfocused = .5f;
-
         SwitchLeftView(Components);
         placement_overlay.GetComponent<SpriteRenderer>().size = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetMinimumSize();
         foreach (Transform child in transform.Find("PlacementOverlay"))
@@ -347,19 +434,13 @@ public class PlotterController : MonoBehaviour
 
         right_input.text = selected;
         right_input.interactable = true;
-        // interpreter.interactable = true;
-        
         component_content.GetComponent<Text>().text = ship.ToString(selected);
-
-
         component_content.GetComponent<RectTransform>().sizeDelta = new Vector2(component_content.GetComponent<RectTransform>().sizeDelta.x, component_content.GetComponent<Text>().text.Split('\n').Length * 26);
         placement_overlay.transform.position = ship.GetPosition(component);
         placement_overlay.GetComponent<SpriteRenderer>().size = component_size;
         placement_overlay.GetComponent<SpriteRenderer>().sprite = OverlaySelected;
         ship.DisableColliders();
-
         SetPlacementOverlay(component_size, component_min_size);
-
     }
     public string Selected()
     {
