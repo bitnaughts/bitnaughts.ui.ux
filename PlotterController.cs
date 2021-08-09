@@ -55,19 +55,12 @@ public class PlotterController : MonoBehaviour
         if (selected != "") 
         {
             interpreter.text = ship.GetComponentToString(selected);
-            interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
         }
         else if (focused != "") 
         {
-
-            interpreter.text = ship.GetComponentToString(focused);
-            interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
         }
         else {
             placement_overlay.transform.position = pos; 
-            if (GetActiveToggle() != -1) placement_overlay.GetComponent<SpriteRenderer>().size = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetMinimumSize();
-            // interpreter.text = "";
-            // interpreter.GetComponent<RectTransform>().sizeDelta = new Vector2(interpreter.GetComponent<RectTransform>().sizeDelta.x, interpreter.text.Split('\n').Length * 26);
         }
         
         if (Input.GetMouseButtonDown(0))
@@ -77,9 +70,10 @@ public class PlotterController : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0) && Time.time - click_duration < .5f)
         {
+            // Needs generalizing to different screen formats
             if (selected == "" && recently_unfocused < 0 && Input.mousePosition.x > Screen.width / 2)
             {
-                if (focused != "") Select(focused);
+                if (focused != "" && GetActiveText().Contains(focused_type)) Select(focused);
                 else if (GetActiveToggle() != -1)
                 {
                     GameObject object_reference = Prefabs[GetActiveToggle()];
@@ -87,15 +81,21 @@ public class PlotterController : MonoBehaviour
                     var component_gameObject = Instantiate(object_reference, pos, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
                     //move this logic to structure controller, use IfKeyExists
                     int component_count = 1;
-                    while (ship.transform.Find("Rotator").Find(object_reference.name + component_count) != null) component_count++;
+                    while (ship.IsComponent(object_reference.name + component_count)) component_count++;
                     component_gameObject.name = object_reference.name + component_count;
                     component_gameObject.GetComponent<SpriteRenderer>().size = object_reference.GetComponent<ComponentController>().GetMinimumSize();
-                    component_gameObject.transform.SetParent(ship.transform.Find("Rotator"));
+                    
+                    if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
+                        component_gameObject.transform.SetParent(ship.transform.Find("Rotator").Find(focused).GetChild(0));
+                    }
+                    else component_gameObject.transform.SetParent(ship.transform.Find("Rotator"));
+                    
                     component_gameObject.transform.localPosition = new Vector2(
                         Mathf.Round(component_gameObject.transform.localPosition.x),
                         Mathf.Round(component_gameObject.transform.localPosition.y)
                     );
                     component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+
                     
                     // Focus(component_gameObject.name);
                 }
@@ -104,7 +104,7 @@ public class PlotterController : MonoBehaviour
     }
     public void Focus(string component, Type type) 
     { 
-        focused_type = type.ToString();
+        focused_type = type.ToString().Replace("Controller", "");
         Focus(component, false);
     }
     public void Focus(string component, bool force_focus)
@@ -155,6 +155,10 @@ public class PlotterController : MonoBehaviour
     public int GetActiveToggle()
     {
         return launcher.GetActiveButton();
+    }
+    public string GetActiveText()
+    {
+        return launcher.GetActiveText();
     }
 
     public void Deselect()
