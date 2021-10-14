@@ -10,11 +10,11 @@ public class PlotterController : MonoBehaviour
 {
     public GameObject[] Prefabs;
     GameObject placement_overlay, component_content;
-    StructureController ship;
+    public StructureController Ship;
 
     Text left_title, center_title, right_title;
     public InputField input;
-    Text interpreter;
+    // Text interpreter;
 
     public string default_content = "\n None... \n\n To add, tap\n plotter grid.";
     public Sprite Overlay, OverlaySelected;
@@ -29,10 +29,10 @@ public class PlotterController : MonoBehaviour
 
     void Start()
     {
-        ship = GameObject.Find("Ship").GetComponent<StructureController>();
-        placement_overlay = GameObject.Find("PlacementOverlay");
+        // placement_overlay = GameObject.Find("PlacementOverlay");
+        // Ship = GameObject.Find("Ship").GetComponent<StructureController>();
         // input = GameObject.Find("Input").GetComponent<InputField>();
-        interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
+        // interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
         left_title = GameObject.Find("LeftTitle").GetComponent<Text>();
     }
     string selected = "";
@@ -54,13 +54,13 @@ public class PlotterController : MonoBehaviour
 
         if (selected != "") 
         {
-            interpreter.text = ship.GetComponentToString(selected);
+            // interpreter.text = Ship.GetComponentToString(selected);
         }
         else if (focused != "") 
         {
         }
         else {
-            placement_overlay.transform.position = pos; 
+            // placement_overlay.transform.position = pos; 
         }
         
         if (Input.GetMouseButtonDown(0))
@@ -81,14 +81,14 @@ public class PlotterController : MonoBehaviour
                     var component_gameObject = Instantiate(object_reference, pos, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
                     //move this logic to structure controller, use IfKeyExists
                     int component_count = 1;
-                    while (ship.IsComponent(object_reference.name + component_count)) component_count++;
+                    while (Ship.IsComponent(object_reference.name + component_count)) component_count++;
                     component_gameObject.name = object_reference.name + component_count;
                     component_gameObject.GetComponent<SpriteRenderer>().size = object_reference.GetComponent<ComponentController>().GetMinimumSize();
                     
                     if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
-                        component_gameObject.transform.SetParent(ship.transform.Find("Rotator").Find(focused).GetChild(0));
+                        component_gameObject.transform.SetParent(Ship.transform.Find("Rotator").Find(focused).GetChild(0));
                     }
-                    else component_gameObject.transform.SetParent(ship.transform.Find("Rotator"));
+                    else component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
                     
                     component_gameObject.transform.localPosition = new Vector2(
                         Mathf.Round(component_gameObject.transform.localPosition.x),
@@ -113,9 +113,11 @@ public class PlotterController : MonoBehaviour
         {
             input.text = component;
             focused = component;
-            placement_overlay.transform.position = ship.GetPosition(component);
-            placement_overlay.GetComponent<SpriteRenderer>().size = ship.GetSize(component);
+            if (placement_overlay == null) placement_overlay = GameObject.Find("PlacementOverlay");
+            placement_overlay.transform.position = Ship.GetPosition(component);
+            placement_overlay.GetComponent<SpriteRenderer>().size = Ship.GetSize(component);
             placement_overlay.GetComponent<SpriteRenderer>().sprite = OverlaySelected;
+            placement_overlay.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
     public void Unfocus()
@@ -125,6 +127,7 @@ public class PlotterController : MonoBehaviour
             input.text = "";
             focused = "";
             recently_unfocused = .25f;
+            placement_overlay.GetComponent<SpriteRenderer>().enabled = false;
             placement_overlay.GetComponent<SpriteRenderer>().sprite = Overlay;
             if (GetActiveToggle() != -1) placement_overlay.GetComponent<SpriteRenderer>().size = Prefabs[GetActiveToggle()].GetComponent<ComponentController>().GetMinimumSize();
         }
@@ -136,17 +139,17 @@ public class PlotterController : MonoBehaviour
     //     {
     //         if (left_title.text == Interpreter.Jump_Label_Text)
     //         {
-    //             ship.SetOperand(selected, input.text);
+    //             Ship.SetOperand(selected, input.text);
     //             return;
     //         }
     //         if (left_title.text == Interpreter.Set_Text)
     //         {
-    //             ship.SetOperand(selected, Interpreter.Set + " " + input.text);
+    //             Ship.SetOperand(selected, Interpreter.Set + " " + input.text);
     //             return;
     //         }
     //         GameObject.Find(selected).name = input.text;
     //         selected = input.text;
-    //         ship.Start();
+    //         Ship.Start();
     //         Select(selected);
     //         // Will want to update scripts that contain old component references with new component references... TODO
     //     }
@@ -166,8 +169,8 @@ public class PlotterController : MonoBehaviour
         this.selected = "";
         this.focused = "";
 
-        placement_overlay.GetComponent<SpriteRenderer>().sprite = Overlay;
-        ship.EnableColliders();
+        placement_overlay.GetComponent<SpriteRenderer>().enabled = false;
+        Ship.EnableColliders();
         recently_unfocused = .5f;
         
         launcher.OnSelect("", "");
@@ -179,12 +182,12 @@ public class PlotterController : MonoBehaviour
     }
     public void Select()
     {
-        Select(selected, ship.GetSize(selected), ship.GetMinimumSize(selected));
+        Select(selected, Ship.GetSize(selected), Ship.GetMinimumSize(selected));
     }
 
     public void Select(string focused) 
     {
-        Select(focused, ship.GetSize(focused), ship.GetMinimumSize(focused));
+        Select(focused, Ship.GetSize(focused), Ship.GetMinimumSize(focused));
     }
     public void Select(string component, Vector2 component_size, Vector2 component_min_size)
     {
@@ -192,10 +195,12 @@ public class PlotterController : MonoBehaviour
 
         input.text = selected;
         input.interactable = true;
-        placement_overlay.transform.position = ship.GetPosition(component);
+        // print ("Component" + component + Ship.GetPosition(component).x +"," +Ship.GetPosition(component).y  +"," + Ship.GetPosition(component).z);
+        placement_overlay.transform.position = Ship.GetPosition(component);
         placement_overlay.GetComponent<SpriteRenderer>().size = component_size;
         placement_overlay.GetComponent<SpriteRenderer>().sprite = OverlaySelected;
-        ship.DisableColliders();
+        placement_overlay.GetComponent<SpriteRenderer>().enabled = true;
+        Ship.DisableColliders();
         SetPlacementOverlay(component_size, component_min_size);
 
         launcher.OnSelect(focused_type, selected);
