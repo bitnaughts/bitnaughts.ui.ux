@@ -14,7 +14,7 @@ public class PlotterController : MonoBehaviour
 
     Text left_title, center_title, right_title;
     public InputField input;
-    // Text interpreter;
+    Text interpreter;
 
     public string default_content = "\n None... \n\n To add, tap\n plotter grid.";
     public Sprite Overlay, OverlaySelected;
@@ -32,7 +32,7 @@ public class PlotterController : MonoBehaviour
         // placement_overlay = GameObject.Find("PlacementOverlay");
         // Ship = GameObject.Find("Ship").GetComponent<StructureController>();
         // input = GameObject.Find("Input").GetComponent<InputField>();
-        // interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
+        interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
         left_title = GameObject.Find("LeftTitle").GetComponent<Text>();
     }
     string selected = "";
@@ -42,7 +42,7 @@ public class PlotterController : MonoBehaviour
     float recently_unfocused = 0f;
     float click_duration;
 
-    Vector2 selected_size, selected_min_size, pos;
+    Vector3 selected_size, selected_min_size, pos;
 
     void Update()
     {
@@ -50,11 +50,12 @@ public class PlotterController : MonoBehaviour
         transition_time -= Time.deltaTime;
         pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.x = Mathf.Round(pos.x);
-        pos.y = Mathf.Round(pos.y);
+        pos.y = 0;
+        pos.z = Mathf.Round(pos.z);
 
         if (selected != "") 
         {
-            // interpreter.text = Ship.GetComponentToString(selected);
+            interpreter.text = Ship.GetComponentToString(selected);
         }
         else if (focused != "") 
         {
@@ -73,12 +74,13 @@ public class PlotterController : MonoBehaviour
             // Needs generalizing to different screen formats
             if (selected == "" && recently_unfocused < 0 && Input.mousePosition.x > Screen.width / 2)
             {
-                if (focused != "" && GetActiveText().Contains(focused_type)) Select(focused);
-                else if (GetActiveToggle() != -1)
+                if (focused != "" && left_title.text.Contains("BitNaughts")) Select(focused); // && GetActiveText().Contains(focused_type)
+                else if (left_title.text.Contains("Objects") && GetActiveToggle() != -1 )
                 {
+                    if (focused != "" && GetActiveText().Contains(focused_type)) { Select(focused); return; }
                     GameObject object_reference = Prefabs[GetActiveToggle()];
                     
-                    var component_gameObject = Instantiate(object_reference, pos, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+                    var component_gameObject = Instantiate(object_reference, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
                     //move this logic to structure controller, use IfKeyExists
                     int component_count = 1;
                     while (Ship.IsComponent(object_reference.name + component_count)) component_count++;
@@ -86,18 +88,21 @@ public class PlotterController : MonoBehaviour
                     component_gameObject.GetComponent<SpriteRenderer>().size = object_reference.GetComponent<ComponentController>().GetMinimumSize();
                     
                     if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
-                        component_gameObject.transform.SetParent(Ship.transform.Find("Rotator").Find(focused).GetChild(0));
+                        Transform gimbal_grid = Ship.transform.Find("Rotator").Find(focused).GetChild(0);
+                        component_gameObject.transform.SetParent(gimbal_grid);
+                        
+                        component_gameObject.transform.localPosition = new Vector2(pos.x - gimbal_grid.transform.position.x, pos.z  - gimbal_grid.transform.position.z);
                     }
-                    else component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
+                    else {
+                        component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
+                   
+                        component_gameObject.transform.localPosition = new Vector2(pos.x, pos.z);
+                    }
                     
-                    component_gameObject.transform.localPosition = new Vector2(
-                        Mathf.Round(component_gameObject.transform.localPosition.x),
-                        Mathf.Round(component_gameObject.transform.localPosition.y)
-                    );
                     component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
 
                     
-                    // Focus(component_gameObject.name);
+                    Focus(component_gameObject.name, true);
                 }
             }
         }
