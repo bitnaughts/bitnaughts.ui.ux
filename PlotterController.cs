@@ -19,7 +19,7 @@ public class PlotterController : MonoBehaviour
     public string default_content = "\n None... \n\n To add, tap\n plotter grid.";
     public Sprite Overlay, OverlaySelected;
 
-    public Launch launcher;
+    // public Launch launcher;
 
     string focused_type = "";
 
@@ -32,8 +32,8 @@ public class PlotterController : MonoBehaviour
         // placement_overlay = GameObject.Find("PlacementOverlay");
         // Ship = GameObject.Find("Ship").GetComponent<StructureController>();
         // input = GameObject.Find("Input").GetComponent<InputField>();
-        interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
-        left_title = GameObject.Find("LeftTitle").GetComponent<Text>();
+        // interpreter = GameObject.Find("ViewContent").GetComponent<Text>();
+        // left_title = GameObject.Find("LeftTitle").GetComponent<Text>();
     }
     string selected = "";
     ProcessorController selected_processor;
@@ -55,7 +55,7 @@ public class PlotterController : MonoBehaviour
 
         if (selected != "") 
         {
-            interpreter.text = Ship.GetComponentToString(selected);
+            // interpreter.text = Ship.GetComponentToString(selected);
         }
         else if (focused != "") 
         {
@@ -72,10 +72,10 @@ public class PlotterController : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && Time.time - click_duration < .5f)
         {
             // Needs generalizing to different screen formats
-            if (selected == "" && recently_unfocused < 0 && Input.mousePosition.x > Screen.width / 2)
+            if (selected == "" && recently_unfocused < 0)// && Input.mousePosition.x > Screen.width / 2)
             {
-                if (focused != "" && left_title.text.Contains("BitNaughts")) Select(focused); // && GetActiveText().Contains(focused_type)
-                else if (left_title.text.Contains("Objects") && GetActiveToggle() != -1 )
+                if (focused != "") Select(focused); // && GetActiveText().Contains(focused_type)  && left_title.text.Contains("BitNaughts")
+                else //if (left_title.text.Contains("Objects") && GetActiveToggle() != -1 )
                 {
                     if (focused != "" && GetActiveText().Contains(focused_type)) { Select(focused); return; }
                     GameObject object_reference = Prefabs[GetActiveToggle()];
@@ -116,7 +116,7 @@ public class PlotterController : MonoBehaviour
     {
         if (this.selected == "" || force_focus)
         {
-            input.text = component;
+            // input.text = component;
             focused = component;
             if (placement_overlay == null) placement_overlay = GameObject.Find("PlacementOverlay");
             placement_overlay.transform.position = Ship.GetPosition(component);
@@ -129,7 +129,7 @@ public class PlotterController : MonoBehaviour
     {
         if (this.selected == "")
         {
-            input.text = "";
+            // input.text = "";
             focused = "";
             recently_unfocused = .25f;
             placement_overlay.GetComponent<SpriteRenderer>().enabled = false;
@@ -162,11 +162,11 @@ public class PlotterController : MonoBehaviour
 
     public int GetActiveToggle()
     {
-        return launcher.GetActiveButton();
+        return 0 ;//launcher.GetActiveButton();
     }
     public string GetActiveText()
     {
-        return launcher.GetActiveText();
+        return "" ;//launcher.GetActiveText();
     }
 
     public void Deselect()
@@ -178,7 +178,7 @@ public class PlotterController : MonoBehaviour
         Ship.EnableColliders();
         recently_unfocused = .5f;
         
-        launcher.OnSelect("", "");
+        // launcher.OnSelect("", "");
 
         foreach (Transform child in transform.Find("PlacementOverlay"))
         {
@@ -198,8 +198,8 @@ public class PlotterController : MonoBehaviour
     {
         this.selected = component;
 
-        input.text = selected;
-        input.interactable = true;
+        // input.text = selected;
+        // input.interactable = true;
         // print ("Component" + component + Ship.GetPosition(component).x +"," +Ship.GetPosition(component).y  +"," + Ship.GetPosition(component).z);
         placement_overlay.transform.position = Ship.GetPosition(component);
         placement_overlay.GetComponent<SpriteRenderer>().size = component_size;
@@ -208,7 +208,7 @@ public class PlotterController : MonoBehaviour
         Ship.DisableColliders();
         SetPlacementOverlay(component_size, component_min_size);
 
-        launcher.OnSelect(focused_type, selected);
+        // launcher.OnSelect(focused_type, selected);
     }
     public string Selected()
     {
@@ -236,6 +236,9 @@ public class PlotterController : MonoBehaviour
                     break;
                 case "Rotate":
                     child.localPosition = new Vector2(-component_size.x / 2 - 1, component_size.y / 2 + 1);
+                    break;
+                case "Rotate-":
+                    child.localPosition = new Vector2(-component_size.x / 2 - 1, -component_size.y / 2 - 1);
                     break;
                 case "Ok":
                     child.localPosition = new Vector2(component_size.x / 2 + 1, component_size.y / 2 + 1);

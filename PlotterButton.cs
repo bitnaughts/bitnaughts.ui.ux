@@ -78,6 +78,10 @@ public class PlotterButton : MonoBehaviour
                 controller.Ship.Rotate90(controller.Selected());
                 controller.Select();
                 break;
+            case "Rotate-":
+                controller.Ship.RotateM90(controller.Selected());
+                controller.Select();
+                break;
             case "Ok":
                 controller.Deselect();
                 break;
