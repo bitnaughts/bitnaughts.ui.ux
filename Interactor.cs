@@ -13,6 +13,8 @@ Text height 50
 
 public class Interactor : MonoBehaviour
 {
+    public AudioClip TutorialIntro, TutorialMapInterface, TutorialMusic, TutorialComponents, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
+
     public GameObject Overlay;
     public GameObject Example;
     private string command = "";
@@ -145,15 +147,81 @@ public class Interactor : MonoBehaviour
         this.command = command;
     }
 
-    float time = 0f;
+    float timer = 0f;
+    bool tutorial = false;
+    public void StartTutorial() {
+        tutorial = true;
+        timer = 0;
+    }
+    void PlayAtTime(AudioClip clip, float timer, float time) {
+        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+            GetComponent<AudioSource>().clip = clip;
+            GetComponent<AudioSource>().volume = 1f;
+            GetComponent<AudioSource>().Play();
+        }
+    }
+    void SubtitlesAtTime(string text, float timer, float time) {
+        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+            GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
+        }
+    }
     void FixedUpdate()
     {
+        if (tutorial) {
+            timer += Time.deltaTime;
+            PlayAtTime(TutorialIntro, timer, 1f);
+            if (timer > 1f && timer < 3f) { 
+                GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+            }
+            if (timer > 3f && timer < 3f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            SubtitlesAtTime("Welcome to the command tutorial!", timer, 1f);
+            SubtitlesAtTime("Today you will learn ship control.", timer, 3.5f);
+            PlayAtTime(TutorialCursor, timer, 8f);
+            SubtitlesAtTime("Aim the crosshair using the mouse", timer, 8f);
+            SubtitlesAtTime("When you're on target the crosshair", timer, 12f);
+            SubtitlesAtTime("alters shape to indicate a lock-on.", timer, 15f);
+            if (timer > 17f && timer < 17f + (Time.deltaTime * 2f)) { 
+                for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
+                    if (OverlayInteractor.OverlayDropdown.options[i].text == "Cannon") OverlayInteractor.OverlayDropdown.value = i; 
+                }
+                OverlayInteractor.gameObject.SetActive(true);
+                OverlayInteractor.OnDropdownChange(); 
+            }
+            // PlayAtTime(TutorialMapInterface, timer, 12f);
+            PlayAtTime(TutorialRightWindow, timer, 18f);
+            SubtitlesAtTime("This window shows you that unit.", timer, 18f);
+            if (timer > 18f && timer < 20f) { 
+                GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+            }
+            if (timer > 20f && timer < 20f + (Time.deltaTime * 2f)) { GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            PlayAtTime(TutorialLeftWindow, timer, 24f);
+            SubtitlesAtTime("Left is the unit window, now it", timer, 24f);
+            if (timer > 24f && timer < 26f) { 
+                GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            }
+            if (timer > 26f && timer < 26f + (Time.deltaTime * 2f)) { GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            SubtitlesAtTime("displays information about the class.", timer, 27f);
+            
+            PlayAtTime(TutorialSelect, timer, 32f);
+            SubtitlesAtTime("Press the use weapon control to fire!", timer, 32f);
+            // PlayAtTime(TutorialComponents, timer, 1);
+            // PlayAtTime(TutorialCursor, timer, _tutorial_cursor_time);
+            PlayAtTime(TutorialOutro, timer, 37f);
+            SubtitlesAtTime("Excellent work!", timer, 37f);
+            SubtitlesAtTime("you have now completed the tutorial.", timer, 38.5f);
+            SubtitlesAtTime("I hope you never have cause to use", timer, 41f);
+            SubtitlesAtTime("the knowledge you have just acquired.", timer, 43f);
+            SubtitlesAtTime("That is all for today... Dismissed!", timer, 46f);
+            SubtitlesAtTime("", timer, 50f);
+            if (timer > 50) { 
+                tutorial = false;
+            }
+        }
         // foreach (var button in ButtonsCache) {
         //     if (button.activeSelf == true) {
                 
         //     }
         // }
-        time += Time.deltaTime;
         // if ((int)time % 2 == 0) {
         //     RenderText("$");
         // }
@@ -169,16 +237,16 @@ public class Interactor : MonoBehaviour
             // case 25: RenderText("<a>$</a>"); break;
             // case 30: RenderText("$"); break;
         // }
-            // case 05: RenderText("$ git"); break;
-            // case 10: RenderText("$ git clone"); break;
-            // case 15: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git"); break;
-            // case 25: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>"); break;
-            // case 26: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n<i>remote:</i> <i>Enumerating</i> <i>objects</i>"); break;
-            // case 27: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n<i>remote:</i> <i>Enumerating</i> <i>objects</i>\n<i>remote:</i> <i>Counting</i> <i>objects</i>"); break;
-            // case 28: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n<i>remote:</i> <i>Enumerating</i> <i>objects</i>\n<i>remote:</i> <i>Counting</i> <i>objects</i>\n<i>remote:</i> <i>Compressing</i> <i>objects</i>"); break;
-            // case 29: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n<i>remote:</i> <i>Enumerating</i> <i>objects</i>\n<i>remote:</i> <i>Counting</i> <i>objects</i>\n<i>remote:</i> <i>Compressing</i> <i>objects</i>\n<i>Receiving</i> <i>objects</i>"); break;
-            // case 30: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n<i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n<i>remote:</i> <i>Enumerating</i> <i>objects</i>\n<i>remote:</i> <i>Counting</i> <i>objects</i>\n<i>remote:</i> <i>Compressing</i> <i>objects</i>\n<i>Receiving</i> <i>objects</i>\n<i>Resolving</i> <i>deltas</i>"); break;
-            // case 50: RenderText("$"); break;
+            // case 01: RenderText("$ git"); break;
+            // case 04: RenderText("$ git clone"); break;
+            // case 07: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git"); break;
+            // case 10: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>"); break;
+            // case 12: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>"); break;
+            // case 14: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>"); break;
+            // case 16: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>"); break;
+            // case 18: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>\n  <i>Receiving</i> <i>objects</i>"); break;
+            // case 20: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>\n  <i>Receiving</i> <i>objects</i>\n  <i>Resolving</i> <i>deltas</i>"); break;
+            // case 30: RenderText("$"); break;
             // case 55: RenderText("$ help"); break;
             // case 60: RenderText("$ help\n☄ BitNaughts is an educational\n  programming video-game;"); break;
             // case 80: RenderText("$"); break;
