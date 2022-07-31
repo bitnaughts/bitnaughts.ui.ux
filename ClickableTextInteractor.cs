@@ -20,6 +20,44 @@ public class ClickableTextInteractor : MonoBehaviour
         this.GetComponent<RectTransform>().localPosition = new Vector2(-25f + (pos - (text.Length-1)/2f) * 25f, -30f + line * -50f);
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 25f, 50f);
 
+        if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
+            initialized_text = Formatter.comment(initialized_text);
+        }
+        switch (initialized_text) {
+            case "final":
+            case "class":
+            case "static":
+            case "new":
+            case "delete":
+            case "void":
+            case "double":
+            case "public":
+            case "protected":
+            case "private":
+            case "for":
+            case "if":
+            case "return":
+                initialized_text = Formatter.keyword(initialized_text);
+                break;
+            case "Component":
+            case "Object":
+            case "Vector":
+            case "Shell":
+            case "Ray":
+            case "Heap":
+            // case "Processor":
+            // case "Cannon":
+            // case "Gimbal":
+            // case "Bulkhead":
+                initialized_text = Formatter.ColorObject(initialized_text);
+                break;
+            // case "Main":
+            // case "Rotate":
+            // case "Fire":
+            //     initialized_text = Formatter.keyword(initialized_text);
+            //     break;
+        }
+
         this.transform.GetChild(0).GetComponent<Text>().text = initialized_text.Replace("_", " ");
     }
     public void OnClick() {
@@ -81,7 +119,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "git": 
             case "<b>git</b>": 
                 Interactor.SetCommand("git");
-                Interactor.AppendText("$ git <b>status</b>\n      <b>add</b>\n      <b>commit</b>\n      <b>pull</b>\n      <b>push</b>\n      <a>help</a>\n      <a>back</a>");
+                Interactor.AppendText("$ git <b>status</b>\n      <b>add</b>\n      <b>commit</b>\n      <b>pull</b>\n      <b>push</b>\n      <b>help</b>\n      <b>back</b>");
             break;
             case "<i>status</i>": 
                 Interactor.SetCommand("clone");
@@ -112,7 +150,7 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
             case "<b>about</b>": 
-                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n\n$");
+                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n$");
             break;
             case "<b>tutorial</b>": 
                 Interactor.AppendText("$ <b>tutorial</b>\n$ ");
@@ -147,7 +185,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 for (int i = 1; i < components.Length; i++) {
                     output += "\n     <b>" + components[i] + "</b>";
                 } 
-                output += "\n     <a>help</a>\n     <a>back</a>";
+                output += "\n     <b>help</b>\n     <b>back</b>";
                 Interactor.AppendText(output);
             break;
             case "nano":
@@ -157,14 +195,14 @@ public class ClickableTextInteractor : MonoBehaviour
                 for (int i = 1; i < components.Length; i++) {
                     output += "\n       <b>" + components[i] + "</b>";
                 } 
-                output += "\n       <a>help</a>\n       <a>back</a>";
+                output += "\n       <b>help</b>\n       <b>back</b>";
                 Interactor.AppendText(output);
                 Interactor.SetInputPlaceholder("+ File");
             break;
             case "make": 
             case "<b>make</b>": 
                 Interactor.SetCommand("make");
-                Interactor.AppendText("$ make <b>▥_Processor</b>\n       <b>▩_Bulkhead</b>\n       <b>▣_Gimbal</b>\n       <b>◍_Cannon</b>\n       <b>◌_Sensor</b>\n       <b>◉_Thruster</b>\n       <b>◎_Booster</b>\n       <a>help</a>\n       <a>back</a>");
+                Interactor.AppendText("$ make <b>▥_Processor</b>\n       <b>▩_Bulkhead</b>\n       <b>▣_Gimbal</b>\n       <b>◍_Cannon</b>\n       <b>◌_Sensor</b>\n       <b>◉_Thruster</b>\n       <b>◎_Booster</b>\n       <b>help</b>\n       <b>back</b>");
             break;
             case "Print()": 
                 Interactor.PrintMock();
@@ -203,7 +241,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetCommand("$");
                 Interactor.AppendText("$");// <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <a>help</a>");
             break;
-            case "<a>Exit</a>": 
+            case "<b>Exit</b>": 
                 Interactor.ClearText();
                 OverlayInteractor.gameObject.SetActive(false);
             break;
