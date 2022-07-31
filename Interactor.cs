@@ -179,7 +179,7 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialCursor, timer, 8f);
             SubtitlesAtTime("Aim the crosshair using the mouse", timer, 8f);
             SubtitlesAtTime("When you're on target the crosshair", timer, 12f);
-            SubtitlesAtTime("alters shape to indicate a lock-on.", timer, 15f);
+            SubtitlesAtTime("alters shape to indicate a lock-on.", timer, 14f);
             if (timer > 17f && timer < 17f + (Time.deltaTime * 2f)) { 
                 for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
                     if (OverlayInteractor.OverlayDropdown.options[i].text == "Cannon") OverlayInteractor.OverlayDropdown.value = i; 
@@ -210,7 +210,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("Excellent work!", timer, 37f);
             SubtitlesAtTime("you have now completed the tutorial.", timer, 38.5f);
             SubtitlesAtTime("I hope you never have cause to use", timer, 41f);
-            SubtitlesAtTime("the knowledge you have just acquired.", timer, 43f);
+            SubtitlesAtTime("the knowledge you just acquired.", timer, 43f);
             SubtitlesAtTime("That is all for today... Dismissed!", timer, 46f);
             SubtitlesAtTime("", timer, 50f);
             if (timer > 50) { 

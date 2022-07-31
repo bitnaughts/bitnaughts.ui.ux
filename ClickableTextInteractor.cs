@@ -32,7 +32,7 @@ public class ClickableTextInteractor : MonoBehaviour
         }
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <a>about</a>\n  <a>tutorial</a>\n  <a>back</a>");
+            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>about</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -111,10 +111,10 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.SetCommand("bitnaughts.interpreter");
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
-            case "<a>about</a>": 
+            case "<b>about</b>": 
                 Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n\n$");
             break;
-            case "<a>tutorial</a>": 
+            case "<b>tutorial</b>": 
                 Interactor.AppendText("$ <b>tutorial</b>\n$ ");
                 Interactor.StartTutorial();
         // timer += Time.deltaTime;
@@ -123,7 +123,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetCommand("pull");
                 Interactor.AppendText("$ git pull\n...\n$");
             break;
-            case "<a>add</a>": 
+            case "<i>add</i>": 
                 Interactor.SetCommand("add");
                 output = "$ git add <a>" + components[0] + "</a>";
                 for (int i = 1; i < components.Length; i++) {
@@ -197,6 +197,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "<b>clear</b>": 
                 Interactor.ClearHistory();
             break;
+            case "<b>back</b>": 
             case "<a>back</a>": 
                 Interactor.RenderText("$");
                 Interactor.SetCommand("$");
