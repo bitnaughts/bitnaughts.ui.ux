@@ -47,6 +47,7 @@ public class Interactor : MonoBehaviour
     }
     public void ClearText() {
         if (history == "") history = "$";
+        InputField.text = "☄ BitNaughts";
         RenderText(history);
     }
     public void ClearHistory() {
@@ -84,10 +85,12 @@ public class Interactor : MonoBehaviour
         }
         SetContentSize(25f + max_line_length * 25f, 50f + lines.Length * 50f);
     }
+    public string component_name = "";
     public void RenderComponent(string component) {
         var component_string = Ship.GetComponentToString(component);
         var component_header = component_string.IndexOf("\n");
-        InputField.text = component_string.Substring(0, component_header);
+        component_name = component_string.Substring(0, component_header);
+        InputField.text = component_name;
         InputField.interactable = true;
         RenderText(component_string.Substring(component_header + 1));
     }
@@ -102,39 +105,39 @@ public class Interactor : MonoBehaviour
     public void SetInputPlaceholder(string placeholder) {
         InputField.interactable = true;
         // InputFieldPlaceholder.text = placeholder;
-        InputField.text = "";
+        InputField.text = placeholder;
     }
     public void OnInput() {
         //create new component...
         InputField.interactable = false;
         switch (GetCommand()) {
             case "nano":
-                
                 // GameObject object_reference = //Prefabs[GetActiveToggle()];
-                    
-                    var component_gameObject = Instantiate(Overlay, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
-                    //move this logic to structure controller, use IfKeyExists
-                    // int component_count = 1;
-                    // while (Ship.IsComponent(object_reference.name + component_count)) component_count++;
-                    component_gameObject.name = InputField.text;//object_reference.name + component_count;
-                    component_gameObject.GetComponent<SpriteRenderer>().size = new Vector2(2,2);//object_reference.GetComponent<ComponentController>().GetMinimumSize();
-                    
-                    // if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
-                        // Transform gimbal_grid = Ship.transform.Find("Rotator").Find(focused).GetChild(0);
-                        // component_gameObject.transform.SetParent(gimbal_grid);
-                        
-                    //     component_gameObject.transform.localPosition = new Vector2(pos.x - gimbal_grid.transform.position.x, pos.z  - gimbal_grid.transform.position.z);
-                    // }
-                    // else {
-                        component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
-                        // component_gameObject.transform.localPosition = new Vector2(pos.x, pos.z);
-                    // }
-                    
-                    // component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-
-                    OverlayInteractor.UpdateOptions();
-                    OverlayInteractor.OnDropdownChange(); 
-
+                var component_gameObject = Instantiate(Overlay, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+                //move this logic to structure controller, use IfKeyExists
+                // int component_count = 1;
+                // while (Ship.IsComponent(object_reference.name + component_count)) component_count++;
+                component_gameObject.name = InputField.text;//object_reference.name + component_count;
+                component_gameObject.GetComponent<SpriteRenderer>().size = new Vector2(2,2);//object_reference.GetComponent<ComponentController>().GetMinimumSize();
+                // if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
+                    // Transform gimbal_grid = Ship.transform.Find("Rotator").Find(focused).GetChild(0);
+                    // component_gameObject.transform.SetParent(gimbal_grid);
+                //     component_gameObject.transform.localPosition = new Vector2(pos.x - gimbal_grid.transform.position.x, pos.z  - gimbal_grid.transform.position.z);
+                // }
+                // else {
+                    component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
+                    // component_gameObject.transform.localPosition = new Vector2(pos.x, pos.z);
+                // }
+                // component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+                Ship.Start();
+                OverlayInteractor.UpdateOptions();
+                OverlayInteractor.OnDropdownChange(); 
+            break;
+            default:
+                GameObject.Find(component_name).name = InputField.text;
+                Ship.Start();
+                OverlayInteractor.UpdateOptions();
+                OverlayInteractor.OnDropdownChange(); 
             break;
         }
         InputFieldPlaceholder.text = "";

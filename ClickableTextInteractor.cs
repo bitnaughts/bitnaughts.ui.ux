@@ -211,14 +211,39 @@ public class ClickableTextInteractor : MonoBehaviour
                 } 
                 output += "\n       <b>help</b>\n       <b>back</b>";
                 Interactor.AppendText(output);
-                Interactor.SetInputPlaceholder("+ File");
+                // Interactor.SetInputPlaceholder("+ File");
                 break;
             case "make": 
                 Interactor.SetCommand("make");
                 Interactor.AppendText("$ make <b>▥_Processor</b>\n       <b>▩_Bulkhead</b>\n       <b>▣_Gimbal</b>\n       <b>◍_Cannon</b>\n       <b>◌_Sensor</b>\n       <b>◉_Thruster</b>\n       <b>◎_Booster</b>\n       <b>help</b>\n       <b>back</b>");
                 break;
-            case "Print()": 
-                Interactor.PrintMock();
+            case "▥_Processor": 
+                Interactor.AppendText("$ make <b>▥_Processor</b>\n$ ");
+                Interactor.SetInputPlaceholder("Processor");
+                break;
+            case "▩_Bulkhead": 
+                Interactor.AppendText("$ make <b>▩_Bulkhead</b>\n$ ");
+                Interactor.SetInputPlaceholder("Bulkhead");
+                break;
+            case "▣_Gimbal": 
+                Interactor.AppendText("$ make <b>▣_Gimbal</b>\n$ ");
+                Interactor.SetInputPlaceholder("Gimbal");
+                break;
+            case "◍_Cannon": 
+                Interactor.AppendText("$ make <b>◍_Cannon</b>\n$ ");
+                Interactor.SetInputPlaceholder("Cannon");
+                break;
+            case "◌_Sensor": 
+                Interactor.AppendText("$ make <b>◌_Sensor</b>\n$ ");
+                Interactor.SetInputPlaceholder("Sensor");
+                break;
+            case "◉_Thruster": 
+                Interactor.AppendText("$ make <b>◉_Thruster</b>\n$ ");
+                Interactor.SetInputPlaceholder("Thruster");
+                break;
+            case "◎_Booster": 
+                Interactor.AppendText("$ make <b>◎_Booster</b>\n$ ");
+                Interactor.SetInputPlaceholder("Booster");
                 break;
             case "Fire":
                  
@@ -260,6 +285,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Delete": 
                 OverlayInteractor.gameObject.SetActive(false);
                 // Ship.Remove(component);
+                Destroy(GameObject.Find(Interactor.component_name));
                 Interactor.ClearText();
                 Interactor.SetCommand("rm");
                 // Interactor.AppendText("$ rm <b>" + component + "</b>");
