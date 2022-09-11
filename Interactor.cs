@@ -162,7 +162,8 @@ public class Interactor : MonoBehaviour
     }
     void SubtitlesAtTime(string text, float timer, float time) {
         if (timer > time && timer < time + (Time.deltaTime * 2f)) {
-            GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
+            // GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
+            RenderText(text);
         }
     }
     void FixedUpdate()
@@ -174,6 +175,7 @@ public class Interactor : MonoBehaviour
                 GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
             }
             if (timer > 3f && timer < 3f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            
             SubtitlesAtTime("Welcome to the command tutorial!", timer, 1f);
             SubtitlesAtTime("Today you will learn ship control.", timer, 3.5f);
             PlayAtTime(TutorialCursor, timer, 8f);

@@ -17,7 +17,7 @@ public class ClickableTextInteractor : MonoBehaviour
         initialized_text = text;
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-25f + (pos - (text.Length-1)/2f) * 25f, -30f + line * -50f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-33f + (pos - (text.Length-1)/2f) * 25f, -30f + line * -50f);
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 25f, 50f);
 
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
@@ -27,6 +27,8 @@ public class ClickableTextInteractor : MonoBehaviour
             case "final":
             case "class":
             case "static":
+            case "abstract":
+            case "virtual":
             case "new":
             case "delete":
             case "void":
@@ -43,6 +45,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Object":
             case "Vector":
             case "Shell":
+            case "Torpedo":
             case "Ray":
             case "Heap":
             // case "Processor":
@@ -68,9 +71,12 @@ public class ClickableTextInteractor : MonoBehaviour
                 return;
             }
         }
+        else if (initialized_text.StartsWith("<") && initialized_text.EndsWith(">")) {
+            initialized_text = initialized_text.Split('>')[1].Split('<')[0];
+        }
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>about</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>cp</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>about</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -99,8 +105,7 @@ public class ClickableTextInteractor : MonoBehaviour
         string output = "";
         var components = Interactor.GetComponents();
         switch (initialized_text) {
-            case "<b>help</b>": 
-            case "<a>help</a>": 
+            case "help": 
                 switch (Interactor.GetCommand()) {
                     case "git":
                         Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n↯ git versions files;\n  <a>https://git-scm.com/</a>\n$");
@@ -111,17 +116,19 @@ public class ClickableTextInteractor : MonoBehaviour
                     case "make":
                         Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n  make builds files;\n  <a>https://en.wikipedia.org/wiki/Make_(software)</a>\n$");
                     break;
+                    case "cp":
+                        Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n  cp copies files;\n  <a>https://en.wikipedia.org/wiki/Cp_(Unix)</a>\n$");
+                    break;
                     case "rm":
                         Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n  rm deletes files;\n  <a>https://en.wikipedia.org/wiki/Rm_(Unix)</a>\n$");
                     break;
                 }
             break;
             case "git": 
-            case "<b>git</b>": 
                 Interactor.SetCommand("git");
                 Interactor.AppendText("$ git <b>status</b>\n      <b>add</b>\n      <b>commit</b>\n      <b>pull</b>\n      <b>push</b>\n      <b>help</b>\n      <b>back</b>");
             break;
-            case "<i>status</i>": 
+            case "status": 
                 Interactor.SetCommand("clone");
                 Interactor.AppendText("$ git clone <i>bitnaughts.db</i>\n            <i>bitnaughts.components</i>\n            <i>bitnaughts.ui.ux</i>\n            <i>bitnaughts.assets</i>\n            <i>bitnaughts.github.io</i>\n            <i>bitnaughts.interpreter</i>");
             break;
@@ -149,37 +156,45 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.SetCommand("bitnaughts.interpreter");
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
-            case "<b>about</b>": 
+            case "about": 
                 Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n$");
-            break;
-            case "<b>tutorial</b>": 
+                break;
+            case "tutorial": 
                 Interactor.AppendText("$ <b>tutorial</b>\n$ ");
                 Interactor.StartTutorial();
-        // timer += Time.deltaTime;
+                break;
             break;
-            case "<i>pull</i>": 
+            case "pull<": 
                 Interactor.SetCommand("pull");
                 Interactor.AppendText("$ git pull\n...\n$");
-            break;
-            case "<i>add</i>": 
+                break;
+            case "add": 
                 Interactor.SetCommand("add");
                 output = "$ git add <a>" + components[0] + "</a>";
                 for (int i = 1; i < components.Length; i++) {
                     output += "\n          <a>" + components[i] + "</a>";
                 } 
                 Interactor.AppendText(output);
-            break;
-            case "<i>commit</i>": 
+                break;
+            case "commit": 
                 Interactor.SetCommand("commit");
                 Interactor.AppendText("$ git commit");
                 Interactor.SetInputPlaceholder("+ Commit Msg");
-            break;
-            case "<i>push</i>": 
+                break;
+            case "push": 
                 Interactor.SetCommand("push");
                 Interactor.AppendText("$ git push\n$");
-            break;
+                break;
+            case "cp":
+                Interactor.SetCommand("cp");
+                output = "$ cp <b>" + components[0] + "</b>";
+                for (int i = 1; i < components.Length; i++) {
+                    output += "\n     <b>" + components[i] + "</b>";
+                } 
+                output += "\n     <b>help</b>\n     <b>back</b>";
+                Interactor.AppendText(output);
+                break;
             case "rm":
-            case "<b>rm</b>":
                 Interactor.SetCommand("rm");
                 output = "$ rm <b>" + components[0] + "</b>";
                 for (int i = 1; i < components.Length; i++) {
@@ -187,9 +202,8 @@ public class ClickableTextInteractor : MonoBehaviour
                 } 
                 output += "\n     <b>help</b>\n     <b>back</b>";
                 Interactor.AppendText(output);
-            break;
+                break;
             case "nano":
-            case "<b>nano</b>":
                 Interactor.SetCommand("nano");
                 output = "$ nano <b>" + components[0] + "</b>";
                 for (int i = 1; i < components.Length; i++) {
@@ -198,55 +212,58 @@ public class ClickableTextInteractor : MonoBehaviour
                 output += "\n       <b>help</b>\n       <b>back</b>";
                 Interactor.AppendText(output);
                 Interactor.SetInputPlaceholder("+ File");
-            break;
+                break;
             case "make": 
-            case "<b>make</b>": 
                 Interactor.SetCommand("make");
                 Interactor.AppendText("$ make <b>▥_Processor</b>\n       <b>▩_Bulkhead</b>\n       <b>▣_Gimbal</b>\n       <b>◍_Cannon</b>\n       <b>◌_Sensor</b>\n       <b>◉_Thruster</b>\n       <b>◎_Booster</b>\n       <b>help</b>\n       <b>back</b>");
-            break;
+                break;
             case "Print()": 
                 Interactor.PrintMock();
-            break;
+                break;
             case "Fire":
                  
                 // Interactor.PrintMock();
-            break;
+                break;
             case "Component": 
-                Interactor.RenderText("abstract class Component : Object {\n  virtual Vector pos;\n  virtual Vector siz;\n  virtual double rot;\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("abstract class Component : Object {\n  virtual Vector pos;\n  virtual Vector siz;\n  virtual double rot;\n}\n\n<b>Exit</b>");
+                break;
             case "Object": 
-                Interactor.RenderText("abstract class Object {\n  protected Object clone() { ... }\n  protected void finalize() { ... }\n  public class getClass() { ... }\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("abstract class Object {\n  protected Object clone () { ... }\n  protected void finalize () { ... }\n  public class getClass () { ... }\n}\n\n<b>Exit</b>");
+                break;
             case "Nozzle": 
-                Interactor.RenderText("final class Nozzle : Component {\n  void GoTo (Vector position);\n  void Place (string type);\n  void Resize (Vector size);\n  void Rotate (double rotation);\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("final class Nozzle : Component {\n  void GoTo (Vector position);\n  void Place (string type);\n  void Resize (Vector size);\n  void Rotate (double rotation);\n}\n\n<b>Exit</b>");
+                break;
             case "Heap": 
-                Interactor.RenderText("final class Heap : Object {\n\n  /* New allocates objects */\n  void New (Object obj);\n\n  /* Delete deallocates objects */\n  void Delete (Object obj);\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("final class Heap : Object {\n\n  /* New allocates objects */\n  void New (Object obj);\n\n  /* Delete deallocates objects */\n  void Delete (Object obj);\n}\n\n<b>Exit</b>");
+                break;
             case "Shell": 
-                Interactor.RenderText("final class Shell : Component {\n  void OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("final class Shell : Component {\n  void OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
+                break;
             case "Ray": 
-                Interactor.RenderText("final class Ray : Object {\n  double length;\n  public Ray (Vector dir) {\n    length = Cast (dir);\n  }\n\n  public double Length() {\n    return length;\n  }\n\n  public double Cast (Vector dir) { ... }\n}\n\n<a>Exit</a>");
-            break;
+                Interactor.RenderText("final class Ray : Object {\n  double length;\n  public Ray (Vector dir) {\n    length = Cast (dir);\n  }\n\n  public double Length() {\n    return length;\n  }\n\n  public double Cast (Vector dir) { ... }\n}\n\n<b>Exit</b>");
+                break;
             case "Torpedo":
-                Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<a>Exit</a>");
-            break;
-            case "<b>clear</b>": 
+                Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
+                break;
+            case "clear": 
                 Interactor.ClearHistory();
-            break;
-            case "<b>back</b>": 
-            case "<a>back</a>": 
+                break;
+            case "back": 
                 Interactor.RenderText("$");
                 Interactor.SetCommand("$");
                 Interactor.AppendText("$");// <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <a>help</a>");
-            break;
-            case "<b>Exit</b>": 
+                break;
+            case "Exit": 
                 Interactor.ClearText();
                 OverlayInteractor.gameObject.SetActive(false);
-            break;
-
-
+                break;
+            case "Delete": 
+                OverlayInteractor.gameObject.SetActive(false);
+                // Ship.Remove(component);
+                Interactor.ClearText();
+                Interactor.SetCommand("rm");
+                // Interactor.AppendText("$ rm <b>" + component + "</b>");
+                break;
         }
     }
 
