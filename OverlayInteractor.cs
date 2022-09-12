@@ -99,7 +99,9 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnDelete() {
         if (last_position.x == 999) {
-            DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+            this.gameObject.SetActive(false);
+            Interactor.CancelTutorial();
+            // DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
         }
         else { 
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);

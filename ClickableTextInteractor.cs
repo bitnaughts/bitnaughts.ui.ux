@@ -32,6 +32,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "new":
             case "delete":
             case "void":
+            case "int":
             case "double":
             case "public":
             case "protected":
@@ -62,6 +63,7 @@ public class ClickableTextInteractor : MonoBehaviour
         }
 
         this.transform.GetChild(0).GetComponent<Text>().text = initialized_text.Replace("_", " ");
+        this.name = "Clickable" + text;
     }
     public void OnClick() {
         if (initialized_text.Contains("<a>") && initialized_text.Contains("</a>")) {
@@ -245,10 +247,6 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>◎_Booster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Booster");
                 break;
-            case "Fire":
-                 
-                // Interactor.PrintMock();
-                break;
             case "Component": 
                 Interactor.RenderText("abstract class Component : Object {\n  virtual Vector pos;\n  virtual Vector siz;\n  virtual double rot;\n}\n\n<b>Exit</b>");
                 break;
@@ -269,6 +267,22 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "Torpedo":
                 Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
+                break;
+            case "Fire":
+                Interactor.FireTutorial();
+                Interactor.Action("Cannon", 1);
+                break;
+            case "Thrust":
+                Interactor.ThrustTutorial();
+                Interactor.Action("Thruster", 100);
+                break;
+            case "ThrustMid":
+                Interactor.ThrustTutorial();
+                Interactor.Action("Thruster", 50);
+                break;
+            case "ThrustOff":
+                Interactor.ThrustTutorial();
+                Interactor.Action("Thruster", 0);
                 break;
             case "clear": 
                 Interactor.ClearHistory();

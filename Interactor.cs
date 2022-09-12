@@ -13,7 +13,7 @@ Text height 50
 
 public class Interactor : MonoBehaviour
 {
-    public AudioClip TutorialIntro, TutorialMapInterface, TutorialMusic, TutorialComponents, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
+    public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialGood, TutorialGood2, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
 
     public GameObject Overlay;
     public GameObject Example;
@@ -150,11 +150,62 @@ public class Interactor : MonoBehaviour
         this.command = command;
     }
 
-    float timer = 0f;
-    bool tutorial = false;
+    float timer = 30f;
+    bool tutorialIntro = false, tutorialPan = false, tutorialFire = false, tutorialCancel = false, tutorialThrust;
+
     public void StartTutorial() {
-        tutorial = true;
-        timer = 0;
+        if (tutorialIntro == false) {
+            tutorialIntro = true;
+            tutorialPan = false;
+            tutorialFire = false;
+            tutorialCancel = false;
+            tutorialThrust = false;
+            timer = 0;
+        }
+    }
+    public void PanTutorial() {
+        if (tutorialIntro && !tutorialPan) {
+            tutorialIntro = false;
+            tutorialPan = true;
+            tutorialFire = false;
+            tutorialCancel = false;
+            tutorialThrust = false;
+            timer = 0;
+        }
+    }
+    public void FireTutorial() {
+        if (tutorialPan && !tutorialFire) {
+            tutorialIntro = false;
+            tutorialPan = false;
+            tutorialFire = true;
+            tutorialCancel = false;
+            tutorialThrust = false;
+            timer = 0;
+        }
+    }
+    public void CancelTutorial() {
+        if (tutorialFire && !tutorialCancel) {
+            tutorialIntro = false;
+            tutorialPan = false;
+            tutorialFire = false;
+            tutorialCancel = true;
+            tutorialThrust = false;
+            timer = 0;
+        }
+    }
+    public void ThrustTutorial() {
+        if (tutorialCancel && !tutorialThrust) {
+            tutorialIntro = false;
+            tutorialPan = false;
+            tutorialFire = false;
+            tutorialCancel = false;
+            tutorialThrust = true;
+            timer = 0;
+        }
+    }
+    public void Action(string name, int action) {
+        print ("Fire" + name + action);
+        GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
     void PlayAtTime(AudioClip clip, float timer, float time) {
         if (timer > time && timer < time + (Time.deltaTime * 2f)) {
@@ -171,94 +222,96 @@ public class Interactor : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (tutorial) {
+        if (tutorialIntro) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialIntro, timer, 1f);
-            if (timer > 1f && timer < 3f) { 
-                GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+            PlayAtTime(TutorialIntro, timer, 0.5f);
+            SubtitlesAtTime("$ <b>tutorial</b>", timer, 0f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!", timer, 0.5f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.", timer, 3f);
+            PlayAtTime(TutorialMapScreen, timer, 7f);
+            if (timer > 7f  && timer < 11f) { 
+                GameObject.Find("Overlay").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
-            if (timer > 3f && timer < 3f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
-            
-            SubtitlesAtTime("Welcome to the command tutorial!", timer, 1f);
-            SubtitlesAtTime("Today you will learn ship control.", timer, 3.5f);
-            PlayAtTime(TutorialCursor, timer, 8f);
-            SubtitlesAtTime("Aim the crosshair using the mouse", timer, 8f);
-            SubtitlesAtTime("When you're on target the crosshair", timer, 12f);
-            SubtitlesAtTime("alters shape to indicate a lock-on.", timer, 14f);
-            if (timer > 17f && timer < 17f + (Time.deltaTime * 2f)) { 
+            if (timer > 11f && timer < 11f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            SubtitlesAtTime("▦_Map_screen_shows_you:", timer, 7f);
+            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area", timer, 9f);
+            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units", timer, 11f);
+            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 12.5f);
+            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted_yellow", timer, 15f);
+            PlayAtTime(TutorialLookAround, timer, 21f);
+            SubtitlesAtTime("⁜_First_off,_try_looking_around:", timer, 21f);
+            SubtitlesAtTime("⁜_First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dogfighting!", timer, 23f);
+            if (timer > 21f) { 
+                GameObject.Find("Overlay").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            }
+        }
+        if (tutorialPan) {
+            timer += Time.deltaTime;
+            PlayAtTime(TutorialGood2, timer, 0.5f);
+            if (timer > 0f && timer < 0f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            PlayAtTime(TutorialCursor, timer, 2f);
+            SubtitlesAtTime("⁜_The_cursor_is_used_to\n  select_units_and_issue_orders.", timer, 2f);
+            PlayAtTime(TutorialRightWindow, timer, 7f);
+            if (timer > 7f && timer < 7f + (Time.deltaTime * 2f)) { 
                 for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
                     if (OverlayInteractor.OverlayDropdown.options[i].text == "Cannon") OverlayInteractor.OverlayDropdown.value = i; 
                 }
                 OverlayInteractor.gameObject.SetActive(true);
                 OverlayInteractor.OnDropdownChange(); 
             }
-            // PlayAtTime(TutorialMapInterface, timer, 12f);
-            PlayAtTime(TutorialRightWindow, timer, 18f);
-            SubtitlesAtTime("This window shows you that unit.", timer, 18f);
-            if (timer > 18f && timer < 20f) { 
+            if (timer > 7f && timer < 11f) { 
                 GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
             }
-            if (timer > 20f && timer < 20f + (Time.deltaTime * 2f)) { GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
-            PlayAtTime(TutorialLeftWindow, timer, 24f);
-            SubtitlesAtTime("Left is the unit window, now it", timer, 24f);
-            if (timer > 24f && timer < 26f) { 
+            PlayAtTime(TutorialLeftWindow, timer, 11f);
+            if (timer > 11f && timer < 15f) { 
                 GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
-            if (timer > 26f && timer < 26f + (Time.deltaTime * 2f)) { GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
-            SubtitlesAtTime("displays information about the class.", timer, 27f);
-            
-            PlayAtTime(TutorialSelect, timer, 32f);
-            SubtitlesAtTime("Press the use weapon control to fire!", timer, 32f);
-            // PlayAtTime(TutorialComponents, timer, 1);
-            // PlayAtTime(TutorialCursor, timer, _tutorial_cursor_time);
-            PlayAtTime(TutorialOutro, timer, 37f);
-            SubtitlesAtTime("Excellent work!", timer, 37f);
-            SubtitlesAtTime("you have now completed the tutorial.", timer, 38.5f);
-            SubtitlesAtTime("I hope you never have cause to use", timer, 41f);
-            SubtitlesAtTime("the knowledge you just acquired.", timer, 43f);
-            SubtitlesAtTime("That is all for today... Dismissed!", timer, 46f);
-            SubtitlesAtTime("", timer, 50f);
-            if (timer > 50) { 
-                tutorial = false;
+            if (timer > 15f && timer < 15f + (Time.deltaTime * 2f)) { GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+            PlayAtTime(TutorialSelect, timer, 18f);
+            if (timer > 18f) { 
+                GameObject.Find("ClickableFire").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
         }
-        // foreach (var button in ButtonsCache) {
-        //     if (button.activeSelf == true) {
-                
-        //     }
-        // }
-        // if ((int)time % 2 == 0) {
-        //     RenderText("$");
-        // }
-        // else {
-        //     RenderText("<a>$</a>");
-        // }
-        // switch ((int)(time*10f)) {
-        //     case 00: RenderText("$"); break;
-        //     case 05: RenderText("<a>$</a>"); break;
-        //     case 10: RenderText("$"); break;
-            // case 15: RenderText("<a>$</a>"); break;
-            // case 20: RenderText("$"); break;
-            // case 25: RenderText("<a>$</a>"); break;
-            // case 30: RenderText("$"); break;
-        // }
-            // case 01: RenderText("$ git"); break;
-            // case 04: RenderText("$ git clone"); break;
-            // case 07: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git"); break;
-            // case 10: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>"); break;
-            // case 12: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>"); break;
-            // case 14: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>"); break;
-            // case 16: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>"); break;
-            // case 18: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>\n  <i>Receiving</i> <i>objects</i>"); break;
-            // case 20: RenderText("$ git clone https://github.com/bitnaughts/bitnaughts.git\n  <i>Cloning</i> <i>into</i> <i>'bitnaughts'</i>\n  <i>remote:</i> <i>Enumerating</i> <i>objects</i>  \n  <i>remote:</i> <i>Counting</i> <i>objects</i>\n  <i>remote:</i> <i>Compressing</i> <i>objects</i>\n  <i>Receiving</i> <i>objects</i>\n  <i>Resolving</i> <i>deltas</i>"); break;
-            // case 30: RenderText("$"); break;
-            // case 55: RenderText("$ help"); break;
-            // case 60: RenderText("$ help\n☄ BitNaughts is an educational\n  programming video-game;"); break;
-            // case 80: RenderText("$"); break;
-            // <i>git</i>\n  <i>nano</i>\n  <i>help</i>
-        // }
+        if (tutorialFire) {
+            timer += Time.deltaTime;
+            PlayAtTime(TutorialGood, timer, 0.5f);
+            PlayAtTime(TutorialCancel, timer, 2f);
+            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_Cancel_button.", timer, 2f);
+            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_Cancel_button.\n  Do_this_now.", timer, 8f);
+            if (timer > 2f) { 
+                GameObject.Find("OverlayDelete").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+            }
+        }
+        if (tutorialCancel) {
+            timer += Time.deltaTime;
+            PlayAtTime(TutorialOther, timer, 0.5f);
+            SubtitlesAtTime("▢ Other_instruments_are_detailed\n  in_later_tutorials.", timer, 0.5f);
+            PlayAtTime(TutorialGetMoving, timer, 5f);
+            if (timer > 5f && timer < 5f + (Time.deltaTime * 2f)) { 
+                for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
+                    if (OverlayInteractor.OverlayDropdown.options[i].text == "Thruster") OverlayInteractor.OverlayDropdown.value = i; 
+                }
+                OverlayInteractor.gameObject.SetActive(true);
+                OverlayInteractor.OnDropdownChange(); 
+                GameObject.Find("OverlayDelete").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            }
+            if (timer > 5f) { 
+                GameObject.Find("ClickableThrust").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            }
+        }
+        if (tutorialThrust) {
+            timer += Time.deltaTime;
+            PlayAtTime(TutorialOutro, timer, 0.5f);
+            SubtitlesAtTime("☀ Excellent work!", timer, 0.5f);
+            SubtitlesAtTime("☀ Excellent work!\n  You have completed the tutorial.", timer, 1.5f);
+            SubtitlesAtTime("☔ I hope you never have cause\n  to use the knowledge\n  you just acquired.", timer, 5f);
+            SubtitlesAtTime("☂ That is all for today: dismissed!", timer, 10f);
+            SubtitlesAtTime("$", timer, 14f);
+            if (timer > 14) {
+                tutorialThrust = false;
+            }
+        }
     }
-
     void InitializeClickableText(string text, int line, int pos) {
         foreach (var button in ButtonsCache) {
             if (button.activeSelf == false) {
