@@ -13,8 +13,9 @@ Text height 50
 
 public class Interactor : MonoBehaviour
 {
-    public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialGood, TutorialGood2, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
-
+    public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
+    public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing;
+    public AudioClip Click, Click2;
     public GameObject Overlay;
     public GameObject Example;
     private string command = "";
@@ -104,8 +105,11 @@ public class Interactor : MonoBehaviour
     }
     public void SetInputPlaceholder(string placeholder) {
         InputField.interactable = true;
-        // InputFieldPlaceholder.text = placeholder;
-        InputField.text = placeholder;
+        InputFieldPlaceholder.text = placeholder;
+        InputField.text = "";//placeholder;
+    }
+    public string GetInput() {
+        return InputField.text;
     }
     public void OnInput() {
         //create new component...
@@ -207,8 +211,26 @@ public class Interactor : MonoBehaviour
         print ("Fire" + name + action);
         GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
-    void PlayAtTime(AudioClip clip, float timer, float time) {
-        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+    public void PlayCannon() {
+        PlayAtTime(CannonFire, 0f, 0f);
+    }
+    public void PlayThruster() {
+        PlayAtTime(ThrusterThrottle, 0f, 0f);
+    }
+    public void PlayRadar() {
+        PlayAtTime(SonarScan, 0f, 0f);
+    }
+    public void PlayProcessor() {
+        PlayAtTime(ProcessorPing, 0f, 0f);
+    }
+    public void PlayClick() {
+        PlayAtTime(Click, 0f, 0f);
+    }
+    public void PlayClick2() {
+        PlayAtTime(Click2, 0f, 0f);
+    }
+    public void PlayAtTime(AudioClip clip, float timer, float time) {
+        if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             GetComponent<AudioSource>().clip = clip;
             GetComponent<AudioSource>().volume = 1f;
             GetComponent<AudioSource>().Play();
@@ -233,14 +255,16 @@ public class Interactor : MonoBehaviour
                 GameObject.Find("Overlay").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
             if (timer > 11f && timer < 11f + (Time.deltaTime * 2f)) { GameObject.Find("Overlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
-            SubtitlesAtTime("▦_Map_screen_shows_you:", timer, 7f);
-            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area", timer, 9f);
-            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units", timer, 11f);
-            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 12.5f);
-            SubtitlesAtTime("▦_Map_screen_shows_you:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted_yellow", timer, 15f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:", timer, 7f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area", timer, 8.5f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units", timer, 11f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 12.5f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_high-lighted", timer, 15f);
             PlayAtTime(TutorialLookAround, timer, 21f);
-            SubtitlesAtTime("⁜_First_off,_try_looking_around:", timer, 21f);
-            SubtitlesAtTime("⁜_First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dogfighting!", timer, 23f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_high-lighted\n\n  First_off,_try_looking_around:", timer, 21f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_high-lighted\n\n  First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dog-fighting!", timer, 23f);
+            PlayAtTime(TutorialTry, timer, 38f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_high-lighted\n\n  First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dog-fighting!\n\n  Hint:_click,_drag,_or_zoom\n▦_Map_Screen_to_continue", timer, 28f);
             if (timer > 21f) { 
                 GameObject.Find("Overlay").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
@@ -260,8 +284,9 @@ public class Interactor : MonoBehaviour
                 OverlayInteractor.OnDropdownChange(); 
             }
             if (timer > 7f && timer < 11f) { 
-                GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+                GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
+            if (timer > 11f && timer < 11f + (Time.deltaTime * 2f)) { GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
             PlayAtTime(TutorialLeftWindow, timer, 11f);
             if (timer > 11f && timer < 15f) { 
                 GameObject.Find("InterpreterPanel").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
@@ -278,16 +303,26 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialCancel, timer, 2f);
             SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_Cancel_button.", timer, 2f);
             SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_Cancel_button.\n  Do_this_now.", timer, 8f);
+            PlayAtTime(TutorialTry, timer, 25f);
+            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_Cancel_button.\n  Do_this_now.\n\n  Hint: click the flashing X", timer, 15f);
             if (timer > 2f) { 
-                GameObject.Find("OverlayDelete").GetComponent<Image>().color = new Color(1f, 1f, 0, .35f + (timer * 2) % 1);
+                GameObject.Find("OverlayDelete").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
         }
         if (tutorialCancel) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialOther, timer, 0.5f);
-            SubtitlesAtTime("▢ Other_instruments_are_detailed\n  in_later_tutorials.", timer, 0.5f);
-            PlayAtTime(TutorialGetMoving, timer, 5f);
-            if (timer > 5f && timer < 5f + (Time.deltaTime * 2f)) { 
+            PlayAtTime(TutorialGood3, timer, 0.5f);
+            PlayAtTime(TutorialDogfight, timer, 2.5f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!", timer, 2.5f);
+            
+            PlayAtTime(TutorialOther, timer, 7f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.", timer, 7f);
+
+            PlayAtTime(TutorialGetMoving, timer, 12f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.\n\n  Now_it's_time_to_get\n  this_old_girl_moving!", timer, 12f);
+
+            PlayAtTime(TutorialThrottle, timer, 16f);
+            if (timer > 16f && timer < 16f + (Time.deltaTime * 2f)) { 
                 for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
                     if (OverlayInteractor.OverlayDropdown.options[i].text == "Thruster") OverlayInteractor.OverlayDropdown.value = i; 
                 }
@@ -295,18 +330,19 @@ public class Interactor : MonoBehaviour
                 OverlayInteractor.OnDropdownChange(); 
                 GameObject.Find("OverlayDelete").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             }
-            if (timer > 5f) { 
-                GameObject.Find("ClickableThrust").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            if (timer > 16f) { 
+                GameObject.Find("ClickableThrustOn").GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
             }
         }
         if (tutorialThrust) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialOutro, timer, 0.5f);
-            SubtitlesAtTime("☀ Excellent work!", timer, 0.5f);
-            SubtitlesAtTime("☀ Excellent work!\n  You have completed the tutorial.", timer, 1.5f);
-            SubtitlesAtTime("☔ I hope you never have cause\n  to use the knowledge\n  you just acquired.", timer, 5f);
-            SubtitlesAtTime("☂ That is all for today: dismissed!", timer, 10f);
-            SubtitlesAtTime("$", timer, 14f);
+            PlayAtTime(TutorialBetter, timer, 0.5f);
+            PlayAtTime(TutorialOutro, timer, 2.5f);
+            SubtitlesAtTime("☀_Excellent_work!", timer, 2.5f);
+            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.", timer, 3.5f);
+            SubtitlesAtTime("☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired.", timer, 7f);
+            SubtitlesAtTime("☂_That_is_all_for_today:_dismissed!", timer, 12f);
+            SubtitlesAtTime("$ tutorial\n$", timer, 16f);
             if (timer > 14) {
                 tutorialThrust = false;
             }

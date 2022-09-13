@@ -270,15 +270,25 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "Fire":
                 Interactor.FireTutorial();
-                Interactor.Action("Cannon", 1);
+                Interactor.Action(Interactor.GetInput(), 1);
+                Interactor.PlayCannon();
                 break;
             case "Thrust":
                 Interactor.ThrustTutorial();
-                Interactor.Action("Thruster", 100);
+                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.PlayThruster();
+                // Interactor.Action("Thruster", 100);
                 break;
-            case "ThrustMid":
+            case "ThrustOn":
                 Interactor.ThrustTutorial();
-                Interactor.Action("Thruster", 50);
+                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.PlayThruster();
+                break;
+            case "Scan":
+                Interactor.PlayRadar();
+                break;
+            case "Main":
+                Interactor.PlayProcessor();
                 break;
             case "ThrustOff":
                 Interactor.ThrustTutorial();

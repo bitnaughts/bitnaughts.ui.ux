@@ -88,10 +88,12 @@ public class OverlayInteractor : MonoBehaviour
     
     public void OnSubmit() {
         if (last_position.x == 999) {
+            Interactor.PlayClick();
             this.gameObject.SetActive(false);
             Interactor.ClearText();
         }
         else {
+            Interactor.PlayClick();
             Interactor.ClearText();
             OnDropdownChange();
 
@@ -99,11 +101,13 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnDelete() {
         if (last_position.x == 999) {
+            Interactor.PlayClick2();
             this.gameObject.SetActive(false);
             Interactor.CancelTutorial();
             // DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
         }
         else { 
+            Interactor.PlayClick2();
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);
