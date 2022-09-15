@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OverlayInteractor : MonoBehaviour
 {
@@ -88,26 +89,38 @@ public class OverlayInteractor : MonoBehaviour
     
     public void OnSubmit() {
         if (last_position.x == 999) {
-            Interactor.PlayClick();
+            Interactor.PlayClick2();
             this.gameObject.SetActive(false);
             Interactor.ClearText();
         }
         else {
-            Interactor.PlayClick();
+            Interactor.PlayClick2();
             Interactor.ClearText();
             OnDropdownChange();
 
         }
     }
+    public void OnExit() {
+        Application.Quit();
+        Interactor.PlayClick();
+    }
+    public void OnHelp() {
+        Interactor.PlayClick2();
+        Interactor.StartTutorial();
+    }
+    public void OnReset() {
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+    }
     public void OnDelete() {
         if (last_position.x == 999) {
-            Interactor.PlayClick2();
+            Interactor.PlayClick();
             this.gameObject.SetActive(false);
             Interactor.CancelTutorial();
+            Interactor.ClearText();
             // DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
         }
         else { 
-            Interactor.PlayClick2();
+            Interactor.PlayClick();
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);

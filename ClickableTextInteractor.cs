@@ -19,6 +19,7 @@ public class ClickableTextInteractor : MonoBehaviour
         // print (text + " " + line + " " + pos);
         this.GetComponent<RectTransform>().localPosition = new Vector2(-33f + (pos - (text.Length-1)/2f) * 25f, -30f + line * -50f);
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 25f, 50f);
+        this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
 
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
             initialized_text = Formatter.comment(initialized_text);
@@ -160,6 +161,7 @@ public class ClickableTextInteractor : MonoBehaviour
             // break;
             case "about": 
                 Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n$");
+                Interactor.PlayTheme();
                 break;
             case "tutorial": 
                 Interactor.AppendText("$ <b>tutorial</b>\n$ ");
@@ -274,24 +276,26 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.PlayCannon();
                 break;
             case "Thrust":
-                Interactor.ThrustTutorial();
                 Interactor.Action(Interactor.GetInput(), 100);
                 Interactor.PlayThruster();
                 // Interactor.Action("Thruster", 100);
                 break;
-            case "ThrustOn":
-                Interactor.ThrustTutorial();
-                Interactor.Action(Interactor.GetInput(), 100);
+            case "ThrustMax":
+                Interactor.FinishTutorial();
+                Interactor.Action(Interactor.GetInput(), 999);
                 Interactor.PlayThruster();
                 break;
             case "Scan":
                 Interactor.PlayRadar();
                 break;
+            case "Rotate":
+                Interactor.PlayGimbal();
+                Interactor.Action(Interactor.GetInput(), 15);
+                break;
             case "Main":
                 Interactor.PlayProcessor();
                 break;
-            case "ThrustOff":
-                Interactor.ThrustTutorial();
+            case "ThrustMin":
                 Interactor.Action("Thruster", 0);
                 break;
             case "clear": 
