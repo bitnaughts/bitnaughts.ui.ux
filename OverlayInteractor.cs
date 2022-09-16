@@ -92,6 +92,7 @@ public class OverlayInteractor : MonoBehaviour
             Interactor.PlayClick2();
             this.gameObject.SetActive(false);
             Interactor.ClearText();
+            Interactor.CompleteTutorial();
         }
         else {
             Interactor.PlayClick2();
@@ -101,8 +102,8 @@ public class OverlayInteractor : MonoBehaviour
         }
     }
     public void OnExit() {
-        Application.Quit();
         Interactor.PlayClick();
+        Application.Quit();
     }
     public void OnHelp() {
         Interactor.PlayClick2();

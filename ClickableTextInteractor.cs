@@ -280,7 +280,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.PlayThruster();
                 // Interactor.Action("Thruster", 100);
                 break;
-            case "ThrustMax":
+            case "ThrottleMax":
                 Interactor.FinishTutorial();
                 Interactor.Action(Interactor.GetInput(), 999);
                 Interactor.PlayThruster();
@@ -295,8 +295,8 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Main":
                 Interactor.PlayProcessor();
                 break;
-            case "ThrustMin":
-                Interactor.Action("Thruster", 0);
+            case "ThrottleMin":
+                Interactor.Action(Interactor.GetInput(), 0);
                 break;
             case "clear": 
                 Interactor.ClearHistory();

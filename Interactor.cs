@@ -31,6 +31,8 @@ public class Interactor : MonoBehaviour
     public InputField InputField;
     public Text InputFieldPlaceholder;
 
+    public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -153,9 +155,11 @@ public class Interactor : MonoBehaviour
         this.command = command;
     }
 
-    float timer = 30f;
-    bool tutorialIntro = false, tutorialPan = false, tutorialTarget = false, tutorialFire = false, tutorialCancel = false, tutorialThrust = false, tutorialFinish = false;
-
+    float timer = 0f;
+    bool tutorialIntro = false, tutorialPan = false, tutorialTarget = false, tutorialFire = false, tutorialCancel = false, tutorialThrust = false, tutorialFinish = false, tutorialComplete = false;
+    public bool TutorialRunning() {
+        return tutorialIntro || tutorialPan || tutorialTarget || tutorialFire || tutorialCancel || tutorialThrust || tutorialFinish;
+    }
     public void StartTutorial() {
         if (tutorialIntro == false) {
             tutorialIntro = true;
@@ -169,7 +173,7 @@ public class Interactor : MonoBehaviour
         }
     }
     public void PanTutorial() {
-        if (tutorialIntro && !tutorialPan && timer > 1f) {
+        if (tutorialIntro && !tutorialPan && timer > 0.1f) {
             tutorialIntro = false;
             tutorialPan = true;
             tutorialTarget = false;
@@ -240,6 +244,19 @@ public class Interactor : MonoBehaviour
             timer = 0;
         }
     }
+    public void CompleteTutorial() {
+        if (tutorialFinish) {
+            tutorialComplete = true;
+            tutorialIntro = false;
+            tutorialPan = false;
+            tutorialTarget = false;
+            tutorialFire = false;
+            tutorialCancel = false;
+            tutorialThrust = false;
+            tutorialFinish = false;
+            timer = 0;
+        }
+    }
     public void Action(string name, int action) {
         print ("Fire" + name + action);
         GameObject.Find(name).GetComponent<ComponentController>().Action(action);
@@ -285,7 +302,33 @@ public class Interactor : MonoBehaviour
     public double GetClickDuration() {
         return click_duration;
     }
+    float global_timer = 0, animation_timer = 0;
+    string FloatToTime(float time) {
+        var pt = ((int)((time*100) % 60)).ToString("00");
+        var ss = ((int)(time % 60)).ToString("00");
+        var mm = (Mathf.Floor(time / 60) % 60).ToString("00");
+        return mm + ":" + ss + "." + pt;
+    }
     void Update () {
+        animation_timer += Time.deltaTime;
+        if (TutorialRunning()) {
+            SplitTimer.text = FloatToTime(timer);
+            SplitTimerShadow.text = FloatToTime(timer);
+        }
+        else {
+            SplitTimer.text = "";
+            SplitTimerShadow.text = "";
+        }
+        if (!tutorialComplete) {
+            global_timer += Time.deltaTime;
+            Timer.text = FloatToTime(global_timer);
+            TimerShadow.text = FloatToTime(global_timer);
+        }
+        else {
+            Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
+            SplitTimer.text = "Tutorial";
+            SplitTimerShadow.text = "Tutorial";
+        }
         if (Input.GetMouseButton(0)) {
             click_duration += Time.deltaTime;
         }
@@ -326,47 +369,55 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialIntro, timer, 0.5f);
             SubtitlesAtTime("$ <b>tutorial</b>", timer, 0f);
             SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!", timer, 0.5f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.", timer, 3f);
-            PlayAtTime(TutorialMapScreen, timer, 7f);
-            Flash ("MapScreenOverlay", 7f, 41f);
-            Flash ("MapScreenOverlayBit", 7f, 41f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:", timer, 7f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area", timer, 8.5f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units", timer, 11f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 12.5f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted", timer, 15f);
-            PlayAtTime(TutorialLookAround, timer, 21f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted\n\n  First_off,_try_looking_around:", timer, 21f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted\n\n  First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dog-fighting!", timer, 23f);
-            PlayAtTime(TutorialTry, timer, 31f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control.\n\n▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Selected_unit_highlighted\n\n  First_off,_try_looking_around:\n  360°_awareness_is_needed\n  for_dog-fighting!\n\n  Hint:_click_&_drag_the\n▦_Map_Screen", timer, 31f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control", timer, 3f);
+            PlayAtTime(TutorialLookAround, timer, 7f);
+            Flash ("MapScreenOverlay", 7f, 30f);
+            Flash ("MapScreenOverlayBit", 7f, 30f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around", timer, 7f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around\n  360°_awareness_is_needed_for\n  dog_fighting!", timer, 9f);
+            PlayAtTime(TutorialTry, timer, 15f);
+            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around\n  360°_awareness_is_needed_for\n  dog_fighting!\n\n  Hint:_click_&_drag_the\n▦_Map_Screen", timer, 15f);
         }
         if (tutorialPan) {
             timer += Time.deltaTime;
             ResetFlash("MapScreenOverlay", 0);
             ResetFlash("MapScreenOverlayBit", 0);
-            PlayAtTime(TutorialGood2, timer, 0.5f);
-            PlayAtTime(TutorialTargetWindow, timer, 1.5f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window", timer, 1.5f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window:_appears_when\n  looking_at_a_unit.", timer, 6f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window:_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.", timer, 11);
-            PlayAtTime(TutorialTargetWindowHelp, timer, 15f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window:_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.", timer, 15f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window:_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.", timer, 20f);
-            SpriteFlash ("Cannon", 6f, 41f);
-            PlayAtTime(TutorialTry, timer, 31f);
-            SubtitlesAtTime("  First_off,_let's_introduce_the\n⁜_Target_Window:_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.\n\n  Hint:_Click_the_Cannon!", timer, 31f);
+            PlayAtTime(TutorialGood3, timer, 0.5f);
+            PlayAtTime(TutorialMapScreen, timer, 1.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows:", timer, 1.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area", timer, 3.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units", timer, 5f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 7f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow", timer, 9f);
+            PlayAtTime(TutorialTargetWindowHelp, timer, 14f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target", timer, 14f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control", timer, 15.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.", timer, 19f);
+            SpriteFlash ("Cannon", 9f, 41f);
+            PlayAtTime(TutorialTry, timer, 25f);
+            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.\n\n  Hint:_click_\"Cannon\"!", timer, 25f);
         }
         if (tutorialTarget) {
             timer += Time.deltaTime;
             ResetSpriteFlash("Cannon", 0f);
+
+            // PlayAtTime(TutorialTargetWindow, timer, 12f);
+            // SubtitlesAtTime("First_off,_let's_introduce_the\n⁜_Target_Window", timer, 12f);
+            // SubtitlesAtTime("⁜_Target_Window_appears_when\n  looking_at_a_unit.", timer, 14f);
+            // SubtitlesAtTime("⁜_Target_Window_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.", timer, 16f);
+
             PlayAtTime(TutorialTargetWindowSelected, timer, 0.5f);
+            Flash("OverlayBorder", 0.5f, 8f);
+
+
+
             PlayAtTime(TutorialLeftWindow, timer, 8f);
             Flash ("InterpreterPanel", 8f, 15f);
             Flash ("UnitScreenBit", 8f, 15f);
             PlayAtTime(TutorialSelect, timer, 15f);
+            Flash("Clickable/*_\"Use_weapon\"_control_*/", 15f, 16f);
             PlayAtTime(TutorialTry, timer, 31f);
-            Flash ("ClickableFire", 15f, 41f);
+            Flash ("ClickableFire", 16f, 41f);
         }
         if (tutorialFire) {
             timer += Time.deltaTime;
@@ -375,29 +426,26 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.", timer, 2f);
             SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.\n\n  Do_this_now.", timer, 8f);
             PlayAtTime(TutorialTry, timer, 15f);
-            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.\n\n  Do_this_now.\n  Hint: click the flashing X", timer, 15f);
+            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.\n\n  Do_this_now.\n\n  Hint: click \"☒\"!", timer, 15f);
             Flash ("OverlayDelete", 2f, 41f);
         }
         if (tutorialCancel) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialGood3, timer, 0.5f);
-            PlayAtTime(TutorialDogfight, timer, 2.5f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!", timer, 2.5f);
-            
-            PlayAtTime(TutorialOther, timer, 7f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.", timer, 7f);
-
-            PlayAtTime(TutorialGetMoving, timer, 12f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.\n\n  Now_it's_time_to_get\n  this_old_girl_moving!", timer, 12f);
-            SpriteFlash ("Thruster", 12f, 41f);
-            PlayAtTime(TutorialTry, timer, 18f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog-fight!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.\n\n  Now_it's_time_to_get\n  this_old_girl_moving!\n\n  Hint:_Click_the_Thruster!", timer, 18f);
+            PlayAtTime(TutorialDogfight, timer, 0.5f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!", timer, 0.5f);
+            PlayAtTime(TutorialGetMoving, timer, 5f);
+            SpriteFlash ("Thruster", 5f, 41f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!", timer, 5f);
+            PlayAtTime(TutorialOther, timer, 10f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.", timer, 10f);
+            PlayAtTime(TutorialTry, timer, 15f);
+            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.\n\n  Hint:_click_\"Thruster\"!", timer, 15f);
         }
         if (tutorialThrust) {
             timer += Time.deltaTime;
             ResetSpriteFlash ("Thruster", 0f);
             PlayAtTime(TutorialGood2, timer, 0.5f);
-            Flash("ClickableThrustMax", 1.5f, 41f);
+            Flash("ClickableThrottleMax", 1.5f, 41f);
             PlayAtTime(TutorialThrottle, timer, 1.5f);
             PlayAtTime(TutorialTry, timer, 8f);
         }
@@ -408,10 +456,14 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("☀_Excellent_work!", timer, 2.5f);
             SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.", timer, 3.5f);
             SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired.", timer, 7f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today:\n  Dismissed!", timer, 12f);
-            SubtitlesAtTime("$ tutorial\n$", timer, 16f);
-            if (timer > 17) {
+            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!", timer, 12f);
+            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!\n  Dismissed!", timer, 13.5f);
+            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!\n  Dismissed!\n\n  Hint:_click_\"☑\"!", timer, 15f);
+            Flash ("OverlayOk", 3.5f, 20f);
+            SubtitlesAtTime("$ tutorial\n$", timer, 21f);
+            if (timer > 21) {
                 tutorialFinish = false;
+                tutorialComplete = true;
             }
         }
     }
