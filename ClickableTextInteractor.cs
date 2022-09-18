@@ -275,7 +275,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Fire":
             case "/*_Use_weapon_control_*/":
                 Interactor.FireTutorial();
-                Interactor.Action(Interactor.GetInput(), 1);
+                Interactor.Action(Interactor.GetInput(), -1);
                 Interactor.PlayCannon();
                 break;
             case "Thrust":
@@ -286,7 +286,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "ThrottleMax":
             case "/*_Throttle_control_(max)_*/":
                 Interactor.FinishTutorial();
-                Interactor.Action(Interactor.GetInput(), 999);
+                Interactor.Action(Interactor.GetInput(), 100);
                 Interactor.PlayThruster();
                 break;
             case "Scan":
@@ -294,7 +294,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "Rotate":
                 Interactor.PlayGimbal();
-                Interactor.Action(Interactor.GetInput(), 15);
+                Interactor.Action(Interactor.GetInput(), 30);
                 break;
             case "Main":
             case "/*_Main_method_*/":
