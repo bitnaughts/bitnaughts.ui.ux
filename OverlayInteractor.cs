@@ -88,11 +88,12 @@ public class OverlayInteractor : MonoBehaviour
     }
     
     public void OnSubmit() {
+        Interactor.CompleteTutorial();
+        Interactor.CancelTutorial();
         if (last_position.x == 999) {
             Interactor.PlayClick2();
             this.gameObject.SetActive(false);
             Interactor.ClearText();
-            Interactor.CompleteTutorial();
         }
         else {
             Interactor.PlayClick2();
@@ -113,6 +114,7 @@ public class OverlayInteractor : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
     public void OnDelete() {
+        Interactor.CompleteTutorial();
         if (last_position.x == 999) {
             Interactor.PlayClick();
             this.gameObject.SetActive(false);
@@ -148,8 +150,7 @@ public class OverlayInteractor : MonoBehaviour
         OverlayMoveDown.gameObject.SetActive(true);
         OverlayMoveRotateCW.gameObject.SetActive(true);
         OverlayMoveRotateCCW.gameObject.SetActive(true);
-    }
-    
+    } 
     public void OnMoveUp() {
         Ship.Move(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
     }

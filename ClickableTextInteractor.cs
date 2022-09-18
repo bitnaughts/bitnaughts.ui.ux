@@ -67,6 +67,7 @@ public class ClickableTextInteractor : MonoBehaviour
         this.name = "Clickable" + text;
     }
     public void OnClick() {
+        print ("CLICKED " + initialized_text);
         if (initialized_text.Contains("<a>") && initialized_text.Contains("</a>")) {
             if (initialized_text.Contains("https://")) { Application.OpenURL(initialized_text.Substring(3, initialized_text.Length - 7)); return; }
             if (initialized_text.Contains("$")) { 
@@ -76,7 +77,7 @@ public class ClickableTextInteractor : MonoBehaviour
         }
         else if (initialized_text.StartsWith("<") && initialized_text.EndsWith(">")) {
             initialized_text = initialized_text.Split('>')[1].Split('<')[0];
-        }
+        } 
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
             Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>cp</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>about</b>\n  <b>tutorial</b>\n  <b>back</b>");
@@ -107,6 +108,7 @@ public class ClickableTextInteractor : MonoBehaviour
         }
         string output = "";
         var components = Interactor.GetComponents();
+        print ("CLICKED " + initialized_text);
         switch (initialized_text) {
             case "help": 
                 switch (Interactor.GetCommand()) {
@@ -160,7 +162,7 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
             case "about": 
-                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  <a>https://github.com/bitnaughts/</a>\n$");
+                Interactor.AppendText("$ <b>about</b>\n☄_BitNaughts_is_an_educational\n  programming_video-game;\n  <a>https://github.com/bitnaughts</a>\n\n  Music:\n  Wintergatan:_Sommarfågel\n  <a>https://wintergatan.net</a>\n$");
                 Interactor.PlayTheme();
                 break;
             case "tutorial": 
@@ -259,7 +261,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.RenderText("final class Nozzle : Component {\n  void GoTo (Vector position);\n  void Place (string type);\n  void Resize (Vector size);\n  void Rotate (double rotation);\n}\n\n<b>Exit</b>");
                 break;
             case "Heap": 
-                Interactor.RenderText("final class Heap : Object {\n\n  /* New allocates objects */\n  void New (Object obj);\n\n  /* Delete deallocates objects */\n  void Delete (Object obj);\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Heap : Object {\n\n  /*_New_allocates_objects */\n  void New (Object obj);\n\n  /*_Delete_deallocates_objects */\n  void Delete (Object obj);\n}\n\n<b>Exit</b>");
                 break;
             case "Shell": 
                 Interactor.RenderText("final class Shell : Component {\n  void OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
@@ -271,6 +273,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
                 break;
             case "Fire":
+            case "/*_Use_weapon_control_*/":
                 Interactor.FireTutorial();
                 Interactor.Action(Interactor.GetInput(), 1);
                 Interactor.PlayCannon();
@@ -281,6 +284,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 // Interactor.Action("Thruster", 100);
                 break;
             case "ThrottleMax":
+            case "/*_Throttle_control_(max)_*/":
                 Interactor.FinishTutorial();
                 Interactor.Action(Interactor.GetInput(), 999);
                 Interactor.PlayThruster();
@@ -293,9 +297,11 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Action(Interactor.GetInput(), 15);
                 break;
             case "Main":
+            case "/*_Main_method_*/":
                 Interactor.PlayProcessor();
                 break;
             case "ThrottleMin":
+            case "/*_Throttle_control_(min)_*/":
                 Interactor.Action(Interactor.GetInput(), 0);
                 break;
             case "clear": 

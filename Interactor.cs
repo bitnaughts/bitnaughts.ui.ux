@@ -60,9 +60,6 @@ public class Interactor : MonoBehaviour
     public void PrintMock() {
         Example.SetActive(true);
     }
-    public void FireMock() {
-        // Example.GetComponent<StructureController>();
-    }
     public void RenderText(string text) {
         foreach (var button in ButtonsCache) {
             button.SetActive(false);
@@ -117,23 +114,10 @@ public class Interactor : MonoBehaviour
         InputField.interactable = false;
         switch (GetCommand()) {
             case "nano":
-                // GameObject object_reference = //Prefabs[GetActiveToggle()];
                 var component_gameObject = Instantiate(Overlay, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
-                //move this logic to structure controller, use IfKeyExists
-                // int component_count = 1;
-                // while (Ship.IsComponent(object_reference.name + component_count)) component_count++;
                 component_gameObject.name = InputField.text;//object_reference.name + component_count;
                 component_gameObject.GetComponent<SpriteRenderer>().size = new Vector2(2,2);//object_reference.GetComponent<ComponentController>().GetMinimumSize();
-                // if (focused_type == "Gimbal" && !GetActiveText().Contains(focused_type)) {
-                    // Transform gimbal_grid = Ship.transform.Find("Rotator").Find(focused).GetChild(0);
-                    // component_gameObject.transform.SetParent(gimbal_grid);
-                //     component_gameObject.transform.localPosition = new Vector2(pos.x - gimbal_grid.transform.position.x, pos.z  - gimbal_grid.transform.position.z);
-                // }
-                // else {
-                    component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
-                    // component_gameObject.transform.localPosition = new Vector2(pos.x, pos.z);
-                // }
-                // component_gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+                component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
                 Ship.Start();
                 OverlayInteractor.UpdateOptions();
                 OverlayInteractor.OnDropdownChange(); 
@@ -255,6 +239,7 @@ public class Interactor : MonoBehaviour
             tutorialThrust = false;
             tutorialFinish = false;
             timer = 0;
+            MapSubtitlesAtTime("", 0f);
         }
     }
     public void Action(string name, int action) {
@@ -262,40 +247,49 @@ public class Interactor : MonoBehaviour
         GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
     public void PlayTheme() {
-        PlayAtTime(ThemeSong, 0f, 0f);
+        Play(ThemeSong);
     }
     public void PlayGimbal() {
-        PlayAtTime(GimbalRotate, 0f, 0f);
+        Play(GimbalRotate);
     }
     public void PlayCannon() {
-        PlayAtTime(CannonFire, 0f, 0f);
+        Play(CannonFire);
     }
     public void PlayThruster() {
-        PlayAtTime(ThrusterThrottle, 0f, 0f);
+        Play(ThrusterThrottle);
     }
     public void PlayRadar() {
-        PlayAtTime(SonarScan, 0f, 0f);
+        Play(SonarScan);
     }
     public void PlayProcessor() {
-        PlayAtTime(ProcessorPing, 0f, 0f);
+        Play(ProcessorPing);
     }
     public void PlayClick() {
-        PlayAtTime(Click, 0f, 0f);
+        Play(Click);
     }
     public void PlayClick2() {
-        PlayAtTime(Click2, 0f, 0f);
+        Play(Click2);
     }
-    public void PlayAtTime(AudioClip clip, float timer, float time) {
+    public void PlayAtTime(AudioClip clip, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
-            GetComponent<AudioSource>().clip = clip;
-            GetComponent<AudioSource>().volume = 0.66f;
-            GetComponent<AudioSource>().Play();
+            Play(clip);
         }
     }
-    void SubtitlesAtTime(string text, float timer, float time) {
-        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+    public void Play(AudioClip clip) {
+        GetComponent<AudioSource>().clip = clip;
+        GetComponent<AudioSource>().volume = 1f;
+        GetComponent<AudioSource>().Play();
+    }
+    void SubtitlesAtTime(string text, float time) {
+        if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             // GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
             RenderText(text);
+        }
+    }
+    void MapSubtitlesAtTime(string text, float time) {
+        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+            GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
+            GameObject.Find("SubtitlesShadow").GetComponent<Text>().text = text + "\n";
         }
     }
     double click_duration = 0;
@@ -306,7 +300,7 @@ public class Interactor : MonoBehaviour
     string FloatToTime(float time) {
         var pt = ((int)((time*100) % 60)).ToString("00");
         var ss = ((int)(time % 60)).ToString("00");
-        var mm = (Mathf.Floor(time / 60) % 60).ToString("00");
+        var mm = (Mathf.Floor(time / 60) % 60);
         return mm + ":" + ss + "." + pt;
     }
     void Update () {
@@ -336,29 +330,23 @@ public class Interactor : MonoBehaviour
             click_duration = 0;
         }
     }
-    void SpriteFlash(string name, float start, float end) {
-        if (timer > start  && timer < end) { 
+    void SpriteFlash(string name, float start) {
+        if (timer > start ) { 
             GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
         }
-        else if (timer >= end && timer < end + (Time.deltaTime * 2f)) {
-            ResetSpriteFlash(name, end);
-        }
     }
-    void Flash(string name, float start, float end) {
-        if (timer > start  && timer < end) { 
+    void Flash(string name, float start) {
+        if (timer > start) { 
             GameObject.Find(name).GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
-        }
-        else if (timer >= end && timer < end + (Time.deltaTime * 2f)) {
-            ResetFlash(name, end);
         }
     }
     void ResetSpriteFlash(string name, float time) {
-        if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
+        if (timer > time) { 
             GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
     void ResetFlash(string name, float time) {
-        if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
+        if (timer > time) { 
             GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
@@ -366,104 +354,134 @@ public class Interactor : MonoBehaviour
     {
         if (tutorialIntro) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialIntro, timer, 0.5f);
-            SubtitlesAtTime("$ <b>tutorial</b>", timer, 0f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!", timer, 0.5f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control", timer, 3f);
-            PlayAtTime(TutorialLookAround, timer, 7f);
-            Flash ("MapScreenOverlay", 7f, 30f);
-            Flash ("MapScreenOverlayBit", 7f, 30f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around", timer, 7f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around\n  360°_awareness_is_needed_for\n  dog_fighting!", timer, 9f);
-            PlayAtTime(TutorialTry, timer, 15f);
-            SubtitlesAtTime("⍰_Welcome_to_the_command_tutorial!\n  Today_you_will_learn_ship_control\n\n  First_off,_try_looking_around\n  360°_awareness_is_needed_for\n  dog_fighting!\n\n  Hint:_click_&_drag_the\n▦_Map_Screen", timer, 15f);
+            PlayAtTime(TutorialIntro, 0f);
+            SubtitlesAtTime("  Welcome_to_the", 0f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 1f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 2.5f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 4.5f);
+            PlayAtTime(TutorialLookAround, 6f);
+            Flash ("OverlayPanUp", 6f);
+            Flash ("OverlayPanDown", 6f);
+            Flash ("OverlayPanLeft", 6f);
+            Flash ("OverlayPanRight", 6f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!", 6f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for", 8.5f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 10.5f);
+            PlayAtTime(TutorialTry, 20f);
+            PlayAtTime(TutorialLookAround, 30f);
+            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 10.5f);
         }
         if (tutorialPan) {
             timer += Time.deltaTime;
-            ResetFlash("MapScreenOverlay", 0);
-            ResetFlash("MapScreenOverlayBit", 0);
-            PlayAtTime(TutorialGood3, timer, 0.5f);
-            PlayAtTime(TutorialMapScreen, timer, 1.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows:", timer, 1.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area", timer, 3.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units", timer, 5f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units", timer, 7f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow", timer, 9f);
-            PlayAtTime(TutorialTargetWindowHelp, timer, 14f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target", timer, 14f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control", timer, 15.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.", timer, 19f);
-            SpriteFlash ("Cannon", 9f, 41f);
-            PlayAtTime(TutorialTry, timer, 25f);
-            SubtitlesAtTime("▦_Map_Screen_shows:\n-_Mission_area\n-_Friendly_units\n-_Detected_enemy_units\n-_Select_units_highlighted_yellow\n\n  When_the_reticle_is_over\n  the_target,_press_the_\n  \"use_weapon\"_control.\n\n  This_will_display_the\n⁜_Target Window,_have_a_go.\n\n  Hint:_click_\"Cannon\"!", timer, 25f);
+            MapSubtitlesAtTime("", 0f);
+            ResetFlash ("OverlayPanUp", 0f);
+            ResetFlash ("OverlayPanDown", 0f);
+            ResetFlash ("OverlayPanLeft", 0f);
+            ResetFlash ("OverlayPanRight", 0f);
+            Flash ("MapScreenOverlay", 1.5f);
+            Flash ("MapScreenOverlayBitBottomLeft", 1.5f);
+            Flash ("MapScreenOverlayBitRightTop", 1.5f);
+            Flash ("MapScreenOverlayBitRightBottom", 1.5f);
+            Flash ("MapScreenOverlayBitUpLeft", 1.5f);
+            Flash ("MapScreenOverlayBitUpRight", 1.5f);
+            Flash ("MapScreenOverlayBitDownLeft", 1.5f);
+            Flash ("MapScreenOverlayBitDownRight", 1.5f);
+            PlayAtTime(TutorialGood3, 0.5f);
+            PlayAtTime(TutorialMapScreen, 1.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows", 1.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n┗_Mission_area", 3.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┗_Friendly_units", 5f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┠_Friendly_units\n┗_Detected_enemy_units", 7f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!", 9f);
+            SpriteFlash ("Cannon", 9f);
+            ResetFlash("MapScreenOverlay", 9f);
+            ResetFlash ("MapScreenOverlayBitBottomLeft", 9f);
+            ResetFlash ("MapScreenOverlayBitRightTop", 9f);
+            ResetFlash ("MapScreenOverlayBitRightBottom", 9f);
+            ResetFlash ("MapScreenOverlayBitUpLeft", 9f);
+            ResetFlash ("MapScreenOverlayBitUpRight", 9f);
+            ResetFlash ("MapScreenOverlayBitDownLeft", 9f);
+            ResetFlash ("MapScreenOverlayBitDownRight", 9f);
+            PlayAtTime(TutorialTargetWindowHelp, 14f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press", 14f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"", 16.5f);
+            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"\n\n  This_will_display\n⁜_Target Window", 19f);
+            PlayAtTime(TutorialTry, 25f);
+            MapSubtitlesAtTime("Press\n◍ Cannon", 19f);
+            PlayAtTime(TutorialTargetWindowHelp, 29f);
         }
         if (tutorialTarget) {
             timer += Time.deltaTime;
             ResetSpriteFlash("Cannon", 0f);
-
-            // PlayAtTime(TutorialTargetWindow, timer, 12f);
-            // SubtitlesAtTime("First_off,_let's_introduce_the\n⁜_Target_Window", timer, 12f);
-            // SubtitlesAtTime("⁜_Target_Window_appears_when\n  looking_at_a_unit.", timer, 14f);
-            // SubtitlesAtTime("⁜_Target_Window_appears_when\n  looking_at_a_unit.\n  Have_a_go_at_this_now.", timer, 16f);
-
-            PlayAtTime(TutorialTargetWindowSelected, timer, 0.5f);
-            Flash("OverlayBorder", 0.5f, 8f);
-
-
-
-            PlayAtTime(TutorialLeftWindow, timer, 8f);
-            Flash ("InterpreterPanel", 8f, 15f);
-            Flash ("UnitScreenBit", 8f, 15f);
-            PlayAtTime(TutorialSelect, timer, 15f);
-            Flash("Clickable/*_\"Use_weapon\"_control_*/", 15f, 16f);
-            PlayAtTime(TutorialTry, timer, 31f);
-            Flash ("ClickableFire", 16f, 41f);
+            MapSubtitlesAtTime("", 0f);
+            PlayAtTime(TutorialTargetWindowSelected, 0.5f);
+            MapSubtitlesAtTime("⁜ Target Window displays", 1f);
+            MapSubtitlesAtTime("⁜ Target Window displays\nUnit name & class", 3.2f);
+            Flash("OverlayBorder", 1.2f);
+            PlayAtTime(TutorialLeftWindow, 8f);
+            ResetFlash("OverlayBorder", 8f);
+            Flash ("InterpreterPanel", 8f);
+            Flash ("UnitScreenBit", 8f);
+            MapSubtitlesAtTime("Left is\n⊡ Unit Window", 8f);
+            MapSubtitlesAtTime("Displays information\nabout the class", 11f);
+            ResetFlash ("InterpreterPanel", 15f);
+            ResetFlash ("UnitScreenBit", 15f);
+            PlayAtTime(TutorialSelect, 15f);
+            MapSubtitlesAtTime("Press Fire () or\n/* Use weapon control */", 15f);
+            Flash("Clickable/*_Use_weapon_control_*/", 15f);
+            Flash ("ClickableFire", 15f);
+            PlayAtTime(TutorialTry, 22f);
+            PlayAtTime(TutorialSelect, 26f);
         }
         if (tutorialFire) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialGood, timer, 0.5f);
-            PlayAtTime(TutorialCancel, timer, 2f);
-            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.", timer, 2f);
-            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.\n\n  Do_this_now.", timer, 8f);
-            PlayAtTime(TutorialTry, timer, 15f);
-            SubtitlesAtTime("X Clear_a_target_at_any_time\n  by_pressing_\"Cancel\"_button.\n\n  Do_this_now.\n\n  Hint: click \"☒\"!", timer, 15f);
-            Flash ("OverlayDelete", 2f, 41f);
+            PlayAtTime(TutorialGood, 0.5f);
+            MapSubtitlesAtTime("", 0f);
+            PlayAtTime(TutorialCancel, 2f);
+            MapSubtitlesAtTime("Press\n☒ Cancel", 2f);
+            PlayAtTime(TutorialTry, 15f);
+            PlayAtTime(TutorialCancel, 19f);
+            Flash ("OverlayDelete", 2f);
         }
         if (tutorialCancel) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialDogfight, timer, 0.5f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!", timer, 0.5f);
-            PlayAtTime(TutorialGetMoving, timer, 5f);
-            SpriteFlash ("Thruster", 5f, 41f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!", timer, 5f);
-            PlayAtTime(TutorialOther, timer, 10f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.", timer, 10f);
-            PlayAtTime(TutorialTry, timer, 15f);
-            SubtitlesAtTime("  Well_done!_It's_time_\n  to_learn_to_dog_fight!\n\n  Now_it's_time_to_get\n  this_old_girl_moving!\n\n  Other_instruments_are_detailed\n  in_later_tutorials.\n\n  Hint:_click_\"Thruster\"!", timer, 15f);
+            PlayAtTime(TutorialGetMoving, 0.1f);
+            SpriteFlash ("Thruster", 0.1f);
+            MapSubtitlesAtTime("", 0.1f);
+            SubtitlesAtTime("  Now_it's_time_for_you\n  to_get_this_old_girl_moving!", 0.5f);
+            Flash ("OverlayPanDown", 0.5f);
+            PlayAtTime(TutorialTry, 6f);
+            MapSubtitlesAtTime("Press\n◉ Thruster", 6f);
+            PlayAtTime(TutorialGetMoving, 12f);
         }
         if (tutorialThrust) {
             timer += Time.deltaTime;
+            MapSubtitlesAtTime("", 0f);
             ResetSpriteFlash ("Thruster", 0f);
-            PlayAtTime(TutorialGood2, timer, 0.5f);
-            Flash("ClickableThrottleMax", 1.5f, 41f);
-            PlayAtTime(TutorialThrottle, timer, 1.5f);
-            PlayAtTime(TutorialTry, timer, 8f);
+            ResetFlash ("OverlayPanDown", 0f);
+            PlayAtTime(TutorialGood2, 0.5f);
+            Flash("ClickableThrottleMax", 1.5f);
+            Flash("Clickable/*_Throttle_control_(max)_*/", 1.5f);
+            PlayAtTime(TutorialThrottle, 1.5f);
+            MapSubtitlesAtTime("Press ThrottleMax () or\n/* Throttle Control (max) */", 1.5f);
+            PlayAtTime(TutorialTry, 8f);
+            PlayAtTime(TutorialThrottle, 14f);
         }
         if (tutorialFinish) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialBetter, timer, 0.5f);
-            PlayAtTime(TutorialOutro, timer, 2.5f);
-            SubtitlesAtTime("☀_Excellent_work!", timer, 2.5f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.", timer, 3.5f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired.", timer, 7f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!", timer, 12f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!\n  Dismissed!", timer, 13.5f);
-            SubtitlesAtTime("☀_Excellent_work!\n  You_have_completed_the_tutorial.\n\n☔_I_hope_you_never_have_cause\n  to_use_the_knowledge\n  you_just_acquired\n\n☂_That_is_all_for_today!\n  Dismissed!\n\n  Hint:_click_\"☑\"!", timer, 15f);
-            Flash ("OverlayOk", 3.5f, 20f);
-            SubtitlesAtTime("$ tutorial\n$", timer, 21f);
+            MapSubtitlesAtTime("", 0f);
+            PlayAtTime(TutorialBetter, 0.1f);
+            PlayAtTime(TutorialOutro, 2.5f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial", 3.5f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired", 7f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!", 12f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!\n  Dismissed!", 13.5f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!\n  Dismissed!", 15f);
+            Flash ("OverlayOk", 3.5f);
+            MapSubtitlesAtTime("Press\n☑ Ok", 3.5f);
+            SubtitlesAtTime("$ tutorial\n$", 21f);
             if (timer > 21) {
-                tutorialFinish = false;
-                tutorialComplete = true;
+                CompleteTutorial();
             }
         }
     }
