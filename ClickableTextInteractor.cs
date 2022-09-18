@@ -278,7 +278,12 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Action(Interactor.GetInput(), -1);
                 Interactor.PlayCannon();
                 break;
-            case "Thrust":
+            case "Launch":
+            case "/*_Launch_torpedo_control_*/":
+                Interactor.Action(Interactor.GetInput(), -1);
+                Interactor.PlayTorpedo();
+                break;
+            case "Boost":
                 Interactor.Action(Interactor.GetInput(), 100);
                 Interactor.PlayThruster();
                 // Interactor.Action("Thruster", 100);
@@ -292,9 +297,19 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Scan":
                 Interactor.PlayRadar();
                 break;
+            case "RotateCW":
+            case "/*_Rotates_units_(CW)_*/":
+                Interactor.PlayGimbal();
+                Interactor.Action(Interactor.GetInput(), -15);
+                break;
+            case "RotateCCW":
+            case "/*_Rotates_units_(CCW)_*/":
+                Interactor.PlayGimbal();
+                Interactor.Action(Interactor.GetInput(), 15);
+                break;
             case "Rotate":
                 Interactor.PlayGimbal();
-                Interactor.Action(Interactor.GetInput(), 30);
+                Interactor.Action(Interactor.GetInput(), 1);
                 break;
             case "Main":
             case "/*_Main_method_*/":

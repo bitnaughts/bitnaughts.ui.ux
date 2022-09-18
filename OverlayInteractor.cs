@@ -51,79 +51,72 @@ public class OverlayInteractor : MonoBehaviour
         print (Ship.GetRotation(option)); if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 180f, Screen.width / 2), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 180f, Screen.height));
+        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 180f, (Screen.width / 2) - 146), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 180f, (Screen.height-112)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 60f);
     }
-    public void OnDropdownChange() {
-        // print (OverlayDropdown.options[OverlayDropdown.value].text);
+    public void OnDropdownChange(string text) {
+
         last_position = new Vector2 (999,999);
         Resize();
-
         OverlayOk.gameObject.SetActive(true);
-        OverlayDelete.gameObject.SetActive(true);
         OverlayMove.gameObject.SetActive(true);
+        OverlayDelete.gameObject.SetActive(true);
         OverlayResize.gameObject.SetActive(true);
-        
         OverlayMoveUp.gameObject.SetActive(false);
         OverlayMoveLeft.gameObject.SetActive(false);
-        OverlayMoveRight.gameObject.SetActive(false);
         OverlayMoveDown.gameObject.SetActive(false);
+        OverlayMoveRight.gameObject.SetActive(false);
         OverlayMoveRotateCW.gameObject.SetActive(false);
         OverlayMoveRotateCCW.gameObject.SetActive(false);
-
         OverlayResizeExpandUp.gameObject.SetActive(false);
         OverlayResizeShrinkUp.gameObject.SetActive(false);
         OverlayResizeExpandLeft.gameObject.SetActive(false);
         OverlayResizeShrinkLeft.gameObject.SetActive(false);
-        OverlayResizeExpandRight.gameObject.SetActive(false);
-        OverlayResizeShrinkRight.gameObject.SetActive(false);
         OverlayResizeExpandDown.gameObject.SetActive(false);
         OverlayResizeShrinkDown.gameObject.SetActive(false);
-        
-        // Interactor.AppendText("$ nano " + OverlayDropdown.options[OverlayDropdown.value].text + "\n$");
-        // Interactor.RenderText("class " + OverlayDropdown.options[OverlayDropdown.value].text + " : Component {\n void Start() {\n }\n}\n\n<i>Exit</i>");
-        Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
-        // Interactor.RenderText("public class " + OverlayDropdown.options[OverlayDropdown.value].text + " : Component {\n public void Start() {\n }\n}");
+        OverlayResizeExpandRight.gameObject.SetActive(false);
+        OverlayResizeShrinkRight.gameObject.SetActive(false);
+        Interactor.RenderComponent(text);
+    }
+    public void OnDropdownChange() {
+        OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
     }
     
     public void OnSubmit() {
+        Interactor.Sound("Click");
         Interactor.CompleteTutorial();
         Interactor.CancelTutorial();
         if (last_position.x == 999) {
-            Interactor.PlayClick2();
             this.gameObject.SetActive(false);
             Interactor.ClearText();
         }
         else {
-            Interactor.PlayClick2();
             Interactor.ClearText();
             OnDropdownChange();
-
         }
     }
     public void OnExit() {
-        Interactor.PlayClick();
+        Interactor.Sound("Back");
         Application.Quit();
     }
     public void OnHelp() {
-        Interactor.PlayClick2();
+        Interactor.Sound("Click");
         Interactor.StartTutorial();
     }
     public void OnReset() {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
     public void OnDelete() {
+        Interactor.Sound("Back");
         Interactor.CompleteTutorial();
         if (last_position.x == 999) {
-            Interactor.PlayClick();
             this.gameObject.SetActive(false);
             Interactor.CancelTutorial();
             Interactor.ClearText();
             // DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
         }
         else { 
-            Interactor.PlayClick();
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);

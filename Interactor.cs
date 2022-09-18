@@ -14,8 +14,9 @@ Text height 50
 public class Interactor : MonoBehaviour
 {
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
-    public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate;
+    public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
     public AudioClip ThemeSong, Click, Click2;
+    public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle;
     public GameObject Overlay;
     public GameObject Example;
     private string command = "";
@@ -33,14 +34,18 @@ public class Interactor : MonoBehaviour
 
     public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
 
+    GameObject camera;
+
     // Start is called before the first frame update
     void Start()
     {
+        camera = GameObject.Find("Main Camera");
         for (int i = 0; i < cache_size; i++) {
             ButtonsCache.Add(Instantiate(ClickableText, this.transform) as GameObject);
         } 
         OverlayInteractor = GameObject.Find("OverlayBorder").GetComponent<OverlayInteractor>();
         RenderText("$");
+        Sound("Start");
     }
 
     public void AppendText(string text) {
@@ -246,6 +251,16 @@ public class Interactor : MonoBehaviour
         print ("Fire" + name + action);
         GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
+    public void Sound(string clip) {
+        switch (clip) {
+            case "Back": Sound(SoundBack); break;
+            case "Click": Sound(SoundClick); break;
+            case "Error": Sound(SoundError); break;
+            case "OnMouse": Sound(SoundOnMouse); break;
+            case "Toggle": Sound(SoundToggle); break;
+        }
+    }
+
     public void PlayTheme() {
         Play(ThemeSong);
     }
@@ -254,6 +269,9 @@ public class Interactor : MonoBehaviour
     }
     public void PlayCannon() {
         Play(CannonFire);
+    }
+    public void PlayTorpedo() {
+        Play(TorpedoLaunch);
     }
     public void PlayThruster() {
         Play(ThrusterThrottle);
@@ -277,8 +295,13 @@ public class Interactor : MonoBehaviour
     }
     public void Play(AudioClip clip) {
         GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().volume = 1f;
+        GetComponent<AudioSource>().volume = .75f;
         GetComponent<AudioSource>().Play();
+    }
+    public void Sound(AudioClip clip) {
+        camera.GetComponent<AudioSource>().clip = clip;
+        camera.GetComponent<AudioSource>().volume = .66f;
+        camera.GetComponent<AudioSource>().Play();
     }
     void SubtitlesAtTime(string text, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
@@ -394,6 +417,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┠_Friendly_units\n┗_Detected_enemy_units", 7f);
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!", 9f);
             SpriteFlash ("Cannon", 9f);
+            Flash ("CameraToggle", 9f);
             ResetFlash("MapScreenOverlay", 9f);
             ResetFlash ("MapScreenOverlayBitBottomLeft", 9f);
             ResetFlash ("MapScreenOverlayBitRightTop", 9f);
@@ -413,6 +437,7 @@ public class Interactor : MonoBehaviour
         if (tutorialTarget) {
             timer += Time.deltaTime;
             ResetSpriteFlash("Cannon", 0f);
+            ResetFlash ("CameraToggle", 9f);
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialTargetWindowSelected, 0.5f);
             MapSubtitlesAtTime("⁜ Target Window displays", 1f);
