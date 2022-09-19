@@ -67,7 +67,6 @@ public class ClickableTextInteractor : MonoBehaviour
         this.name = "Clickable" + text;
     }
     public void OnClick() {
-        print ("CLICKED " + initialized_text);
         if (initialized_text.Contains("<a>") && initialized_text.Contains("</a>")) {
             if (initialized_text.Contains("https://")) { Application.OpenURL(initialized_text.Substring(3, initialized_text.Length - 7)); return; }
             if (initialized_text.Contains("$")) { 
@@ -108,7 +107,6 @@ public class ClickableTextInteractor : MonoBehaviour
         }
         string output = "";
         var components = Interactor.GetComponents();
-        print ("CLICKED " + initialized_text);
         switch (initialized_text) {
             case "help": 
                 switch (Interactor.GetCommand()) {

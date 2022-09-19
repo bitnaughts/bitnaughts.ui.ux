@@ -48,7 +48,8 @@ public class OverlayInteractor : MonoBehaviour
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + Ship.GetSize(option) / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - Ship.GetSize(option) / 2);
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(component_screen_tr_position.x - component_screen_bl_position.x, component_screen_tr_position.y - component_screen_bl_position.y); 
-        print (Ship.GetRotation(option)); if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
+        // print (Ship.GetRotation(option)); 
+        if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 180f, (Screen.width / 2) - 146), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 180f, (Screen.height-112)));

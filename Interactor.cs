@@ -373,22 +373,22 @@ public class Interactor : MonoBehaviour
     }
     void SpriteFlash(string name, float start) {
         if (timer > start ) { 
-            GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
         }
     }
     void Flash(string name, float start) {
         if (timer > start) { 
-            GameObject.Find(name).GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
         }
     }
     void ResetSpriteFlash(string name, float time) {
         if (timer > time) { 
-            GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
     void ResetFlash(string name, float time) {
         if (timer > time) { 
-            GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
 
@@ -421,7 +421,7 @@ public class Interactor : MonoBehaviour
         }
         if (onLoad) {
             timer += Time.deltaTime;
-            if (GameObject.Find("Clickable$") != null) Flash("Clickable$", 0f);
+            Flash("Clickable$", 0f);
         }
         if (tutorialIntro) {
             timer += Time.deltaTime;
