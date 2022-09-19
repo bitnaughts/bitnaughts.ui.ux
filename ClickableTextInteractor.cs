@@ -297,6 +297,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Sound("Thruster");
                 break;
             case "Scan":
+            case "/*_Scan_casts_a_ray_*/":
                 Interactor.Sound("Radar");
                 break;
             case "RotateCW":
