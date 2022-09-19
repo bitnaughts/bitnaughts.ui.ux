@@ -162,10 +162,13 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
             case "about": 
-                Interactor.AppendText("$ <b>about</b>\n☄_BitNaughts_is_an_educational\n  programming_video-game;\n  <a>https://github.com/bitnaughts</a>\n\n  Music:\n  Wintergatan:_Sommarfågel\n  <a>https://wintergatan.net</a>\n$");
+                Interactor.Sound("Toggle");
+                Interactor.AppendText("$ <b>about</b>");
                 Interactor.PlayTheme();
                 break;
-            case "tutorial": 
+            case "tutorial":
+            case "⍰⍰_Help":
+                Interactor.Sound("Toggle");
                 Interactor.AppendText("$ <b>tutorial</b>\n$ ");
                 Interactor.StartTutorial();
                 break;
@@ -276,30 +279,29 @@ public class ClickableTextInteractor : MonoBehaviour
             case "/*_Use_weapon_control_*/":
                 Interactor.FireTutorial();
                 Interactor.Action(Interactor.GetInput(), -1);
-                Interactor.PlayCannon();
+                // Interactor.Sound("Cannon");
                 break;
             case "Launch":
             case "/*_Launch_torpedo_control_*/":
                 Interactor.Action(Interactor.GetInput(), -1);
-                Interactor.PlayTorpedo();
                 break;
             case "Boost":
                 Interactor.Action(Interactor.GetInput(), 100);
-                Interactor.PlayThruster();
+                Interactor.Sound("Booster");
                 // Interactor.Action("Thruster", 100);
                 break;
             case "ThrottleMax":
             case "/*_Throttle_control_(max)_*/":
                 Interactor.FinishTutorial();
                 Interactor.Action(Interactor.GetInput(), 100);
-                Interactor.PlayThruster();
+                Interactor.Sound("Thruster");
                 break;
             case "Scan":
-                Interactor.PlayRadar();
+                Interactor.Sound("Radar");
                 break;
             case "RotateCW":
             case "/*_Rotates_units_(CW)_*/":
-                Interactor.PlayGimbal();
+                Interactor.Sound("Gimbal");
                 Interactor.Action(Interactor.GetInput(), -15);
                 break;
             case "RotateCCW":
@@ -308,16 +310,17 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Action(Interactor.GetInput(), 15);
                 break;
             case "Rotate":
-                Interactor.PlayGimbal();
+                Interactor.Sound("Gimbal");
                 Interactor.Action(Interactor.GetInput(), 1);
                 break;
             case "Main":
             case "/*_Main_method_*/":
-                Interactor.PlayProcessor();
+                Interactor.Sound("Processor");
                 break;
             case "ThrottleMin":
             case "/*_Throttle_control_(min)_*/":
                 Interactor.Action(Interactor.GetInput(), 0);
+                Interactor.Sound("Gimbal");
                 break;
             case "clear": 
                 Interactor.ClearHistory();
@@ -327,16 +330,27 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetCommand("$");
                 Interactor.AppendText("$");// <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <a>help</a>");
                 break;
+            //☑_Ok\n☒_Cancel\n☒_Delete\n⍰⍰_Help
+            case "☑_Ok":
+                Interactor.Sound("Click");
+                Interactor.ClearText();
+                OverlayInteractor.gameObject.SetActive(false);
+                break;
+            case "☒_Cancel":
+                Interactor.Sound("Back");
+                Interactor.ClearText();
+                OverlayInteractor.gameObject.SetActive(false);
+                break;
             case "Exit": 
                 Interactor.ClearText();
                 OverlayInteractor.gameObject.SetActive(false);
                 break;
-            case "Delete": 
+            case "☒_Delete": 
+                Interactor.Sound("Back");
                 OverlayInteractor.gameObject.SetActive(false);
-                // Ship.Remove(component);
                 Destroy(GameObject.Find(Interactor.component_name));
                 Interactor.ClearText();
-                Interactor.SetCommand("rm");
+                // Interactor.SetCommand("rm");
                 // Interactor.AppendText("$ rm <b>" + component + "</b>");
                 break;
         }

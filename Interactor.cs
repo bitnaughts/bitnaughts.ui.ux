@@ -16,7 +16,7 @@ public class Interactor : MonoBehaviour
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
     public AudioClip ThemeSong, Click, Click2;
-    public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle;
+    public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2;
     public GameObject Overlay;
     public GameObject Example;
     private string command = "";
@@ -45,7 +45,6 @@ public class Interactor : MonoBehaviour
         } 
         OverlayInteractor = GameObject.Find("OverlayBorder").GetComponent<OverlayInteractor>();
         RenderText("$");
-        Sound("Start");
     }
 
     public void AppendText(string text) {
@@ -136,21 +135,26 @@ public class Interactor : MonoBehaviour
         }
         InputFieldPlaceholder.text = "";
     }
-
     public string GetCommand() {
         return command;
     }
     public void SetCommand(string command) {
+        if (command == "$") {
+            onLoad = false;
+            ResetFlash("Clickable$", 0f);
+        }
         this.command = command;
     }
 
     float timer = 0f;
-    bool tutorialIntro = false, tutorialPan = false, tutorialTarget = false, tutorialFire = false, tutorialCancel = false, tutorialThrust = false, tutorialFinish = false, tutorialComplete = false;
+    bool onLoad = true, aboutIntro = false, tutorialIntro = false, tutorialPan = false, tutorialTarget = false, tutorialFire = false, tutorialCancel = false, tutorialThrust = false, tutorialFinish = false, tutorialComplete = false;
     public bool TutorialRunning() {
         return tutorialIntro || tutorialPan || tutorialTarget || tutorialFire || tutorialCancel || tutorialThrust || tutorialFinish;
     }
     public void StartTutorial() {
         if (tutorialIntro == false) {
+            onLoad = false;
+            aboutIntro = false;
             tutorialIntro = true;
             tutorialPan = false;
             tutorialTarget = false;
@@ -243,6 +247,7 @@ public class Interactor : MonoBehaviour
             tutorialCancel = false;
             tutorialThrust = false;
             tutorialFinish = false;
+            onLoad = true;
             timer = 0;
             MapSubtitlesAtTime("", 0f);
         }
@@ -258,11 +263,23 @@ public class Interactor : MonoBehaviour
             case "Error": Sound(SoundError); break;
             case "OnMouse": Sound(SoundOnMouse); break;
             case "Toggle": Sound(SoundToggle); break;
+            case "Processor": Sound(SoundProcessor); break;
+            case "Gimbal": Sound(SoundGimbal); break;
+            case "Cannon1": Sound(SoundCannon1); break;
+            case "Cannon2": Sound(SoundCannon2); break;
+            case "Cannon3": Sound(SoundCannon3); break;
+            case "Radar": Sound(SoundRadar); break;
+            case "Booster": Sound(SoundBooster); break;
+            case "Thruster": Sound(SoundThruster); break;
+            case "Torpedo1": Sound(SoundTorpedo1); break;
+            case "Torpedo2": Sound(SoundTorpedo2); break;
         }
     }
 
     public void PlayTheme() {
         Play(ThemeSong);
+        timer = 0;
+        aboutIntro = true;
     }
     public void PlayGimbal() {
         Play(GimbalRotate);
@@ -295,12 +312,12 @@ public class Interactor : MonoBehaviour
     }
     public void Play(AudioClip clip) {
         GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().volume = .75f;
+        GetComponent<AudioSource>().volume = .5f;
         GetComponent<AudioSource>().Play();
     }
     public void Sound(AudioClip clip) {
         camera.GetComponent<AudioSource>().clip = clip;
-        camera.GetComponent<AudioSource>().volume = .66f;
+        camera.GetComponent<AudioSource>().volume = .35f;
         camera.GetComponent<AudioSource>().Play();
     }
     void SubtitlesAtTime(string text, float time) {
@@ -310,7 +327,7 @@ public class Interactor : MonoBehaviour
         }
     }
     void MapSubtitlesAtTime(string text, float time) {
-        if (timer > time && timer < time + (Time.deltaTime * 2f)) {
+        if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
             GameObject.Find("SubtitlesShadow").GetComponent<Text>().text = text + "\n";
         }
@@ -328,20 +345,21 @@ public class Interactor : MonoBehaviour
     }
     void Update () {
         animation_timer += Time.deltaTime;
-        if (TutorialRunning()) {
+        if (TutorialRunning() || aboutIntro) {
             SplitTimer.text = FloatToTime(timer);
             SplitTimerShadow.text = FloatToTime(timer);
-        }
-        else {
+        } else {
             SplitTimer.text = "";
             SplitTimerShadow.text = "";
         }
-        if (!tutorialComplete) {
+        if (aboutIntro) {
+            Timer.text = FloatToTime(timer);
+            TimerShadow.text = FloatToTime(timer);
+        } else if (!tutorialComplete) {
             global_timer += Time.deltaTime;
             Timer.text = FloatToTime(global_timer);
             TimerShadow.text = FloatToTime(global_timer);
-        }
-        else {
+        } else {
             Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
             SplitTimer.text = "Tutorial";
             SplitTimerShadow.text = "Tutorial";
@@ -373,12 +391,42 @@ public class Interactor : MonoBehaviour
             GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
+
     void FixedUpdate()
     {
+        if (aboutIntro) {
+            timer += Time.deltaTime;
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!", 2f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!", 5f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>", 7f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>", 9f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>", 11f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>", 13f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 15f);
+            SubtitlesAtTime("\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22f);
+            SubtitlesAtTime("\n\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23f);
+            SubtitlesAtTime("\n\n\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24f);
+            SubtitlesAtTime("\n\n\n\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25f);
+            SubtitlesAtTime("\n\n\n\n\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 31f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 32f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 33f);
+            SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 34f);
+            SubtitlesAtTime("$", 35f);
+            Flash("Clickable$", 35.1f);
+        }
+        if (onLoad) {
+            timer += Time.deltaTime;
+            if (GameObject.Find("Clickable$") != null) Flash("Clickable$", 0f);
+        }
         if (tutorialIntro) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialIntro, 0f);
-            SubtitlesAtTime("  Welcome_to_the", 0f);
+            PlayAtTime(TutorialIntro, 0.1f);
+            SubtitlesAtTime("  Welcome_to_the", 0.1f);
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 1f);
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 2.5f);
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 4.5f);
@@ -392,7 +440,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 10.5f);
             PlayAtTime(TutorialTry, 20f);
             PlayAtTime(TutorialLookAround, 30f);
-            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 10.5f);
+            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 6f);
         }
         if (tutorialPan) {
             timer += Time.deltaTime;
@@ -417,7 +465,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┠_Friendly_units\n┗_Detected_enemy_units", 7f);
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!", 9f);
             SpriteFlash ("Cannon", 9f);
-            Flash ("CameraToggle", 9f);
+            // Flash ("CameraToggle", 9f);
             ResetFlash("MapScreenOverlay", 9f);
             ResetFlash ("MapScreenOverlayBitBottomLeft", 9f);
             ResetFlash ("MapScreenOverlayBitRightTop", 9f);
@@ -431,7 +479,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"", 16.5f);
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"\n\n  This_will_display\n⁜_Target Window", 19f);
             PlayAtTime(TutorialTry, 25f);
-            MapSubtitlesAtTime("Press\n◍ Cannon", 19f);
+            MapSubtitlesAtTime("Press\n◍ Cannon", 9f);
             PlayAtTime(TutorialTargetWindowHelp, 29f);
         }
         if (tutorialTarget) {
@@ -441,7 +489,7 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialTargetWindowSelected, 0.5f);
             MapSubtitlesAtTime("⁜ Target Window displays", 1f);
-            MapSubtitlesAtTime("⁜ Target Window displays\nUnit name & class", 3.2f);
+            MapSubtitlesAtTime("⁜ Target Window displays\nunit name & class", 3.2f);
             Flash("OverlayBorder", 1.2f);
             PlayAtTime(TutorialLeftWindow, 8f);
             ResetFlash("OverlayBorder", 8f);
@@ -476,7 +524,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("  Now_it's_time_for_you\n  to_get_this_old_girl_moving!", 0.5f);
             Flash ("OverlayPanDown", 0.5f);
             PlayAtTime(TutorialTry, 6f);
-            MapSubtitlesAtTime("Press\n◉ Thruster", 6f);
+            MapSubtitlesAtTime("Press\n◉ Thruster", 0.5f);
             PlayAtTime(TutorialGetMoving, 12f);
         }
         if (tutorialThrust) {
