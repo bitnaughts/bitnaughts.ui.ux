@@ -36,8 +36,10 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void UpdateOptions() {
         OverlayDropdown.options = new List<Dropdown.OptionData>();
-        foreach (var key in Ship.components.Keys) {
-            OverlayDropdown.options.Add(new Dropdown.OptionData(key));
+        if (Ship.components != null) {
+            foreach (var key in Ship.components.Keys) {
+                OverlayDropdown.options.Add(new Dropdown.OptionData(key));
+            }
         }
         this.gameObject.SetActive(false);
     }
