@@ -16,7 +16,7 @@ public class Interactor : MonoBehaviour
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
     public AudioClip ThemeSong, Click, Click2;
-    public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2;
+    public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2, SoundWarning, SoundWarningOver;
     public GameObject Overlay;
     public GameObject Example;
     private string command = "";
@@ -250,6 +250,8 @@ public class Interactor : MonoBehaviour
             onLoad = true;
             timer = 0;
             MapSubtitlesAtTime("", 0f);
+            SubtitlesAtTime("$ tutorial\n$", 0f);
+            Sound("WarningOver");
         }
     }
     public void Action(string name, int action) {
@@ -273,6 +275,8 @@ public class Interactor : MonoBehaviour
             case "Thruster": Sound(SoundThruster); break;
             case "Torpedo1": Sound(SoundTorpedo1); break;
             case "Torpedo2": Sound(SoundTorpedo2); break;
+            case "Warning": Sound(SoundWarning); break;
+            case "WarningOver": Sound(SoundWarningOver); break;
         }
     }
 
@@ -312,12 +316,12 @@ public class Interactor : MonoBehaviour
     }
     public void Play(AudioClip clip) {
         GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().volume = .5f;
+        GetComponent<AudioSource>().volume = .75f;
         GetComponent<AudioSource>().Play();
     }
     public void Sound(AudioClip clip) {
         camera.GetComponent<AudioSource>().clip = clip;
-        camera.GetComponent<AudioSource>().volume = .35f;
+        camera.GetComponent<AudioSource>().volume = .5f;
         camera.GetComponent<AudioSource>().Play();
     }
     void SubtitlesAtTime(string text, float time) {
@@ -425,22 +429,22 @@ public class Interactor : MonoBehaviour
         }
         if (tutorialIntro) {
             timer += Time.deltaTime;
-            PlayAtTime(TutorialIntro, 0.1f);
-            SubtitlesAtTime("  Welcome_to_the", 0.1f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 1f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 2.5f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 4.5f);
-            PlayAtTime(TutorialLookAround, 6f);
-            Flash ("OverlayPanUp", 6f);
-            Flash ("OverlayPanDown", 6f);
-            Flash ("OverlayPanLeft", 6f);
-            Flash ("OverlayPanRight", 6f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!", 6f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for", 8.5f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 10.5f);
+            PlayAtTime(TutorialIntro, 1f);
+            SubtitlesAtTime("  Welcome_to_the", 1f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 2f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 4f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 5.5f);
+            PlayAtTime(TutorialLookAround, 7f);
+            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 7f);
+            Flash ("OverlayPanUp", 7f);
+            Flash ("OverlayPanDown", 7f);
+            Flash ("OverlayPanLeft", 7f);
+            Flash ("OverlayPanRight", 7f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!", 7f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed", 9f);
+            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 11f);
             PlayAtTime(TutorialTry, 20f);
             PlayAtTime(TutorialLookAround, 30f);
-            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 6f);
         }
         if (tutorialPan) {
             timer += Time.deltaTime;
@@ -546,14 +550,13 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialBetter, 0.1f);
             PlayAtTime(TutorialOutro, 2.5f);
             SubtitlesAtTime("☑You_have_completed_the_tutorial", 3.5f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired", 7f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!", 12f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!\n  Dismissed!", 13.5f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired\n\n  That_is_all_for_today!\n  Dismissed!", 15f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!", 7f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!", 12f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 13.5f);
+            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 15f);
             Flash ("OverlayOk", 3.5f);
             MapSubtitlesAtTime("Press\n☑ Ok", 3.5f);
-            SubtitlesAtTime("$ tutorial\n$", 21f);
-            if (timer > 21) {
+            if (timer > 16) {
                 CompleteTutorial();
             }
         }

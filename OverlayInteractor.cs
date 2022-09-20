@@ -104,7 +104,7 @@ public class OverlayInteractor : MonoBehaviour
         Application.Quit();
     }
     public void OnHelp() {
-        Interactor.Sound("Click");
+        Interactor.Sound("Warning");
         Interactor.StartTutorial();
     }
     public void OnReset() {

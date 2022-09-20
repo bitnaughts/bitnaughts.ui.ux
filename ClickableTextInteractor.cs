@@ -166,8 +166,8 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "tutorial":
             case "⍰⍰_Help":
-                Interactor.Sound("Toggle");
-                Interactor.AppendText("$ <b>tutorial</b>\n$ ");
+                Interactor.Sound("Warning");
+                Interactor.AppendText("$ <b>tutorial</b>");
                 Interactor.StartTutorial();
                 break;
             break;
@@ -218,7 +218,6 @@ public class ClickableTextInteractor : MonoBehaviour
                 } 
                 output += "\n       <b>help</b>\n       <b>back</b>";
                 Interactor.AppendText(output);
-                // Interactor.SetInputPlaceholder("+ File");
                 break;
             case "make": 
                 Interactor.SetCommand("make");
@@ -228,6 +227,10 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>▥_Processor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Processor");
                 break;
+            case "Main":
+            case "/*_Main_method_*/":
+                Interactor.Sound("Processor");
+                break;
             case "▩_Bulkhead": 
                 Interactor.AppendText("$ make <b>▩_Bulkhead</b>\n$ ");
                 Interactor.SetInputPlaceholder("Bulkhead");
@@ -236,21 +239,65 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>▣_Gimbal</b>\n$ ");
                 Interactor.SetInputPlaceholder("Gimbal");
                 break;
+            case "RotateCW":
+            case "/*_Rotates_units_(CW)_*/":
+                Interactor.Sound("Gimbal");
+                Interactor.Action(Interactor.GetInput(), -15);
+                break;
+            case "RotateCCW":
+            case "/*_Rotates_units_(CCW)_*/":
+                Interactor.Sound("Gimbal");
+                Interactor.Action(Interactor.GetInput(), 15);
+                break;
+            case "Rotate":
+                Interactor.Sound("Gimbal");
+                Interactor.Action(Interactor.GetInput(), 1);
+                break;
             case "◍_Cannon": 
                 Interactor.AppendText("$ make <b>◍_Cannon</b>\n$ ");
                 Interactor.SetInputPlaceholder("Cannon");
+                break;
+            case "Fire":
+            case "/*_Use_weapon_control_*/":
+                Interactor.FireTutorial();
+                Interactor.Action(Interactor.GetInput(), -1);
+                // Interactor.Sound("Cannon");
                 break;
             case "◌_Sensor": 
                 Interactor.AppendText("$ make <b>◌_Sensor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Sensor");
                 break;
+            case "Scan":
+            case "/*_Scan_casts_a_ray_*/":
+                Interactor.Sound("Radar");
+                break;
             case "◉_Thruster": 
                 Interactor.AppendText("$ make <b>◉_Thruster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Thruster");
                 break;
+            case "ThrottleMax":
+            case "/*_Throttle_control_(max)_*/":
+                Interactor.FinishTutorial();
+                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.Sound("Thruster");
+                break;
+            case "ThrottleMin":
+            case "/*_Throttle_control_(min)_*/":
+                Interactor.Action(Interactor.GetInput(), 0);
+                Interactor.Sound("Gimbal");
+                break;
             case "◎_Booster": 
                 Interactor.AppendText("$ make <b>◎_Booster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Booster");
+                break;
+            case "Launch":
+            case "/*_Launch_torpedo_control_*/":
+                Interactor.Action(Interactor.GetInput(), -1);
+                break;
+            case "Boost":
+                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.Sound("Booster");
+                // Interactor.Action("Thruster", 100);
                 break;
             case "Component": 
                 Interactor.RenderText("abstract class Component : Object {\n  virtual Vector pos;\n  virtual Vector siz;\n  virtual double rot;\n}\n\n<b>Exit</b>");
@@ -272,54 +319,6 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "Torpedo":
                 Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
-                break;
-            case "Fire":
-            case "/*_Use_weapon_control_*/":
-                Interactor.FireTutorial();
-                Interactor.Action(Interactor.GetInput(), -1);
-                // Interactor.Sound("Cannon");
-                break;
-            case "Launch":
-            case "/*_Launch_torpedo_control_*/":
-                Interactor.Action(Interactor.GetInput(), -1);
-                break;
-            case "Boost":
-                Interactor.Action(Interactor.GetInput(), 100);
-                Interactor.Sound("Booster");
-                // Interactor.Action("Thruster", 100);
-                break;
-            case "ThrottleMax":
-            case "/*_Throttle_control_(max)_*/":
-                Interactor.FinishTutorial();
-                Interactor.Action(Interactor.GetInput(), 100);
-                Interactor.Sound("Thruster");
-                break;
-            case "Scan":
-            case "/*_Scan_casts_a_ray_*/":
-                Interactor.Sound("Radar");
-                break;
-            case "RotateCW":
-            case "/*_Rotates_units_(CW)_*/":
-                Interactor.Sound("Gimbal");
-                Interactor.Action(Interactor.GetInput(), -15);
-                break;
-            case "RotateCCW":
-            case "/*_Rotates_units_(CCW)_*/":
-                Interactor.PlayGimbal();
-                Interactor.Action(Interactor.GetInput(), 15);
-                break;
-            case "Rotate":
-                Interactor.Sound("Gimbal");
-                Interactor.Action(Interactor.GetInput(), 1);
-                break;
-            case "Main":
-            case "/*_Main_method_*/":
-                Interactor.Sound("Processor");
-                break;
-            case "ThrottleMin":
-            case "/*_Throttle_control_(min)_*/":
-                Interactor.Action(Interactor.GetInput(), 0);
-                Interactor.Sound("Gimbal");
                 break;
             case "clear": 
                 Interactor.ClearHistory();
