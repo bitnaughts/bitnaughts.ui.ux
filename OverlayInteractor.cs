@@ -54,7 +54,7 @@ public class OverlayInteractor : MonoBehaviour
         if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 180f, (Screen.width / 2) - 146), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 180f, (Screen.height-112)));
+        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 200f, (Screen.width / 2) - 325), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 200f, (Screen.height-300)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 60f);
     }

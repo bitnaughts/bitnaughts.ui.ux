@@ -17,8 +17,8 @@ public class ClickableTextInteractor : MonoBehaviour
         initialized_text = text;
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-33f + (pos - (text.Length-1)/2f) * 25f, -30f + line * -50f);
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 25f, 50f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 37.5f, 50f);
         this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
 
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
@@ -160,7 +160,7 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
             case "about": 
-                Interactor.Sound("Toggle");
+                Interactor.Sound("Warning");
                 Interactor.AppendText("$ <b>about</b>");
                 Interactor.PlayTheme();
                 break;
