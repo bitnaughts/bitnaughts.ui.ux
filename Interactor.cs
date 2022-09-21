@@ -259,6 +259,7 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("", 0f);
             SubtitlesAtTime("$ tutorial\n$", 0f);
             Sound("WarningOver");
+            GetComponent<AudioSource>().Stop();
         }
     }
     public void Action(string name, int action) {
@@ -288,7 +289,6 @@ public class Interactor : MonoBehaviour
     }
 
     public void PlayTheme() {
-        Play(ThemeSong);
         timer = 0;
         global_timer = 0;
         aboutIntro = true;
@@ -418,6 +418,7 @@ public class Interactor : MonoBehaviour
         if (aboutIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
+            PlayAtTime(ThemeSong, .8f);
             SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!", 2f);
             SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n  It's code gamified!", 4f);
             SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n  It's code gamified!\n  Play @ <a>https://bitnaughts.io</a>", 6f);
