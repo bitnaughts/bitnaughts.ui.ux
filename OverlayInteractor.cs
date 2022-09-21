@@ -12,7 +12,7 @@ public class OverlayInteractor : MonoBehaviour
     public StructureController Ship;    
     public Interactor Interactor;
 
-    public GameObject OverlayOk, OverlayDelete, 
+    public GameObject OverlayOk, OverlayDelete, MapScreenPanOverlay, 
     OverlayMove, OverlayMoveUp, OverlayMoveLeft, OverlayMoveRight, OverlayMoveDown, OverlayMoveRotateCW, OverlayMoveRotateCCW, 
     OverlayResize, OverlayResizeExpandUp, OverlayResizeShrinkUp, OverlayResizeExpandLeft, OverlayResizeShrinkLeft, OverlayResizeExpandRight, OverlayResizeShrinkRight, OverlayResizeExpandDown, OverlayResizeShrinkDown;
 
@@ -23,6 +23,7 @@ public class OverlayInteractor : MonoBehaviour
         last_position = new Vector2 (999,999);
         last_size = new Vector2 (999,999);
         Interactor = GameObject.Find("Content").GetComponent<Interactor>();
+        MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
     }
 
 
@@ -54,7 +55,7 @@ public class OverlayInteractor : MonoBehaviour
         if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 200f, (Screen.width / 2) - 325), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 200f, (Screen.height-300)));
+        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 200f, (Screen.width / 2) - 250), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 200f, (Screen.height-250)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y);
     }
@@ -92,16 +93,22 @@ public class OverlayInteractor : MonoBehaviour
         Interactor.CancelTutorial();
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
+            MapScreenPanOverlay.SetActive(true);
             Interactor.ClearText();
         }
         else {
-            Interactor.ClearText();
             OnDropdownChange();
         }
     }
     public void OnExit() {
         Interactor.Sound("Back");
-        Application.Quit();
+        if (gameObject.activeSelf) {
+            DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+            this.gameObject.SetActive(false);
+            MapScreenPanOverlay.SetActive(true);
+        } else {
+            Application.Quit();
+        }
     }
     public void OnHelp() {
         Interactor.Sound("Warning");
@@ -115,9 +122,10 @@ public class OverlayInteractor : MonoBehaviour
         Interactor.CompleteTutorial();
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
+            MapScreenPanOverlay.SetActive(true);
             Interactor.CancelTutorial();
             Interactor.ClearText();
-            // DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+            // 
         }
         else { 
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
@@ -130,6 +138,7 @@ public class OverlayInteractor : MonoBehaviour
     public void DeleteComponent(string component) {
         Ship.Remove(component);
         this.gameObject.SetActive(false);
+        MapScreenPanOverlay.SetActive(true);
         Interactor.ClearText();
         Interactor.SetCommand("rm");
         Interactor.AppendText("$ rm <b>" + component + "</b>");

@@ -29,6 +29,7 @@ public class Interactor : MonoBehaviour
     int cache_size = 125;
     public OverlayInteractor OverlayInteractor;
     public GameObject ClickableText;
+    GameObject MapScreenPanOverlay;
     public InputField InputField;
     public Text InputFieldPlaceholder;
 
@@ -44,6 +45,7 @@ public class Interactor : MonoBehaviour
             ButtonsCache.Add(Instantiate(ClickableText, this.transform) as GameObject);
         } 
         OverlayInteractor = GameObject.Find("OverlayBorder").GetComponent<OverlayInteractor>();
+        MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         Timer.text = "Connecting";
     }
@@ -56,6 +58,7 @@ public class Interactor : MonoBehaviour
     public void ClearText() {
         if (history == "") history = "$";
         InputField.text = "☄ BitNaughts";
+        MapScreenPanOverlay.SetActive(true);
         RenderText(history);
     }
     public void ClearHistory() {
@@ -289,6 +292,9 @@ public class Interactor : MonoBehaviour
         timer = 0;
         global_timer = 0;
         aboutIntro = true;
+    }
+    public bool IsIntroCompleted() {
+        return aboutIntro;
     }
     public void PlayGimbal() {
         Play(GimbalRotate);

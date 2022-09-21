@@ -98,6 +98,7 @@ public class ClickableTextInteractor : MonoBehaviour
                         for (int i = 0; i < OverlayInteractor.OverlayDropdown.options.Count; i++) {
                             if (OverlayInteractor.OverlayDropdown.options[i].text == component.Split('_')[1]) OverlayInteractor.OverlayDropdown.value = i; 
                         }
+                        GameObject.Find("MapScreenPanOverlay").SetActive(false);
                         OverlayInteractor.gameObject.SetActive(true);
                         OverlayInteractor.OnDropdownChange(); 
                         break;
