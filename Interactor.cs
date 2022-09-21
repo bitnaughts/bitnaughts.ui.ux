@@ -26,7 +26,7 @@ public class Interactor : MonoBehaviour
     // "\n~ $ cd bitnaughts\n\n~/bitnaughts $ help\n☄ BitNaughts is an educational\nprogramming video-game.\n\n~/bitnaughts $";//\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n~ $ help\nBit Bash\nBitNaughts inline terminal\nA really long line would fit like this with the slider being able to scroll to see the full text\n~ $\n\npublic class Processor {\n void Start() {\n }\n}\n\n\ntest one two three\nfour five six\nseven eight nine";
 
     public List<GameObject> ButtonsCache = new List<GameObject>();
-    int cache_size = 200;
+    int cache_size = 125;
     public OverlayInteractor OverlayInteractor;
     public GameObject ClickableText;
     public InputField InputField;

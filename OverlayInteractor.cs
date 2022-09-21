@@ -56,7 +56,7 @@ public class OverlayInteractor : MonoBehaviour
         }
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 200f, (Screen.width / 2) - 325), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 200f, (Screen.height-300)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 60f);
+        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y);
     }
     public void OnDropdownChange(string text) {
 
