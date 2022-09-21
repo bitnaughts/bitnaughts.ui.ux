@@ -45,7 +45,7 @@ public class Interactor : MonoBehaviour
         } 
         OverlayInteractor = GameObject.Find("OverlayBorder").GetComponent<OverlayInteractor>();
         RenderText("$");
-        Timer.text = "";
+        Timer.text = "Connecting";
     }
 
     public void AppendText(string text) {
@@ -367,9 +367,9 @@ public class Interactor : MonoBehaviour
             // SplitTimer.text = "";
             // SplitTimerShadow.text = "";
             // TimerShadow.text = FloatToTime(global_timer);
-            if (animation_timer < 5) {
+            if (animation_timer < 3f) {
                 Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
-            } else if (animation_timer < 10f) {
+            } else if (animation_timer < 6f) {
                 Timer.color = new Color(1, 1, 1, 1);
             }
             else {
