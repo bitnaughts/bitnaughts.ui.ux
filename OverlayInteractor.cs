@@ -34,6 +34,8 @@ public class OverlayInteractor : MonoBehaviour
             UpdateOptions();
             populated = true;
         }
+        // if (this.gameObject.activeSelf) {
+        // }
     }
     public void UpdateOptions() {
         OverlayDropdown.options = new List<Dropdown.OptionData>();

@@ -280,7 +280,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "ThrottleMax":
             case "/*_Throttle_control_(max)_*/":
                 Interactor.FinishTutorial();
-                Interactor.Action(Interactor.GetInput(), 999);
+                Interactor.Action(Interactor.GetInput(), 100);
                 Interactor.Sound("Thruster");
                 break;
             case "ThrottleMin":
@@ -296,8 +296,9 @@ public class ClickableTextInteractor : MonoBehaviour
             case "/*_Launch_torpedo_control_*/":
                 Interactor.Action(Interactor.GetInput(), -1);
                 break;
+            case "/*_Boost_control_*/":
             case "Boost":
-                Interactor.Action(Interactor.GetInput(), 999);
+                Interactor.Action(Interactor.GetInput(), 25);
                 Interactor.Sound("Booster");
                 // Interactor.Action("Thruster", 100);
                 break;

@@ -47,7 +47,7 @@ public class Interactor : MonoBehaviour
         OverlayInteractor = GameObject.Find("OverlayBorder").GetComponent<OverlayInteractor>();
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
-        Timer.text = "Connecting";
+        Timer.text = "Welcome";
     }
 
     public void AppendText(string text) {
@@ -332,6 +332,12 @@ public class Interactor : MonoBehaviour
         GetComponent<AudioSource>().Play();
     }
     public void Sound(AudioClip clip) {
+        if (clip == null) {
+            return;
+        }
+        if (camera == null) {
+            camera = GameObject.Find("Main Camera");
+        }
         camera.GetComponent<AudioSource>().clip = clip;
         camera.GetComponent<AudioSource>().volume = .5f;
         camera.GetComponent<AudioSource>().Play();
@@ -374,17 +380,15 @@ public class Interactor : MonoBehaviour
             // SplitTimer.text = "";
             // SplitTimerShadow.text = "";
             // TimerShadow.text = FloatToTime(global_timer);
-            if (animation_timer < 3f) {
+            if (animation_timer < 2.5f) {
                 Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
-            } else if (animation_timer < 6f) {
+            } else if (animation_timer < 5f) {
+                Timer.text = "Loading";
                 Timer.color = new Color(1, 1, 1, 1);
             }
             else {
                 Timer.text = "" + System.DateTime.Now.ToString("h:mm:ss");
             }
-// Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
-            // SplitTimer.text = "Tutorial";
-            // SplitTimerShadow.text = "Tutorial";
         }
         if (Input.GetMouseButton(0)) {
             click_duration += Time.deltaTime;
@@ -446,20 +450,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 33f);
             SubtitlesAtTime("  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 34f);
             SubtitlesAtTime("  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 35f);
-            // SubtitlesAtTime("\n  programming_video-game!\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22f);
-            // SubtitlesAtTime("\n\n  It's code gamified!\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23f);
-            // SubtitlesAtTime("\n\n\n  <a>https://bitnaughts.io</a>\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24f);
-            // SubtitlesAtTime("\n\n\n\n  <a>https://github.com/bitnaughts</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25f);
-            // SubtitlesAtTime("\n\n\n\n\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 31f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 32f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 33f);
-            // SubtitlesAtTime("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 34f);
-            SubtitlesAtTime("$", 35f);
+            SubtitlesAtTime("$", 36f);
             Flash("Clickable$", 35.1f);
             if (global_timer > 92) {
                 Sound("WarningOver");
@@ -471,6 +462,11 @@ public class Interactor : MonoBehaviour
         } else if (onLoad) {
             timer += Time.deltaTime;
             Flash("Clickable$", 0f);
+            if (timer > 3) {
+                onLoad = false;
+                timer = 0;
+                ResetFlash("Clickable$", 0f);
+            }
         } else if (tutorialIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
@@ -535,19 +531,19 @@ public class Interactor : MonoBehaviour
             ResetSpriteFlash("Cannon", 0f);
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialTargetWindowSelected, 0.5f);
-            MapSubtitlesAtTime("⁜ Target Window displays", 1f);
-            MapSubtitlesAtTime("⁜ Target Window displays\nunit name & class", 3.2f);
+            MapSubtitlesAtTime("Target Window displays", 1f);
+            MapSubtitlesAtTime("Target Window displays unit name & class", 3.2f);
             Flash("OverlayBorder", 1.2f);
             PlayAtTime(TutorialLeftWindow, 8f);
             ResetFlash("OverlayBorder", 8f);
             Flash ("InterpreterPanel", 8f);
             Flash ("UnitScreenBit", 8f);
-            MapSubtitlesAtTime("Left is\n⊡ Unit Window", 8f);
-            MapSubtitlesAtTime("Displays information\nabout the class", 11f);
+            MapSubtitlesAtTime("Left is Unit Window", 8f);
+            MapSubtitlesAtTime("Displays information about the class", 11f);
             ResetFlash ("InterpreterPanel", 15f);
             ResetFlash ("UnitScreenBit", 15f);
             PlayAtTime(TutorialSelect, 15f);
-            MapSubtitlesAtTime("Press Fire () or\n/* Use weapon control */", 15f);
+            MapSubtitlesAtTime("Press Fire or\n/*Use weapon control*/", 15f);
             Flash("Clickable/*_Use_weapon_control_*/", 15f);
             Flash ("ClickableFire", 15f);
             PlayAtTime(TutorialTry, 22f);
@@ -583,7 +579,7 @@ public class Interactor : MonoBehaviour
             Flash("ClickableThrottleMax", 1.5f);
             Flash("Clickable/*_Throttle_control_(max)_*/", 1.5f);
             PlayAtTime(TutorialThrottle, 1.5f);
-            MapSubtitlesAtTime("Press ThrottleMax () or\n/* Throttle Control (max) */", 1.5f);
+            MapSubtitlesAtTime("Press ThrottleMax or\n/*Throttle Control (max)*/", 1.5f);
             PlayAtTime(TutorialTry, 8f);
             PlayAtTime(TutorialThrottle, 14f);
         } else if (tutorialFinish) {
@@ -603,8 +599,7 @@ public class Interactor : MonoBehaviour
                 CompleteTutorial();
             }
         } else if (OverlayInteractor.gameObject.activeSelf) {
-            // RenderText(component_text);
-            OverlayInteractor.OnDropdownChange();
+            RenderComponent(InputField.text);
         }
     }
     void InitializeClickableText(string text, int line, int pos) {
