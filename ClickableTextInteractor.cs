@@ -250,6 +250,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Sound("Gimbal");
                 Interactor.Action(Interactor.GetInput(), 15);
                 break;
+            case "/*_Rotation_control_*/":
             case "Rotate":
                 Interactor.Sound("Gimbal");
                 Interactor.Action(Interactor.GetInput(), 1);
@@ -279,7 +280,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "ThrottleMax":
             case "/*_Throttle_control_(max)_*/":
                 Interactor.FinishTutorial();
-                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.Action(Interactor.GetInput(), 999);
                 Interactor.Sound("Thruster");
                 break;
             case "ThrottleMin":
@@ -296,7 +297,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Action(Interactor.GetInput(), -1);
                 break;
             case "Boost":
-                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.Action(Interactor.GetInput(), 999);
                 Interactor.Sound("Booster");
                 // Interactor.Action("Thruster", 100);
                 break;

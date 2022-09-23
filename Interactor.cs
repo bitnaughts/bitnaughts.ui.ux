@@ -94,13 +94,15 @@ public class Interactor : MonoBehaviour
         SetContentSize(25f + max_line_length * 37.5f, 50f + lines.Length * 75f);
     }
     public string component_name = "";
+    public string component_text = "";
     public void RenderComponent(string component) {
         var component_string = Ship.GetComponentToString(component);
         var component_header = component_string.IndexOf("\n");
         component_name = component_string.Substring(0, component_header);
         InputField.text = component_name;
         InputField.interactable = true;
-        RenderText(component_string.Substring(component_header + 1));
+        component_text = component_string.Substring(component_header + 1);
+        RenderText(component_text);
     }
 
     public string[] GetComponents() {
@@ -263,7 +265,6 @@ public class Interactor : MonoBehaviour
         }
     }
     public void Action(string name, int action) {
-        print ("Fire" + name + action);
         GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
     public void Sound(string clip) {
@@ -467,12 +468,10 @@ public class Interactor : MonoBehaviour
                 global_timer = 0;
                 RenderText("$ about\n$");
             }
-        }
-        if (onLoad) {
+        } else if (onLoad) {
             timer += Time.deltaTime;
             Flash("Clickable$", 0f);
-        }
-        if (tutorialIntro) {
+        } else if (tutorialIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             PlayAtTime(TutorialIntro, 1f);
@@ -491,8 +490,7 @@ public class Interactor : MonoBehaviour
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 11f);
             PlayAtTime(TutorialTry, 20f);
             PlayAtTime(TutorialLookAround, 30f);
-        }
-        if (tutorialPan) {
+        } else if (tutorialPan) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
@@ -531,8 +529,7 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialTry, 25f);
             MapSubtitlesAtTime("Press\n◍ Cannon", 9f);
             PlayAtTime(TutorialTargetWindowHelp, 29f);
-        }
-        if (tutorialTarget) {
+        } else  if (tutorialTarget) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             ResetSpriteFlash("Cannon", 0f);
@@ -555,8 +552,7 @@ public class Interactor : MonoBehaviour
             Flash ("ClickableFire", 15f);
             PlayAtTime(TutorialTry, 22f);
             PlayAtTime(TutorialSelect, 26f);
-        }
-        if (tutorialFire) {
+        } else  if (tutorialFire) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             PlayAtTime(TutorialGood, 0.5f);
@@ -566,8 +562,7 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialTry, 15f);
             PlayAtTime(TutorialCancel, 19f);
             Flash ("OverlayDelete", 2f);
-        }
-        if (tutorialCancel) {
+        } else if (tutorialCancel) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             PlayAtTime(TutorialGetMoving, 0.1f);
@@ -578,8 +573,7 @@ public class Interactor : MonoBehaviour
             PlayAtTime(TutorialTry, 6f);
             MapSubtitlesAtTime("Press\n◉ Thruster", 0.5f);
             PlayAtTime(TutorialGetMoving, 12f);
-        }
-        if (tutorialThrust) {
+        } else if (tutorialThrust) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
@@ -592,8 +586,7 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("Press ThrottleMax () or\n/* Throttle Control (max) */", 1.5f);
             PlayAtTime(TutorialTry, 8f);
             PlayAtTime(TutorialThrottle, 14f);
-        }
-        if (tutorialFinish) {
+        } else if (tutorialFinish) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
@@ -609,6 +602,9 @@ public class Interactor : MonoBehaviour
             if (timer > 16) {
                 CompleteTutorial();
             }
+        } else if (OverlayInteractor.gameObject.activeSelf) {
+            // RenderText(component_text);
+            OverlayInteractor.OnDropdownChange();
         }
     }
     void InitializeClickableText(string text, int line, int pos) {
