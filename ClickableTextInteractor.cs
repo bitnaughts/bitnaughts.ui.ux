@@ -18,7 +18,7 @@ public class ClickableTextInteractor : MonoBehaviour
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
         this.GetComponent<RectTransform>().localPosition = new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 37.5f, 50f);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 37.5f, 75f);
         this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
 
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
@@ -228,7 +228,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>▥_Processor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Processor");
                 break;
-            case "Main":
+            case "Main_()":
             case "/*_Main_method_*/":
                 Interactor.Sound("Processor");
                 break;
@@ -259,8 +259,8 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>◍_Cannon</b>\n$ ");
                 Interactor.SetInputPlaceholder("Cannon");
                 break;
-            case "Fire":
-            case "/*_Use_weapon_control_*/":
+            case "Fire_()":
+            case "/*_Weapon_control_*/":
                 Interactor.FireTutorial();
                 Interactor.Action(Interactor.GetInput(), -1);
                 // Interactor.Sound("Cannon");
@@ -269,35 +269,35 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>◌_Sensor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Sensor");
                 break;
-            case "Scan":
-            case "/*_Scan_casts_a_ray_*/":
+            case "double_Scan_()":
+            case "/*_Ray_caster_*/":
                 Interactor.Sound("Radar");
                 break;
             case "◉_Thruster": 
                 Interactor.AppendText("$ make <b>◉_Thruster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Thruster");
                 break;
-            case "ThrottleMax":
-            case "/*_Throttle_control_(max)_*/":
+            case "ThrustUp_()":
+            case "/*_Thrust_control_(+)_*/":
                 Interactor.FinishTutorial();
-                Interactor.Action(Interactor.GetInput(), 100);
+                Interactor.Action(Interactor.GetInput(), 25);
                 Interactor.Sound("Thruster");
                 break;
-            case "ThrottleMin":
-            case "/*_Throttle_control_(min)_*/":
-                Interactor.Action(Interactor.GetInput(), 0);
+            case "ThrustDown_()":
+            case "/*_Thrust_control_(-)_*/":
+                Interactor.Action(Interactor.GetInput(), -25);
                 Interactor.Sound("Gimbal");
                 break;
             case "◎_Booster": 
                 Interactor.AppendText("$ make <b>◎_Booster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Booster");
                 break;
-            case "Launch":
-            case "/*_Launch_torpedo_control_*/":
+            case "Launch_()":
+            case "/*_Torpedo_control_*/":
                 Interactor.Action(Interactor.GetInput(), -1);
                 break;
-            case "/*_Boost_control_*/":
-            case "Boost":
+            case "/*_Throttle_control_*/":
+            case "Boost_()":
                 Interactor.Action(Interactor.GetInput(), 25);
                 Interactor.Sound("Booster");
                 // Interactor.Action("Thruster", 100);

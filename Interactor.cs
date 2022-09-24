@@ -380,14 +380,15 @@ public class Interactor : MonoBehaviour
             // SplitTimer.text = "";
             // SplitTimerShadow.text = "";
             // TimerShadow.text = FloatToTime(global_timer);
-            if (animation_timer < 2.5f) {
+            if (animation_timer < 2f) {
                 Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
-            } else if (animation_timer < 5f) {
-                Timer.text = "Loading";
+            } else if (animation_timer < 2.1f) {
                 Timer.color = new Color(1, 1, 1, 1);
             }
-            else {
-                Timer.text = "" + System.DateTime.Now.ToString("h:mm:ss");
+            else if ((animation_timer / 10f ) % 2 < 1) {
+                Timer.text = "Time " + System.DateTime.Now.ToString("h:mm:ss");
+            } else {
+                Timer.text = "Ping " + camera.GetComponent<MultiplayerController>().Delay.ToString("s\\.fffff");
             }
         }
         if (Input.GetMouseButton(0)) {
