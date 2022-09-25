@@ -475,9 +475,9 @@ public class Interactor : MonoBehaviour
         } else if (tutorialIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
-            if (timer < .7f + Time.deltaTime * 2 && timer > .7f) {
+            if (timer < 0f + Time.deltaTime * 2 && timer > 0f) {
                 GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
-                GameObject.Find("World").GetComponent<AudioSource>().volume = .1f;
+                GameObject.Find("World").GetComponent<AudioSource>().volume = .05f;
                 GameObject.Find("World").GetComponent<AudioSource>().Play();
             }
             PlayAtTime(TutorialIntro, 1f);
@@ -546,14 +546,14 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialTargetWindowSelected, 0.5f);
             MapSubtitlesAtTime("⁜ Target Window displays", 1f);
-            MapSubtitlesAtTime("unit name and class", 3.2f);
+            MapSubtitlesAtTime("unit name and class", 4f);
             Flash("OverlayBorder", 1.2f);
             PlayAtTime(TutorialLeftWindow, 8f);
             ResetFlash("OverlayBorder", 8f);
             Flash ("InterpreterPanel", 8f);
             Flash ("UnitScreenBit", 8f);
-            MapSubtitlesAtTime("Left is Unit Window", 8f);
-            MapSubtitlesAtTime("information about the class", 11f);
+            MapSubtitlesAtTime("Left is ▤ Unit Window", 8f);
+            MapSubtitlesAtTime("displays information about class", 11f);
             ResetFlash ("InterpreterPanel", 15f);
             ResetFlash ("UnitScreenBit", 15f);
             PlayAtTime(TutorialSelect, 15f);
@@ -592,14 +592,13 @@ public class Interactor : MonoBehaviour
             ResetSpriteFlash ("Thruster", 0f);
             ResetFlash ("OverlayPanDown", 0f);
             PlayAtTime(TutorialGood2, 0.5f);
-            Flash("ClickableThrustMax_()", 1.5f);
+            Flash("ClickableThrustUp_()", 1.5f);
             Flash("Clickable/*_Thrust_control_(+)_*/", 1.5f);
             PlayAtTime(TutorialThrottle, 1.5f);
             MapSubtitlesAtTime("Press ThrustUp or\n/* Thrust control (+) */", 1.5f);
             PlayAtTime(TutorialTry, 8f);
             PlayAtTime(TutorialThrottle, 14f);
         } else if (tutorialFinish) {
-            RenderComponent(InputField.text);
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
