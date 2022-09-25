@@ -328,7 +328,7 @@ public class Interactor : MonoBehaviour
     }
     public void Play(AudioClip clip) {
         GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().volume = .75f;
+        GetComponent<AudioSource>().volume = 1f;
         GetComponent<AudioSource>().Play();
     }
     public void Sound(AudioClip clip) {
@@ -424,33 +424,37 @@ public class Interactor : MonoBehaviour
         if (aboutIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
-            PlayAtTime(ThemeSong, .8f);
+            if (timer < .8f + Time.deltaTime * 2 && timer > .8f) {
+                GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
+                GameObject.Find("World").GetComponent<AudioSource>().volume = .2f;
+                GameObject.Find("World").GetComponent<AudioSource>().Play();
+            }
             SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!", 2f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!", 4f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>", 6f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>", 8f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>", 10f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>", 12f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>", 14f);
-            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 16f);
-            SubtitlesAtTime("  programming_video-game!\n\n  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22f);
-            SubtitlesAtTime("\n  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22.5f);
-            SubtitlesAtTime("  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23f);
-            SubtitlesAtTime("  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23.5f);
-            SubtitlesAtTime("  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24f);
-            SubtitlesAtTime("  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24.5f);
-            SubtitlesAtTime("\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25f);
-            SubtitlesAtTime("  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25.5f);
-            SubtitlesAtTime("  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26f);
-            SubtitlesAtTime("  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26.5f);
-            SubtitlesAtTime("\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27f);
-            SubtitlesAtTime("  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27.5f);
-            SubtitlesAtTime("  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28f);
-            SubtitlesAtTime("  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28.5f);
-            SubtitlesAtTime("\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29f);
-            SubtitlesAtTime("  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29.5f);
-            SubtitlesAtTime("  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30f);
-            SubtitlesAtTime("  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30.5f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!", 4f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>", 6f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>", 8f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote: <a>https://hackbox.microsoft.com/project/340</a>", 10f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote: <a>https://hackbox.microsoft.com/project/340</a>\n\n  Music:_\"Wintergatan:_Sommarfågel\"\n  <a>https://wintergatan.net</a>", 12f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote: <a>https://hackbox.microsoft.com/project/340</a>\n\n  Music:_\"Wintergatan:_Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  SFX:_\"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>", 14f);
+            SubtitlesAtTime("☄_BitNaughts_is_an_educational\n  programming_video-game!\n\n☈ It's_code_gamified!\n  Play: <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote: <a>https://hackbox.microsoft.com/project/340</a>\n\n  Music:_\"Wintergatan:_Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  SFX:_\"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites: Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 16f);
+            // SubtitlesAtTime("  programming_video-game!\n\n  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22f);
+            // SubtitlesAtTime("\n  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 22.5f);
+            // SubtitlesAtTime("  It's code gamified!\n  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23f);
+            // SubtitlesAtTime("  Play:  <a>https://bitnaughts.io</a>\n  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 23.5f);
+            // SubtitlesAtTime("  Learn: <a>https://github.com/bitnaughts</a>\n  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24f);
+            // SubtitlesAtTime("  Vote:  <a>https://hackbox.microsoft.com/project/340</a>\n\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 24.5f);
+            // SubtitlesAtTime("\n  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25f);
+            // SubtitlesAtTime("  Soundtrack:\n  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 25.5f);
+            // SubtitlesAtTime("  Wintergatan:_\"Sommarfågel\"\n  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26f);
+            // SubtitlesAtTime("  <a>https://wintergatan.net</a>\n\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 26.5f);
+            // SubtitlesAtTime("\n  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27f);
+            // SubtitlesAtTime("  Sound_Effects:\n  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 27.5f);
+            // SubtitlesAtTime("  \"Battlestations_Pacific\"\n  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28f);
+            // SubtitlesAtTime("  <a>https://spritedatabase.net/game/3228</a>\n\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 28.5f);
+            // SubtitlesAtTime("\n  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29f);
+            // SubtitlesAtTime("  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29.5f);
+            // SubtitlesAtTime("  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30f);
+            // SubtitlesAtTime("  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30.5f);
             SubtitlesAtTime("$", 31f);
             Flash("Clickable$", 35.1f);
             if (global_timer > 92) {
@@ -471,6 +475,11 @@ public class Interactor : MonoBehaviour
         } else if (tutorialIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
+            if (timer < .7f + Time.deltaTime * 2 && timer > .7f) {
+                GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
+                GameObject.Find("World").GetComponent<AudioSource>().volume = .1f;
+                GameObject.Find("World").GetComponent<AudioSource>().Play();
+            }
             PlayAtTime(TutorialIntro, 1f);
             SubtitlesAtTime("  Welcome_to_the", 1f);
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 2f);
@@ -503,6 +512,8 @@ public class Interactor : MonoBehaviour
             Flash ("MapScreenOverlayBitUpRight", 1.5f);
             Flash ("MapScreenOverlayBitDownLeft", 1.5f);
             Flash ("MapScreenOverlayBitDownRight", 1.5f);
+            Flash ("MapScreenOverlayBitExit", 1.5f);
+            Flash ("MapScreenOverlayBitReset", 1.5f);
             PlayAtTime(TutorialGood3, 0.5f);
             PlayAtTime(TutorialMapScreen, 1.5f);
             SubtitlesAtTime("▦_Map_Screen_shows", 1.5f);
@@ -519,6 +530,8 @@ public class Interactor : MonoBehaviour
             ResetFlash ("MapScreenOverlayBitUpRight", 9f);
             ResetFlash ("MapScreenOverlayBitDownLeft", 9f);
             ResetFlash ("MapScreenOverlayBitDownRight", 9f);
+            ResetFlash ("MapScreenOverlayBitExit", 9f);
+            ResetFlash ("MapScreenOverlayBitReset", 9f);
             PlayAtTime(TutorialTargetWindowHelp, 14f);
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press", 14f);
             SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"", 16.5f);
@@ -532,24 +545,25 @@ public class Interactor : MonoBehaviour
             ResetSpriteFlash("Cannon", 0f);
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialTargetWindowSelected, 0.5f);
-            MapSubtitlesAtTime("Target Window displays", 1f);
-            MapSubtitlesAtTime("Target Window displays unit name & class", 3.2f);
+            MapSubtitlesAtTime("⁜ Target Window displays", 1f);
+            MapSubtitlesAtTime("unit name and class", 3.2f);
             Flash("OverlayBorder", 1.2f);
             PlayAtTime(TutorialLeftWindow, 8f);
             ResetFlash("OverlayBorder", 8f);
             Flash ("InterpreterPanel", 8f);
             Flash ("UnitScreenBit", 8f);
             MapSubtitlesAtTime("Left is Unit Window", 8f);
-            MapSubtitlesAtTime("Displays information about the class", 11f);
+            MapSubtitlesAtTime("information about the class", 11f);
             ResetFlash ("InterpreterPanel", 15f);
             ResetFlash ("UnitScreenBit", 15f);
             PlayAtTime(TutorialSelect, 15f);
-            MapSubtitlesAtTime("Press Fire or\n/*Use weapon control*/", 15f);
-            Flash("Clickable/*_Use_weapon_control_*/", 15f);
-            Flash ("ClickableFire", 15f);
+            MapSubtitlesAtTime("Press Fire or\n/* Weapon control */", 15f);
+            Flash("Clickable/*_Weapon_control_*/", 15f);
+            Flash ("ClickableFire_()", 15f);
             PlayAtTime(TutorialTry, 22f);
             PlayAtTime(TutorialSelect, 26f);
         } else  if (tutorialFire) {
+            RenderComponent(InputField.text);
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             PlayAtTime(TutorialGood, 0.5f);
@@ -571,19 +585,21 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("Press\n◉ Thruster", 0.5f);
             PlayAtTime(TutorialGetMoving, 12f);
         } else if (tutorialThrust) {
+            RenderComponent(InputField.text);
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
             ResetSpriteFlash ("Thruster", 0f);
             ResetFlash ("OverlayPanDown", 0f);
             PlayAtTime(TutorialGood2, 0.5f);
-            Flash("ClickableThrottleMax", 1.5f);
-            Flash("Clickable/*_Throttle_control_(max)_*/", 1.5f);
+            Flash("ClickableThrustMax_()", 1.5f);
+            Flash("Clickable/*_Thrust_control_(+)_*/", 1.5f);
             PlayAtTime(TutorialThrottle, 1.5f);
-            MapSubtitlesAtTime("Press ThrottleMax or\n/*Throttle Control (max)*/", 1.5f);
+            MapSubtitlesAtTime("Press ThrustUp or\n/* Thrust control (+) */", 1.5f);
             PlayAtTime(TutorialTry, 8f);
             PlayAtTime(TutorialThrottle, 14f);
         } else if (tutorialFinish) {
+            RenderComponent(InputField.text);
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
