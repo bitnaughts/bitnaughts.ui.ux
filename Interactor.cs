@@ -291,8 +291,14 @@ public class Interactor : MonoBehaviour
 
     public void PlayTheme() {
         timer = 0;
-        global_timer = 0;
+        global_timer = 0; 
+        PlayThemeMusic();
         aboutIntro = true;
+    }
+    public void PlayThemeMusic() {
+        GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
+        GameObject.Find("World").GetComponent<AudioSource>().volume = .05f;
+        GameObject.Find("World").GetComponent<AudioSource>().Play();
     }
     public bool IsIntroCompleted() {
         return aboutIntro;
@@ -455,8 +461,6 @@ public class Interactor : MonoBehaviour
             // SubtitlesAtTime("  Sprites:\n  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 29.5f);
             // SubtitlesAtTime("  Alejandro_Monge:_\"Modular_Spaceships\"\n  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30f);
             // SubtitlesAtTime("  <a>https://www.behance.net/gallery/14146659/Modular-Spaceships</a>", 30.5f);
-            SubtitlesAtTime("$", 31f);
-            Flash("Clickable$", 35.1f);
             if (global_timer > 92) {
                 Sound("WarningOver");
                 aboutIntro = false;
@@ -475,11 +479,6 @@ public class Interactor : MonoBehaviour
         } else if (tutorialIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
-            if (timer < 0f + Time.deltaTime * 2 && timer > 0f) {
-                GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
-                GameObject.Find("World").GetComponent<AudioSource>().volume = .05f;
-                GameObject.Find("World").GetComponent<AudioSource>().Play();
-            }
             PlayAtTime(TutorialIntro, 1f);
             SubtitlesAtTime("  Welcome_to_the", 1f);
             SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 2f);
@@ -589,8 +588,8 @@ public class Interactor : MonoBehaviour
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
             MapSubtitlesAtTime("", 0f);
-            ResetSpriteFlash ("Thruster", 0f);
-            ResetFlash ("OverlayPanDown", 0f);
+            ResetSpriteFlash ("Thruster", 0.1f);
+            ResetFlash ("OverlayPanDown", 0.1f);
             PlayAtTime(TutorialGood2, 0.5f);
             Flash("ClickableThrustUp_()", 1.5f);
             Flash("Clickable/*_Thrust_control_(+)_*/", 1.5f);
@@ -601,6 +600,7 @@ public class Interactor : MonoBehaviour
         } else if (tutorialFinish) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
+            ResetFlash ("OverlayPanDown", 0.1f);
             MapSubtitlesAtTime("", 0f);
             PlayAtTime(TutorialBetter, 0.1f);
             PlayAtTime(TutorialOutro, 2.5f);
@@ -615,7 +615,9 @@ public class Interactor : MonoBehaviour
                 CompleteTutorial();
             }
         } else if (OverlayInteractor.gameObject.activeSelf) {
-            RenderComponent(InputField.text);
+            if (animation_timer % 1 > 1 - Time.deltaTime) {
+                RenderComponent(InputField.text);
+            }
         }
     }
     void InitializeClickableText(string text, int line, int pos) {

@@ -269,7 +269,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>◌_Sensor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Sensor");
                 break;
-            case "double_Scan_()":
+            case "Scan_()":
             case "/*_Ray_caster_*/":
                 Interactor.Sound("Radar");
                 break;
