@@ -17,7 +17,7 @@ public class ClickableTextInteractor : MonoBehaviour
         initialized_text = text;
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-40f + (pos - (text.Length-1)/2f) * 30f, -83f + line * -60f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-40f + (pos - (text.Length-1)/2f) * 30f, -53f + line * -60f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 30f, 60f);//new Vector2(text.Length * 37.5f, 75f);
         this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
 
@@ -79,7 +79,7 @@ public class ClickableTextInteractor : MonoBehaviour
         } 
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>cp</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>about</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>cp</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>story</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -164,6 +164,10 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.Sound("Warning");
                 Interactor.AppendText("$ <b>about</b>");
                 Interactor.PlayTheme();
+                break;
+            case "story":
+                Interactor.StoryMode();
+                GameObject.Find("Panel").SetActive(true);
                 break;
             case "tutorial":
             case "⍰⍰_Help":
