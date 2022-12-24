@@ -79,7 +79,7 @@ public class ClickableTextInteractor : MonoBehaviour
         } 
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>make</b>\n  <b>nano</b>\n  <b>cp</b>\n  <b>rm</b>\n  <b>git</b>\n  <b>clear</b>\n  <b>story</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            Interactor.AppendText("$ <b>back</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -165,7 +165,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ <b>about</b>");
                 Interactor.PlayTheme();
                 break;
-            case "story":
+            case "campaign":
                 Interactor.StoryMode();
                 GameObject.Find("Panel").SetActive(true);
                 break;

@@ -482,7 +482,7 @@ public class Interactor : MonoBehaviour
             switch (clip_index) {
                 case 1:
                     MapSubtitlesAtTime("The voices we used to", 7.5f, story_timer);
-                    MapSubtitlesAtTime("hear on the radio:", 8.5f, story_timer);
+                    MapSubtitlesAtTime("hear on the radio...", 8.5f, story_timer);
                     MapSubtitlesAtTime("☄", 10f, story_timer);
                     MapSubtitlesAtTime("Be sure and", 11f, story_timer);
                     MapSubtitlesAtTime("tune in tomorrow", 12f, story_timer);
@@ -502,7 +502,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("I recall so many", 28.5f, story_timer);
                     MapSubtitlesAtTime("personal experiences", 29.5f, story_timer);
                     MapSubtitlesAtTime("from when I grew up", 30.5f, story_timer);
-                    MapSubtitlesAtTime("listened to one", 31.5f, story_timer);
+                    MapSubtitlesAtTime("and listened to one", 31.5f, story_timer);
                     MapSubtitlesAtTime("show after another.", 32.5f, story_timer);
                     MapSubtitlesAtTime("⛅", 33.5f, story_timer);
                     MapSubtitlesAtTime("This girl singing", 34.25f, story_timer);
@@ -518,8 +518,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("It's different!", 46f, story_timer);
                     MapSubtitlesAtTime("Our lives are ruined already!", 47.5f, story_timer);
                     MapSubtitlesAtTime("⛅", 49f, story_timer);
-                    // MapSubtitlesAtTime("♪", 50f, story_timer);
-                    // MapSubtitlesAtTime("♫", 51f, story_timer);
                     MapSubtitlesAtTime("There are those who", 54f, story_timer);
                     MapSubtitlesAtTime("drink champange at nightclubs,", 55.5f, story_timer);
                     MapSubtitlesAtTime("and us who listen to them", 57.25f, story_timer);
@@ -558,13 +556,13 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("This then is a report", 46f - 12.25f, story_timer);
                     MapSubtitlesAtTime("on our present future.", 47.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("Some of it profound...", 49.25f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("some of it mere gadgetry...", 51f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("Some of it mere gadgetry...", 51f - 12.25f, story_timer);
                     MapSubtitlesAtTime("You are looking now", 53f - 12.25f, story_timer);
                     MapSubtitlesAtTime("at a nuclear reactor.", 54f - 12.25f, story_timer);
                     MapSubtitlesAtTime("It is not producing a bomb.", 55.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("It can produce electricity.", 57f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("In a pilot", 60f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Power Plant\"", 60.75f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("In a pilot", 59.5f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("\"Atomic Power Plant\"", 60.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("in the desert", 61.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("the lights go on!", 62.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("Nuclear energy", 64f - 12.25f, story_timer);
@@ -572,13 +570,11 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("Not destroying", 66.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("but serving mankind!", 67.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("⛅", 70 - 12.25f, story_timer);
-                    // MapSubtitlesAtTime("♫", 71f - 12.25f, story_timer);
                     MapSubtitlesAtTime("The power lines of tomorrow", 74f - 12.25f, story_timer);
                     MapSubtitlesAtTime("may also derive their electricity", 75.5f - 12.25f, story_timer);
                     MapSubtitlesAtTime("from that source of all power", 76.75f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("the sun!", 79f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("the \"Sun\"!", 79f - 12.25f, story_timer);
                     MapSubtitlesAtTime("⛅", 81f - 12.25f, story_timer);
-                    // MapSubtitlesAtTime("♫", 82f - 12.25f, story_timer);
                     MapSubtitlesAtTime("⛈", 82f - 12.25f, story_timer);
                     break;
                 case 3:
@@ -590,7 +586,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("to this present future.", 12.5f, story_timer);
                     MapSubtitlesAtTime("In the \"Electronics Age\",", 14.5f, story_timer);
                     MapSubtitlesAtTime("the development of", 16f, story_timer);
-                    MapSubtitlesAtTime("giant computers:", 17f, story_timer);
+                    MapSubtitlesAtTime("giant computers,", 17f, story_timer);
                     MapSubtitlesAtTime("\"Electronic Brains\",", 18f, story_timer);
                     MapSubtitlesAtTime("has been a key development.", 19.25f, story_timer);
                     MapSubtitlesAtTime("These incredibly", 21f, story_timer);
@@ -603,9 +599,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("infallable.", 29f, story_timer);
                     MapSubtitlesAtTime("This ability has", 30.25f, story_timer);
                     MapSubtitlesAtTime("started a second", 31.25f, story_timer);
-                    MapSubtitlesAtTime("Industrial Revolution:", 32.25f, story_timer);
-                    MapSubtitlesAtTime("\"Automation\".", 33.5f, story_timer);
-                    MapSubtitlesAtTime("The highly controversial", 34.5f, story_timer);
+                    MapSubtitlesAtTime("industrial revolution:", 32.25f, story_timer);
+                    MapSubtitlesAtTime("\"Automation\",", 33.5f, story_timer);
+                    MapSubtitlesAtTime("the highly controversial", 34.5f, story_timer);
                     MapSubtitlesAtTime("\"Automatic Factory\".", 36.25f, story_timer);
                     MapSubtitlesAtTime("In this engine", 37.75f, story_timer);
                     MapSubtitlesAtTime("block assembly,", 38.75f, story_timer);
@@ -713,10 +709,10 @@ public class Interactor : MonoBehaviour
                 case 7:
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("In another field,", 10f, story_timer);
-                    MapSubtitlesAtTime("Music can now be", 11f, story_timer);
+                    MapSubtitlesAtTime("music can now be", 11f, story_timer);
                     MapSubtitlesAtTime("produced entirely", 12f, story_timer);
                     MapSubtitlesAtTime("by electronics!", 13f, story_timer);
-                    MapSubtitlesAtTime("No known instruments!", 14f, story_timer);
+                    MapSubtitlesAtTime("No known instruments", 14f, story_timer);
                     MapSubtitlesAtTime("are involved.", 15.5f, story_timer);
                     MapSubtitlesAtTime("Coded information", 16.5f, story_timer);
                     MapSubtitlesAtTime("is punched out.", 17.5f, story_timer);
@@ -751,8 +747,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("and a coming attraction:", 90f, story_timer);
                     MapSubtitlesAtTime("portable battery powered", 91.5f, story_timer);
                     MapSubtitlesAtTime("\"Television Sets\"!", 93.5f, story_timer);
-                    MapSubtitlesAtTime("⛅", 86f, story_timer);
-                    MapSubtitlesAtTime("⛈", 87f, story_timer);
+                    MapSubtitlesAtTime("⛈", 94.5f, story_timer);
                     break;
                 case 8:
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
@@ -771,7 +766,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("ingenious methods", 21.25f, story_timer);
                     MapSubtitlesAtTime("of handling.", 22.125f, story_timer);
                     MapSubtitlesAtTime("The prioprietor is the", 23.125f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Energy Commission.\"", 24.125f, story_timer);
+                    MapSubtitlesAtTime("\"Atomic Energy Commission\".", 24.125f, story_timer);
                     MapSubtitlesAtTime("These drugs and", 26f, story_timer);
                     MapSubtitlesAtTime("chemicals are known as", 27f, story_timer);
                     MapSubtitlesAtTime("\"Radio Isotopes\".", 28.5f, story_timer);
@@ -797,9 +792,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("within one second.", 53.5f, story_timer);
                     MapSubtitlesAtTime("They are helping to", 55f, story_timer);
                     MapSubtitlesAtTime("save thousands of lives", 56f, story_timer);
-                    MapSubtitlesAtTime("every year,", 57.35f, story_timer);
+                    MapSubtitlesAtTime("every year,", 57.5f, story_timer);
                     MapSubtitlesAtTime("are advancing medical", 58.5f, story_timer);
-                    MapSubtitlesAtTime("sciencies, as well as", 59.75f, story_timer);
+                    MapSubtitlesAtTime("science, as well as", 59.5f, story_timer);
                     MapSubtitlesAtTime("research in biology,", 60.5f, story_timer);
                     MapSubtitlesAtTime("industry and agriculture.", 62f, story_timer);
                     MapSubtitlesAtTime("The most effective", 64f, story_timer);
@@ -812,22 +807,22 @@ public class Interactor : MonoBehaviour
                     break;
                 case 9:
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
-                    MapSubtitlesAtTime("The aparatus of", 9f, story_timer);
-                    MapSubtitlesAtTime("the \"Atomic Age\"", 9.75f, story_timer);
+                    MapSubtitlesAtTime("The aparatus of the", 8.75f, story_timer);
+                    MapSubtitlesAtTime("\"Atomic Age\"", 9.75f, story_timer);
                     MapSubtitlesAtTime("is enormously ingenious!", 10.5f, story_timer);
                     MapSubtitlesAtTime("At Argon National", 12f, story_timer);
                     MapSubtitlesAtTime("Laboratory in Chicago,", 13f, story_timer);
                     MapSubtitlesAtTime("metallurgists use a", 14.5f, story_timer);
-                    MapSubtitlesAtTime("\"Master Slave Manipulator\"", 16f, story_timer);
-                    MapSubtitlesAtTime("to work with radioactive", 17.75f, story_timer);
-                    MapSubtitlesAtTime("metals. This manipulator", 19.25f, story_timer);
+                    MapSubtitlesAtTime("\"Master Slave Manipulator\" to", 16f, story_timer);
+                    MapSubtitlesAtTime("work with radioactive metals.", 17.75f, story_timer);
+                    MapSubtitlesAtTime("This manipulator", 19.5f, story_timer);
                     MapSubtitlesAtTime("can do anything", 21f, story_timer);
                     MapSubtitlesAtTime("human hands can do!", 22f, story_timer);
                     MapSubtitlesAtTime("As you watch,", 23.5f, story_timer);
                     MapSubtitlesAtTime("the operator,", 24.5f, story_timer);
                     MapSubtitlesAtTime("shielded by three feet", 25.5f, story_timer);
                     MapSubtitlesAtTime("of glass and concrete,", 26.5f, story_timer);
-                    MapSubtitlesAtTime("conducts an involved,", 28f, story_timer);
+                    MapSubtitlesAtTime("conducts an involved", 28f, story_timer);
                     MapSubtitlesAtTime("\"Metal Hardness Test\",", 29.35f, story_timer);
                     MapSubtitlesAtTime("relying entirely", 30.5f, story_timer);
                     MapSubtitlesAtTime("on his nimble", 32.25f, story_timer);
@@ -838,19 +833,19 @@ public class Interactor : MonoBehaviour
                 case 10:
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("In the final", 9f, story_timer);
-                    MapSubtitlesAtTime("analysis however", 10f, story_timer);
+                    MapSubtitlesAtTime("analysis however,", 10f, story_timer);
                     MapSubtitlesAtTime("the key to the future", 11f, story_timer);
                     MapSubtitlesAtTime("is not an aparatus,", 12f, story_timer);
-                    MapSubtitlesAtTime("a machine or an", 13.75f, story_timer);
-                    MapSubtitlesAtTime("electronic cube", 15f, story_timer);
+                    MapSubtitlesAtTime("a machine, or an", 13.75f, story_timer);
+                    MapSubtitlesAtTime("electronic cube,", 15f, story_timer);
                     MapSubtitlesAtTime("but the brainpower", 16f, story_timer);
                     MapSubtitlesAtTime("of man.", 17f, story_timer);
                     MapSubtitlesAtTime("Nothing will ever replace", 18.5f, story_timer);
                     MapSubtitlesAtTime("\"Creative Intelligence\".", 20f, story_timer);
                     MapSubtitlesAtTime("In great laboratories,", 21.5f, story_timer);
                     MapSubtitlesAtTime("in colleges and universities,", 23.25f, story_timer);
-                    MapSubtitlesAtTime("in solitary quiet,", 25f, story_timer);
-                    MapSubtitlesAtTime("man thinks,", 26.35f, story_timer);
+                    MapSubtitlesAtTime("in solitary quiet...", 25f, story_timer);
+                    MapSubtitlesAtTime("Man thinks,", 26.35f, story_timer);
                     MapSubtitlesAtTime("reasons,", 28f, story_timer);
                     MapSubtitlesAtTime("experiments,", 29f, story_timer);
                     MapSubtitlesAtTime("creates.", 30f, story_timer);
@@ -858,7 +853,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("strains to peer", 32f, story_timer);
                     MapSubtitlesAtTime("beyond today's horizons", 33.25f, story_timer);
                     MapSubtitlesAtTime("for a glimpse of", 35f, story_timer);
-                    MapSubtitlesAtTime("the wonders of tomorrow!", 37.5f, story_timer);
+                    MapSubtitlesAtTime("the wonders of tomorrow!", 36.75f, story_timer);
                     MapSubtitlesAtTime("⛅", 39f, story_timer);
                     MapSubtitlesAtTime("🔚", 43.5f, story_timer);
                     MapSubtitlesAtTime("⛈", 47f, story_timer);
