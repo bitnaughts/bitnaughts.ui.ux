@@ -79,7 +79,7 @@ public class ClickableTextInteractor : MonoBehaviour
         } 
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>back</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>");
+            Interactor.AppendText("$ <b>about</b>\n  <b>back</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -162,12 +162,12 @@ public class ClickableTextInteractor : MonoBehaviour
             // break;
             case "about": 
                 Interactor.Sound("Warning");
-                Interactor.AppendText("$ <b>about</b>");
-                Interactor.PlayTheme();
+                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n$");
+                // Interactor.PlayTheme();
                 break;
             case "campaign":
                 Interactor.StoryMode();
-                GameObject.Find("Panel").SetActive(true);
+                // GameObject.Find("Panel").SetActive(true);
                 break;
             case "tutorial":
             case "⍰⍰_Help":

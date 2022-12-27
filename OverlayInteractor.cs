@@ -18,7 +18,7 @@ public class OverlayInteractor : MonoBehaviour
     {
         last_position = new Vector2 (999,999);
         last_size = new Vector2 (999,999);
-        Interactor = GameObject.Find("Content").GetComponent<Interactor>();
+        Interactor = GameObject.Find("ScreenCanvas").GetComponent<Interactor>();
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
     }
     void Update()
