@@ -60,6 +60,12 @@ public class Interactor : MonoBehaviour
         PlayVideo(audio_queue);
         OnMapView();
     }
+    public static int Max(int val1, int val2) {
+        return (val1>=val2)?val1:val2;
+    }
+    public static int Min(int val1, int val2) {
+        return (val1<val2)?val1:val2;
+    }
     float story_timer = -1f, start_timer = 0f;
     public void SetBackground(Color color) 
     {
@@ -322,6 +328,7 @@ public class Interactor : MonoBehaviour
     public void FinishTutorial() {
         Sound("Back");
         if (story_timer != -1) {
+            campaign_splits[clip_index - 1] = story_timer;//999 ; in the future
             story_timer = 0f;
             if (clip_index < 20) {
                 PlayVideo(campaign_clips[clip_index]);
@@ -462,48 +469,12 @@ public class Interactor : MonoBehaviour
     string FloatToTime(float time) {
         var pt = ((int)((time*100) % 60)).ToString("00");
         var ss = ((int)(time % 60)).ToString("00");
-        var mm = (Mathf.Floor(time / 60) % 60).ToString().TrimStart('0');
-        if (mm == "") return ss + "." + pt;
-        return mm + ":" + ss + "." + pt;
+        var mm = (Mathf.Floor(time / 60) % 60).ToString();//.TrimStart('0');
+        // if (mm == "") return ss + "." + pt;
+        return mm + ":" + ss + "." + pt[0];
     }
     void Update () {
         animation_timer += Time.deltaTime;
-        if (TutorialRunning() || story_timer != -1) {
-            if (SubtitlesShadow.activeSelf) {
-                Timer.text = FloatToTime(story_timer) + "\n" + FloatToTime(global_timer);
-            }
-            else
-            {
-                Timer.text = FloatToTime(story_timer) + "\n";
-            }
-        } else if (aboutIntro) {
-            Timer.text = "\n" + FloatToTime(global_timer);
-        }  else {
-            if (animation_timer < 4f) {
-                if (animation_timer < 2f) {
-                    Timer.text = FloatToTime(start_timer) + "\n* Hello *";
-                } else {
-                    Timer.text = FloatToTime(start_timer) + "\n* World *";
-                }
-            } 
-            else if ((animation_timer / 10f ) % 2 < 1) {
-                if (SubtitlesShadow.activeSelf) {
-                    Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.ToString("h:mm:ss.f");
-                }
-                else
-                {
-                    Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n";
-                }
-            } else {
-                if (SubtitlesShadow.activeSelf) {
-                    Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
-                }
-                else
-                {
-                    Timer.text =  System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n";
-                }
-            }
-        }
         if (Input.GetMouseButton(0)) {
             click_duration += Time.deltaTime;
         }
@@ -537,13 +508,20 @@ public class Interactor : MonoBehaviour
     string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", " ☄ BitNaughts   " };
     int campaign_stage = -1, tutorial_stage = -1; 
-    int[] clip_durations = new int[] {9999, 81, 9999, 79, 9999, 64, 9999, 46, 9999, 79, 9999, 74, 9999, 107, 9999, 95, 9999, 116, 9999, 51, 9999, 9999, 9999, 9999 };
-    int[] tutorial_clip_durations = new int[] {9999, 81, 9999, 79, 9999, 64, 9999, 46, 9999, 79, 9999, 74, 9999, 107, 9999, 95, 9999, 116, 9999, 51, 9999, 9999, 9999, 9999 };
+    int[] campaign_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 999, 999, 999, 999 };
+    float[] campaign_splits = new float[20];
+    int[] tutorial_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 999, 999, 999, 999 };
     int clip_index = 0;
+    string credits_output = "";
     void FixedUpdate()
     {
         if (start_timer > -1) 
         {
+            if ((start_timer / 5f ) % 2 < 1) {
+                Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+            } else {
+                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+            }
             start_timer += Time.deltaTime;
             MapSubtitlesAtTime("Tap to continue ...", 0, start_timer);
             MapSubtitlesAtTime("⛅", 2f, start_timer);
@@ -584,12 +562,23 @@ public class Interactor : MonoBehaviour
                 volume_slider.SetActive(false);
                 InputField.text = " ☄ BitNaughts";
             }
-        }
-        if (story_timer > -1 && clip_index > -1) {
+        } else if (story_timer > -1 && clip_index > -1) {
+            Timer.text = "";
+            for (int i = 0; i < clip_index - 1; i++) {
+                Timer.text += FloatToTime(campaign_splits[i]) + "\n";
+            }
+            if (clip_index == 20) Timer.text += "------\n" + FloatToTime(global_timer);
+            else if (clip_index == 1) Timer.text = FloatToTime(story_timer);
+            else if (SubtitlesShadow.activeSelf) {
+                Timer.text += "------\n" + FloatToTime(story_timer);
+            } 
+            else {
+                Timer.text = FloatToTime(story_timer) + "\n";
+            }
             if (clip_index <= 19) {
                 global_timer += Time.deltaTime;
             }
-            if ((story_timer > 0.25f && Input.GetMouseButton(0) && CheckInsideEdge()) || (story_timer > clip_durations[clip_index] && story_timer < clip_durations[clip_index] + (Time.deltaTime * 2f))) {
+            if ((story_timer > 0.5f && Input.GetMouseButton(0) && CheckInsideEdge()) || (story_timer > campaign_clip_durations[clip_index] && story_timer < campaign_clip_durations[clip_index] + (Time.deltaTime * 2f))) {
                 if (clip_index >= 20) {
                     story_timer = -1;
                     clip_index = -1;
@@ -605,7 +594,7 @@ public class Interactor : MonoBehaviour
                 }
                 else
                 {
-                    if (clip_durations[clip_index] == 9999) //objective mission
+                    if (campaign_clip_durations[clip_index] == 999) //objective mission
                     {
                         Subtitles.SetActive(false);
                         SubtitlesShadow.SetActive(false);
@@ -618,6 +607,7 @@ public class Interactor : MonoBehaviour
                     }
                     else 
                     {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -819,6 +809,7 @@ public class Interactor : MonoBehaviour
                     }
                     if (CampaignNewtonsLaws.transform.childCount == 0) 
                     {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -912,6 +903,7 @@ public class Interactor : MonoBehaviour
                         CampaignDeBroglieTheory.SetActive(true);
                     }
                     if (CampaignDeBroglieTheory.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1015,6 +1007,7 @@ public class Interactor : MonoBehaviour
                         CampaignDopplerShift.SetActive(true);
                     }
                     if (CampaignDopplerShift.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1121,6 +1114,7 @@ public class Interactor : MonoBehaviour
                         CampaignDopplerEffect.SetActive(true);
                     }
                     if (CampaignDopplerEffect.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1181,6 +1175,7 @@ public class Interactor : MonoBehaviour
                         CampaignPlanksLaw.SetActive(true);
                     }
                     if (CampaignPlanksLaw.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1296,6 +1291,7 @@ public class Interactor : MonoBehaviour
                         CampaignHawkingRadiation.SetActive(true);
                     }
                     if (CampaignHawkingRadiation.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1388,6 +1384,7 @@ public class Interactor : MonoBehaviour
                         CampaignMoracevsParadox.SetActive(true);
                     }
                     if (CampaignMoracevsParadox.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1497,6 +1494,7 @@ public class Interactor : MonoBehaviour
                         CampaignFermiParadox.SetActive(true);
                     }
                     if (CampaignFermiParadox.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1570,6 +1568,7 @@ public class Interactor : MonoBehaviour
                         CampaignPascalsWager.SetActive(true);
                     }
                     if (CampaignPascalsWager.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
@@ -1659,15 +1658,33 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 47f, story_timer);
                     break;
                 case 20:
-                    // MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 0f, story_timer);
-                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n║ Date: " + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!\nTap to continue ...", 1f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 2f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("h:mm:ss.f") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 6f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 10f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Woody Allen's      ║\n║ Radio Days         ║\n║             (1987) ║\n╚════════════════════╝\n\nTap to continue ...", 14f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Jay Bonafield's    ║\n║ The Future Is Now  ║\n║             (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 18f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's Navi-  ║\n║ gation Satellite   ║\n║ System      (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 22f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's Digi-  ║\n║ tal Computer       ║\n║ Techniques  (1962) ║\n╚════════════════════╝\n\nTap to continue ...", 26f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sounds *     ║\n║ Eidos Interactive  ║\n║ Battlestations     ║\n║ Pacific     (2009) ║\n╚════════════════════╝\n\nTap to continue ...", 30f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sprite *     ║\n║ Alejandro Monge's  ║\n║ Modular Spaceships ║\n║             (2014) ║\n╚════════════════════╝\n\nTap to continue ...", 34f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n╚════════════════════╝\n\nTap to continue ...", 38f, story_timer);
                     break;
                 case 21:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     break;
             }
         }
+        else 
+        {
+            if ((animation_timer / 5f ) % 2 < 1) {
+                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n";
+            } else {
+                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n";
+            } 
+        }
+        
+
         if (aboutIntro) {
             timer += Time.deltaTime;
             global_timer += Time.deltaTime;
