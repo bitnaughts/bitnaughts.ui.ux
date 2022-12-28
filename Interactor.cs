@@ -15,7 +15,8 @@ public class Interactor : MonoBehaviour
 {
     public GameObject[] GridLayers;
     public GameObject SplashScreen;
-    public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignBohrsModel, CampaignBentleysParadox, CampaignPlanksLaw, CampaignPascalsWager, CampaignMoracevsParadox, CampaignHawkingRadiation, CampaignDeBroglieTheory, CampaignFermiParadox;
+    public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
+    public AudioClip SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration;
     public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
@@ -27,29 +28,18 @@ public class Interactor : MonoBehaviour
     private string history = "";
     public StructureController Ship;
     public GameObject volume_slider;
-    public string start_text = "$"; //git clone https://github.com/bitnaughts/bitnaughts.git\nCloning into 'bitnaughts'...\nremote: Enumerating objects: 3994, done.\nremote: Counting objects: 100% (96/96), done.\nremote: Compressing objects: 100% (67/67), done.\nremote: Total 3994 (delta 34), reused 82 (delta 28), pack-reused 3898\nReceiving objects: 100% (3994/3994), 31.20 MiB | 10.49 MiB/s, done.\nResolving deltas: 100% (2755/2755), done.\n" + 
-    // "\n~ $ cd bitnaughts\n\n~/bitnaughts $ help\n☄ BitNaughts is an educational\nprogramming video-game.\n\n~/bitnaughts $";//\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n~ $ help\nBit Bash\nBitNaughts inline terminal\nA really long line would fit like this with the slider being able to scroll to see the full text\n~ $\n\npublic class Processor {\n void Start() {\n }\n}\n\n\ntest one two three\nfour five six\nseven eight nine";
-
+    public string start_text = "$"; 
     public OverlayInteractor OverlayInteractor;
     public GameObject ClickableText;
     GameObject MapScreenPanOverlay;
     public Text InputField;
-
     public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
-
     GameObject camera;
-
     public List<GameObject> ButtonsCache = new List<GameObject>();
     int cache_size = 125;
-    // Start is called before the first frame update
-
     string audio_queue = "SplashScreen";
     public AudioClip clip_queue;
-    private void Awake()
-    {
-        StartCoroutine(LoadAudio());
-    }
-
+    // Start is called before the first frame update
     void Start()
     {
         SplashScreen.SetActive(true);
@@ -68,77 +58,58 @@ public class Interactor : MonoBehaviour
         RenderText("$");
         Timer.text = "⛅";
         PlayVideo(audio_queue);
-
-        
         OnMapView();
     }
     float story_timer = -1f, start_timer = 0f;
-
     public void SetBackground(Color color) 
     {
-        // camera.GetComponent<Camera>().backgroundColor = color;
-        // foreach (var obj in GridLayers)
-        // {
-        //     if (color.r == 0) {
-        //         obj.GetComponent<SpriteRenderer>().color = color;
-        //     }
-        //     else {
-        //         obj.GetComponent<SpriteRenderer>().color = new Color(35f/255f, 95f/255f, 110f/255f, .66f);
-        //     }
-        // }
+        camera.GetComponent<Camera>().backgroundColor = color;
+        foreach (var obj in GridLayers)
+        {
+            if (color.r == 0) {
+                obj.GetComponent<SpriteRenderer>().color = color;
+            }
+            else {
+                obj.GetComponent<SpriteRenderer>().color = new Color(35f/255f, 95f/255f, 110f/255f, .66f);
+            }
+        }
     }
-
     public void SetVolume() 
     {
         camera.GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
         GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
     }
-    private IEnumerator LoadAudio()
+    public void PlayAudio(AudioClip clip) 
     {
-        string asset_location = "file://"+ System.IO.Path.Combine (Application.streamingAssetsPath,  "BitNaughts" + audio_queue.Replace(" ", "").Replace("'", "") + "480p.mp3");
-        #if UNITY_WEBGL
-            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Sounds/BitNaughts" + audio_queue.Replace(" ", "").Replace("'", "") + "480p.mp3";
-        #endif
-        print (asset_location);
-        WWW www = new WWW(asset_location);
-        clip_queue = www.GetAudioClip(false,true);
-        clip_queue.name = audio_queue; 
-        yield return www;
-        PlayAudio();
-    }
-
-    public void PlayAudio() 
-    {
-        camera.GetComponent<AudioSource>().clip = clip_queue;
+        camera.GetComponent<AudioSource>().clip = clip;
         camera.GetComponent<AudioSource>().Play();
-        camera.GetComponent<AudioSource>().loop = true;
-
+        camera.GetComponent<AudioSource>().loop = false;
     }
     public void PlayVideo(string url) 
     {
-        audio_queue = url.Replace(" ", "").Replace("'", "");
+        var trimmed_url = url.Replace(" ", "").Replace("'", "");
+        PlayAudio(LookupNarration(trimmed_url));
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
-        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + audio_queue + "480p.mp4");
+        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
         #if UNITY_WEBGL
-            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + audio_queue + "480p.mp4";
+            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + trimmed_url + "480p.mp4";
         #endif
         print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
-        SetBackground(new Color(0, 0, 0));
+        SetBackground(new Color(0f, 0f, 0f));
         MapScreenPanOverlay.SetActive(false);
         volume_slider.SetActive(true);
         SubtitlesShadow.SetActive(true);
         Subtitles.SetActive(true);
         volume_slider.SetActive(true);
         if (url.Length < 15) {
-            InputField.text = "⧆ " + url; // 
+            InputField.text = "⧆ " + url;
         }
         else 
         {
             InputField.text = url;
         }
-        // InputField.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(url.Length * 50f, 60f); 
     }
 
     public void StoryMode(int index) {
@@ -149,6 +120,54 @@ public class Interactor : MonoBehaviour
         PlayVideo(campaign_clips[clip_index]);
         clip_index++;
         OnMapView();
+    }
+    public AudioClip LookupNarration(string clip) 
+    {
+        switch (clip)
+        {
+            case "SplashScreen":
+                return SplashScreenNarration;
+            case "RadioDays":
+                return CampaignRadioDaysNarration;
+            case "NewtonsLaws":
+                return CampaignNewtonsLawsNarration;
+            case "TheAtom":
+                return CampaignTheAtomNarration;
+            case "DeBroglieTheory":
+                return CampaignDeBroglieTheoryNarration;
+            case "TheElectron":
+                return CampaignTheElectronNarration;
+            case "DopplerShift":
+                return CampaignDopplerShiftNarration;
+            case "ModernWar":
+                return CampaignModernWarNarration;
+            case "DopplerEffect":
+                return CampaignDopplerEffectNarration;
+            case "Television":
+                return CampaignTelevisionNarration;
+            case "PlanksLaw":
+                return CampaignPlanksLawNarration;
+            case "VideotapeRecords":
+                return CampaignVideotapeRecordsNarration;
+            case "HawkingRadiation":
+                return CampaignHawkingRadiationNarration;
+            case "ElectronicMusic":
+                return CampaignElectronicMusicNarration;
+            case "MoravecsParadox":
+                return CampaignMoracevsParadoxNarration;
+            case "RadioIsotopes":
+                return CampaignRadioIsotopesNarration;
+            case "FermiParadox":
+                return CampaignFermiParadoxNarration;
+            case "HardnessTest":
+                return CampaignHardnessTestNarration;
+            case "PascalsWager":
+                return CampaignPascalsWagerNarration;
+            case "Conclusion":
+                return CampaignConclusionNarration;
+
+        }
+        return SoundError;
     }
     public void OnMapView() {
         MapPanel.SetActive(true);
@@ -284,83 +303,21 @@ public class Interactor : MonoBehaviour
         }
     }
     public void UseWeapon() {
-        // campaign_newtons_laws_look_around = true;
         Action("Cannon", -1);//GetInput(), -1);
         if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
-        // if (tutorialIntro && !tutorialPan && timer > 0.1f) {
-        //     tutorialIntro = false;
-        //     tutorialPan = true;
-        //     tutorialTarget = false;
-        //     tutorialFire = false;
-        //     tutorialCancel = false;
-        //     tutorialThrust = false;
-        //     tutorialFinish = false;
-        //     timer = 0;
-        // }
     }
     public void PanTutorial() {
-        // campaign_newtons_laws_look_around = true;
         if (clip_index == 2 && campaign_stage == 0) { campaign_stage++; story_timer = 0f; }
-        // if (tutorialIntro && !tutorialPan && timer > 0.1f) {
-        //     tutorialIntro = false;
-        //     tutorialPan = true;
-        //     tutorialTarget = false;
-        //     tutorialFire = false;
-        //     tutorialCancel = false;
-        //     tutorialThrust = false;
-        //     tutorialFinish = false;
-        //     timer = 0;
-        // }
     }
     public void TargetTutorial() {
         if (clip_index == 2 && campaign_stage == 1) { campaign_stage++; story_timer = 0f; }
-        // if (tutorialPan && !tutorialTarget) {
-        //     tutorialIntro = false;
-        //     tutorialPan = false;
-        //     tutorialTarget = true;
-        //     tutorialFire = false;
-        //     tutorialCancel = false;
-        //     tutorialThrust = false;
-        //     tutorialFinish = false;
-        //     timer = 0;
-        // }
     }
     public void FireTutorial() {
         if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
-        // if (tutorialTarget && !tutorialFire) {
-        //     tutorialIntro = false;
-        //     tutorialPan = false;
-        //     tutorialTarget = false;
-        //     tutorialFire = true;
-        //     tutorialCancel = false;
-        //     tutorialThrust = false;
-        //     tutorialFinish = false;
-        //     timer = 0;
-        // }
     }
     public void CancelTutorial() {
-        if (tutorialFire && !tutorialCancel) {
-            tutorialIntro = false;
-            tutorialPan = false;
-            tutorialTarget = false;
-            tutorialFire = false;
-            tutorialCancel = true;
-            tutorialThrust = false;
-            tutorialFinish = false;
-            timer = 0;
-        }
     }
     public void ThrustTutorial() {
-        if (tutorialCancel && !tutorialThrust) {
-            tutorialIntro = false;
-            tutorialPan = false;
-            tutorialTarget = false;
-            tutorialFire = false;
-            tutorialCancel = false;
-            tutorialThrust = true;
-            tutorialFinish = false;
-            timer = 0;
-        }
     }
     public void FinishTutorial() {
         Sound("Back");
@@ -377,16 +334,6 @@ public class Interactor : MonoBehaviour
         } else {
             Application.Quit();
         }
-        // if (tutorialThrust && !tutorialFinish) {
-        //     tutorialIntro = false;
-        //     tutorialPan = false;
-        //     tutorialTarget = false;
-        //     tutorialFire = false;
-        //     tutorialCancel = false;
-        //     tutorialThrust = false;
-        //     tutorialFinish = true;
-        //     timer = 0;
-        // }
     }
     public void CompleteTutorial() {
         if (tutorialFinish) {
@@ -522,32 +469,39 @@ public class Interactor : MonoBehaviour
     void Update () {
         animation_timer += Time.deltaTime;
         if (TutorialRunning() || story_timer != -1) {
-            Timer.text = FloatToTime(story_timer) + "\n" + FloatToTime(global_timer);
+            if (SubtitlesShadow.activeSelf) {
+                Timer.text = FloatToTime(story_timer) + "\n" + FloatToTime(global_timer);
+            }
+            else
+            {
+                Timer.text = FloatToTime(story_timer) + "\n";
+            }
         } else if (aboutIntro) {
             Timer.text = "\n" + FloatToTime(global_timer);
         }  else {
-            // text = "            " + System.DateTime.Now.ToString("hh:mm:ss tt") + "\n" + text;  
-            // text = "            " + FloatToTime(global_timer) + "\n" + text; 
-            // SplitTimer.text = FloatToTime(timer);
-            // SplitTimerShadow.text = FloatToTime(timer);
-            // SplitTimer.text = "";
-            // SplitTimerShadow.text = "";
-            // TimerShadow.text = FloatToTime(global_timer);
-            if (animation_timer < 2f) {
-                if (animation_timer < 1f) {
-                    Timer.text = FloatToTime(start_timer) + "\n~ Hello";
+            if (animation_timer < 4f) {
+                if (animation_timer < 2f) {
+                    Timer.text = FloatToTime(start_timer) + "\n* Hello *";
                 } else {
-                    Timer.text = FloatToTime(start_timer) + "\n~ World";
+                    Timer.text = FloatToTime(start_timer) + "\n* World *";
                 }
-                // Timer.color = new Color(.5f + (animation_timer * 2) % 1, .5f + (animation_timer * 2) % 1, 0, 1f);
-            } else if (animation_timer < 2.1f) {
-                // Timer.color = new Color(1, 1, 1, 1);
-            }
+            } 
             else if ((animation_timer / 10f ) % 2 < 1) {
-                Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.ToString("h:mm:ss.f");
+                if (SubtitlesShadow.activeSelf) {
+                    Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.ToString("h:mm:ss.f");
+                }
+                else
+                {
+                    Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n";
+                }
             } else {
-                Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
-                // Timer.text = "Ping " + camera.GetComponent<MultiplayerController>().Delay.ToString("ss\\.fffff");
+                if (SubtitlesShadow.activeSelf) {
+                    Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    Timer.text =  System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n";
+                }
             }
         }
         if (Input.GetMouseButton(0)) {
@@ -580,7 +534,7 @@ public class Interactor : MonoBehaviour
     bool CheckInsideEdge() {
         return (Input.mousePosition.y > 60 && Input.mousePosition.y < Screen.height - 60 && Input.mousePosition.x > 60 && Input.mousePosition.x < Screen.width - 60);
     }
-    string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "Doppler Effect", "The Electron", "Doppler Shift", "Modern War", "Plank's Law", "Television", "Hawking Radiation", "Videotape Records", "Moravec's Paradox", "Electronic Music", "De Broglie Theory", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
+    string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", " ☄ BitNaughts   " };
     int campaign_stage = -1, tutorial_stage = -1; 
     int[] clip_durations = new int[] {9999, 81, 9999, 79, 9999, 64, 9999, 46, 9999, 79, 9999, 74, 9999, 107, 9999, 95, 9999, 116, 9999, 51, 9999, 9999, 9999, 9999 };
@@ -591,35 +545,32 @@ public class Interactor : MonoBehaviour
         if (start_timer > -1) 
         {
             start_timer += Time.deltaTime;
-            MapSubtitlesAtTime("Tap to skip ...", 0, start_timer);
+            MapSubtitlesAtTime("Tap to continue ...", 0, start_timer);
             MapSubtitlesAtTime("⛅", 2f, start_timer);
             MapSubtitlesAtTime("We interrupt", 2.25f, start_timer);
-            MapSubtitlesAtTime("this program", 3f, start_timer);
-            MapSubtitlesAtTime("to bring you a", 3.5f, start_timer);
-            MapSubtitlesAtTime("special news", 4f, start_timer);
-            MapSubtitlesAtTime("bulletin!", 4.5f, start_timer);
-            MapSubtitlesAtTime("A state of", 5f, start_timer);
-            MapSubtitlesAtTime("emergency has", 5.5f, start_timer);
-            MapSubtitlesAtTime("been declared by", 6f, start_timer);
-            MapSubtitlesAtTime("the President of", 7f, start_timer);
-            MapSubtitlesAtTime("the United States!", 7.75f, start_timer);
+            MapSubtitlesAtTime("this program", 2.75f, start_timer);
+            MapSubtitlesAtTime("to bring you a", 3.25f, start_timer);
+            MapSubtitlesAtTime("special news bulletin!", 4f, start_timer);
+            MapSubtitlesAtTime("A state of emergency", 5f, start_timer);
+            MapSubtitlesAtTime("has been declared by the", 5.85f, start_timer);
+            MapSubtitlesAtTime("President of the", 6.75f, start_timer);
+            MapSubtitlesAtTime("United States!", 7.5f, start_timer);
             MapSubtitlesAtTime("We're switching live", 8.5f, start_timer);
-            MapSubtitlesAtTime("as a full-scale", 9.5f, start_timer);
-            MapSubtitlesAtTime("invasion of the Earth", 10.5f, start_timer);
+            MapSubtitlesAtTime("as a full-scale in-", 9.5f, start_timer);
+            MapSubtitlesAtTime("vasion of the Earth", 10.5f, start_timer);
             MapSubtitlesAtTime("by Martians!", 11.5f, start_timer);
-            MapSubtitlesAtTime("⛈", 12.5f, start_timer);
             MapSubtitlesAtTime("The power lines are", 13f, start_timer);
             MapSubtitlesAtTime("down everywhere!", 14f, start_timer);
-            MapSubtitlesAtTime("\"Oh my God!\"", 15f, start_timer);
-            MapSubtitlesAtTime("⛈", 16.5f, start_timer);
-            MapSubtitlesAtTime("trampled in their", 17.5f, start_timer);
+            MapSubtitlesAtTime("\"Oh my God!\"", 15.25f, start_timer);
+            MapSubtitlesAtTime("⛈", 17f, start_timer);
+            MapSubtitlesAtTime("trampled in their", 18f, start_timer);
             MapSubtitlesAtTime("efforts to escape", 18.75f, start_timer);
-            MapSubtitlesAtTime("There's another", 19.75f, start_timer);
-            MapSubtitlesAtTime("group of spaceships", 20.25f, start_timer);
+            MapSubtitlesAtTime("There's another group", 19.5f, start_timer);
+            MapSubtitlesAtTime("of spaceships", 20f, start_timer);
             MapSubtitlesAtTime("of alien ships", 21.25f, start_timer);
             MapSubtitlesAtTime("They're coming out", 22f, start_timer);
-            MapSubtitlesAtTime("of the sky!", 22.75f, start_timer);
-            MapSubtitlesAtTime("⛈", 23.25f, start_timer);
+            MapSubtitlesAtTime("of the sky!", 22.5f, start_timer);
+            MapSubtitlesAtTime("⛈", 23.5f, start_timer);
             if (start_timer > 24 || (Input.GetMouseButton(0) && CheckInsideEdge())) 
             {
                 SplashScreen.SetActive(false);
@@ -682,21 +633,24 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("The voices we used to", 7f, story_timer);
-                    MapSubtitlesAtTime("hear on the radio ...", 8f, story_timer);
-                    MapSubtitlesAtTime("☄ BitNaughts", 10f, story_timer);
-                    MapSubtitlesAtTime("Be sure and", 11f, story_timer);
-                    MapSubtitlesAtTime("tune in tomorrow", 12f, story_timer);
-                    MapSubtitlesAtTime("for another adventure", 13f, story_timer);
-                    MapSubtitlesAtTime("of the", 14f, story_timer);
-                    MapSubtitlesAtTime("\"Masked Avenger\"!", 14.5f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♪ The voices", 7f, story_timer);
+                    MapSubtitlesAtTime("we used to ", 7.5f, story_timer);
+                    MapSubtitlesAtTime("hear on the radio:", 8f, story_timer);
+                    MapSubtitlesAtTime("☄ BitNaughts", 10.25f, story_timer);
+                    MapSubtitlesAtTime("Be sure and tune", 11.25f, story_timer);
+                    MapSubtitlesAtTime("in tomorrow for", 12f, story_timer);
+                    MapSubtitlesAtTime("another adventure", 13f, story_timer);
+                    MapSubtitlesAtTime("of the", 13.8f, story_timer);
+                    MapSubtitlesAtTime("\"Masked Avenger\"!", 14.2f, story_timer);
                     MapSubtitlesAtTime("When he flies over", 15.5f, story_timer);
-                    MapSubtitlesAtTime("the city rooftops", 16.5f, story_timer);
-                    MapSubtitlesAtTime("and we all", 17.5f, story_timer);
-                    MapSubtitlesAtTime("hear his cry:", 18f, story_timer);
+                    MapSubtitlesAtTime("the city rooftops ...", 16f, story_timer);
+                    MapSubtitlesAtTime("We all hear his cry:", 17.5f, story_timer);
+                    MapSubtitlesAtTime("☄", 19, story_timer);
                     MapSubtitlesAtTime("\"Beware evildoers,\"", 20, story_timer);
                     MapSubtitlesAtTime("\"wherever you are!\"", 21.75f, story_timer);
                     MapSubtitlesAtTime("♪", 23f, story_timer);
@@ -706,63 +660,109 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♪", 24.25f, story_timer);
                     MapSubtitlesAtTime("♪♩", 25f, story_timer);
                     MapSubtitlesAtTime("⛈", 27.5f, story_timer);
-                    MapSubtitlesAtTime("I recall so many", 28.5f, story_timer);
+                    MapSubtitlesAtTime("I recall so many", 28.75f, story_timer);
                     MapSubtitlesAtTime("personal experiences", 29.5f, story_timer);
-                    MapSubtitlesAtTime("from when I grew up", 30.5f, story_timer);
+                    MapSubtitlesAtTime("from when I grew up", 30.75f, story_timer);
                     MapSubtitlesAtTime("and listened to one", 31.5f, story_timer);
-                    MapSubtitlesAtTime("show after another.", 32.5f, story_timer);
-                    MapSubtitlesAtTime("⛅", 33.5f, story_timer);
+                    MapSubtitlesAtTime("show after another ...", 32.5f, story_timer);
                     MapSubtitlesAtTime("This girl singing", 34.25f, story_timer);
                     MapSubtitlesAtTime("used to be a favorite", 35.5f, story_timer);
                     MapSubtitlesAtTime("at my house.", 36.25f, story_timer);
-                    MapSubtitlesAtTime("One of many.", 37.25f, story_timer);
-                    MapSubtitlesAtTime("Now it's all gone.", 38.25f, story_timer);
-                    MapSubtitlesAtTime("Except for the memories.", 39.75f, story_timer);
-                    MapSubtitlesAtTime("Pay more attention", 41.25f, story_timer);
-                    MapSubtitlesAtTime("to your school work", 42.25f, story_timer);
-                    MapSubtitlesAtTime("and less to the radio!", 43.25f, story_timer);
-                    MapSubtitlesAtTime("You always listen", 44.25f, story_timer);
-                    MapSubtitlesAtTime("to the radio!", 44.75f, story_timer);
-                    MapSubtitlesAtTime("It's different!", 46.25f, story_timer);
-                    MapSubtitlesAtTime("Our lives are", 47.25f, story_timer);
-                    MapSubtitlesAtTime("ruined already!", 47.75f, story_timer);
-                    MapSubtitlesAtTime("⛅", 49f, story_timer);
-                    MapSubtitlesAtTime("There are those", 54.5f, story_timer);
-                    MapSubtitlesAtTime("who drink champagne", 54.5f, story_timer);
-                    MapSubtitlesAtTime("at nightclubs", 55.5f, story_timer);
-                    MapSubtitlesAtTime("and us who listen to", 56.5f, story_timer);
-                    MapSubtitlesAtTime("them drink champagne", 57.5f, story_timer);
-                    MapSubtitlesAtTime("on the radio!", 58.5f, story_timer);
+                    MapSubtitlesAtTime("One of many.", 37f, story_timer);
+                    MapSubtitlesAtTime("Now it's all gone ...", 38.25f, story_timer);
+                    MapSubtitlesAtTime("Except for the memories.", 40f, story_timer);
+                    MapSubtitlesAtTime("Pay more attention to ", 41.5f, story_timer);
+                    MapSubtitlesAtTime("your school work and", 42.5f, story_timer);
+                    MapSubtitlesAtTime("less to the radio!", 43.25f, story_timer);
+                    MapSubtitlesAtTime("You always listen", 44.5f, story_timer);
+                    MapSubtitlesAtTime("to the radio!", 45.25f, story_timer);
+                    MapSubtitlesAtTime("It's different!", 46.5f, story_timer);
+                    MapSubtitlesAtTime("Our lives", 47.25f, story_timer);
+                    MapSubtitlesAtTime("are ruined already!", 47.75f, story_timer);
+                    MapSubtitlesAtTime("⛅", 48.75f, story_timer);
+                    MapSubtitlesAtTime("There are those who", 54.5f, story_timer);
+                    MapSubtitlesAtTime("drink champagne", 55.25f, story_timer);
+                    MapSubtitlesAtTime("at nightclubs", 56.1f, story_timer);
+                    MapSubtitlesAtTime("and us who listen to", 57.1f, story_timer);
+                    MapSubtitlesAtTime("them drink champagne", 58.1f, story_timer);
+                    MapSubtitlesAtTime("on the radio!", 59.1f, story_timer);
                     MapSubtitlesAtTime("⛈", 59.5f, story_timer);
-                    MapSubtitlesAtTime("We interrupt this", 60f, story_timer);
-                    MapSubtitlesAtTime("program to bring you", 60f, story_timer);
-                    MapSubtitlesAtTime("a special news", 61.25f, story_timer);
-                    MapSubtitlesAtTime("bulletin!", 62.25f, story_timer);
+                    MapSubtitlesAtTime("We interrupt", 60f, story_timer);
+                    MapSubtitlesAtTime("this program", 60.5f, story_timer);
+                    MapSubtitlesAtTime("to bring you a", 61.1f, story_timer);
+                    MapSubtitlesAtTime("special news bulletin!", 61.5f, story_timer);
                     MapSubtitlesAtTime("The landing of", 62.75f, story_timer);
-                    MapSubtitlesAtTime("hundreds of", 63.25f, story_timer);
-                    MapSubtitlesAtTime("unidentified spacecraft", 64f, story_timer);
-                    MapSubtitlesAtTime("have now been officially", 65.25f, story_timer);
-                    MapSubtitlesAtTime("confirmed as a full-scale", 65.75f, story_timer);
-                    MapSubtitlesAtTime("invasion of the Earth!", 68f, story_timer);
+                    MapSubtitlesAtTime("hundreds of", 63.5f, story_timer);
+                    MapSubtitlesAtTime("unidentified space-", 64f, story_timer);
+                    MapSubtitlesAtTime("craft have now been off-", 65f, story_timer);
+                    MapSubtitlesAtTime("icially confirmed", 66f, story_timer);
+                    MapSubtitlesAtTime("as a full-scale in-", 67f, story_timer);
+                    MapSubtitlesAtTime("vasion of the Earth!", 68f, story_timer);
                     MapSubtitlesAtTime("⛈", 70f, story_timer);
                     MapSubtitlesAtTime("Now I love old", 71f, story_timer);
                     MapSubtitlesAtTime("radio stories ...", 72f, story_timer);
-                    MapSubtitlesAtTime("There's another", 73f, story_timer);
-                    MapSubtitlesAtTime("group of spaceships", 74f, story_timer);
-                    MapSubtitlesAtTime("of alien ships", 75f, story_timer);
-                    MapSubtitlesAtTime("they're coming out", 75.5f, story_timer);
-                    MapSubtitlesAtTime("of the sky!", 76f, story_timer);
-                    MapSubtitlesAtTime("♪", 72 + 4.5f, story_timer);
-                    MapSubtitlesAtTime("♪♪", 72 + 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 72 + 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 72 + 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 72 + 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 72 + 7f, story_timer);
-                    MapSubtitlesAtTime("⛈", 72 + 7.5f, story_timer);
+                    MapSubtitlesAtTime("There's another", 73.25f, story_timer);
+                    MapSubtitlesAtTime("group of spaceships", 73.75f, story_timer);
+                    MapSubtitlesAtTime("of alien ships", 74.75f, story_timer);
+                    MapSubtitlesAtTime("they're coming out", 76f, story_timer);
+                    MapSubtitlesAtTime("of the sky!", 76.5f, story_timer);
+                    MapSubtitlesAtTime("♫", 78f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 78.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 79f, story_timer);
+                    MapSubtitlesAtTime("⛈", 80f, story_timer);
                     break;
                 case 2:
                     if (campaign_stage == -1) {
                         MapSubtitlesAtTime("⛈", 0, story_timer);
+                        MapSubtitlesAtTime("⛅", 2f, story_timer);
+                        MapSubtitlesAtTime("7 ...", 6.75f, story_timer);
+                        MapSubtitlesAtTime("6 ...", 7.75f, story_timer);
+                        MapSubtitlesAtTime("5 ...", 8.75f, story_timer);
+                        MapSubtitlesAtTime("4 ...", 9.75f, story_timer);
+                        MapSubtitlesAtTime("3 ...", 10.75f, story_timer);
+                        MapSubtitlesAtTime("2 ...", 11.75f, story_timer);
+                        MapSubtitlesAtTime("1 ...", 12.75f, story_timer);
+                        MapSubtitlesAtTime("☄ Tap to continue", 13.75f, story_timer);
+                        MapSubtitlesAtTime("Today, orbitting", 18.5f, story_timer);
+                        MapSubtitlesAtTime("satellites of the", 19.75f, story_timer);
+                        MapSubtitlesAtTime("\"Navy Navigation\"", 20.75f, story_timer);
+                        MapSubtitlesAtTime("\"Satellite System\"", 21.5f, story_timer);
+                        MapSubtitlesAtTime("provide around-the-", 23.5f, story_timer);
+                        MapSubtitlesAtTime("clock ultraprecise", 24.5f, story_timer);
+                        MapSubtitlesAtTime("position fixes", 26.25f, story_timer);
+                        MapSubtitlesAtTime("from space", 27.5f, story_timer);
+                        MapSubtitlesAtTime("to units of", 28.5f, story_timer);
+                        MapSubtitlesAtTime("the fleet,", 29.25f, story_timer);
+                        MapSubtitlesAtTime("everywhere,", 30f, story_timer);
+                        MapSubtitlesAtTime("in any kind", 31f, story_timer);
+                        MapSubtitlesAtTime("of weather.", 32.25f, story_timer);
+                        MapSubtitlesAtTime("⛈", 34.25f, story_timer);
+                        MapSubtitlesAtTime("Navigation", 39f, story_timer);
+                        MapSubtitlesAtTime("by satellite,", 40f, story_timer);
+                        MapSubtitlesAtTime("how and why", 42f, story_timer);
+                        MapSubtitlesAtTime("does it work?", 43.25f, story_timer);
+                        MapSubtitlesAtTime("First, a little", 44.75f, story_timer);
+                        MapSubtitlesAtTime("astrophysics", 45.5f, story_timer);
+                        MapSubtitlesAtTime("to answer why.", 46.25f, story_timer);
+                        MapSubtitlesAtTime("⛈", 48.25f, story_timer);
+                        MapSubtitlesAtTime("Any satellite, man-", 54.5f, story_timer);
+                        MapSubtitlesAtTime("made or not,", 56f, story_timer);
+                        MapSubtitlesAtTime("remains in orbit", 57f, story_timer);
+                        MapSubtitlesAtTime("because the force with", 58f, story_timer);
+                        MapSubtitlesAtTime("which it is trying to", 59.5f, story_timer);
+                        MapSubtitlesAtTime("fly away from Earth", 60.5f, story_timer);
+                        MapSubtitlesAtTime("is matched by the", 62.25f, story_timer);
+                        MapSubtitlesAtTime("gravitation pull", 63.25f, story_timer);
+                        MapSubtitlesAtTime("of Earth.", 64.75f, story_timer);
+                        MapSubtitlesAtTime("So it continues", 66.25f, story_timer);
+                        MapSubtitlesAtTime("moving around Earth", 67.25f, story_timer);
+                        MapSubtitlesAtTime("in an orbit whose", 68.75f, story_timer);
+                        MapSubtitlesAtTime("path conforms very", 70.25f, story_timer);
+                        MapSubtitlesAtTime("nearly to the", 71f, story_timer);
+                        MapSubtitlesAtTime("classic laws of \"Sir\"", 72f, story_timer);
+                        MapSubtitlesAtTime("\"Isaac Newton\"", 73f, story_timer);
+                        MapSubtitlesAtTime("and \"Johannes Kepler\"", 74f, story_timer);
+                        MapSubtitlesAtTime("Tap to continue ...", 76f, story_timer);
                         if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
                             CampaignNewtonsLaws.SetActive(true);
                             // PlayAudio("CampaignNewtonsLawsWelcome.ogg");
@@ -831,62 +831,130 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 7.5f, story_timer);
-                    MapSubtitlesAtTime("\"Neutron\"", 32.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Gamma Rays\"", 33.5f  - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Solar Power\"", 34.5f  - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Transistor\"", 36f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Automation\"", 37.5f  - 12.25f, story_timer);
-                    MapSubtitlesAtTime("A new language", 39f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("has come into currency.", 39.75f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("To the public,", 41f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("it is a language", 42f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("of the future.", 42f - 12.75f, story_timer);
-                    MapSubtitlesAtTime("To the scientist,", 43.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("a language", 44.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("of the present.", 45f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("This then is a report", 46f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("on our present future.", 47.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("Some of it profound.", 49.25f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("Some of it mere gadgetry.", 51f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("You are looking now", 53f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("at a nuclear reactor.", 54f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("It is not producing a bomb.", 55.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("It can produce electricity.", 57f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("In a pilot", 59.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Power Plant\"", 60.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("in the desert", 61.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("the lights go on!", 62.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("Nuclear energy", 64f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("goes to work!", 65.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("Not destroying", 66.5f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("but serving mankind!", 67.5f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("♩", 10f, story_timer);
+                    MapSubtitlesAtTime("♩♩", 11.25f, story_timer);
+                    MapSubtitlesAtTime("♩♩♪", 12.25f, story_timer);
+                    MapSubtitlesAtTime("♩", 13f, story_timer);
+                    MapSubtitlesAtTime("♩♪", 13.5f, story_timer);
+                    MapSubtitlesAtTime("♩♫", 13.75f, story_timer);
+                    MapSubtitlesAtTime("♪", 14f, story_timer);
+                    MapSubtitlesAtTime("♪♪", 14.5f, story_timer);
+                    MapSubtitlesAtTime("♪♪♪", 15f, story_timer);
+                    MapSubtitlesAtTime("♪♪♪♪", 15.5f, story_timer);
+                    MapSubtitlesAtTime("♪♪♪♪♪", 15.75f, story_timer);
+                    MapSubtitlesAtTime("♩", 16f, story_timer);
+                    MapSubtitlesAtTime("♩♩", 16.5f, story_timer);
+                    MapSubtitlesAtTime("♩♩♩", 16.75f, story_timer);
+                    MapSubtitlesAtTime("♩♩♩♩", 17.25f, story_timer);
+                    MapSubtitlesAtTime("♩♩♩♩♩", 17.75f, story_timer);
+                    MapSubtitlesAtTime("☄", 18f, story_timer);
+                    MapSubtitlesAtTime("♪", 18.25f, story_timer);
+                    MapSubtitlesAtTime("♪♪", 18.5f, story_timer);
+                    MapSubtitlesAtTime("♪♫", 18.75f, story_timer);
+                    MapSubtitlesAtTime("♪♫♩", 19f, story_timer);
+                    MapSubtitlesAtTime("\"Neutron\"", 20f, story_timer);
+                    MapSubtitlesAtTime("\"Gamma Rays\"", 21f, story_timer);
+                    MapSubtitlesAtTime("\"Solar Power\"", 22.5f, story_timer);
+                    MapSubtitlesAtTime("\"Transistor\"", 23.5f, story_timer);
+                    MapSubtitlesAtTime("\"Automation\"", 24.75f, story_timer);
+                    MapSubtitlesAtTime("A new language has", 26.25f, story_timer);
+                    MapSubtitlesAtTime("come into currency.", 27.25f, story_timer);
+                    MapSubtitlesAtTime("To the public,", 28.75f, story_timer);
+                    MapSubtitlesAtTime("it is a language", 29.35f, story_timer);
+                    MapSubtitlesAtTime("of the future.", 30, story_timer);
+                    MapSubtitlesAtTime("To the scientist,", 31f, story_timer);
+                    MapSubtitlesAtTime("a language", 32f, story_timer);
+                    MapSubtitlesAtTime("of the present.", 32.5f, story_timer);
+                    MapSubtitlesAtTime("This then is a report", 34f, story_timer);
+                    MapSubtitlesAtTime("on our present future.", 35f, story_timer);
+                    MapSubtitlesAtTime("Some of it profound.", 37f, story_timer);
+                    MapSubtitlesAtTime("Some of it mere gadgetry.", 38.25f, story_timer);
+                    MapSubtitlesAtTime("You are looking now", 40.5f, story_timer);
+                    MapSubtitlesAtTime("at a nuclear reactor.", 41.5f, story_timer);
+                    MapSubtitlesAtTime("It is not producing", 43.25f, story_timer);
+                    MapSubtitlesAtTime("a bomb.", 44f, story_timer);
+                    MapSubtitlesAtTime("It can produce", 45f, story_timer);
+                    MapSubtitlesAtTime("electricity.", 46f, story_timer);
+                    MapSubtitlesAtTime("From a pilot", 47.35f, story_timer);
+                    MapSubtitlesAtTime("atomic power plant", 48f, story_timer);
+                    MapSubtitlesAtTime("in the desert", 49.25f, story_timer);
+                    MapSubtitlesAtTime("the lights go on!", 50.15f, story_timer);
+                    MapSubtitlesAtTime("Nuclear energy", 51.75f, story_timer);
+                    MapSubtitlesAtTime("goes to work!", 53f, story_timer);
+                    MapSubtitlesAtTime("Not destroying but", 54f, story_timer);
+                    MapSubtitlesAtTime("serving mankind!", 55.5f, story_timer);
                     MapSubtitlesAtTime("⛅", 70 - 12.25f, story_timer);
-                    MapSubtitlesAtTime("The power lines", 74f - 12.75f, story_timer);
-                    MapSubtitlesAtTime("of tomorrow may ", 75.5f - 12.5f, story_timer);
-                    MapSubtitlesAtTime("also derive their", 75.5f - 12.5f, story_timer);
-                    MapSubtitlesAtTime("electricity from that", 75.5f - 12.5f, story_timer);
-                    MapSubtitlesAtTime("source of all power", 76.75f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("the \"Sun\"!", 79f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("⛅", 81f - 12.25f, story_timer);
-                    MapSubtitlesAtTime("⛈", 82f - 12.25f, story_timer);
+                    MapSubtitlesAtTime("♪", 58.5f, story_timer);
+                    MapSubtitlesAtTime("♪♩", 59f, story_timer);
+                    MapSubtitlesAtTime("♪♩♪", 59.5f, story_timer);
+                    MapSubtitlesAtTime("♩", 60.5f, story_timer);
+                    MapSubtitlesAtTime("♩♩", 61f, story_timer);
+                    MapSubtitlesAtTime("The power lines of", 61.25f, story_timer);
+                    MapSubtitlesAtTime("tomorrow may also", 62.15f, story_timer);
+                    MapSubtitlesAtTime("derive their elect-", 63.25f, story_timer);
+                    MapSubtitlesAtTime("ricity from that", 64.25f, story_timer);
+                    MapSubtitlesAtTime("source of all power:", 65f, story_timer);
+                    MapSubtitlesAtTime("the sun!", 66.25f, story_timer);
+                    MapSubtitlesAtTime("☄", 78.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 70f, story_timer);
+                    MapSubtitlesAtTime("♪♩", 70.5f, story_timer);
+                    MapSubtitlesAtTime("⛈", 71.5f, story_timer);
                     break;
                 case 4:
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDopplerShift.SetActive(true);
+                        CampaignDeBroglieTheory.SetActive(true);
                     }
-                    if (CampaignDopplerShift.transform.childCount == 0) {
+                    if (CampaignDeBroglieTheory.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
+                    MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("The satellite", 5.25f, story_timer);
+                    MapSubtitlesAtTime("is currently a", 6.25f, story_timer);
+                    MapSubtitlesAtTime("compact octagonal", 7f, story_timer);
+                    MapSubtitlesAtTime("spacecraft,", 8.25f, story_timer);
+                    MapSubtitlesAtTime("weighing about one", 9.25f, story_timer);
+                    MapSubtitlesAtTime("hundred thirty pounds.", 10.25f, story_timer);
+                    MapSubtitlesAtTime("It is loaded with", 12.75f, story_timer);
+                    MapSubtitlesAtTime("miniturized", 13.75f, story_timer);
+                    MapSubtitlesAtTime("electronic components", 14.75f, story_timer);
+                    MapSubtitlesAtTime("of receiving,", 15.75f, story_timer);
+                    MapSubtitlesAtTime("transmitting,", 17.25f, story_timer);
+                    MapSubtitlesAtTime("telemetry,", 18.25f, story_timer);
+                    MapSubtitlesAtTime("power and", 19.25f, story_timer);
+                    MapSubtitlesAtTime("memory systems.", 20.25f, story_timer);
+                    MapSubtitlesAtTime("⛈", 22.25f, story_timer);
+                    MapSubtitlesAtTime("The  satellite", 25f, story_timer);
+                    MapSubtitlesAtTime("clock is in actuality", 26.25f, story_timer);
+                    MapSubtitlesAtTime("an ultrastable", 28f, story_timer);
+                    MapSubtitlesAtTime("five megacycle", 29.25f, story_timer);
+                    MapSubtitlesAtTime("oscillator", 30.5f, story_timer);
+                    MapSubtitlesAtTime("like this one.", 31.25f, story_timer);
+                    MapSubtitlesAtTime("Solid state elect-", 35.25f, story_timer);
+                    MapSubtitlesAtTime("ronic components", 35.25f, story_timer);
+                    MapSubtitlesAtTime("used in the satellite", 37.25f, story_timer);
+                    MapSubtitlesAtTime("are so minute", 38.25f, story_timer);
+                    MapSubtitlesAtTime("that a \"Binocular\"", 40.75f, story_timer);
+                    MapSubtitlesAtTime("\"Microscope\" is used", 41.75f, story_timer);
+                    MapSubtitlesAtTime("during assembly for", 42.75f, story_timer);
+                    MapSubtitlesAtTime("the precision welding", 44.25f, story_timer);
+                    MapSubtitlesAtTime("required to", 45.25f, story_timer);
+                    MapSubtitlesAtTime("ensure absolute", 46.25f, story_timer);
+                    MapSubtitlesAtTime("reliability", 47.25f, story_timer);
+                    MapSubtitlesAtTime("under vibration and", 48.25f, story_timer);
+                    MapSubtitlesAtTime("temperature stresses", 49.5f, story_timer);
+                    MapSubtitlesAtTime("encountered during", 50.75f, story_timer);
+                    MapSubtitlesAtTime("launch and orbit.", 51.75f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 53.75f, story_timer);
                     break;
                 case 5:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -895,17 +963,19 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
-                    MapSubtitlesAtTime("Along with the \"Atom\"", 8.5f, story_timer);
-                    MapSubtitlesAtTime("and the \"Sun\"", 9.5f, story_timer);
-                    MapSubtitlesAtTime("the \"Electron\" opens", 10.25f, story_timer);
+                    MapSubtitlesAtTime("Along with the atom", 8.5f, story_timer);
+                    MapSubtitlesAtTime("and the sun", 9.5f, story_timer);
+                    MapSubtitlesAtTime("the electron opens", 10.25f, story_timer);
                     MapSubtitlesAtTime("a major highway to", 11.5f, story_timer);
                     MapSubtitlesAtTime("this present future.", 12.5f, story_timer);
-                    MapSubtitlesAtTime("In the \"Electronics Age\"", 14.5f, story_timer);
+                    MapSubtitlesAtTime("In the electronics age", 14.5f, story_timer);
                     MapSubtitlesAtTime("the development of", 16f, story_timer);
                     MapSubtitlesAtTime("giant computers", 17f, story_timer);
                     MapSubtitlesAtTime("\"Electronic Brains\"", 18f, story_timer);
@@ -940,17 +1010,73 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 54.5f, story_timer);
                     break;
                 case 6:
+                    MapSubtitlesAtTime("⛈", 0, story_timer);
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDopplerEffect.SetActive(true);
+                        CampaignDopplerShift.SetActive(true);
                     }
-                    if (CampaignDopplerEffect.transform.childCount == 0) {
+                    if (CampaignDopplerShift.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("\"Doppler Shift\"", 3.5f, story_timer);
+                    MapSubtitlesAtTime("can be plotted", 4.5f, story_timer);
+                    MapSubtitlesAtTime("frequency versus", 5.5f, story_timer);
+                    MapSubtitlesAtTime("time.", 7.25f, story_timer);
+                    MapSubtitlesAtTime("to produce a", 8.25f, story_timer);
+                    MapSubtitlesAtTime("unique curve.", 9.25f, story_timer);
+                    MapSubtitlesAtTime("Which can be", 10.75f, story_timer);
+                    MapSubtitlesAtTime(" received at only", 11.8f, story_timer);
+                    MapSubtitlesAtTime("one point on Earth", 11.8f, story_timer);
+                    MapSubtitlesAtTime("at a given instant.", 13.75f, story_timer);
+                    MapSubtitlesAtTime("Knowing your position", 18f, story_timer);
+                    MapSubtitlesAtTime("on Earth,", 18f, story_timer);
+                    MapSubtitlesAtTime("you can use the", 20f, story_timer);
+                    MapSubtitlesAtTime("\"Doppler Curve\"", 21.25f, story_timer);
+                    MapSubtitlesAtTime("to calculate", 22.25f, story_timer);
+                    MapSubtitlesAtTime("the exact orbit", 23f, story_timer);
+                    MapSubtitlesAtTime("of the satellite", 24f, story_timer);
+                    MapSubtitlesAtTime("And the reverse", 27f, story_timer);
+                    MapSubtitlesAtTime("is true,", 28f, story_timer);
+                    MapSubtitlesAtTime("if you start with", 30f, story_timer);
+                    MapSubtitlesAtTime("the satellite of", 31f, story_timer);
+                    MapSubtitlesAtTime("known orbit,", 31f, story_timer);
+                    MapSubtitlesAtTime("analysis of the", 33f, story_timer);
+                    MapSubtitlesAtTime("\"Doppler Shift\" as", 34f, story_timer);
+                    MapSubtitlesAtTime("the satellite passes,", 35f, story_timer);
+                    MapSubtitlesAtTime("will tell you exactly", 36.5f, story_timer);
+                    MapSubtitlesAtTime("where you are,", 37.75f, story_timer);
+                    MapSubtitlesAtTime("anywhere on Earth.", 39f, story_timer);
+                    MapSubtitlesAtTime("This fact", 41f, story_timer);
+                    MapSubtitlesAtTime("forms the basis", 42.5f, story_timer);
+                    MapSubtitlesAtTime("of the \"Navy\"", 43.5f, story_timer);
+                    MapSubtitlesAtTime("\"Navigation Satellite\"", 44.25f, story_timer);
+                    MapSubtitlesAtTime("\"System\".", 45.5f, story_timer);
+                    MapSubtitlesAtTime("The system is more", 47.75f, story_timer);
+                    MapSubtitlesAtTime("accurate than", 48.75f, story_timer);
+                    MapSubtitlesAtTime("any other navigation", 50f, story_timer);
+                    MapSubtitlesAtTime("system known today.", 51f, story_timer);
+                    MapSubtitlesAtTime("Accuracy that can", 54.5f, story_timer);
+                    MapSubtitlesAtTime("establish a pinpoint of", 55.5f, story_timer);
+                    MapSubtitlesAtTime("latitude and longitude.", 57.5f, story_timer);
+                    MapSubtitlesAtTime("This precision", 59.5f, story_timer);
+                    MapSubtitlesAtTime("is the result", 60.5f, story_timer);
+                    MapSubtitlesAtTime("of new techiques", 61.5f, story_timer);
+                    MapSubtitlesAtTime("for fine control", 62.5f, story_timer);
+                    MapSubtitlesAtTime("and measurement", 63.5f, story_timer);
+                    MapSubtitlesAtTime("of time", 64.5f, story_timer);
+                    MapSubtitlesAtTime("in terms of", 64.5f, story_timer);
+                    MapSubtitlesAtTime("frequencies generated", 64.5f, story_timer);
+                    MapSubtitlesAtTime("by ultrastable", 64.5f, story_timer);
+                    MapSubtitlesAtTime("oscillators.", 64.5f, story_timer);
+                    MapSubtitlesAtTime("Of course,", 71.75f, story_timer);
+                    MapSubtitlesAtTime("There are many", 72.25f, story_timer);
+                    MapSubtitlesAtTime("astronautical", 73.25f, story_timer);
+                    MapSubtitlesAtTime("problems that", 74.25f, story_timer);
+                    MapSubtitlesAtTime("confront this new", 75.5f, story_timer);
+                    MapSubtitlesAtTime("system.", 76.5f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 78.5f, story_timer);
                     break;
                 case 7:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -959,10 +1085,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("Without electronic", 8.25f, story_timer);
                     MapSubtitlesAtTime("control systems", 9.25f, story_timer);
@@ -990,16 +1118,36 @@ public class Interactor : MonoBehaviour
                     break;
                 case 8:
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignBohrsModel.SetActive(true);
+                        CampaignDopplerEffect.SetActive(true);
                     }
-                    if (CampaignBohrsModel.transform.childCount == 0) {
+                    if (CampaignDopplerEffect.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("Suppose we put", 3.5f, story_timer);
+                    MapSubtitlesAtTime("a radio transmitter", 4.5f, story_timer);
+                    MapSubtitlesAtTime("in a satellite.", 5.5f, story_timer);
+                    MapSubtitlesAtTime("You will detect", 9.25f, story_timer);
+                    MapSubtitlesAtTime("that the radio", 10.25f, story_timer);
+                    MapSubtitlesAtTime("frequency is", 11f, story_timer);
+                    MapSubtitlesAtTime("\"Doppler Shifted\"", 11.75f, story_timer);
+                    MapSubtitlesAtTime("while the satellite", 13f, story_timer);
+                    MapSubtitlesAtTime("passes by.", 14f, story_timer);
+                    MapSubtitlesAtTime("The \"Doppler Effect\"", 18.25f, story_timer);
+                    MapSubtitlesAtTime("shows up as an", 19.25f, story_timer);
+                    MapSubtitlesAtTime("aparent change in", 20.25f, story_timer);
+                    MapSubtitlesAtTime("frequency, and", 21.25f, story_timer);
+                    MapSubtitlesAtTime("is caused by", 22.25f, story_timer);
+                    MapSubtitlesAtTime("relative motion", 23.25f, story_timer);
+                    MapSubtitlesAtTime("between the satellite", 24.25f, story_timer);
+                    MapSubtitlesAtTime("transmitter", 25.25f, story_timer);
+                    MapSubtitlesAtTime("and the receiving", 27f, story_timer);
+                    MapSubtitlesAtTime("antenna", 28f, story_timer);
+                    MapSubtitlesAtTime("on Earth.", 29f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 31, story_timer);
                     break;
                 case 9:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1008,10 +1156,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 7.5f, story_timer);
                     MapSubtitlesAtTime("Here is an actual", 7.75f, story_timer);
                     MapSubtitlesAtTime("shot destroying", 8.75f, story_timer);
@@ -1028,16 +1178,58 @@ public class Interactor : MonoBehaviour
                     break;
                 case 10:
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignHawkingRadiation.SetActive(true);
+                        CampaignPlanksLaw.SetActive(true);
                     }
-                    if (CampaignHawkingRadiation.transform.childCount == 0) {
+                    if (CampaignPlanksLaw.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("Series of experi-", 2.5f, story_timer);
+                    MapSubtitlesAtTime("mental satellites.", 3.5f, story_timer);
+                    MapSubtitlesAtTime("Beginning with the", 4.5f, story_timer);
+                    MapSubtitlesAtTime("launch of the", 5.5f, story_timer);
+                    MapSubtitlesAtTime("\"Transit-1B\" satellite", 6.25f, story_timer);
+                    MapSubtitlesAtTime("in April, nineteen sixty.", 7.5f, story_timer);
+                    MapSubtitlesAtTime("⛈", 9.5f, story_timer);
+                    MapSubtitlesAtTime("To cover the whole Earth", 11f, story_timer);
+                    MapSubtitlesAtTime("a satellite must be in", 12.5f, story_timer);
+                    MapSubtitlesAtTime("near-polar orbit.", 13.5f, story_timer);
+                    MapSubtitlesAtTime("That is, an", 15f, story_timer);
+                    MapSubtitlesAtTime("orbit passing", 16f, story_timer);
+                    MapSubtitlesAtTime("near the north and", 17f, story_timer);
+                    MapSubtitlesAtTime("south poles.", 18f, story_timer);
+                    MapSubtitlesAtTime("As the Earth", 20.5f, story_timer);
+                    MapSubtitlesAtTime("rotates beneath the", 21.5f, story_timer);
+                    MapSubtitlesAtTime("fixed plane of", 22.5f, story_timer);
+                    MapSubtitlesAtTime("the orbit,", 23.5f, story_timer);
+                    MapSubtitlesAtTime("which passes completely", 24.5f, story_timer);
+                    MapSubtitlesAtTime("around Earth,", 25.75f, story_timer);
+                    MapSubtitlesAtTime("Sooner or later", 28f, story_timer);
+                    MapSubtitlesAtTime("the satellite will", 29.5f, story_timer);
+                    MapSubtitlesAtTime("pass within", 30.5f, story_timer);
+                    MapSubtitlesAtTime("range of any", 31.25f, story_timer);
+                    MapSubtitlesAtTime("part of the globe.", 32.25f, story_timer);
+                    MapSubtitlesAtTime("With one satellite", 35f, story_timer);
+                    MapSubtitlesAtTime("in orbit,", 35.75f, story_timer);
+                    MapSubtitlesAtTime("a particular point", 37.25f, story_timer);
+                    MapSubtitlesAtTime("on the Earth", 38.25f, story_timer);
+                    MapSubtitlesAtTime("is within range", 39.25f, story_timer);
+                    MapSubtitlesAtTime("at least once", 40.25f, story_timer);
+                    MapSubtitlesAtTime("each twelve hours.", 41.75f, story_timer);
+                    MapSubtitlesAtTime("Ships and submarines", 46.5f, story_timer);
+                    MapSubtitlesAtTime("need to know", 47.75f, story_timer);
+                    MapSubtitlesAtTime("their position more", 48.25f, story_timer);
+                    MapSubtitlesAtTime("frequently that this", 49.25f, story_timer);
+                    MapSubtitlesAtTime("and therefore", 51.75f, story_timer);
+                    MapSubtitlesAtTime("the \"Navy Navigation\"", 52.5f, story_timer);
+                    MapSubtitlesAtTime("\"Satellite System\"", 53.75f, story_timer);
+                    MapSubtitlesAtTime("employs a constell-", 54.75f, story_timer);
+                    MapSubtitlesAtTime("ation of satellites,", 55.75f, story_timer);
+                    MapSubtitlesAtTime("each in a polar orbit.", 57.5f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 59.5f, story_timer);
                     break;
                 case 11:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1046,10 +1238,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("In the laboratory a", 7.25f, story_timer);
                     MapSubtitlesAtTime("\"Television Camera\"", 8f, story_timer);
                     MapSubtitlesAtTime("rigged up to a", 9f, story_timer);
@@ -1099,16 +1293,40 @@ public class Interactor : MonoBehaviour
                     break;
                 case 12:
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignMoracevsParadox.SetActive(true);
+                        CampaignHawkingRadiation.SetActive(true);
                     }
-                    if (CampaignMoracevsParadox.transform.childCount == 0) {
+                    if (CampaignHawkingRadiation.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("The message is", 3.5f, story_timer);
+                    MapSubtitlesAtTime("injected into the", 4.25f, story_timer);
+                    MapSubtitlesAtTime("satellite by", 5.25f, story_timer);
+                    MapSubtitlesAtTime("high-power radio", 6.25f, story_timer);
+                    MapSubtitlesAtTime("radio transmission.", 7f, story_timer);
+                    MapSubtitlesAtTime("This updates", 11.5f, story_timer);
+                    MapSubtitlesAtTime("old information", 12.5f, story_timer);
+                    MapSubtitlesAtTime("stored in satellite", 14f, story_timer);
+                    MapSubtitlesAtTime("memory,", 15f, story_timer);
+                    MapSubtitlesAtTime("and extends the", 16.5f, story_timer);
+                    MapSubtitlesAtTime("navigational utility", 17.25f, story_timer);
+                    MapSubtitlesAtTime("of that satellite.", 18.5f, story_timer);
+                    MapSubtitlesAtTime("The system works", 20f, story_timer);
+                    MapSubtitlesAtTime("anywhere in the world", 21.25f, story_timer);
+                    MapSubtitlesAtTime("night or day, in", 23f, story_timer);
+                    MapSubtitlesAtTime("any kind of weather.", 25f, story_timer);
+                    MapSubtitlesAtTime("For every pound", 35f, story_timer);
+                    MapSubtitlesAtTime("of satellite in", 36f, story_timer);
+                    MapSubtitlesAtTime("orbit, there are", 37f, story_timer);
+                    MapSubtitlesAtTime("tons of equipment", 38f, story_timer);
+                    MapSubtitlesAtTime("on Earth", 39f, story_timer);
+                    MapSubtitlesAtTime("that make navigation", 40.25f, story_timer);
+                    MapSubtitlesAtTime("by satellite", 41.25f, story_timer);
+                    MapSubtitlesAtTime("possible.", 42.75f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 44.75f, story_timer);
                     break;
                 case 13:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1117,10 +1335,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("In another field,", 10f, story_timer);
                     MapSubtitlesAtTime("music can now be", 11f, story_timer);
@@ -1165,16 +1385,44 @@ public class Interactor : MonoBehaviour
                     break;
                 case 14:
                     if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDeBroglieTheory.SetActive(true);
+                        CampaignMoracevsParadox.SetActive(true);
                     }
-                    if (CampaignDeBroglieTheory.transform.childCount == 0) {
+                    if (CampaignMoracevsParadox.transform.childCount == 0) {
                         story_timer = 0f;
                         PlayVideo(campaign_clips[clip_index]);
                         clip_index++;
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("We're inside the", 4.25f, story_timer);
+                    MapSubtitlesAtTime("\"Operation Center\"", 5.25f, story_timer);
+                    MapSubtitlesAtTime("command post for", 7.25f, story_timer);
+                    MapSubtitlesAtTime("the \"Operations Duty\"", 8.25f, story_timer);
+                    MapSubtitlesAtTime("\"Officer\".", 9.25f, story_timer);
+                    MapSubtitlesAtTime("The mission of", 13f, story_timer);
+                    MapSubtitlesAtTime("the group-", 13.5f, story_timer);
+                    MapSubtitlesAtTime("around the clock,", 15f, story_timer);
+                    MapSubtitlesAtTime("seven days a week,", 16f, story_timer);
+                    MapSubtitlesAtTime("is to make sure", 17.5f, story_timer);
+                    MapSubtitlesAtTime("that each navagation", 18.5f, story_timer);
+                    MapSubtitlesAtTime("satellite", 19.5f, story_timer);
+                    MapSubtitlesAtTime("always has", 20f, story_timer);
+                    MapSubtitlesAtTime("correct, up-to-date", 21.5f, story_timer);
+                    MapSubtitlesAtTime("information", 22.5f, story_timer);
+                    MapSubtitlesAtTime("stored in its", 23.5f, story_timer);
+                    MapSubtitlesAtTime("memory unit.", 24.5f, story_timer);
+                    MapSubtitlesAtTime("An informative array", 28f, story_timer);
+                    MapSubtitlesAtTime("of actuated displays", 29.25f, story_timer);
+                    MapSubtitlesAtTime("shows the performance,", 31.25f, story_timer);
+                    MapSubtitlesAtTime("memory,", 33.25f, story_timer);
+                    MapSubtitlesAtTime("and injection status", 34f, story_timer);
+                    MapSubtitlesAtTime("and helps the duty", 36f, story_timer);
+                    MapSubtitlesAtTime("officer coordinate", 37f, story_timer);
+                    MapSubtitlesAtTime("all network operations", 38.5f, story_timer);
+                    MapSubtitlesAtTime("that keep the satellites", 40.5f, story_timer);
+                    MapSubtitlesAtTime("broadcasting navigation", 41.5f, story_timer);
+                    MapSubtitlesAtTime("data.", 43.25f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 45.24f, story_timer);
                     break;
                 case 15:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1183,14 +1431,16 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("This man is starting to", 8.25f, story_timer);
                     MapSubtitlesAtTime("make a delivery for the", 9.25f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Drug Store\"", 10.25f, story_timer);
+                    MapSubtitlesAtTime("Atomic Drug Store", 10.25f, story_timer);
                     MapSubtitlesAtTime("in Oak Ridge, Tennessee.", 11.25f, story_timer);
                     MapSubtitlesAtTime("This is one pharmacy", 13f, story_timer);
                     MapSubtitlesAtTime("that carries no", 14.5f, story_timer);
@@ -1203,7 +1453,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("ingenious methods", 21.25f, story_timer);
                     MapSubtitlesAtTime("of handling.", 22.125f, story_timer);
                     MapSubtitlesAtTime("The prioprietor is the", 23.125f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Energy Commission\".", 24.125f, story_timer);
+                    MapSubtitlesAtTime("Atomic Energy Commission.", 24.125f, story_timer);
                     MapSubtitlesAtTime("These drugs and", 26f, story_timer);
                     MapSubtitlesAtTime("chemicals are known as", 27f, story_timer);
                     MapSubtitlesAtTime("\"Radio Isotopes\".", 28.5f, story_timer);
@@ -1253,7 +1503,28 @@ public class Interactor : MonoBehaviour
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("Satellite memory", 4f, story_timer);
+                    MapSubtitlesAtTime("units and", 5f, story_timer);
+                    MapSubtitlesAtTime("control circuitry", 6f, story_timer);
+                    MapSubtitlesAtTime("can handle nearly", 7f, story_timer);
+                    MapSubtitlesAtTime("twenty-five thousand", 8f, story_timer);
+                    MapSubtitlesAtTime("separate bits", 9f, story_timer);
+                    MapSubtitlesAtTime("of modulated", 10f, story_timer);
+                    MapSubtitlesAtTime("information", 11f, story_timer);
+                    MapSubtitlesAtTime("⛈", 12.5f, story_timer);
+                    MapSubtitlesAtTime("The satellite", 16f, story_timer);
+                    MapSubtitlesAtTime("gets its power", 17f, story_timer);
+                    MapSubtitlesAtTime("from the sun.", 18f, story_timer);
+                    MapSubtitlesAtTime("Sixteen thousand", 20f, story_timer);
+                    MapSubtitlesAtTime("individual solar", 21f, story_timer);
+                    MapSubtitlesAtTime("cells convert", 22f, story_timer);
+                    MapSubtitlesAtTime("sunlight into", 23f, story_timer);
+                    MapSubtitlesAtTime("electrical energy", 24f, story_timer);
+                    MapSubtitlesAtTime("that is stored", 25f, story_timer);
+                    MapSubtitlesAtTime("in Nickle-", 25.75f, story_timer);
+                    MapSubtitlesAtTime("Cadium batteries", 26.75f, story_timer);
+                    MapSubtitlesAtTime("inside the satellite.", 28f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 30, story_timer);
                     break;
                 case 17:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1262,27 +1533,30 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
-                    MapSubtitlesAtTime("The aparatus of the", 8.75f, story_timer);
-                    MapSubtitlesAtTime("\"Atomic Age\"", 9.75f, story_timer);
-                    MapSubtitlesAtTime("is enormously ingenious!", 10.5f, story_timer);
+                    MapSubtitlesAtTime("The aparatus of", 8.75f, story_timer);
+                    MapSubtitlesAtTime("the atomic age is", 9.75f, story_timer);
+                    MapSubtitlesAtTime("enormously ingenious!", 10.5f, story_timer);
                     MapSubtitlesAtTime("At Argon National", 12f, story_timer);
                     MapSubtitlesAtTime("Laboratory in Chicago,", 13f, story_timer);
                     MapSubtitlesAtTime("metallurgists use a", 14.5f, story_timer);
-                    MapSubtitlesAtTime("\"Master Slave Manipulator\"", 16f, story_timer);
+                    MapSubtitlesAtTime("master-slave", 16f, story_timer);
+                    MapSubtitlesAtTime("manipulator", 17f, story_timer);
                     MapSubtitlesAtTime("to work with", 17.75f, story_timer);
                     MapSubtitlesAtTime("radioactive metals.", 18.25f, story_timer);
-                    MapSubtitlesAtTime("This manipulator", 19.5f, story_timer);
+                    MapSubtitlesAtTime("This manipulator", 19.75f, story_timer);
                     MapSubtitlesAtTime("can do anything", 21f, story_timer);
                     MapSubtitlesAtTime("human hands can do!", 22f, story_timer);
                     MapSubtitlesAtTime("As you watch,", 23.5f, story_timer);
-                    MapSubtitlesAtTime("the operator-,", 24.5f, story_timer);
+                    MapSubtitlesAtTime("the operator", 24.5f, story_timer);
                     MapSubtitlesAtTime("shielded by three feet", 25.5f, story_timer);
-                    MapSubtitlesAtTime("of glass and concrete-", 26.5f, story_timer);
+                    MapSubtitlesAtTime("of glass and concrete,", 26.5f, story_timer);
                     MapSubtitlesAtTime("conducts an involved", 28f, story_timer);
                     MapSubtitlesAtTime("\"Metal Hardness Test\",", 29.35f, story_timer);
                     MapSubtitlesAtTime("relying entirely", 30.5f, story_timer);
@@ -1302,7 +1576,45 @@ public class Interactor : MonoBehaviour
                     }
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("", 3f, story_timer);
+                    MapSubtitlesAtTime("A few years later", 3.25f, story_timer);
+                    MapSubtitlesAtTime("the French genius", 4.25f, story_timer);
+                    MapSubtitlesAtTime("\"Blaise Pascal\"", 5.5f, story_timer);
+                    MapSubtitlesAtTime("invented and built", 7.5f, story_timer);
+                    MapSubtitlesAtTime("the world's first", 8.5f, story_timer);
+                    MapSubtitlesAtTime("mechanical adding", 9.5f, story_timer);
+                    MapSubtitlesAtTime("machines.", 10.5f, story_timer);
+                    MapSubtitlesAtTime("Made in the sixteen-", 13f, story_timer);
+                    MapSubtitlesAtTime("forties.", 14f, story_timer);
+                    MapSubtitlesAtTime("Pascal's acheievement", 16.5f, story_timer);
+                    MapSubtitlesAtTime("lay in the", 18f, story_timer);
+                    MapSubtitlesAtTime("gear mechanism", 18.5f, story_timer);
+                    MapSubtitlesAtTime("which automatically", 20f, story_timer);
+                    MapSubtitlesAtTime("took care of carry-", 20.75f, story_timer);
+                    MapSubtitlesAtTime("overs.", 21.75f, story_timer);
+                    MapSubtitlesAtTime("For example,", 23.25f, story_timer);
+                    MapSubtitlesAtTime("six", 25f, story_timer);
+                    MapSubtitlesAtTime("plus nine", 28.5f, story_timer);
+                    MapSubtitlesAtTime("has the one carried", 30.75f, story_timer);
+                    MapSubtitlesAtTime("over to the next place.", 32f, story_timer);
+                    MapSubtitlesAtTime("⛈", 34f, story_timer);
+                    MapSubtitlesAtTime("In every area", 36.75f, story_timer);
+                    MapSubtitlesAtTime("of defense,", 37f, story_timer);
+                    MapSubtitlesAtTime("science,", 38.5f, story_timer);
+                    MapSubtitlesAtTime("engineering and", 39.5f, story_timer);
+                    MapSubtitlesAtTime("business,", 40.5f, story_timer);
+                    MapSubtitlesAtTime("progress depends", 41.5f, story_timer);
+                    MapSubtitlesAtTime("on the availability", 42.5f, story_timer);
+                    MapSubtitlesAtTime("of fast, accurate", 43.75f, story_timer);
+                    MapSubtitlesAtTime("methods of calculation.", 45f, story_timer);
+                    MapSubtitlesAtTime("They've enabled us", 48.5f, story_timer);
+                    MapSubtitlesAtTime("to take giant", 49.75f, story_timer);
+                    MapSubtitlesAtTime("steps forward", 50.25f, story_timer);
+                    MapSubtitlesAtTime("in power,", 51f, story_timer);
+                    MapSubtitlesAtTime("in control,", 52.5f, story_timer);
+                    MapSubtitlesAtTime("in design,", 54.5f, story_timer);
+                    MapSubtitlesAtTime("in processing,", 55.5f, story_timer);
+                    MapSubtitlesAtTime("and in research.", 57f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 59f, story_timer);
                     break;
                 case 19:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
@@ -1311,10 +1623,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♩♩", 4f, story_timer);
                     MapSubtitlesAtTime("♪", 4.5f, story_timer);
                     MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("♪", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪♫", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
                     MapSubtitlesAtTime("⛅", 8f, story_timer);
                     MapSubtitlesAtTime("In the final", 9f, story_timer);
                     MapSubtitlesAtTime("analysis however,", 10f, story_timer);
@@ -1345,10 +1659,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 47f, story_timer);
                     break;
                 case 20:
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
-                    MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("Campaign Time:", 3f, story_timer);
-                    MapSubtitlesAtTime(FloatToTime(global_timer), 5f, story_timer);
+                    // MapSubtitlesAtTime("⛈", 0, story_timer);
+                    MapSubtitlesAtTime("⛅", 0f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n║ Date: " + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!\nTap to continue ...", 1f, story_timer);
                     break;
                 case 21:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
