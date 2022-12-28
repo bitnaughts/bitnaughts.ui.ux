@@ -79,7 +79,7 @@ public class ClickableTextInteractor : MonoBehaviour
         } 
         if (initialized_text == "$") {
             Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>about</b>\n  <b>back</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>");
+            Interactor.AppendText("$ <b>about</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -162,18 +162,80 @@ public class ClickableTextInteractor : MonoBehaviour
             // break;
             case "about": 
                 Interactor.Sound("Warning");
-                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n$");
+                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n  <a>https://bitnaughts.io/</a>\n  <a>https://github.com/bitnaughts/</a>\n  <a>https://twitter.com/BitNaughts</a>\n  <a>https://www.youtube.com/@bitnaughts6237</a>\n  <a>https://www.twitch.tv/bitnaughts</a>\n  <a>https://codefied.substack.com/</a>\n$");
                 // Interactor.PlayTheme();
                 break;
-            case "campaign":
-                Interactor.StoryMode();
+            // case "campaign":
+                // Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n$");
+                // Interactor.StoryMode();
                 // GameObject.Find("Panel").SetActive(true);
+                // break;
+                
+            case "campaign":
+                Interactor.AppendText("$ campaign <b>Radio_Days</b>\n           <b>Newton's_Laws</b>\n           <b>The_Atom</b>\n           <b>Doppler_Effect</b>\n           <b>The_Electron</b>\n           <b>Doppler_Shift</b>\n           <b>Modern_War</b>\n           <b>Bohr's_Model</b>\n           <b>Television</b>\n           <b>Hawking_Radiation</b>\n           <b>Videotape_Records</b>\n           <b>Moravec's_Paradox</b>\n           <b>Electronic_Music</b>\n           <b>De_Broglie_Theory</b>\n           <b>Radio_Isotopes</b>\n           <b>Fermi_Paradox</b>\n           <b>Hardness_Test</b>\n           <b>Pascal's_Wager</b>\n           <b>Conclusion</b>\n           <b>back</b>");
+                break;
+            case "Radio_Days":
+                Interactor.StoryMode(0);
+                break;
+            case "Newton's_Laws":
+                Interactor.StoryMode(1);
+                break;
+            case "The_Atom":
+                Interactor.StoryMode(2);
+                break;
+            case "Doppler_Effect":
+                Interactor.StoryMode(3);
+                break;
+            case "The_Electron":
+                Interactor.StoryMode(4);
+                break;
+            case "Doppler_Shift":
+                Interactor.StoryMode(5);
+                break;
+            case "Modern_War":
+                Interactor.StoryMode(6);
+                break;
+            case "Bohr's_Model":
+                Interactor.StoryMode(7);
+                break;
+            case "Television":
+                Interactor.StoryMode(8);
+                break;
+            case "Hawking_Radiation":
+                Interactor.StoryMode(9);
+                break;
+            case "Videotape_Records":
+                Interactor.StoryMode(10);
+                break;
+            case "Moravec's_Paradox":
+                Interactor.StoryMode(11);
+                break;
+            case "Electronic_Music":
+                Interactor.StoryMode(12);
+                break;
+            case "De_Broglie_Theory":
+                Interactor.StoryMode(13);
+                break;
+            case "Radio_Isotopes":
+                Interactor.StoryMode(14);
+                break;
+            case "Fermi_Paradox":
+                Interactor.StoryMode(15);
+                break;
+            case "Hardness_Test":
+                Interactor.StoryMode(16);
+                break;
+            case "Pascal's_Wager":
+                Interactor.StoryMode(17);
+                break;
+            case "Conclusion":
+                Interactor.StoryMode(18);
                 break;
             case "tutorial":
             case "⍰⍰_Help":
                 Interactor.Sound("Warning");
-                Interactor.AppendText("$ <b>tutorial</b>");
-                Interactor.StartTutorial();
+                Interactor.AppendText("$ tutorial <b>Binary</b>\n           <b>Morse_Code</b>\n           <b>Decimals</b>\n           <b>Arithmetic</b>\n           <b>Ship_Control</b>\n           <b>back</b>");
+                // Interactor.StartTutorial();
                 break;
             break;
             case "pull<": 
