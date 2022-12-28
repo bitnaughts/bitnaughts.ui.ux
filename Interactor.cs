@@ -43,6 +43,13 @@ public class Interactor : MonoBehaviour
     int cache_size = 125;
     // Start is called before the first frame update
 
+    string audio_queue = "SplashScreen";
+    public AudioClip clip_queue;
+    private void Awake()
+    {
+        StartCoroutine(LoadAudio());
+    }
+
     void Start()
     {
         SplashScreen.SetActive(true);
@@ -60,24 +67,25 @@ public class Interactor : MonoBehaviour
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         Timer.text = "⛅";
+        PlayVideo(audio_queue);
 
-        PlayVideo("Splash Screen");
+        
         OnMapView();
     }
     float story_timer = -1f, start_timer = 0f;
 
     public void SetBackground(Color color) 
     {
-        camera.GetComponent<Camera>().backgroundColor = color;
-        foreach (var obj in GridLayers)
-        {
-            if (color.r == 0) {
-                obj.GetComponent<SpriteRenderer>().color = color;
-            }
-            else {
-                obj.GetComponent<SpriteRenderer>().color = new Color(35f/255f, 95f/255f, 110f/255f, .66f);
-            }
-        }
+        // camera.GetComponent<Camera>().backgroundColor = color;
+        // foreach (var obj in GridLayers)
+        // {
+        //     if (color.r == 0) {
+        //         obj.GetComponent<SpriteRenderer>().color = color;
+        //     }
+        //     else {
+        //         obj.GetComponent<SpriteRenderer>().color = new Color(35f/255f, 95f/255f, 110f/255f, .66f);
+        //     }
+        // }
     }
 
     public void SetVolume() 
@@ -85,35 +93,38 @@ public class Interactor : MonoBehaviour
         camera.GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
         GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
     }
-
-    public void PlayAudio(string url) 
+    private IEnumerator LoadAudio()
     {
-        string asset_location = "file://"+System.IO.Path.Combine (Application.streamingAssetsPath, url.Replace(" ", "").Replace("'", ""));
+        string asset_location = "file://"+ System.IO.Path.Combine (Application.streamingAssetsPath,  "BitNaughts" + audio_queue.Replace(" ", "").Replace("'", "") + "480p.mp3");
         #if UNITY_WEBGL
-            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Sounds/" + url.Replace(" ", "").Replace("'", "") + "";
+            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Sounds/BitNaughts" + audio_queue.Replace(" ", "").Replace("'", "") + "480p.mp3";
         #endif
+        print (asset_location);
         WWW www = new WWW(asset_location);
-        GameObject.Find("Video Player").GetComponent<AudioSource>().clip = www.GetAudioClip(false,true); //, AudioType.OGGVORBIS
-        GameObject.Find("Video Player").GetComponent<AudioSource>().Play();
+        clip_queue = www.GetAudioClip(false,true);
+        clip_queue.name = audio_queue; 
+        yield return www;
+        PlayAudio();
+    }
+
+    public void PlayAudio() 
+    {
+        camera.GetComponent<AudioSource>().clip = clip_queue;
+        camera.GetComponent<AudioSource>().Play();
+        camera.GetComponent<AudioSource>().loop = true;
+
     }
     public void PlayVideo(string url) 
     {
+        audio_queue = url.Replace(" ", "").Replace("'", "");
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
-        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + url.Replace(" ", "").Replace("'", "") + "480p.mp4");
+        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + audio_queue + "480p.mp4");
         #if UNITY_WEBGL
-            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + url.Replace(" ", "").Replace("'", "") + "480p.mp4";
+            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + audio_queue + "480p.mp4";
         #endif
+        print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
-        
-        asset_location = "file://"+System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + url.Replace(" ", "").Replace("'", "") + "480p.mp3");
-        #if UNITY_WEBGL
-            asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Sounds/BitNaughts" + url.Replace(" ", "").Replace("'", "") + "480p.mp3";
-        #endif
-
-        WWW www = new WWW(asset_location);
-        camera.GetComponent<AudioSource>().clip = www.GetAudioClip(false,true); //, AudioType.OGGVORBIS
-        camera.GetComponent<AudioSource>().Play();
         SetBackground(new Color(0, 0, 0));
         MapScreenPanOverlay.SetActive(false);
         volume_slider.SetActive(true);
@@ -569,7 +580,7 @@ public class Interactor : MonoBehaviour
     bool CheckInsideEdge() {
         return (Input.mousePosition.y > 60 && Input.mousePosition.y < Screen.height - 60 && Input.mousePosition.x > 60 && Input.mousePosition.x < Screen.width - 60);
     }
-    string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "Doppler Effect", "The Electron", "Doppler Shift", "Modern War", "Bohr's Model", "Television", "Hawking Radiation", "Videotape Records", "Moravec's Paradox", "Electronic Music", "De Broglie Theory", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
+    string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "Doppler Effect", "The Electron", "Doppler Shift", "Modern War", "Plank's Law", "Television", "Hawking Radiation", "Videotape Records", "Moravec's Paradox", "Electronic Music", "De Broglie Theory", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", " ☄ BitNaughts   " };
     int campaign_stage = -1, tutorial_stage = -1; 
     int[] clip_durations = new int[] {9999, 81, 9999, 79, 9999, 64, 9999, 46, 9999, 79, 9999, 74, 9999, 107, 9999, 95, 9999, 116, 9999, 51, 9999, 9999, 9999, 9999 };

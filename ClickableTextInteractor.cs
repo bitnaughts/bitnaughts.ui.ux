@@ -172,7 +172,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 // break;
                 
             case "campaign":
-                Interactor.AppendText("$ campaign <b>Radio_Days</b>\n           <b>Newton's_Laws</b>\n           <b>The_Atom</b>\n           <b>Doppler_Effect</b>\n           <b>The_Electron</b>\n           <b>Doppler_Shift</b>\n           <b>Modern_War</b>\n           <b>Bohr's_Model</b>\n           <b>Television</b>\n           <b>Hawking_Radiation</b>\n           <b>Videotape_Records</b>\n           <b>Moravec's_Paradox</b>\n           <b>Electronic_Music</b>\n           <b>De_Broglie_Theory</b>\n           <b>Radio_Isotopes</b>\n           <b>Fermi_Paradox</b>\n           <b>Hardness_Test</b>\n           <b>Pascal's_Wager</b>\n           <b>Conclusion</b>\n           <b>back</b>");
+                Interactor.AppendText("$ campaign <b>Radio_Days</b>\n           <b>Newton's_Laws</b>\n           <b>The_Atom</b>\n           <b>Doppler_Effect</b>\n           <b>The_Electron</b>\n           <b>Doppler_Shift</b>\n           <b>Modern_War</b>\n           <b>Plank's_Law</b>\n           <b>Television</b>\n           <b>Hawking_Radiation</b>\n           <b>Videotape_Records</b>\n           <b>Moravec's_Paradox</b>\n           <b>Electronic_Music</b>\n           <b>De_Broglie_Theory</b>\n           <b>Radio_Isotopes</b>\n           <b>Fermi_Paradox</b>\n           <b>Hardness_Test</b>\n           <b>Pascal's_Wager</b>\n           <b>Conclusion</b>\n           <b>back</b>");
                 break;
             case "Radio_Days":
                 Interactor.StoryMode(0);
@@ -195,7 +195,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Modern_War":
                 Interactor.StoryMode(6);
                 break;
-            case "Bohr's_Model":
+            case "Plank's_Law":
                 Interactor.StoryMode(7);
                 break;
             case "Television":
