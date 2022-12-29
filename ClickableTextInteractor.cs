@@ -78,8 +78,8 @@ public class ClickableTextInteractor : MonoBehaviour
             initialized_text = initialized_text.Split('>')[1].Split('<')[0];
         } 
         if (initialized_text == "$") {
-            Interactor.SetCommand("$");
-            Interactor.AppendText("$ <b>about</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>git</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            Interactor.SetCommand("$"); //\n  <b>git</b>
+            Interactor.AppendText("$ <b>about</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -88,10 +88,10 @@ public class ClickableTextInteractor : MonoBehaviour
                         Interactor.AppendText("$ rm " + component + "\n$");
                         OverlayInteractor.DeleteComponent(component);
                         break;
-                    case "add":
-                        Interactor.AppendText("$ git add " + component + "\n$");
-                        // OverlayInteractor.CreateComponent(component);
-                        break;
+                    // case "add":
+                    //     Interactor.AppendText("$ git add " + component + "\n$");
+                    //     // OverlayInteractor.CreateComponent(component);
+                    //     break;
                     case "nano":
                         Interactor.AppendText("$ nano " + component + "\n$");
                         // Interactor.RenderText("class " + component + " : Component {\n void Start() {\n }\n}\n\n<a>Exit</a>");
@@ -111,9 +111,9 @@ public class ClickableTextInteractor : MonoBehaviour
         switch (initialized_text) {
             case "help": 
                 switch (Interactor.GetCommand()) {
-                    case "git":
-                        Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n↯ git versions files;\n  <a>https://git-scm.com/</a>\n$");
-                    break;
+                    // case "git":
+                    //     Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \n↯ git versions files;\n  <a>https://git-scm.com/</a>\n$");
+                    // break;
                     case "nano":
                         Interactor.AppendText("$ " + Interactor.GetCommand() + " <b>help</b> \nη nano edits files;\n  <a>https://nano-editor.org/</a>\n$");
                     break;
@@ -128,10 +128,10 @@ public class ClickableTextInteractor : MonoBehaviour
                     break;
                 }
             break;
-            case "git": 
-                Interactor.SetCommand("git");
-                Interactor.AppendText("$ git <b>status</b>\n      <b>add</b>\n      <b>commit</b>\n      <b>pull</b>\n      <b>push</b>\n      <b>help</b>\n      <b>back</b>");
-            break;
+            // case "git": 
+            //     Interactor.SetCommand("git");
+            //     Interactor.AppendText("$ git <b>status</b>\n      <b>add</b>\n      <b>commit</b>\n      <b>pull</b>\n      <b>push</b>\n      <b>help</b>\n      <b>back</b>");
+            // break;
             case "status": 
                 Interactor.SetCommand("clone");
                 Interactor.AppendText("$ git clone <i>bitnaughts.db</i>\n            <i>bitnaughts.components</i>\n            <i>bitnaughts.ui.ux</i>\n            <i>bitnaughts.assets</i>\n            <i>bitnaughts.github.io</i>\n            <i>bitnaughts.interpreter</i>");
