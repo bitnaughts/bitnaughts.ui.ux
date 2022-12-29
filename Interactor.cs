@@ -793,7 +793,7 @@ public class Interactor : MonoBehaviour
                         MapSubtitlesAtTime("does it work?", 43.25f, story_timer);
                         MapSubtitlesAtTime("First, a little", 44.75f, story_timer);
                         MapSubtitlesAtTime("astrophysics", 45.5f, story_timer);
-                        MapSubtitlesAtTime("to answer why.", 46.5f, story_timer);
+                        MapSubtitlesAtTime("to answer why.", 46.75f, story_timer);
                         MapSubtitlesAtTime("⛈", 48.25f, story_timer);
                         MapSubtitlesAtTime("Any satellite, man-", 54.5f, story_timer);
                         MapSubtitlesAtTime("made or not,", 56f, story_timer);
