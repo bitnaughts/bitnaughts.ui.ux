@@ -596,6 +596,44 @@ public class Interactor : MonoBehaviour
                 {
                     if (campaign_clip_durations[clip_index] == 999) //objective mission
                     {
+                        switch (clip_index) {
+                            case 2:
+                                CampaignNewtonsLaws.SetActive(true);
+                                break;
+                            case 4:
+                                CampaignNewtonsLaws.SetActive(false);
+                                CampaignDeBroglieTheory.SetActive(true);
+                                break;
+                            case 6:
+                                CampaignDeBroglieTheory.SetActive(false);
+                                CampaignDopplerEffect.SetActive(true);
+                                break;
+                            case 8:
+                                CampaignDopplerEffect.SetActive(false);
+                                CampaignDopplerShift.SetActive(true);
+                                break;
+                            case 10:
+                                CampaignDopplerShift.SetActive(false);
+                                CampaignPlanksLaw.SetActive(true);
+                                break;
+                            case 12:
+                                CampaignPlanksLaw.SetActive(false);
+                                CampaignHawkingRadiation.SetActive(true);
+                                break;
+                            case 14:
+                                CampaignHawkingRadiation.SetActive(false);
+                                CampaignMoracevsParadox.SetActive(true);
+                                break;
+                            case 16:
+                                CampaignMoracevsParadox.SetActive(false);
+                                CampaignFermiParadox.SetActive(true);
+                                break;
+                            case 18:
+                                CampaignFermiParadox.SetActive(false);
+                                CampaignPascalsWager.SetActive(true);
+                                break;
+
+                        }
                         Subtitles.SetActive(false);
                         SubtitlesShadow.SetActive(false);
                         volume_slider.SetActive(false);
@@ -733,7 +771,7 @@ public class Interactor : MonoBehaviour
                         MapSubtitlesAtTime("does it work?", 43.25f, story_timer);
                         MapSubtitlesAtTime("First, a little", 44.75f, story_timer);
                         MapSubtitlesAtTime("astrophysics", 45.5f, story_timer);
-                        MapSubtitlesAtTime("to answer why.", 46.25f, story_timer);
+                        MapSubtitlesAtTime("to answer why.", 46.5f, story_timer);
                         MapSubtitlesAtTime("⛈", 48.25f, story_timer);
                         MapSubtitlesAtTime("Any satellite, man-", 54.5f, story_timer);
                         MapSubtitlesAtTime("made or not,", 56f, story_timer);
@@ -753,10 +791,6 @@ public class Interactor : MonoBehaviour
                         MapSubtitlesAtTime("\"Isaac Newton\"", 73f, story_timer);
                         MapSubtitlesAtTime("and \"Johannes Kepler\"", 74f, story_timer);
                         MapSubtitlesAtTime("Tap to continue ...", 76f, story_timer);
-                        if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                            CampaignNewtonsLaws.SetActive(true);
-                            // PlayAudio("CampaignNewtonsLawsWelcome.ogg");
-                        }
                         // MapSubtitlesAtTime("Welcome to the", 2f, story_timer);
                         // MapSubtitlesAtTime("U.S. Naval Academy", 2.5f, story_timer);
                         // MapSubtitlesAtTime("Aerial Ordnance", 4.5f, story_timer);
@@ -899,9 +933,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 71.5f, story_timer);
                     break;
                 case 4:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDeBroglieTheory.SetActive(true);
-                    }
                     if (CampaignDeBroglieTheory.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1002,10 +1033,76 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 54.5f, story_timer);
                     break;
                 case 6:
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDopplerShift.SetActive(true);
+                    if (CampaignDopplerEffect.transform.childCount == 0) {
+                        campaign_splits[clip_index - 1] = story_timer;
+                        story_timer = 0f;
+                        PlayVideo(campaign_clips[clip_index]);
+                        clip_index++;
                     }
+                    MapSubtitlesAtTime("⛈", 0, story_timer);
+                    MapSubtitlesAtTime("⛅", 2f, story_timer);
+                    MapSubtitlesAtTime("Suppose we put", 3.5f, story_timer);
+                    MapSubtitlesAtTime("a radio transmitter", 4.5f, story_timer);
+                    MapSubtitlesAtTime("in a satellite.", 5.5f, story_timer);
+                    MapSubtitlesAtTime("You will detect", 9.25f, story_timer);
+                    MapSubtitlesAtTime("that the radio", 10.25f, story_timer);
+                    MapSubtitlesAtTime("frequency is", 11f, story_timer);
+                    MapSubtitlesAtTime("\"Doppler Shifted\"", 11.75f, story_timer);
+                    MapSubtitlesAtTime("while the satellite", 13f, story_timer);
+                    MapSubtitlesAtTime("passes by.", 14f, story_timer);
+                    MapSubtitlesAtTime("The \"Doppler Effect\"", 18.25f, story_timer);
+                    MapSubtitlesAtTime("shows up as an", 19.25f, story_timer);
+                    MapSubtitlesAtTime("aparent change in", 20.25f, story_timer);
+                    MapSubtitlesAtTime("frequency, and", 21.25f, story_timer);
+                    MapSubtitlesAtTime("is caused by", 22.25f, story_timer);
+                    MapSubtitlesAtTime("relative motion", 23.25f, story_timer);
+                    MapSubtitlesAtTime("between the satellite", 24.25f, story_timer);
+                    MapSubtitlesAtTime("transmitter", 25.25f, story_timer);
+                    MapSubtitlesAtTime("and the receiving", 27f, story_timer);
+                    MapSubtitlesAtTime("antenna", 28f, story_timer);
+                    MapSubtitlesAtTime("on Earth.", 29f, story_timer);
+                    MapSubtitlesAtTime("Tap to continue ...", 31, story_timer);
+                    break;
+                case 7:
+                    MapSubtitlesAtTime("⛈", 0, story_timer);
+                    MapSubtitlesAtTime("⛅", 2.25f, story_timer);
+                    MapSubtitlesAtTime("♩", 3.5f, story_timer);
+                    MapSubtitlesAtTime("♩♩", 4f, story_timer);
+                    MapSubtitlesAtTime("♪", 4.5f, story_timer);
+                    MapSubtitlesAtTime("♪♪", 5f, story_timer);
+                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
+                    MapSubtitlesAtTime("♪", 6f, story_timer);
+                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
+                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
+                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
+                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
+                    MapSubtitlesAtTime("⛅", 8f, story_timer);
+                    MapSubtitlesAtTime("Without electronic", 8.25f, story_timer);
+                    MapSubtitlesAtTime("control systems", 9.25f, story_timer);
+                    MapSubtitlesAtTime("No nation could", 10.5f, story_timer);
+                    MapSubtitlesAtTime("defend itself in", 11.25f, story_timer);
+                    MapSubtitlesAtTime("\"Modern War\".", 12f, story_timer);
+                    MapSubtitlesAtTime("Here is a new and", 13.25f, story_timer);
+                    MapSubtitlesAtTime("striking example!", 14.25f, story_timer);
+                    MapSubtitlesAtTime("A guided missile", 15.75f, story_timer);
+                    MapSubtitlesAtTime("with a brain capable", 16.5f, story_timer);
+                    MapSubtitlesAtTime("of outwitting", 17.5f, story_timer);
+                    MapSubtitlesAtTime("any enemy bomber", 18.25f, story_timer);
+                    MapSubtitlesAtTime("as shown in this", 19.5f, story_timer);
+                    MapSubtitlesAtTime("graphic representation.", 20.5f, story_timer);
+                    MapSubtitlesAtTime("Once the target has", 22.25f, story_timer);
+                    MapSubtitlesAtTime("been pointed out to it,", 23.25f, story_timer);
+                    MapSubtitlesAtTime("The missile's electronic", 24.25f, story_timer);
+                    MapSubtitlesAtTime("intelligence", 25.5f, story_timer);
+                    MapSubtitlesAtTime("will steer it", 26.325f, story_timer);
+                    MapSubtitlesAtTime("to that target", 27f, story_timer);
+                    MapSubtitlesAtTime("no matter how", 28f, story_timer);
+                    MapSubtitlesAtTime("the bomber maneuvers.", 29f, story_timer);
+                    MapSubtitlesAtTime("⛅", 31f, story_timer);
+                    MapSubtitlesAtTime("⛈", 36.5f, story_timer);
+                    break;
+                case 8:
+                    MapSubtitlesAtTime("⛈", 0, story_timer);
                     if (CampaignDopplerShift.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1071,78 +1168,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("system.", 76.5f, story_timer);
                     MapSubtitlesAtTime("Tap to continue ...", 78.5f, story_timer);
                     break;
-                case 7:
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
-                    MapSubtitlesAtTime("⛅", 2.25f, story_timer);
-                    MapSubtitlesAtTime("♩", 3.5f, story_timer);
-                    MapSubtitlesAtTime("♩♩", 4f, story_timer);
-                    MapSubtitlesAtTime("♪", 4.5f, story_timer);
-                    MapSubtitlesAtTime("♪♪", 5f, story_timer);
-                    MapSubtitlesAtTime("☄", 5.5f, story_timer);
-                    MapSubtitlesAtTime("♪", 6f, story_timer);
-                    MapSubtitlesAtTime("♫", 6.25f, story_timer);
-                    MapSubtitlesAtTime("♫♪", 6.5f, story_timer);
-                    MapSubtitlesAtTime("♫♫", 6.75f, story_timer);
-                    MapSubtitlesAtTime("♫♫♪", 7f, story_timer);
-                    MapSubtitlesAtTime("⛅", 8f, story_timer);
-                    MapSubtitlesAtTime("Without electronic", 8.25f, story_timer);
-                    MapSubtitlesAtTime("control systems", 9.25f, story_timer);
-                    MapSubtitlesAtTime("No nation could", 10.5f, story_timer);
-                    MapSubtitlesAtTime("defend itself in", 11.25f, story_timer);
-                    MapSubtitlesAtTime("\"Modern War\".", 12f, story_timer);
-                    MapSubtitlesAtTime("Here is a new and", 13.25f, story_timer);
-                    MapSubtitlesAtTime("striking example!", 14.25f, story_timer);
-                    MapSubtitlesAtTime("A guided missile", 15.75f, story_timer);
-                    MapSubtitlesAtTime("with a brain capable", 16.5f, story_timer);
-                    MapSubtitlesAtTime("of outwitting", 17.5f, story_timer);
-                    MapSubtitlesAtTime("any enemy bomber", 18.25f, story_timer);
-                    MapSubtitlesAtTime("as shown in this", 19.5f, story_timer);
-                    MapSubtitlesAtTime("graphic representation.", 20.5f, story_timer);
-                    MapSubtitlesAtTime("Once the target has", 22.25f, story_timer);
-                    MapSubtitlesAtTime("been pointed out to it,", 23.25f, story_timer);
-                    MapSubtitlesAtTime("The missile's electronic", 24.25f, story_timer);
-                    MapSubtitlesAtTime("intelligence", 25.5f, story_timer);
-                    MapSubtitlesAtTime("will steer it", 26.325f, story_timer);
-                    MapSubtitlesAtTime("to that target", 27f, story_timer);
-                    MapSubtitlesAtTime("no matter how", 28f, story_timer);
-                    MapSubtitlesAtTime("the bomber maneuvers.", 29f, story_timer);
-                    MapSubtitlesAtTime("⛅", 31f, story_timer);
-                    MapSubtitlesAtTime("⛈", 36.5f, story_timer);
-                    break;
-                case 8:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignDopplerEffect.SetActive(true);
-                    }
-                    if (CampaignDopplerEffect.transform.childCount == 0) {
-                        campaign_splits[clip_index - 1] = story_timer;
-                        story_timer = 0f;
-                        PlayVideo(campaign_clips[clip_index]);
-                        clip_index++;
-                    }
-                    MapSubtitlesAtTime("⛈", 0, story_timer);
-                    MapSubtitlesAtTime("⛅", 2f, story_timer);
-                    MapSubtitlesAtTime("Suppose we put", 3.5f, story_timer);
-                    MapSubtitlesAtTime("a radio transmitter", 4.5f, story_timer);
-                    MapSubtitlesAtTime("in a satellite.", 5.5f, story_timer);
-                    MapSubtitlesAtTime("You will detect", 9.25f, story_timer);
-                    MapSubtitlesAtTime("that the radio", 10.25f, story_timer);
-                    MapSubtitlesAtTime("frequency is", 11f, story_timer);
-                    MapSubtitlesAtTime("\"Doppler Shifted\"", 11.75f, story_timer);
-                    MapSubtitlesAtTime("while the satellite", 13f, story_timer);
-                    MapSubtitlesAtTime("passes by.", 14f, story_timer);
-                    MapSubtitlesAtTime("The \"Doppler Effect\"", 18.25f, story_timer);
-                    MapSubtitlesAtTime("shows up as an", 19.25f, story_timer);
-                    MapSubtitlesAtTime("aparent change in", 20.25f, story_timer);
-                    MapSubtitlesAtTime("frequency, and", 21.25f, story_timer);
-                    MapSubtitlesAtTime("is caused by", 22.25f, story_timer);
-                    MapSubtitlesAtTime("relative motion", 23.25f, story_timer);
-                    MapSubtitlesAtTime("between the satellite", 24.25f, story_timer);
-                    MapSubtitlesAtTime("transmitter", 25.25f, story_timer);
-                    MapSubtitlesAtTime("and the receiving", 27f, story_timer);
-                    MapSubtitlesAtTime("antenna", 28f, story_timer);
-                    MapSubtitlesAtTime("on Earth.", 29f, story_timer);
-                    MapSubtitlesAtTime("Tap to continue ...", 31, story_timer);
-                    break;
                 case 9:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
                     MapSubtitlesAtTime("⛅", 2.25f, story_timer);
@@ -1171,9 +1196,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 68.825f, story_timer);
                     break;
                 case 10:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignPlanksLaw.SetActive(true);
-                    }
                     if (CampaignPlanksLaw.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1287,9 +1309,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 64f, story_timer);
                     break;
                 case 12:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignHawkingRadiation.SetActive(true);
-                    }
                     if (CampaignHawkingRadiation.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1380,9 +1399,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 94.5f, story_timer);
                     break;
                 case 14:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignMoracevsParadox.SetActive(true);
-                    }
                     if (CampaignMoracevsParadox.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1490,9 +1506,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 84f, story_timer);
                     break;
                 case 16:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignFermiParadox.SetActive(true);
-                    }
                     if (CampaignFermiParadox.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1564,9 +1577,6 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 105f, story_timer);
                     break;
                 case 18:
-                    if (story_timer > 0f && story_timer < Time.deltaTime * 2f) { 
-                        CampaignPascalsWager.SetActive(true);
-                    }
                     if (CampaignPascalsWager.transform.childCount == 0) {
                         campaign_splits[clip_index - 1] = story_timer;
                         story_timer = 0f;
@@ -1582,6 +1592,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("the world's first", 8.5f, story_timer);
                     MapSubtitlesAtTime("mechanical adding", 9.5f, story_timer);
                     MapSubtitlesAtTime("machines.", 10.5f, story_timer);
+                    MapSubtitlesAtTime("The is one of them.", 11.5f, story_timer);
                     MapSubtitlesAtTime("Made in the sixteen-", 13f, story_timer);
                     MapSubtitlesAtTime("forties.", 14f, story_timer);
                     MapSubtitlesAtTime("Pascal's acheievement", 16.5f, story_timer);
@@ -1591,9 +1602,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("took care of carry-", 20.75f, story_timer);
                     MapSubtitlesAtTime("overs.", 21.75f, story_timer);
                     MapSubtitlesAtTime("For example,", 23.25f, story_timer);
-                    MapSubtitlesAtTime("six", 25f, story_timer);
-                    MapSubtitlesAtTime("plus nine", 28.5f, story_timer);
-                    MapSubtitlesAtTime("has the one carried", 30.75f, story_timer);
+                    MapSubtitlesAtTime("\"Six\"", 25f, story_timer);
+                    MapSubtitlesAtTime("plus \"Nine\"", 28.5f, story_timer);
+                    MapSubtitlesAtTime("and the \"One\" carried", 30.75f, story_timer);
                     MapSubtitlesAtTime("over to the next place.", 32f, story_timer);
                     MapSubtitlesAtTime("⛈", 34f, story_timer);
                     MapSubtitlesAtTime("In every area", 36.75f, story_timer);
@@ -1666,9 +1677,10 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Jay Bonafield's    ║\n║ The Future Is Now  ║\n║             (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 18f, story_timer);
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's Navi-  ║\n║ gation Satellite   ║\n║ System      (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 22f, story_timer);
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's Digi-  ║\n║ tal Computer       ║\n║ Techniques  (1962) ║\n╚════════════════════╝\n\nTap to continue ...", 26f, story_timer);
-                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sounds *     ║\n║ Eidos Interactive  ║\n║ Battlestations     ║\n║ Pacific     (2009) ║\n╚════════════════════╝\n\nTap to continue ...", 30f, story_timer);
-                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sprite *     ║\n║ Alejandro Monge's  ║\n║ Modular Spaceships ║\n║             (2014) ║\n╚════════════════════╝\n\nTap to continue ...", 34f, story_timer);
-                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n╚════════════════════╝\n\nTap to continue ...", 38f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Musics *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n╚════════════════════╝\n\nTap to continue ...", 30f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sounds *     ║\n║ Eidos Interactive  ║\n║ Battlestations     ║\n║ Pacific     (2009) ║\n╚════════════════════╝\n\nTap to continue ...", 34f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sprite *     ║\n║ Alejandro Monge's  ║\n║ Modular Spaceships ║\n║             (2014) ║\n╚════════════════════╝\n\nTap to continue ...", 38f, story_timer);
+                    MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n╚════════════════════╝\n\nTap to continue ...", 42f, story_timer);
                     break;
                 case 21:
                     MapSubtitlesAtTime("⛈", 0, story_timer);
