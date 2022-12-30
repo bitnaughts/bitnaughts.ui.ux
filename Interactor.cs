@@ -182,6 +182,12 @@ public class Interactor : MonoBehaviour
         
     }
     public void PrinterPrintFx() {
+        InputUp.SetActive(true);
+        InputDown.SetActive(true);
+        InputLeft.SetActive(true);
+        InputRight.SetActive(true);
+        InputA.SetActive(true);
+        InputB.SetActive(true);
         Printer.SetActive(false);
         ClearText();
         PrinterLeft.SetActive(false);
@@ -393,12 +399,6 @@ public class Interactor : MonoBehaviour
             BoosterL.SetActive(true);
             BoosterR.SetActive(true);
 
-            InputUp.SetActive(true);
-            InputDown.SetActive(true);
-            InputLeft.SetActive(true);
-            InputRight.SetActive(true);
-            InputA.SetActive(true);
-            InputB.SetActive(true);
             
         }
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
