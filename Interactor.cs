@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 /*
 
 Font size 50
@@ -24,6 +25,7 @@ public class Interactor : MonoBehaviour
     public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2, SoundWarning, SoundWarningOver;
     public GameObject Overlay;
     public GameObject Example;
+    public GameObject PrinterPrint, PrinterRight, PrinterLeft;
     private string command = "";
     private string history = "";
     public StructureController Ship;
@@ -40,9 +42,17 @@ public class Interactor : MonoBehaviour
     int cache_size = 125;
     string audio_queue = "Splash Screen";
     public AudioClip clip_queue;
+
+    // example ship ui
+    public GameObject InputUp, InputLeft, InputRight, InputDown, InputA, InputB;
+    // example ship objects
+    public GameObject CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
     // Start is called before the first frame update
     void Start()
     {
+        PrinterPrint = GameObject.Find("InputPrinterPrint");
+        PrinterRight = GameObject.Find("InputPrinterRight");
+        PrinterLeft = GameObject.Find("InputPrinterLeft");
         TabToggle = GameObject.Find("TabToggle").GetComponent<Text>();
         SplashScreen.SetActive(true);
         Subtitles = GameObject.Find("Subtitles");
@@ -61,6 +71,125 @@ public class Interactor : MonoBehaviour
         Timer.text = "⛅";
         PlayVideo(audio_queue);
         OnMapView();
+        PrinterLeft.SetActive(false);
+        PrinterRight.SetActive(false);
+        PrinterPrint.SetActive(false);
+    }
+    public void PrinterLeftFx() {
+        if (BoosterR.activeSelf)
+        {
+            BoosterL.SetActive(false);
+            BoosterR.SetActive(false);
+            SensorL.SetActive(true);
+            SensorR.SetActive(true);
+            ThrusterL.SetActive(true);
+            ThrusterR.SetActive(true);
+            Thruster.SetActive(false);
+        } else if (CannonR.activeSelf) {
+            CannonL.SetActive(false);
+            CannonR.SetActive(false);
+            BoosterL.SetActive(true);
+            BoosterR.SetActive(true);
+            Thruster.SetActive(true);
+            ThrusterL.SetActive(false);
+            ThrusterR.SetActive(false);
+        } else {
+            SensorL.SetActive(false);
+            SensorR.SetActive(false);
+            CannonL.SetActive(true);
+            CannonR.SetActive(true);
+        }
+
+    }
+    public void PrinterRightFx() {
+        if (BoosterR.activeSelf)
+        {
+            BoosterL.SetActive(false);
+            BoosterR.SetActive(false);
+            CannonL.SetActive(true);
+            CannonR.SetActive(true);
+            ThrusterL.SetActive(true);
+            ThrusterR.SetActive(true);
+            Thruster.SetActive(false);
+        } else if (CannonR.activeSelf) {
+            CannonL.SetActive(false);
+            CannonR.SetActive(false);
+            SensorL.SetActive(true);
+            SensorR.SetActive(true);
+        } else {
+            SensorL.SetActive(false);
+            SensorR.SetActive(false);
+            BoosterL.SetActive(true);
+            BoosterR.SetActive(true);
+            Thruster.SetActive(true);
+            ThrusterL.SetActive(false);
+            ThrusterR.SetActive(false);
+        }
+    }
+    public void InputWFx() {
+        if (Thruster.activeSelf) {
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(50);
+        } else {
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(50);
+        }
+    }
+    public void InputAFx() {
+        if (Thruster.activeSelf) {
+            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(50);
+        } else {
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-50);
+        }
+
+    }
+    public void InputSFx() {
+        if (Thruster.activeSelf) {
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-50);
+        } else {
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-50);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-50);
+        }
+        
+    }
+    public void InputDFx() {
+        if (Thruster.activeSelf) {
+            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(50);
+        } else {
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-50);
+        }
+    }
+    public void InputXFx() {
+        if (BoosterR.activeSelf)
+        {
+            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
+        } else if (CannonR.activeSelf) {
+            GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
+        } else {
+            GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
+        }
+    }
+    public void InputYFx() {
+        if (BoosterR.activeSelf)
+        {
+            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-1);
+        } else if (CannonR.activeSelf) {
+            GameObject.Find("CannonR").GetComponent<ComponentController>().Action(-1);
+        } else {
+            GameObject.Find("SensorR").GetComponent<ComponentController>().Action(-1);
+        }
+        
+    }
+    public void PrinterPrintFx() {
+        Printer.SetActive(false);
+        ClearText();
+        PrinterLeft.SetActive(false);
+        PrinterRight.SetActive(false);
+        PrinterPrint.SetActive(false);
+
+        OverlayInteractor.gameObject.SetActive(false);
+        MapScreenPanOverlay.SetActive(true);
     }
     public static int Max(int val1, int val2) {
         return (val1>=val2)?val1:val2;
@@ -72,13 +201,13 @@ public class Interactor : MonoBehaviour
     public void SetBackground(Color color) 
     {
         camera.GetComponent<Camera>().backgroundColor = color;
-        foreach (var obj in GridLayers)
+        for (int i = 0; i < GridLayers.Length; i++)
         {
             if (color.r == 0) {
-                obj.GetComponent<SpriteRenderer>().color = color;
+                GridLayers[i].GetComponent<SpriteRenderer>().color = color;
             }
             else {
-                obj.GetComponent<SpriteRenderer>().color = new Color(35f/255f, 95f/255f, 110f/255f, .66f);
+                GridLayers[i].GetComponent<SpriteRenderer>().color = new Color(255/255f, 255/255f, 195/255f, .1f * (i + 2));//35f/255f, 95f/255f, 110f/255f, .66f);
             }
         }
     }
@@ -254,6 +383,23 @@ public class Interactor : MonoBehaviour
         InputField.text = component_name;
         if (InputField.text == "Printer") {
             InputField.text = " ⛴ Ship Select";
+            PrinterLeft.SetActive(true);
+            PrinterRight.SetActive(true);
+            PrinterPrint.SetActive(true);
+
+            Processor.SetActive(true);
+            Bulkhead.SetActive(true);
+            Thruster.SetActive(true);
+            BoosterL.SetActive(true);
+            BoosterR.SetActive(true);
+
+            InputUp.SetActive(true);
+            InputDown.SetActive(true);
+            InputLeft.SetActive(true);
+            InputRight.SetActive(true);
+            InputA.SetActive(true);
+            InputB.SetActive(true);
+            
         }
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
         component_text = component_string.Substring(component_header + 1);
@@ -355,9 +501,12 @@ public class Interactor : MonoBehaviour
             }
             else 
             {
-                Application.Quit();
+                
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+                // Application.Quit();
             }
         } else {
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
             Application.Quit();
         }
     }
@@ -595,7 +744,7 @@ public class Interactor : MonoBehaviour
                 SubtitlesShadow.SetActive(false);
                 OnCodeView();
                 camera.GetComponent<AudioSource>().Stop();
-                SetBackground(new Color(15f/255f, 60f/255f, 80f/255f));
+                SetBackground(new Color(25/255f, 61/255f, 65/255f));
                 GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
                 volume_slider.SetActive(false);
                 InputField.text = " ☄ BitNaughts";
@@ -628,7 +777,7 @@ public class Interactor : MonoBehaviour
                     InputField.text = " ☄ BitNaughts";
                     camera.GetComponent<AudioSource>().Stop();
                     GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
-                    SetBackground(new Color(15f/255f, 60f/255f, 80f/255f));
+                    SetBackground(new Color(25/255f, 61/255f, 65/255f));
                 }
                 else
                 {
@@ -676,7 +825,7 @@ public class Interactor : MonoBehaviour
                         SubtitlesShadow.SetActive(false);
                         volume_slider.SetActive(false);
                         OnMapView();
-                        SetBackground(new Color(15f/255f, 60f/255f, 80f/255f));
+                        SetBackground(new Color(25/255f, 61/255f, 65/255f));
                         camera.GetComponent<AudioSource>().Stop();
                         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
                         if (clip_index == 2 && campaign_stage == -1) { campaign_stage++; story_timer = 0f; }
