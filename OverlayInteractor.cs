@@ -42,7 +42,7 @@ public class OverlayInteractor : MonoBehaviour
     {
         string option = OverlayDropdown.options[OverlayDropdown.value].text;
         Vector3 component_position = Ship.GetPosition(option);
-        Camera.main.transform.position = new Vector3(component_position.x, 100, component_position.z);
+        Camera.main.transform.position = new Vector3(component_position.x, 200, component_position.z);
         Vector3 size_vector = new Vector3(Ship.GetSize(option).x, 0, Ship.GetSize(option).y);
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
@@ -85,7 +85,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnSubmit() {
         Interactor.Sound("Click");
         Interactor.CompleteTutorial();
-        Interactor.CancelTutorial();
+        // Interactor.CancelTutorial();
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
@@ -123,7 +123,7 @@ public class OverlayInteractor : MonoBehaviour
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
-            Interactor.CancelTutorial();
+            // Interactor.CancelTutorial();
             Interactor.ClearText();
             // 
         }

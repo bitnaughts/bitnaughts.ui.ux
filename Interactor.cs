@@ -15,6 +15,7 @@ Text height 50
 public class Interactor : MonoBehaviour
 {
     public GameObject[] GridLayers;
+    public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
     public AudioClip SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
@@ -67,7 +68,8 @@ public class Interactor : MonoBehaviour
         OverlayInteractor = GameObject.Find("OverlayBorder")?.GetComponent<OverlayInteractor>();
         InterpreterPanelEdge = GameObject.Find("InterpreterPanelEdge");
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
-        RenderText("$");
+        RenderText("$ <b>about</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>tutorial</b>\n  <b>back</b>");
+
         Timer.text = "⛅";
         PlayVideo(audio_queue);
         OnMapView();
@@ -128,36 +130,36 @@ public class Interactor : MonoBehaviour
     }
     public void InputWFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(10);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(50);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(10);
         }
     }
     public void InputAFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(10);
         } else {
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(50);
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-50);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-10);
         }
 
     }
     public void InputSFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-50);
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-10);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-50);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-50);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-10);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-10);
         }
         
     }
     public void InputDFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(50);
+            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(10);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(50);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-50);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-10);
         }
     }
     public void InputXFx() {
@@ -211,9 +213,11 @@ public class Interactor : MonoBehaviour
         {
             if (color.r == 0) {
                 GridLayers[i].GetComponent<SpriteRenderer>().color = color;
+                GridLayers[i].GetComponent<SpriteRenderer>().sprite = PixelSprite;
             }
             else {
-                GridLayers[i].GetComponent<SpriteRenderer>().color = new Color(255/255f, 255/255f, 195/255f, .1f * (i + 2));//35f/255f, 95f/255f, 110f/255f, .66f);
+                GridLayers[i].GetComponent<SpriteRenderer>().color = new Color(255/255f, 255/255f, 195/255f, .05f * (i + 2));//35f/255f, 95f/255f, 110f/255f, .66f);
+                GridLayers[i].GetComponent<SpriteRenderer>().sprite = OverlaySprite;
             }
         }
     }
@@ -228,10 +232,11 @@ public class Interactor : MonoBehaviour
         camera.GetComponent<AudioSource>().Play();
         camera.GetComponent<AudioSource>().loop = false;
     }
+    string queue_audio = "";
     public void PlayVideo(string url) 
     {
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
-        PlayAudio(LookupNarration(trimmed_url));
+        queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
         // string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
         // #if UNITY_WEBGL
@@ -487,6 +492,8 @@ public class Interactor : MonoBehaviour
         if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
     }
     public void CancelTutorial() {
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+
     }
     public void ThrustTutorial() {
     }
@@ -502,11 +509,9 @@ public class Interactor : MonoBehaviour
             else 
             {
                 
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-                // Application.Quit();
+                Application.Quit();
             }
         } else {
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
             Application.Quit();
         }
     }
@@ -671,7 +676,7 @@ public class Interactor : MonoBehaviour
         }
     }
     bool CheckInsideEdge() {
-        return (Input.mousePosition.y > 60 && Input.mousePosition.y < Screen.height - 60 && Input.mousePosition.x > 60 && Input.mousePosition.x < Screen.width - 60);
+        return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100);
     }
     string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", " ☄ BitNaughts   " };
@@ -683,6 +688,18 @@ public class Interactor : MonoBehaviour
     string credits_output = "";
     void FixedUpdate()
     {
+        if (queue_audio != "") {
+            if (GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) {
+                PlayAudio(LookupNarration(queue_audio));
+                queue_audio = "";
+                if (story_timer != -1) {
+                    story_timer = 0;
+                }
+                if (start_timer != -1) {
+                    start_timer = 0;
+                }
+            }
+        }
         if (start_timer > -1) 
         {
             if ((start_timer / 5f ) % 2 < 1) {
@@ -698,9 +715,9 @@ public class Interactor : MonoBehaviour
             MapSubtitlesAtTime("news bulletin!", 2f, start_timer);
             MapSubtitlesAtTime("⛅", 2.5f, start_timer);
             MapSubtitlesAtTime("A state of emergency", 2.75f, start_timer);
-            MapSubtitlesAtTime("has been declared by", 3.75f, start_timer);
-            MapSubtitlesAtTime("the President of", 4.75f, start_timer);
-            MapSubtitlesAtTime("he United States!", 5.25f, start_timer);
+            MapSubtitlesAtTime("has been declared", 3.75f, start_timer);
+            MapSubtitlesAtTime("by the President of", 4.5f, start_timer);
+            MapSubtitlesAtTime("the United States!", 5.25f, start_timer);
             MapSubtitlesAtTime("We're switching live", 6.25f, start_timer);
             MapSubtitlesAtTime("to Wilsens Glenn,", 7.25f, start_timer);
             MapSubtitlesAtTime("New Jersey", 8f, start_timer);
@@ -745,6 +762,7 @@ public class Interactor : MonoBehaviour
                 OnCodeView();
                 camera.GetComponent<AudioSource>().Stop();
                 SetBackground(new Color(25/255f, 61/255f, 65/255f));
+                // Overlay
                 GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
                 volume_slider.SetActive(false);
                 InputField.text = " ☄ BitNaughts";
@@ -2002,151 +2020,151 @@ public class Interactor : MonoBehaviour
                 RenderText("$ about\n$");
             }
         } else if (onLoad) {
-            timer += Time.deltaTime;
-            Flash("Clickable$", 0f);
-            if (timer > 3) {
-                onLoad = false;
-                timer = 0;
-                ResetFlash("Clickable$", 0f);
-            }
+            // timer += Time.deltaTime;
+            // Flash("Clickable$", 0f);
+            // if (timer > 3) {
+            //     onLoad = false;
+            //     timer = 0;
+            //     ResetFlash("Clickable$", 0f);
+            // }
         } else if (tutorialIntro) {
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            PlayAtTime(TutorialIntro, 1f);
-            SubtitlesAtTime("  Welcome_to_the", 1f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 2f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 4f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 5.5f);
-            PlayAtTime(TutorialLookAround, 7f);
-            MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 7f);
-            Flash ("OverlayPanUp", 7f);
-            Flash ("OverlayPanDown", 7f);
-            Flash ("OverlayPanLeft", 7f);
-            Flash ("OverlayPanRight", 7f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!", 7f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed", 9f);
-            SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 11f);
-            PlayAtTime(TutorialTry, 20f);
-            PlayAtTime(TutorialLookAround, 30f);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // PlayAtTime(TutorialIntro, 1f);
+            // SubtitlesAtTime("  Welcome_to_the", 1f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!", 2f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn", 4f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"", 5.5f);
+            // PlayAtTime(TutorialLookAround, 7f);
+            // MapSubtitlesAtTime("Click and drag\n▦ Map Screen", 7f);
+            // Flash ("OverlayPanUp", 7f);
+            // Flash ("OverlayPanDown", 7f);
+            // Flash ("OverlayPanLeft", 7f);
+            // Flash ("OverlayPanRight", 7f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!", 7f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed", 9f);
+            // SubtitlesAtTime("  Welcome_to_the\n⍰_Command_Tutorial!\n\n  Today_you_will_learn\n  \"Ship_control\"\n\n  First_off,_try_looking_around!\n  360°_awareness_is_needed_for\n  dog_fighting!", 11f);
+            // PlayAtTime(TutorialTry, 20f);
+            // PlayAtTime(TutorialLookAround, 30f);
         } else if (tutorialPan) {
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            MapSubtitlesAtTime("", 0f);
-            ResetFlash ("OverlayPanUp", 0f);
-            ResetFlash ("OverlayPanDown", 0f);
-            ResetFlash ("OverlayPanLeft", 0f);
-            ResetFlash ("OverlayPanRight", 0f);
-            Flash ("MapScreenOverlay", 1.5f);
-            Flash ("MapScreenOverlayBitBottomLeft", 1.5f);
-            Flash ("MapScreenOverlayBitRightTop", 1.5f);
-            Flash ("MapScreenOverlayBitRightBottom", 1.5f);
-            Flash ("MapScreenOverlayBitUpLeft", 1.5f);
-            Flash ("MapScreenOverlayBitUpRight", 1.5f);
-            Flash ("MapScreenOverlayBitDownLeft", 1.5f);
-            Flash ("MapScreenOverlayBitDownRight", 1.5f);
-            Flash ("MapScreenOverlayBitExit", 1.5f);
-            Flash ("MapScreenOverlayBitReset", 1.5f);
-            PlayAtTime(TutorialGood3, 0.5f);
-            PlayAtTime(TutorialMapScreen, 1.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows", 1.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n┗_Mission_area", 3.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┗_Friendly_units", 5f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┠_Friendly_units\n┗_Detected_enemy_units", 7f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!", 9f);
-            SpriteFlash ("Cannon", 9f);
-            ResetFlash("MapScreenOverlay", 9f);
-            ResetFlash ("MapScreenOverlayBitBottomLeft", 9f);
-            ResetFlash ("MapScreenOverlayBitRightTop", 9f);
-            ResetFlash ("MapScreenOverlayBitRightBottom", 9f);
-            ResetFlash ("MapScreenOverlayBitUpLeft", 9f);
-            ResetFlash ("MapScreenOverlayBitUpRight", 9f);
-            ResetFlash ("MapScreenOverlayBitDownLeft", 9f);
-            ResetFlash ("MapScreenOverlayBitDownRight", 9f);
-            ResetFlash ("MapScreenOverlayBitExit", 9f);
-            ResetFlash ("MapScreenOverlayBitReset", 9f);
-            PlayAtTime(TutorialTargetWindowHelp, 14f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press", 14f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"", 16.5f);
-            SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"\n\n  This_will_display\n⁜_Target Window", 19f);
-            PlayAtTime(TutorialTry, 25f);
-            MapSubtitlesAtTime("Press\n◍ Cannon", 9f);
-            PlayAtTime(TutorialTargetWindowHelp, 29f);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // MapSubtitlesAtTime("", 0f);
+            // ResetFlash ("OverlayPanUp", 0f);
+            // ResetFlash ("OverlayPanDown", 0f);
+            // ResetFlash ("OverlayPanLeft", 0f);
+            // ResetFlash ("OverlayPanRight", 0f);
+            // Flash ("MapScreenOverlay", 1.5f);
+            // Flash ("MapScreenOverlayBitBottomLeft", 1.5f);
+            // Flash ("MapScreenOverlayBitRightTop", 1.5f);
+            // Flash ("MapScreenOverlayBitRightBottom", 1.5f);
+            // Flash ("MapScreenOverlayBitUpLeft", 1.5f);
+            // Flash ("MapScreenOverlayBitUpRight", 1.5f);
+            // Flash ("MapScreenOverlayBitDownLeft", 1.5f);
+            // Flash ("MapScreenOverlayBitDownRight", 1.5f);
+            // Flash ("MapScreenOverlayBitExit", 1.5f);
+            // Flash ("MapScreenOverlayBitReset", 1.5f);
+            // PlayAtTime(TutorialGood3, 0.5f);
+            // PlayAtTime(TutorialMapScreen, 1.5f);
+            // SubtitlesAtTime("▦_Map_Screen_shows", 1.5f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n┗_Mission_area", 3.5f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┗_Friendly_units", 5f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n┠_Mission_area\n┠_Friendly_units\n┗_Detected_enemy_units", 7f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!", 9f);
+            // SpriteFlash ("Cannon", 9f);
+            // ResetFlash("MapScreenOverlay", 9f);
+            // ResetFlash ("MapScreenOverlayBitBottomLeft", 9f);
+            // ResetFlash ("MapScreenOverlayBitRightTop", 9f);
+            // ResetFlash ("MapScreenOverlayBitRightBottom", 9f);
+            // ResetFlash ("MapScreenOverlayBitUpLeft", 9f);
+            // ResetFlash ("MapScreenOverlayBitUpRight", 9f);
+            // ResetFlash ("MapScreenOverlayBitDownLeft", 9f);
+            // ResetFlash ("MapScreenOverlayBitDownRight", 9f);
+            // ResetFlash ("MapScreenOverlayBitExit", 9f);
+            // ResetFlash ("MapScreenOverlayBitReset", 9f);
+            // PlayAtTime(TutorialTargetWindowHelp, 14f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press", 14f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"", 16.5f);
+            // SubtitlesAtTime("▦_Map_Screen_shows\n├_Mission_area\n├_Friendly_units\n└_Detected_enemy_units\n\n  Select_units_highlighted_yellow!\n\n  When_the_reticle_is\n  over_the_target_press\n  \"Use_weapon_control\"\n\n  This_will_display\n⁜_Target Window", 19f);
+            // PlayAtTime(TutorialTry, 25f);
+            // MapSubtitlesAtTime("Press\n◍ Cannon", 9f);
+            // PlayAtTime(TutorialTargetWindowHelp, 29f);
         } else  if (tutorialTarget) {
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            ResetSpriteFlash("Cannon", 0f);
-            MapSubtitlesAtTime("", 0f);
-            PlayAtTime(TutorialTargetWindowSelected, 0.5f);
-            MapSubtitlesAtTime("⁜ Target Window displays", 1f);
-            MapSubtitlesAtTime("unit name and class", 4f);
-            Flash("OverlayBorder", 1.2f);
-            PlayAtTime(TutorialLeftWindow, 8f);
-            ResetFlash("OverlayBorder", 8f);
-            Flash ("InterpreterPanel", 8f);
-            Flash ("UnitScreenBit", 8f);
-            MapSubtitlesAtTime("Left is ▤ Unit Window", 8f);
-            MapSubtitlesAtTime("displays information about class", 11f);
-            ResetFlash ("InterpreterPanel", 15f);
-            ResetFlash ("UnitScreenBit", 15f);
-            PlayAtTime(TutorialSelect, 15f);
-            MapSubtitlesAtTime("Press Fire or\n/* Weapon control */", 15f);
-            Flash("Clickable/*_Weapon_control_*/", 15f);
-            Flash ("ClickableFire_()", 15f);
-            PlayAtTime(TutorialTry, 22f);
-            PlayAtTime(TutorialSelect, 26f);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // ResetSpriteFlash("Cannon", 0f);
+            // MapSubtitlesAtTime("", 0f);
+            // PlayAtTime(TutorialTargetWindowSelected, 0.5f);
+            // MapSubtitlesAtTime("⁜ Target Window displays", 1f);
+            // MapSubtitlesAtTime("unit name and class", 4f);
+            // Flash("OverlayBorder", 1.2f);
+            // PlayAtTime(TutorialLeftWindow, 8f);
+            // ResetFlash("OverlayBorder", 8f);
+            // Flash ("InterpreterPanel", 8f);
+            // Flash ("UnitScreenBit", 8f);
+            // MapSubtitlesAtTime("Left is ▤ Unit Window", 8f);
+            // MapSubtitlesAtTime("displays information about class", 11f);
+            // ResetFlash ("InterpreterPanel", 15f);
+            // ResetFlash ("UnitScreenBit", 15f);
+            // PlayAtTime(TutorialSelect, 15f);
+            // MapSubtitlesAtTime("Press Fire or\n/* Weapon control */", 15f);
+            // Flash("Clickable/*_Weapon_control_*/", 15f);
+            // Flash ("ClickableFire_()", 15f);
+            // PlayAtTime(TutorialTry, 22f);
+            // PlayAtTime(TutorialSelect, 26f);
         } else  if (tutorialFire) {
-            RenderComponent(InputField.text);
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            PlayAtTime(TutorialGood, 0.5f);
-            MapSubtitlesAtTime("", 0f);
-            PlayAtTime(TutorialCancel, 2f);
-            MapSubtitlesAtTime("Press\n☒ Cancel", 2f);
-            PlayAtTime(TutorialTry, 15f);
-            PlayAtTime(TutorialCancel, 19f);
-            Flash ("OverlayDelete", 2f);
+            // RenderComponent(InputField.text);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // PlayAtTime(TutorialGood, 0.5f);
+            // MapSubtitlesAtTime("", 0f);
+            // PlayAtTime(TutorialCancel, 2f);
+            // MapSubtitlesAtTime("Press\n☒ Cancel", 2f);
+            // PlayAtTime(TutorialTry, 15f);
+            // PlayAtTime(TutorialCancel, 19f);
+            // Flash ("OverlayDelete", 2f);
         } else if (tutorialCancel) {
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            PlayAtTime(TutorialGetMoving, 0.1f);
-            SpriteFlash ("Thruster", 0.1f);
-            MapSubtitlesAtTime("", 0.1f);
-            SubtitlesAtTime("  Now_it's_time_for_you\n  to_get_this_old_girl_moving!", 0.5f);
-            Flash ("OverlayPanDown", 0.5f);
-            PlayAtTime(TutorialTry, 6f);
-            MapSubtitlesAtTime("Press\n◉ Thruster", 0.5f);
-            PlayAtTime(TutorialGetMoving, 12f);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // PlayAtTime(TutorialGetMoving, 0.1f);
+            // SpriteFlash ("Thruster", 0.1f);
+            // MapSubtitlesAtTime("", 0.1f);
+            // SubtitlesAtTime("  Now_it's_time_for_you\n  to_get_this_old_girl_moving!", 0.5f);
+            // Flash ("OverlayPanDown", 0.5f);
+            // PlayAtTime(TutorialTry, 6f);
+            // MapSubtitlesAtTime("Press\n◉ Thruster", 0.5f);
+            // PlayAtTime(TutorialGetMoving, 12f);
         } else if (tutorialThrust) {
-            RenderComponent(InputField.text);
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            MapSubtitlesAtTime("", 0f);
-            ResetSpriteFlash ("Thruster", 0.1f);
-            ResetFlash ("OverlayPanDown", 0.1f);
-            PlayAtTime(TutorialGood2, 0.5f);
-            Flash("ClickableThrustUp_()", 1.5f);
-            Flash("Clickable/*_Thrust_control_(+)_*/", 1.5f);
-            PlayAtTime(TutorialThrottle, 1.5f);
-            MapSubtitlesAtTime("Press ThrustUp or\n/* Thrust control (+) */", 1.5f);
-            PlayAtTime(TutorialTry, 8f);
-            PlayAtTime(TutorialThrottle, 14f);
+            // RenderComponent(InputField.text);
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // MapSubtitlesAtTime("", 0f);
+            // ResetSpriteFlash ("Thruster", 0.1f);
+            // ResetFlash ("OverlayPanDown", 0.1f);
+            // PlayAtTime(TutorialGood2, 0.5f);
+            // Flash("ClickableThrustUp_()", 1.5f);
+            // Flash("Clickable/*_Thrust_control_(+)_*/", 1.5f);
+            // PlayAtTime(TutorialThrottle, 1.5f);
+            // MapSubtitlesAtTime("Press ThrustUp or\n/* Thrust control (+) */", 1.5f);
+            // PlayAtTime(TutorialTry, 8f);
+            // PlayAtTime(TutorialThrottle, 14f);
         } else if (tutorialFinish) {
-            timer += Time.deltaTime;
-            global_timer += Time.deltaTime;
-            ResetFlash ("OverlayPanDown", 0.1f);
-            MapSubtitlesAtTime("", 0f);
-            PlayAtTime(TutorialBetter, 0.1f);
-            PlayAtTime(TutorialOutro, 2.5f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial", 3.5f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!", 7f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!", 12f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 13.5f);
-            SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 15f);
-            Flash ("OverlayOk", 3.5f);
-            MapSubtitlesAtTime("Press\n☑ Ok", 3.5f);
-            if (timer > 16) {
-                CompleteTutorial();
-            }
+            // timer += Time.deltaTime;
+            // global_timer += Time.deltaTime;
+            // ResetFlash ("OverlayPanDown", 0.1f);
+            // MapSubtitlesAtTime("", 0f);
+            // PlayAtTime(TutorialBetter, 0.1f);
+            // PlayAtTime(TutorialOutro, 2.5f);
+            // SubtitlesAtTime("☑You_have_completed_the_tutorial", 3.5f);
+            // SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!", 7f);
+            // SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!", 12f);
+            // SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 13.5f);
+            // SubtitlesAtTime("☑You_have_completed_the_tutorial\n\n  I_hope_you_never_have\n  cause_to_use_the_knowledge\n  you_just_acquired!\n\n  That_is_all_for_today!\n\n  Dismissed!", 15f);
+            // Flash ("OverlayOk", 3.5f);
+            // MapSubtitlesAtTime("Press\n☑ Ok", 3.5f);
+            // if (timer > 16) {
+            //     CompleteTutorial();
+            // }
         } else if (OverlayInteractor != null && OverlayInteractor.gameObject.activeSelf) {
             if (animation_timer % 1 > 1 - Time.deltaTime) {
                 // RenderComponent(InputField.text);
