@@ -31,6 +31,7 @@ public class Interactor : MonoBehaviour
     public string start_text = "$"; 
     public OverlayInteractor OverlayInteractor;
     public GameObject ClickableText;
+    Text TabToggle;
     GameObject MapScreenPanOverlay;
     public Text InputField;
     public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
@@ -42,6 +43,7 @@ public class Interactor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TabToggle = GameObject.Find("TabToggle").GetComponent<Text>();
         SplashScreen.SetActive(true);
         Subtitles = GameObject.Find("Subtitles");
         SubtitlesShadow = GameObject.Find("SubtitlesShadow");
@@ -176,16 +178,28 @@ public class Interactor : MonoBehaviour
         }
         return SoundError;
     }
+    public void OnToggleView() {
+        if (MapPanel.activeSelf)
+        {
+            OnCodeView();
+        }
+        else 
+        {
+            OnMapView();
+        }
+    }
     public void OnMapView() {
         MapPanel.SetActive(true);
         if (volume_slider.activeSelf == false) MapScreenPanOverlay.SetActive(true);
         InterpreterPanel.SetActive(false);
         InterpreterPanelEdge.SetActive(false);
+        TabToggle.text = "▦ GUI";
     }
     public void OnCodeView() {
         MapPanel.SetActive(false);
         InterpreterPanel.SetActive(true);
         InterpreterPanelEdge.SetActive(true);
+        TabToggle.text = "▤ TUI";
     }
     public void AppendText(string text) {
         if (history.LastIndexOf("$") != -1) history = history.Substring(0, history.LastIndexOf("$"));
@@ -238,6 +252,10 @@ public class Interactor : MonoBehaviour
         var component_header = component_string.IndexOf("\n");
         component_name = component_string.Substring(0, component_header);
         InputField.text = component_name;
+        if (InputField.text == "Printer") {
+            InputField.text = " ⛴ Ship Select";
+        }
+        if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
         component_text = component_string.Substring(component_header + 1);
         // RenderText(component_text);
         RenderText(Ship.interpreter.ToString());
@@ -519,21 +537,21 @@ public class Interactor : MonoBehaviour
         if (start_timer > -1) 
         {
             if ((start_timer / 5f ) % 2 < 1) {
-                Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" +  FloatToTime(start_timer) ;
             } else {
-                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" + System.DateTime.Now.ToString("h:mm:ss.f") ;
             }
             start_timer += Time.deltaTime;
-            MapSubtitlesAtTime("We interrupt this", 0f, start_timer);
-            MapSubtitlesAtTime("program to", 0.5f, start_timer);
-            MapSubtitlesAtTime("bring you a", 1f, start_timer);
-            MapSubtitlesAtTime("special news", 1.5f, start_timer);
-            MapSubtitlesAtTime("bulletin!", 2f, start_timer);
+            MapSubtitlesAtTime("We interrupt", 0f, start_timer);
+            MapSubtitlesAtTime("this program", 0.5f, start_timer);
+            MapSubtitlesAtTime("to bring you", 1f, start_timer);
+            MapSubtitlesAtTime("a special", 1.5f, start_timer);
+            MapSubtitlesAtTime("news bulletin!", 2f, start_timer);
             MapSubtitlesAtTime("⛅", 2.5f, start_timer);
             MapSubtitlesAtTime("A state of emergency", 2.75f, start_timer);
             MapSubtitlesAtTime("has been declared by", 3.75f, start_timer);
-            MapSubtitlesAtTime("the President of the", 4.75f, start_timer);
-            MapSubtitlesAtTime("United States!", 5.25f, start_timer);
+            MapSubtitlesAtTime("the President of", 4.75f, start_timer);
+            MapSubtitlesAtTime("he United States!", 5.25f, start_timer);
             MapSubtitlesAtTime("We're switching live", 6.25f, start_timer);
             MapSubtitlesAtTime("to Wilsens Glenn,", 7.25f, start_timer);
             MapSubtitlesAtTime("New Jersey", 8f, start_timer);
@@ -686,11 +704,10 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♫", 6.15f, story_timer);
                     MapSubtitlesAtTime("♫♪", 6.4f, story_timer);
                     MapSubtitlesAtTime("♫♫", 6.65f, story_timer);
-                    MapSubtitlesAtTime("♫♫♪", 6.9f, story_timer);
-                    MapSubtitlesAtTime("The voices", 7f, story_timer);
-                    MapSubtitlesAtTime("we used to hear", 7.5f, story_timer);
-                    MapSubtitlesAtTime("on the radio ...", 8f, story_timer);
-                    MapSubtitlesAtTime("☄ BitNaughts", 10.25f, story_timer);
+                    // MapSubtitlesAtTime("♫♫♪", 6.9f, story_timer);
+                    MapSubtitlesAtTime("The voices we used", 7f, story_timer);
+                    MapSubtitlesAtTime("to hear on the radio:", 8f, story_timer);
+                    MapSubtitlesAtTime("☄", 10.25f, story_timer);
                     MapSubtitlesAtTime("Be sure and tune", 11.25f, story_timer);
                     MapSubtitlesAtTime("in tomorrow for", 12f, story_timer);
                     MapSubtitlesAtTime("another adventure", 13f, story_timer);
@@ -1691,10 +1708,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("⛈", 47f, story_timer);
                     break;
                 case 20:
-                    MapSubtitlesAtTime("⛅", 0f, story_timer);
-                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 2.5f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 0f, story_timer);
                     MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("h:mm:ss.f") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 5f, story_timer);
-                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 7.5f, story_timer);
+                    MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 7.5f, story_timer);
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Woody Allen's      ║\n║ Radio Days         ║\n║             (1987) ║\n╚════════════════════╝\n\nTap to continue ...", 10f, story_timer);
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Jay Bonafield's    ║\n║ The Future Is Now  ║\n║             (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 12.25f, story_timer);
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's        ║\n║ Navigation Satel-  ║\n║ lite System (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 14.5f, story_timer);
@@ -1984,7 +2000,7 @@ public class Interactor : MonoBehaviour
             }
         } else if (OverlayInteractor != null && OverlayInteractor.gameObject.activeSelf) {
             if (animation_timer % 1 > 1 - Time.deltaTime) {
-                RenderComponent(InputField.text);
+                // RenderComponent(InputField.text);
             }
         }
     }
