@@ -881,9 +881,9 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("Be sure and tune", 11.25f, story_timer);
                     MapSubtitlesAtTime("in tomorrow for", 12f, story_timer);
                     MapSubtitlesAtTime("another adventure", 13f, story_timer);
-                    MapSubtitlesAtTime("of the", 13.8f, story_timer);
-                    MapSubtitlesAtTime("\"Masked Avenger\"!", 14.2f, story_timer);
-                    MapSubtitlesAtTime("When he flies over", 15.5f, story_timer);
+                    MapSubtitlesAtTime("of the", 13.75f, story_timer);
+                    MapSubtitlesAtTime("\"Masked Avenger\"!", 14.25f, story_timer);
+                    MapSubtitlesAtTime("When he flies over", 15.25f, story_timer);
                     MapSubtitlesAtTime("the city rooftops ...", 16f, story_timer);
                     MapSubtitlesAtTime("We all hear his cry:", 17.5f, story_timer);
                     MapSubtitlesAtTime("☄", 19, story_timer);
@@ -1266,9 +1266,8 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("is caused by the", 22.25f, story_timer);
                     MapSubtitlesAtTime("relative motion", 23.25f, story_timer);
                     MapSubtitlesAtTime("between the satellite", 24.5f, story_timer);
-                    MapSubtitlesAtTime("transmitter", 25.25f, story_timer);
-                    MapSubtitlesAtTime("and the receiving", 27f, story_timer);
-                    MapSubtitlesAtTime("antenna", 28f, story_timer);
+                    MapSubtitlesAtTime("transmitter and the", 25.25f, story_timer);
+                    MapSubtitlesAtTime("receiving antenna", 27f, story_timer);
                     MapSubtitlesAtTime("on Earth.", 29f, story_timer);
                     MapSubtitlesAtTime("Tap to continue ...", 31, story_timer);
                     break;
