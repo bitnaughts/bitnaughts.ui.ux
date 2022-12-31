@@ -196,6 +196,9 @@ public class Interactor : MonoBehaviour
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
 
+        Ship.Start();
+        OverlayInteractor.UpdateOptions();
+        OverlayInteractor.OnDropdownChange(); 
         OverlayInteractor.gameObject.SetActive(false);
         MapScreenPanOverlay.SetActive(true);
     }
