@@ -17,7 +17,7 @@ public class ClickableTextInteractor : MonoBehaviour
         initialized_text = text;
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-10f + (pos - (text.Length-1)/2f) * 50f, -160f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-75f + (pos - (text.Length-1)/2f) * 50f, -150f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 50f, 100f);//new Vector2(text.Length * 37.5f, 75f);
         this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
 
