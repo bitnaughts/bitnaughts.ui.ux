@@ -409,7 +409,7 @@ public class Interactor : MonoBehaviour
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
         component_text = component_string.Substring(component_header + 1);
         // RenderText(component_text);
-        RenderText(Ship.interpreter.ToString());
+        // RenderText(Ship.interpreter.ToString());
     }
 
     public string[] GetComponents() {
