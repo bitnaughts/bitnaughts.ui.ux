@@ -348,7 +348,7 @@ public class Interactor : MonoBehaviour
     }
     public void ClearText() {
         if (history == "") history = "$";
-        InputField.text = " ☄ BitNaughts";
+        InputField.text = "☄ BitNaughts";
         MapScreenPanOverlay.SetActive(true);
         // volume_slider.SetActive(false/);
         RenderText(history);
@@ -383,7 +383,7 @@ public class Interactor : MonoBehaviour
                 max_line_length = character_count;
             }
         }
-        SetContentSize(25f + max_line_length * 37.5f, 50f + lines.Length * 75f);
+        SetContentSize(max_line_length * 50f, lines.Length * 100f);
     }
     public string component_name = "";
     public string component_text = "";
@@ -417,7 +417,7 @@ public class Interactor : MonoBehaviour
     }
     void SetContentSize(float width,float height) {
         // print ("Content.sizeDelta(" + width + ", " + height + ")");
-        Content.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        Content.GetComponent<RectTransform>().sizeDelta = new Vector2(width + 100, height + 200);
     }
     public void SetInputPlaceholder(string placeholder) {
         InputField.text = "";//placeholder;
@@ -679,7 +679,7 @@ public class Interactor : MonoBehaviour
         return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100);
     }
     string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
-    string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", " ☄ BitNaughts   " };
+    string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", "☄ BitNaughts   " };
     int campaign_stage = -1, tutorial_stage = -1; 
     int[] campaign_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 155, 999 };
     float[] campaign_splits = new float[20];
@@ -765,7 +765,7 @@ public class Interactor : MonoBehaviour
                 // Overlay
                 GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
                 volume_slider.SetActive(false);
-                InputField.text = " ☄ BitNaughts";
+                InputField.text = "☄ BitNaughts";
             }
         } else if (story_timer > -1 && clip_index > -1) {
             Timer.text = "";
@@ -792,7 +792,7 @@ public class Interactor : MonoBehaviour
                     volume_slider.SetActive(false);
                     OnCodeView();
                     RenderText("$ campaign\n$");
-                    InputField.text = " ☄ BitNaughts";
+                    InputField.text = "☄ BitNaughts";
                     camera.GetComponent<AudioSource>().Stop();
                     GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
                     SetBackground(new Color(25/255f, 61/255f, 65/255f));
@@ -1414,7 +1414,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("mental satellites.", 3.5f, story_timer);
                     MapSubtitlesAtTime("Beginning with the", 4.5f, story_timer);
                     MapSubtitlesAtTime("launch of the", 5.5f, story_timer);
-                    MapSubtitlesAtTime("\"Transit-1B\" satellite", 6.25f, story_timer);
+                    MapSubtitlesAtTime("\"NAV-1B\" satellite", 6.25f, story_timer);
                     MapSubtitlesAtTime("in April, nineteen sixty.", 7.5f, story_timer);
                     MapSubtitlesAtTime("⛈", 9.5f, story_timer);
                     MapSubtitlesAtTime("To cover the whole Earth", 11f, story_timer);
@@ -1894,7 +1894,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╚════════════════════╝\n\n\n\n\n\n\nTap to continue ...", 35f, story_timer);
                     MapSubtitlesAtTime("These current tests", 35.25f, story_timer);
                     MapSubtitlesAtTime("are enabling", 36.75f, story_timer);
-                    MapSubtitlesAtTime("\"N.A.S.A\"", 37.75f, story_timer);
+                    MapSubtitlesAtTime("N.A.S.A", 37.75f, story_timer);
                     MapSubtitlesAtTime("and the broadcasting", 38.25f, story_timer);
                     MapSubtitlesAtTime("community", 39.25f, story_timer);
                     MapSubtitlesAtTime("to iron out", 40.25f, story_timer);
@@ -1910,8 +1910,8 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("we have every reason", 52.5f, story_timer);
                     MapSubtitlesAtTime("to believe that", 53.25f, story_timer);
                     MapSubtitlesAtTime("they will be,", 53.75f, story_timer);
-                    MapSubtitlesAtTime("The \"American\"", 55.25f, story_timer);
-                    MapSubtitlesAtTime("\"People\" will", 55.75f, story_timer);
+                    MapSubtitlesAtTime("The American", 55.25f, story_timer);
+                    MapSubtitlesAtTime("people will", 55.75f, story_timer);
                     MapSubtitlesAtTime("reap a major", 56.75f, story_timer);
                     MapSubtitlesAtTime("domestic dividend", 57.75f, story_timer);
                     MapSubtitlesAtTime("from the national", 59.25f, story_timer);
