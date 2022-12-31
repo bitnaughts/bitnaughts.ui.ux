@@ -872,8 +872,8 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("♫♪", 6.4f, story_timer);
                     MapSubtitlesAtTime("♫♫", 6.65f, story_timer);
                     // MapSubtitlesAtTime("♫♫♪", 6.9f, story_timer);
-                    MapSubtitlesAtTime("The voices we used", 7f, story_timer);
-                    MapSubtitlesAtTime("to hear on the radio:", 8f, story_timer);
+                    MapSubtitlesAtTime("The voices we used to", 7f, story_timer);
+                    MapSubtitlesAtTime("hear on the radio ...", 8f, story_timer);
                     MapSubtitlesAtTime("☄", 10.25f, story_timer);
                     MapSubtitlesAtTime("Be sure and tune", 11.25f, story_timer);
                     MapSubtitlesAtTime("in tomorrow for", 12f, story_timer);
@@ -904,7 +904,7 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("One of many.", 37f, story_timer);
                     MapSubtitlesAtTime("Now it's all gone ...", 38.25f, story_timer);
                     MapSubtitlesAtTime("Except for", 40f, story_timer);
-                    MapSubtitlesAtTime("the memories:", 40.75f, story_timer);
+                    MapSubtitlesAtTime("the memories ...", 40.75f, story_timer);
                     MapSubtitlesAtTime("Pay more attention to ", 41.5f, story_timer);
                     MapSubtitlesAtTime("your school work and", 42.5f, story_timer);
                     MapSubtitlesAtTime("less to the radio!", 43.25f, story_timer);
@@ -1898,12 +1898,12 @@ public class Interactor : MonoBehaviour
                     MapSubtitlesAtTime("and the broadcasting", 38.25f, story_timer);
                     MapSubtitlesAtTime("community", 39.25f, story_timer);
                     MapSubtitlesAtTime("to iron out", 40.25f, story_timer);
-                    MapSubtitlesAtTime("technical problems", 40.25f, story_timer);
+                    MapSubtitlesAtTime("technical problems", 41.25f, story_timer);
                     MapSubtitlesAtTime("that are involved", 42.25f, story_timer);
                     MapSubtitlesAtTime("in this form of", 43.25f, story_timer);
-                    MapSubtitlesAtTime("transmission.", 43.25f, story_timer);
-                    MapSubtitlesAtTime("And to determine", 43.25f, story_timer);
-                    MapSubtitlesAtTime("the costs of such", 45.75f, story_timer);
+                    MapSubtitlesAtTime("transmission.", 44.25f, story_timer);
+                    MapSubtitlesAtTime("And to determine", 45.25f, story_timer);
+                    MapSubtitlesAtTime("the costs of such", 46.75f, story_timer);
                     MapSubtitlesAtTime("future operations.", 47.75f, story_timer);
                     MapSubtitlesAtTime("If these tests are", 50f, story_timer);
                     MapSubtitlesAtTime("successful,", 51f, story_timer);
