@@ -130,36 +130,36 @@ public class Interactor : MonoBehaviour
     }
     public void InputWFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(25);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(10);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
         }
     }
-    public void InputAFx() {
+    public void InputDFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(25);
         } else {
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(10);
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-10);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
         }
 
     }
     public void InputSFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-10);
+            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-25);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-10);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-10);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
         }
         
     }
-    public void InputDFx() {
+    public void InputAFx() {
         if (Thruster.activeSelf) {
-            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(10);
+            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(25);
         } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(10);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-10);
+            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
+            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
         }
     }
     public void InputXFx() {
