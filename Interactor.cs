@@ -18,7 +18,7 @@ public class Interactor : MonoBehaviour
     public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
-    public AudioClip SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
+    public AudioClip HookNarration, SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
     public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
@@ -276,6 +276,8 @@ public class Interactor : MonoBehaviour
     {
         switch (clip)
         {
+            case "Hook":
+                return HookNarration;
             case "SplashScreen":
                 return SplashScreenNarration;
             case "RadioDays":
@@ -702,6 +704,10 @@ public class Interactor : MonoBehaviour
                     start_timer = 0;
                 }
             }
+            else 
+            {
+                return;
+            }
         }
         if (start_timer > -1) 
         {
@@ -711,50 +717,43 @@ public class Interactor : MonoBehaviour
                 Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" + System.DateTime.Now.ToString("h:mm:ss.f") ;
             }
             start_timer += Time.deltaTime;
-            MapSubtitlesAtTime("We interrupt", 0f, start_timer);
-            MapSubtitlesAtTime("this program", 0.5f, start_timer);
-            MapSubtitlesAtTime("to bring you", 1f, start_timer);
-            MapSubtitlesAtTime("a special", 1.5f, start_timer);
-            MapSubtitlesAtTime("news bulletin!", 2f, start_timer);
-            MapSubtitlesAtTime("⛅", 2.5f, start_timer);
+            MapSubtitlesAtTime("We interrupt this", 0f, start_timer);
+            MapSubtitlesAtTime("program to bring you a", .75f, start_timer);
+            MapSubtitlesAtTime("special news bulletin.", 1.75f, start_timer);
             MapSubtitlesAtTime("A state of emergency", 2.75f, start_timer);
             MapSubtitlesAtTime("has been declared", 3.75f, start_timer);
             MapSubtitlesAtTime("by the President of", 4.5f, start_timer);
             MapSubtitlesAtTime("the United States!", 5.25f, start_timer);
             MapSubtitlesAtTime("We're switching live", 6.25f, start_timer);
-            MapSubtitlesAtTime("to Wilsens Glenn,", 7.25f, start_timer);
+            MapSubtitlesAtTime("to Wilsens Glenn", 7.25f, start_timer);
             MapSubtitlesAtTime("New Jersey", 8f, start_timer);
-            MapSubtitlesAtTime("where the landing of", 8.5f, start_timer);
+            MapSubtitlesAtTime("where the landing of", 8.75f, start_timer);
             MapSubtitlesAtTime("hundreds of unidentified", 9.5f, start_timer);
             MapSubtitlesAtTime("spacecraft have", 10.5f, start_timer);
             MapSubtitlesAtTime("now been officially", 11.5f, start_timer);
             MapSubtitlesAtTime("confirmed as a", 12.5f, start_timer);
-            MapSubtitlesAtTime("full-scale invasion", 13.25f, start_timer);
-            MapSubtitlesAtTime("of the Earth", 14.25f, start_timer);
-            MapSubtitlesAtTime("by Martians!", 15f, start_timer);
-            MapSubtitlesAtTime("⛈", 17f, start_timer);
-            MapSubtitlesAtTime("We're seeing ...", 18.75f, start_timer);
-            MapSubtitlesAtTime("It's horrible ...", 19.25f, start_timer);
+            MapSubtitlesAtTime("full scale invasion", 13.5f, start_timer);
+            MapSubtitlesAtTime("of the Earth", 14.5f, start_timer);
+            MapSubtitlesAtTime("by Martians!", 15.25f, start_timer);
+            MapSubtitlesAtTime("⛈", 16f, start_timer);
+            MapSubtitlesAtTime("We're seeing", 18.75f, start_timer);
+            MapSubtitlesAtTime("It's horrible", 19.25f, start_timer);
             MapSubtitlesAtTime("I can't believe", 20.25f, start_timer);
             MapSubtitlesAtTime("my eyes.", 20.75f, start_timer);
-            MapSubtitlesAtTime("People are dying,", 21.5f, start_timer);
+            MapSubtitlesAtTime("People are dying", 21.5f, start_timer);
             MapSubtitlesAtTime("being trampled", 22.25f, start_timer);
             MapSubtitlesAtTime("in their efforts", 23.25f, start_timer);
             MapSubtitlesAtTime("to escape!", 24f, start_timer);
-            MapSubtitlesAtTime("☄", 24.5f, start_timer);
-            MapSubtitlesAtTime("Power lines", 25.5f, start_timer);
-            MapSubtitlesAtTime("are down", 26.25f, start_timer);
-            MapSubtitlesAtTime("everywhere", 27f, start_timer);
-            MapSubtitlesAtTime("We could be", 27.75f, start_timer);
-            MapSubtitlesAtTime("cut off at", 28.25f, start_timer);
-            MapSubtitlesAtTime("any minute ...", 28.75f, start_timer);
-            MapSubtitlesAtTime("⛈", 29.75f, start_timer);
-            MapSubtitlesAtTime("\"Oh my God!\"", 30.25f, start_timer);
-            MapSubtitlesAtTime("There's another group", 32.25f, start_timer);
-            MapSubtitlesAtTime("of spaceships", 33f, start_timer);
-            MapSubtitlesAtTime("of alien ships", 34f, start_timer);
-            MapSubtitlesAtTime("They're coming out", 35f, start_timer);
-            MapSubtitlesAtTime("of the sky!", 35.5f, start_timer);
+            MapSubtitlesAtTime("Power lines are", 25.5f, start_timer);
+            MapSubtitlesAtTime("down everywhere!", 26.5f, start_timer);
+            MapSubtitlesAtTime("We could be cut off", 27.5f, start_timer);
+            MapSubtitlesAtTime("at any minute!", 28.5f, start_timer);
+            MapSubtitlesAtTime("☄", 29f, start_timer);
+            MapSubtitlesAtTime("There's another group", 30.25f, start_timer);
+            MapSubtitlesAtTime("of spaceships", 31.25f, start_timer);
+            MapSubtitlesAtTime("of alien ships", 32.25f, start_timer);
+            MapSubtitlesAtTime("They're coming out", 33.25f, start_timer);
+            MapSubtitlesAtTime("of the sky!", 33.75f, start_timer);
             MapSubtitlesAtTime("⛈", 36f, start_timer);
             if (start_timer > 41 || (Input.GetMouseButton(0) && CheckInsideEdge())) 
             {
