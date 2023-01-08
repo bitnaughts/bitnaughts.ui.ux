@@ -407,7 +407,7 @@ public class Interactor : MonoBehaviour
             PrinterPrint.SetActive(true);
 
             Processor.SetActive(true);
-            Bulkhead.SetActive(true);
+            // Bulkhead.SetActive(true);
             Thruster.SetActive(true);
             BoosterL.SetActive(true);
             BoosterR.SetActive(true);
@@ -691,6 +691,7 @@ public class Interactor : MonoBehaviour
     int campaign_stage = -1, tutorial_stage = -1; 
     int[] campaign_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 155, 999 };
     float[] campaign_splits = new float[20];
+    float tutorial_timer = -1;
     int[] tutorial_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 999, 999, 999, 999 };
     int clip_index = 0;
     string credits_output = "";
@@ -763,6 +764,7 @@ public class Interactor : MonoBehaviour
             {
                 SplashScreen.SetActive(false);
                 start_timer = -1;
+                tutorial_timer = 0;
                 Subtitles.SetActive(false);
                 SubtitlesShadow.SetActive(false);
                 OnMapView();
@@ -773,6 +775,9 @@ public class Interactor : MonoBehaviour
                 volume_slider.SetActive(false);
                 InputField.text = "☄ BitNaughts";
             }
+        } else if (tutorial_timer > -1) {
+            tutorial_timer += Time.deltaTime;
+
         } else if (story_timer > -1 && clip_index > -1) {
             Timer.text = "";
             for (int i = 0; i < clip_index - 1; i++) {
