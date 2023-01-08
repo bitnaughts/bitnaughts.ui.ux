@@ -17,6 +17,7 @@ public class Interactor : MonoBehaviour
     public GameObject[] GridLayers;
     public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
+    public GameObject LoadingScreen;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
     public AudioClip HookNarration, SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
     public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
@@ -51,6 +52,7 @@ public class Interactor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         PrinterPrint = GameObject.Find("InputPrinterPrint");
         PrinterRight = GameObject.Find("InputPrinterRight");
         PrinterLeft = GameObject.Find("InputPrinterLeft");
@@ -238,6 +240,7 @@ public class Interactor : MonoBehaviour
     string queue_audio = "";
     public void PlayVideo(string url) 
     {
+        LoadingScreen.SetActive(true);
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
         queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
@@ -695,6 +698,7 @@ public class Interactor : MonoBehaviour
     {
         if (queue_audio != "") {
             if (GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) {
+                LoadingScreen.SetActive(false);
                 PlayAudio(LookupNarration(queue_audio));
                 queue_audio = "";
                 if (story_timer != -1) {
@@ -761,7 +765,7 @@ public class Interactor : MonoBehaviour
                 start_timer = -1;
                 Subtitles.SetActive(false);
                 SubtitlesShadow.SetActive(false);
-                OnCodeView();
+                OnMapView();
                 camera.GetComponent<AudioSource>().Stop();
                 SetBackground(new Color(25/255f, 61/255f, 65/255f));
                 // Overlay
