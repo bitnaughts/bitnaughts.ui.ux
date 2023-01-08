@@ -18,6 +18,8 @@ public class Interactor : MonoBehaviour
     public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
+    public GameObject TutorialAssets;
+    public AudioClip TutorialOpening, TutorialHulkDestroyed;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
     public AudioClip HookNarration, SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
     public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
@@ -692,6 +694,7 @@ public class Interactor : MonoBehaviour
     int[] campaign_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 155, 999 };
     float[] campaign_splits = new float[20];
     float tutorial_timer = -1;
+    float tutorial_save_time = 0;
     int[] tutorial_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 999, 999, 999, 999 };
     int clip_index = 0;
     string credits_output = "";
@@ -717,9 +720,9 @@ public class Interactor : MonoBehaviour
         if (start_timer > -1) 
         {
             if ((start_timer / 5f ) % 2 < 1) {
-                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" +  FloatToTime(start_timer) ;
+                Timer.text = FloatToTime(start_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             } else {
-                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" + System.DateTime.Now.ToString("h:mm:ss.f") ;
+                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             }
             start_timer += Time.deltaTime;
             MapSubtitlesAtTime("We interrupt this", 0f, start_timer);
@@ -776,8 +779,19 @@ public class Interactor : MonoBehaviour
                 InputField.text = "☄ BitNaughts";
             }
         } else if (tutorial_timer > -1) {
+            if (tutorial_timer == 0) { 
+                PlayAudio(TutorialOpening);
+                TutorialAssets.SetActive(true);
+            }
             tutorial_timer += Time.deltaTime;
-
+            Timer.text = "Tutorial\n" + FloatToTime(tutorial_timer) + "\n";
+            
+            if (TutorialAssets.transform.childCount == 0) {
+                tutorial_save_time = tutorial_timer;
+                PlayAudio(TutorialHulkDestroyed);
+                tutorial_timer = -1;
+                // Timer.text = "Tutorial\n" + FloatToTime(tutorial_save_time) + "\n";
+            }
         } else if (story_timer > -1 && clip_index > -1) {
             Timer.text = "";
             for (int i = 0; i < clip_index - 1; i++) {
@@ -1980,10 +1994,10 @@ public class Interactor : MonoBehaviour
         }
         else 
         {
-            if ((animation_timer / 5f ) % 2 < 1) {
-                Timer.text = System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n";
+            if ((animation_timer / 7.77f ) % 2 < 1) {
+                Timer.text = tutorial_save_time + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             } else {
-                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n";
+                Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             } 
         }
         
