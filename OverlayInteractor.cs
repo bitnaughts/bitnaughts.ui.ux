@@ -46,11 +46,13 @@ public class OverlayInteractor : MonoBehaviour
         Vector3 size_vector = new Vector3(Ship.GetSize(option).x, 0, Ship.GetSize(option).y);
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(component_screen_tr_position.x - component_screen_bl_position.x, component_screen_tr_position.y - component_screen_bl_position.y - 25); 
+        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(component_screen_tr_position.x - component_screen_bl_position.x, component_screen_tr_position.y - component_screen_bl_position.y ); 
         if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width ) - 120), Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height-150)));
+        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 100) ), 
+            Mathf.Clamp(100+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height-300)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y);
     }

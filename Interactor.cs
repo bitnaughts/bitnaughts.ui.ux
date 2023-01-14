@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 /*
 
@@ -14,12 +15,13 @@ Text height 50
 
 public class Interactor : MonoBehaviour
 {
+    public GameObject InputJoystick, InputUseWeapon;
     public GameObject[] GridLayers;
     public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
     public GameObject TutorialAssets;
-    public AudioClip TutorialOpening, TutorialHulkDestroyed;
+    public AudioClip TutorialOpening, TutorialLockOn, TutorialPrint, TutorialPrinted, TutorialComponentsIcons, TutorialLook, TutorialUseWeapon, TutorialBinocular, TutorialHitTarget, TutorialRightOn, TutorialAttackTarget, TutorialCycle, TutorialHulkDestroyed, TutorialTorpedoFired, TutorialCannonFired, TutorialSensorFired;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
     public AudioClip HookNarration, SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
     public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
@@ -48,12 +50,14 @@ public class Interactor : MonoBehaviour
     public AudioClip clip_queue;
 
     // example ship ui
-    public GameObject InputUp, InputLeft, InputRight, InputDown, InputA, InputB;
+    // public GameObject InputUp, InputLeft, InputRight, InputDown, InputA, InputB;
     // example ship objects
     public GameObject CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
     // Start is called before the first frame update
     void Start()
     {
+        InputJoystick.SetActive(false);
+        InputUseWeapon.SetActive(false);
 
         PrinterPrint = GameObject.Find("InputPrinterPrint");
         PrinterRight = GameObject.Find("InputPrinterRight");
@@ -80,6 +84,13 @@ public class Interactor : MonoBehaviour
         PrinterLeft.SetActive(false);
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
+    }
+    public void HitSfx() {
+        if (tutorial_clip_index == 6) {
+            tutorial_clip_index = 7;
+            tutorial_timer = 0;
+            PlayAudio(TutorialHitTarget);
+        }
     }
     public void PrinterLeftFx() {
         if (BoosterR.activeSelf)
@@ -177,34 +188,51 @@ public class Interactor : MonoBehaviour
         }
     }
     public void InputYFx() {
+        if (tutorial_clip_index < 7) { 
+            tutorial_timer = 0; tutorial_clip_index = 7; PlayAudio(TutorialTorpedoFired); 
+        }
         if (BoosterR.activeSelf)
         {
+            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
             GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-1);
         } else if (CannonR.activeSelf) {
+            GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
             GameObject.Find("CannonR").GetComponent<ComponentController>().Action(-1);
         } else {
+            GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
             GameObject.Find("SensorR").GetComponent<ComponentController>().Action(-1);
         }
         
     }
     public void PrinterPrintFx() {
-        InputUp.SetActive(true);
-        InputDown.SetActive(true);
-        InputLeft.SetActive(true);
-        InputRight.SetActive(true);
-        InputA.SetActive(true);
-        InputB.SetActive(true);
+        // InputUp.SetActive(true);
+        // InputDown.SetActive(true);
+        // InputLeft.SetActive(true);
+        // InputRight.SetActive(true);
+        // InputA.SetActive(true);
+        // InputB.SetActive(true);
         Printer.SetActive(false);
         ClearText();
         PrinterLeft.SetActive(false);
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
+        InputJoystick.SetActive(true);
+        InputUseWeapon.SetActive(true);
+        if (tutorial_clip_index < 3) { tutorial_timer = 0; tutorial_clip_index = 3; PlayAudio(TutorialLookAround); }
 
         Ship.Start();
         OverlayInteractor.UpdateOptions();
         OverlayInteractor.OnDropdownChange(); 
         OverlayInteractor.gameObject.SetActive(false);
         MapScreenPanOverlay.SetActive(true);
+        if (tutorial_timer == -1) {
+            Subtitles.SetActive(false);
+            SubtitlesShadow.SetActive(false);
+        }
+        else 
+        {
+             GameObject.Find("OverlayPanDown").SetActive(false);
+        }
     }
     public static int Max(int val1, int val2) {
         return (val1>=val2)?val1:val2;
@@ -407,7 +435,10 @@ public class Interactor : MonoBehaviour
             PrinterLeft.SetActive(true);
             PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
-
+            if (tutorial_clip_index < 2) {
+                tutorial_timer = 0; tutorial_clip_index = 2; PlayAudio(TutorialComponentsIcons);
+            }
+            // Subtitles.GetComponent<Text>().text = "\nPress ⎆ Print";
             Processor.SetActive(true);
             // Bulkhead.SetActive(true);
             Thruster.SetActive(true);
@@ -492,8 +523,28 @@ public class Interactor : MonoBehaviour
         Action("Cannon", -1);//GetInput(), -1);
         if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
     }
+    public void CycleTutorial() {
+        if (tutorial_clip_index == 10) {
+            tutorial_clip_index = 11;
+            tutorial_timer = 0;
+            PlayAudio(TutorialGood2);
+        } else if (tutorial_clip_index == 11) {
+            tutorial_clip_index = 12;
+            tutorial_timer = 0;
+            PlayAudio(TutorialGood3);
+        }
+    }
+    public void BinocularTutorial() {
+        if (tutorial_clip_index == 9) {
+            tutorial_clip_index = 10;
+            tutorial_timer = 0;
+            PlayAudio(TutorialCycle);
+            // PlayAudio(TutorialGood2);
+        }
+    }
     public void PanTutorial() {
-        if (clip_index == 2 && campaign_stage == 0) { campaign_stage++; story_timer = 0f; }
+        if (tutorial_clip_index == 3) { tutorial_timer = 0; tutorial_clip_index = 4; PlayAudio(TutorialPrinted); }
+        // if (clip_index == 2 && campaign_stage == 0) { campaign_stage++; story_timer = 0f; }
     }
     public void TargetTutorial() {
         if (clip_index == 2 && campaign_stage == 1) { campaign_stage++; story_timer = 0f; }
@@ -624,9 +675,9 @@ public class Interactor : MonoBehaviour
         if (camera == null) {
             camera = GameObject.Find("Main Camera");
         }
-        camera.GetComponent<AudioSource>().clip = clip;
-        camera.GetComponent<AudioSource>().volume = .5f;
-        camera.GetComponent<AudioSource>().Play();
+        // camera.GetComponent<AudioSource>().clip = clip;
+        // camera.GetComponent<AudioSource>().volume = .5f;
+        // camera.GetComponent<AudioSource>().Play();
     }
     void MapSubtitlesAtTime(string text, float time, float timer) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
@@ -665,26 +716,6 @@ public class Interactor : MonoBehaviour
             click_duration = 0;
         }
     }
-    void SpriteFlash(string name, float start) {
-        if (timer > start ) { 
-            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
-        }
-    }
-    void Flash(string name, float start) {
-        if (timer > start) { 
-            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(.5f + (timer * 2) % 1, .5f + (timer * 2) % 1, 0, 1f);
-        }
-    }
-    void ResetSpriteFlash(string name, float time) {
-        if (timer > time) { 
-            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-        }
-    }
-    void ResetFlash(string name, float time) {
-        if (timer > time) { 
-            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        }
-    }
     bool CheckInsideEdge() {
         return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100);
     }
@@ -696,8 +727,29 @@ public class Interactor : MonoBehaviour
     float tutorial_timer = -1;
     float tutorial_save_time = 0;
     int[] tutorial_clip_durations = new int[] {999, 81, 999, 79, 999, 64, 999, 46, 999, 79, 999, 74, 999, 107, 999, 95, 999, 116, 999, 51, 999, 999, 999, 999 };
+    int tutorial_clip_index = 0;
     int clip_index = 0;
     string credits_output = "";
+    void SpriteFlash(string name, float start) {
+        if (tutorial_timer > start ) { 
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (tutorial_timer * 2) % 1, .5f + (tutorial_timer * 2) % 1, 0, 1f);
+        }
+    }
+    void Flash(string name, float start) {
+        if (tutorial_timer > start) { 
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(.5f + (tutorial_timer * 2) % 1, .5f + (tutorial_timer * 2) % 1, 0, 1f);
+        }
+    }
+    void ResetSpriteFlash(string name, float time) {
+        if (tutorial_timer > time) { 
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
+    void ResetFlash(string name, float time) {
+        if (tutorial_timer > time) { 
+            if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
     void FixedUpdate()
     {
         if (queue_audio != "") {
@@ -725,49 +777,50 @@ public class Interactor : MonoBehaviour
                 Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             }
             start_timer += Time.deltaTime;
-            MapSubtitlesAtTime("We interrupt this", 0f, start_timer);
-            MapSubtitlesAtTime("program to bring you a", .75f, start_timer);
-            MapSubtitlesAtTime("special news bulletin.", 1.75f, start_timer);
-            MapSubtitlesAtTime("A state of emergency", 2.75f, start_timer);
-            MapSubtitlesAtTime("has been declared", 3.75f, start_timer);
-            MapSubtitlesAtTime("by the President of", 4.5f, start_timer);
-            MapSubtitlesAtTime("the United States!", 5.25f, start_timer);
-            MapSubtitlesAtTime("We're switching live", 6.25f, start_timer);
-            MapSubtitlesAtTime("to Wilsens Glenn", 7.25f, start_timer);
-            MapSubtitlesAtTime("New Jersey", 8f, start_timer);
-            MapSubtitlesAtTime("where the landing of", 8.75f, start_timer);
-            MapSubtitlesAtTime("hundreds of unidentified", 9.5f, start_timer);
-            MapSubtitlesAtTime("spacecraft have", 10.5f, start_timer);
-            MapSubtitlesAtTime("now been officially", 11.5f, start_timer);
-            MapSubtitlesAtTime("confirmed as a", 12.5f, start_timer);
-            MapSubtitlesAtTime("full scale invasion", 13.5f, start_timer);
-            MapSubtitlesAtTime("of the Earth", 14.5f, start_timer);
-            MapSubtitlesAtTime("by Martians!", 15.25f, start_timer);
-            MapSubtitlesAtTime("⛈", 16f, start_timer);
-            MapSubtitlesAtTime("We're seeing", 18.75f, start_timer);
-            MapSubtitlesAtTime("It's horrible", 19.25f, start_timer);
-            MapSubtitlesAtTime("I can't believe", 20.25f, start_timer);
-            MapSubtitlesAtTime("my eyes.", 20.75f, start_timer);
-            MapSubtitlesAtTime("People are dying", 21.5f, start_timer);
-            MapSubtitlesAtTime("being trampled", 22.25f, start_timer);
-            MapSubtitlesAtTime("in their efforts", 23.25f, start_timer);
-            MapSubtitlesAtTime("to escape!", 24f, start_timer);
-            MapSubtitlesAtTime("Power lines are", 25.5f, start_timer);
-            MapSubtitlesAtTime("down everywhere!", 26.5f, start_timer);
-            MapSubtitlesAtTime("We could be cut off", 27.5f, start_timer);
-            MapSubtitlesAtTime("at any minute!", 28.5f, start_timer);
-            MapSubtitlesAtTime("☄", 29f, start_timer);
-            MapSubtitlesAtTime("There's another group", 30.25f, start_timer);
-            MapSubtitlesAtTime("of spaceships", 31.25f, start_timer);
-            MapSubtitlesAtTime("of alien ships", 32.25f, start_timer);
-            MapSubtitlesAtTime("They're coming out", 33.25f, start_timer);
-            MapSubtitlesAtTime("of the sky!", 33.75f, start_timer);
+            MapSubtitlesAtTime("We interrupt this\n", 0f, start_timer);
+            MapSubtitlesAtTime("We interrupt this\nprogram", .75f, start_timer);
+            MapSubtitlesAtTime("to bring you a special\n", 1.25f, start_timer);
+            MapSubtitlesAtTime("to bring you a special\nnews bulletin.", 2f, start_timer);
+            MapSubtitlesAtTime("A state of emergency has\n", 2.75f, start_timer);
+            MapSubtitlesAtTime("A state of emergency has\nbeen declared", 3.5f, start_timer);
+            MapSubtitlesAtTime("by the President of the\n", 4.5f, start_timer);
+            MapSubtitlesAtTime("by the President of the\nUnited States!", 5.25f, start_timer);
+            MapSubtitlesAtTime("We're switching live\n", 6.25f, start_timer);
+            MapSubtitlesAtTime("to Wilsens Glenn,\n", 7.25f, start_timer);
+            MapSubtitlesAtTime("to Wilsens Glenn,\nNew Jersey,", 8f, start_timer);
+            MapSubtitlesAtTime("where the landing of\n", 8.75f, start_timer);
+            MapSubtitlesAtTime("hundreds of unidentified\n", 9.5f, start_timer);
+            MapSubtitlesAtTime("hundreds of unidentified\nspacecraft", 10.5f, start_timer);
+            MapSubtitlesAtTime("have now been officially\n", 11.5f, start_timer);
+            MapSubtitlesAtTime("have now been officially\nconfirmed as", 12.5f, start_timer);
+            MapSubtitlesAtTime("a full scale invasion\n", 13.5f, start_timer);
+            MapSubtitlesAtTime("a full scale invasion\nof the Earth", 14.5f, start_timer);
+            MapSubtitlesAtTime("by Martians!\n", 15.25f, start_timer);
+            MapSubtitlesAtTime("", 16f, start_timer);
+            MapSubtitlesAtTime("We're seeing ...\n", 18.75f, start_timer);
+            MapSubtitlesAtTime("We're seeing ...\nit's horrible", 19.25f, start_timer);
+            MapSubtitlesAtTime("I can't believe\n", 20.25f, start_timer);
+            MapSubtitlesAtTime("I can't believe\nmy eyes ...", 20.75f, start_timer);
+            MapSubtitlesAtTime("People are dying ...\n", 21.5f, start_timer);
+            MapSubtitlesAtTime("People are dying ...\nbeing trampled", 22.25f, start_timer);
+            MapSubtitlesAtTime("in their efforts to\n", 23.25f, start_timer);
+            MapSubtitlesAtTime("in their efforts to\nescape!", 24f, start_timer);
+            MapSubtitlesAtTime("Power lines are down\n", 25.5f, start_timer);
+            MapSubtitlesAtTime("Power lines are down\neverywhere!", 26.5f, start_timer);
+            MapSubtitlesAtTime("We could be cut off at\n", 27.5f, start_timer);
+            MapSubtitlesAtTime("We could be cut off at\nany minute!", 28.5f, start_timer);
+            MapSubtitlesAtTime("", 29f, start_timer);
+            MapSubtitlesAtTime("There's another group of\n", 30.25f, start_timer);
+            MapSubtitlesAtTime("There's another group of\nspaceships", 31.25f, start_timer);
+            MapSubtitlesAtTime("There's another group of\nalien ships", 32.25f, start_timer);
+            MapSubtitlesAtTime("They're coming out of\n", 33f, start_timer);
+            MapSubtitlesAtTime("They're coming out of\nthe sky!", 34f, start_timer);
             MapSubtitlesAtTime("⛈", 36f, start_timer);
             if (start_timer > 41 || (Input.GetMouseButton(0) && CheckInsideEdge())) 
             {
                 SplashScreen.SetActive(false);
                 start_timer = -1;
-                tutorial_timer = 0;
+                tutorial_timer = -.5f;
                 Subtitles.SetActive(false);
                 SubtitlesShadow.SetActive(false);
                 OnMapView();
@@ -779,19 +832,232 @@ public class Interactor : MonoBehaviour
                 InputField.text = "☄ BitNaughts";
             }
         } else if (tutorial_timer > -1) {
-            if (tutorial_timer == 0) { 
+            if (tutorial_timer == -.5f) { 
                 PlayAudio(TutorialOpening);
                 TutorialAssets.SetActive(true);
+                Subtitles.SetActive(true);
+                SubtitlesShadow.SetActive(true);
+                tutorial_timer = 0;
+            }
+            switch (tutorial_clip_index) {
+                case 0:
+                    MapSubtitlesAtTime("Welcome to the US Naval\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Welcome to the US Naval\nAcademy!", 1.75f, tutorial_timer);
+                    MapSubtitlesAtTime("Today, you will learn\n", 3f, tutorial_timer);
+                    MapSubtitlesAtTime("Today, you will learn\nship control.", 4.5f, tutorial_timer);
+                    if (tutorial_timer > 6) { tutorial_timer = 0; tutorial_clip_index++; PlayAudio(TutorialLockOn); }
+                    break;
+                case 1:
+                    SpriteFlash("Printer", 0);
+                    MapSubtitlesAtTime("First off, let's\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("First off, let's\nintroduce", 1.25f, tutorial_timer);
+                    MapSubtitlesAtTime("the Target Window.\n", 2f, tutorial_timer);
+                    MapSubtitlesAtTime("Now the Target Window\n", 4f, tutorial_timer);
+                    MapSubtitlesAtTime("Now the Target Window\nappears whenever", 5.5f, tutorial_timer);
+                    MapSubtitlesAtTime("you look at a unit\n", 6.5f, tutorial_timer);
+                    MapSubtitlesAtTime("you look at a unit\nwith the crosshair", 7.75f, tutorial_timer);
+                    MapSubtitlesAtTime("Have a go at this now!\n", 9.25f, tutorial_timer);
+                    break;
+                case 2:
+                    ResetSpriteFlash("Printer", 0);
+                    Flash("InputPrinterPrint", 0);
+                    MapSubtitlesAtTime("Good, good.\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("You can also use the\n", 1f, tutorial_timer);
+                    MapSubtitlesAtTime("You can also use the\ncrosshair", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("to issue orders to your\n", 2f, tutorial_timer);
+                    MapSubtitlesAtTime("currently seleted unit.\n", 3f, tutorial_timer);
+                    break;
+                // case 3:
+                //     ResetFlash("InputPrinterPrint", 0);
+                //     MapSubtitlesAtTime("Outstanding!\n", 0f, tutorial_timer);
+                //     MapSubtitlesAtTime("The Target Window\n", 1.5f, tutorial_timer);
+                //     MapSubtitlesAtTime("The Target Window\ndisplays", 2.75f, tutorial_timer);
+                //     MapSubtitlesAtTime("the Unit's name\n", 3.25f, tutorial_timer);
+                //     MapSubtitlesAtTime("the Unit's name\nand what", 4.5f, tutorial_timer);
+                //     MapSubtitlesAtTime("class it is.\n", 5.4f, tutorial_timer);
+                //     MapSubtitlesAtTime("", 6.5f, tutorial_timer);
+                //     break;
+                case 3:
+                    ResetFlash("InputPrinterPrint", 0);
+                    ResetSpriteFlash("Printer", 0);
+                    Flash("OverlayPanUp", 0);
+                    Flash("OverlayPanDown", 0);
+                    Flash("OverlayPanLeft", 0);
+                    Flash("OverlayPanRight", 0);
+                    Flash("OverlayZoomIn", 0);
+                    Flash("OverlayZoomOut", 0);
+                    MapSubtitlesAtTime("First off, try looking\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("First off, try looking\naround.", 1f, tutorial_timer);
+                    MapSubtitlesAtTime("360° awareness is needed\n", 2f, tutorial_timer);
+                    MapSubtitlesAtTime("360° awareness is needed\nfor dogfighting", 2.5f, tutorial_timer);
+                    break;
+                case 4:
+                    ResetFlash("OverlayPanUp", 0);
+                    ResetFlash("OverlayPanDown", 0);
+                    ResetFlash("OverlayPanLeft", 0);
+                    ResetFlash("OverlayPanRight", 0);
+                    ResetFlash("OverlayZoomIn", 0);
+                    ResetFlash("OverlayZoomOut", 0);
+                    Flash("InputJoystick", 0);
+                    MapSubtitlesAtTime("Great!\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Time to get this baby\n", 1f, tutorial_timer);
+                    MapSubtitlesAtTime("Time to get this baby\nairborn", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("Set your throttle to\n", 3f, tutorial_timer);
+                    MapSubtitlesAtTime("Set your throttle to\nmaximum", 4f, tutorial_timer);
+                    break;
+                case 5:
+                    ResetFlash("InputJoystick", 0);
+                    ResetFlash("OverlayPanUp", 0);
+                    ResetFlash("OverlayPanDown", 0);
+                    ResetFlash("OverlayPanLeft", 0);
+                    ResetFlash("OverlayPanRight", 0);
+                    ResetFlash("OverlayZoomIn", 0);
+                    ResetFlash("OverlayZoomOut", 0);
+                    SpriteFlash("martian_hulk_1", 0);
+                    Flash("InputUseWeapon", 0);
+                    MapSubtitlesAtTime("Okay cadet, strafe that\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Okay cadet, strafe that\ncargo ship", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("until she goes down!\n", 2.5f, tutorial_timer);
+                    if (tutorial_timer > 5) { tutorial_timer = 0; tutorial_clip_index++; PlayAudio(TutorialUseWeapon); }
+                    break;
+                case 6:
+                    ResetFlash("InputJoystick", 0);
+                    ResetFlash("OverlayPanUp", 0);
+                    ResetFlash("OverlayPanDown", 0);
+                    ResetFlash("OverlayPanLeft", 0);
+                    ResetFlash("OverlayPanRight", 0);
+                    ResetFlash("OverlayZoomIn", 0);
+                    ResetFlash("OverlayZoomOut", 0);
+                    Flash("InputUseWeapon", 0);
+                    SpriteFlash("martian_hulk_1", 0);
+                    MapSubtitlesAtTime("Press the Use Weapon\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Press the Use Weapon\ncontrol", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("to fire!\n", 2.5f, tutorial_timer);
+                    MapSubtitlesAtTime("", 3.5f, tutorial_timer);
+                    break;
+                case 7:
+                    ResetFlash("InputUseWeapon", 0);
+                    SpriteFlash("martian_hulk_1", 0);
+                    MapSubtitlesAtTime("Although torpedos are\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Although torpedos are\npowerful,", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("they're slow!\n", 2.75f, tutorial_timer);
+                    MapSubtitlesAtTime("Firing a spread makes\n", 3.75f, tutorial_timer);
+                    MapSubtitlesAtTime("Firing a spread makes\nit harder", 4.75f, tutorial_timer);
+                    MapSubtitlesAtTime("for your enemy to\n", 5.75f, tutorial_timer);
+                    MapSubtitlesAtTime("for your enemy to\navoid them.", 6.75f, tutorial_timer);
+                    MapSubtitlesAtTime("\n", 3f, tutorial_timer);
+                    if (TutorialAssets.transform.childCount == 2) {
+                        PlayAudio(TutorialHulkDestroyed);
+                        tutorial_clip_index = 8;
+                        tutorial_timer = 0;
+                    }
+                    break;
+                case 8:
+                    // MapSubtitlesAtTime("Well done!\n", 0f, tutorial_timer);
+                    // MapSubtitlesAtTime("A direct hit!\n", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("Ha! Great stuff!\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Let's move on!\n", 2f, tutorial_timer);
+                    if (tutorial_timer > 4) { tutorial_timer = 0; tutorial_clip_index++; PlayAudio(TutorialBinocular); }
+                    break;
+                case 9:
+                    Flash("BinocularToggle", 0f);
+                    MapSubtitlesAtTime("You can also shoot from\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("You can also shoot from\nBinocular View,", 2f, tutorial_timer);
+                    MapSubtitlesAtTime("which can help you aim\n", 3f, tutorial_timer);
+                    MapSubtitlesAtTime("which can help you aim\nmore accurately.", 4f, tutorial_timer);
+                    MapSubtitlesAtTime("", 5f, tutorial_timer);
+                    break;
+                case 10:
+                    ResetFlash("BinocularToggle", 0);
+                    Flash("CycleToggle", 0);
+                    MapSubtitlesAtTime("You can also use the\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("You can also use the\nTarget Button", 2f, tutorial_timer);
+                    MapSubtitlesAtTime("to cycle targets\n", 3.5f, tutorial_timer);
+                    MapSubtitlesAtTime("to cycle targets\nbetween all", 4.5f, tutorial_timer);
+                    MapSubtitlesAtTime("detected enemy units\n", 5.5f, tutorial_timer);
+                    MapSubtitlesAtTime("", 6.5f, tutorial_timer);
+                    SpriteFlash("martian_hulk_2", 0);
+                    SpriteFlash("martian_hulk_3", 0);
+                    break;
+                case 11:
+                    Flash("CycleToggle", 0);
+                    MapSubtitlesAtTime("Good!\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("Good! One more time.\n", 1f, tutorial_timer);
+                    break;
+                case 12:
+                    ResetFlash("CycleToggle", 0);
+                    SpriteFlash("martian_hulk_2", 0);
+                    SpriteFlash("martian_hulk_3", 0);
+                    MapSubtitlesAtTime("Good!\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("\n", 0f, tutorial_timer);
+                    if (TutorialAssets.transform.childCount == 1) {
+                        tutorial_clip_index = 13;
+                        tutorial_timer = 0;
+                        PlayAudio(TutorialRightOn);
+                    }
+                    break;
+                case 13:
+                    ResetFlash("CycleToggle", 0);
+                    SpriteFlash("martian_hulk_2", 0);
+                    SpriteFlash("martian_hulk_3", 0);
+                    MapSubtitlesAtTime("That was right on the\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("That was right on the\nmoney!", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("Great stuff!\n", 2.25f, tutorial_timer);
+                    MapSubtitlesAtTime("\n", 3f, tutorial_timer);
+                    if (TutorialAssets.transform.childCount == 0) {
+                        tutorial_clip_index = 14;
+                        tutorial_timer = 0;
+                        PlayAudio(TutorialOutro);
+                    }
+                    break;
+                case 14:
+                    ResetFlash("CycleToggle", 0);
+                    MapSubtitlesAtTime("Excellence work!\n", 0f, tutorial_timer);
+                    MapSubtitlesAtTime("You have now completed\n", 1.5f, tutorial_timer);
+                    MapSubtitlesAtTime("You have now completed\nthe tutorial", 2.5f, tutorial_timer);   
+                    MapSubtitlesAtTime("I hope you never have\n", 4f, tutorial_timer);            
+                    MapSubtitlesAtTime("I hope you never have\ncause to use", 5f, tutorial_timer);  
+                    MapSubtitlesAtTime("the knowledge you have\n", 6f, tutorial_timer);           
+                    MapSubtitlesAtTime("the knowledge you have\njust acquired.", 7f, tutorial_timer);  
+                    MapSubtitlesAtTime("That is all for today!\n", 9f, tutorial_timer);          
+                    MapSubtitlesAtTime("That is all for today!\nDismissed!", 10.5f, tutorial_timer);         
+                    break;
             }
             tutorial_timer += Time.deltaTime;
             Timer.text = "Tutorial\n" + FloatToTime(tutorial_timer) + "\n";
             
-            if (TutorialAssets.transform.childCount == 0) {
-                tutorial_save_time = tutorial_timer;
-                PlayAudio(TutorialHulkDestroyed);
-                tutorial_timer = -1;
-                // Timer.text = "Tutorial\n" + FloatToTime(tutorial_save_time) + "\n";
+            Gamepad gamepad = Gamepad.current;
+            if (gamepad != null)
+            {
+                Vector2 stickL = gamepad.leftStick.ReadValue(); 
+                if (stickL.y < -1/5f) {
+                    if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+                }
+                if (stickL.y > 1/5f) {
+                    if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+                    if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); }
+                }
+                if (stickL.x < -1/5f) {
+                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                }
+                if (stickL.x > 1/5f) {
+                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                }
             }
+
+
         } else if (story_timer > -1 && clip_index > -1) {
             Timer.text = "";
             for (int i = 0; i < clip_index - 1; i++) {
