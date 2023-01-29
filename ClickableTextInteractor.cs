@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ClickableTextInteractor : MonoBehaviour
 {   
@@ -33,6 +34,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "new":
             case "delete":
             case "void":
+            case "while":
             case "int":
             case "double":
             case "public":
@@ -78,8 +80,8 @@ public class ClickableTextInteractor : MonoBehaviour
             initialized_text = initialized_text.Split('>')[1].Split('<')[0];
         } 
         if (initialized_text == "$") {
-            Interactor.SetCommand("$"); //\n  <b>git</b>
-            Interactor.AppendText("$ <b>about</b>\n  <b>campaign</b>\n  <b>clear</b>\n  <b>cp</b>\n  <b>make</b>\n  <b>nano</b>\n  <b>rm</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            // Interactor.SetCommand("$"); //\n  <b>git</b>
+            Interactor.AppendText("$ <b>about</b>\n  <b>clear</b>\n  <b>gui</b>\n  <b>tutorial</b>\n  <b>back</b>");
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -99,8 +101,8 @@ public class ClickableTextInteractor : MonoBehaviour
                             if (OverlayInteractor.OverlayDropdown.options[i].text == component.Split('_')[1]) OverlayInteractor.OverlayDropdown.value = i; 
                         }
                         GameObject.Find("MapScreenPanOverlay").SetActive(false);
-                        OverlayInteractor.gameObject.SetActive(true);
-                        OverlayInteractor.OnDropdownChange(); 
+                        // OverlayInteractor.gameObject.SetActive(true);
+                        // OverlayInteractor.OnDropdownChange(); 
                         break;
                 }
                 break;
@@ -160,6 +162,9 @@ public class ClickableTextInteractor : MonoBehaviour
             //     Interactor.SetCommand("bitnaughts.interpreter");
             //     Interactor.AppendText("$ git clone bitnaughts.interpreter\n...\n$");
             // break;
+            case "gui":
+                Interactor.OnMapView();
+                break;
             case "about": 
                 Interactor.Sound("Warning");
                 Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n  <a>https://bitnaughts.io/</a>\n  <a>https://github.com/bitnaughts/</a>\n  <a>https://twitter.com/BitNaughts</a>\n  <a>https://www.youtube.com/@bitnaughts6237</a>\n  <a>https://www.twitch.tv/bitnaughts</a>\n$\n\n");
@@ -171,9 +176,9 @@ public class ClickableTextInteractor : MonoBehaviour
                 // GameObject.Find("Panel").SetActive(true);
                 // break;
                 
-            case "campaign":
-                Interactor.AppendText("$ campaign <b>Radio_Days</b>\n           <b>Newton's_Laws</b>\n           <b>The_Atom</b>\n           <b>Doppler_Effect</b>\n           <b>The_Electron</b>\n           <b>Doppler_Shift</b>\n           <b>Modern_War</b>\n           <b>Plank's_Law</b>\n           <b>Television</b>\n           <b>Hawking_Radiation</b>\n           <b>Videotape_Records</b>\n           <b>Moravec's_Paradox</b>\n           <b>Electronic_Music</b>\n           <b>De_Broglie_Theory</b>\n           <b>Radio_Isotopes</b>\n           <b>Fermi_Paradox</b>\n           <b>Hardness_Test</b>\n           <b>Pascal's_Wager</b>\n           <b>Conclusion</b>\n           <b>back</b>");
-                break;
+            // case "campaign":
+            //     Interactor.AppendText("$ campaign <b>Radio_Days</b>\n           <b>Newton's_Laws</b>\n           <b>The_Atom</b>\n           <b>Doppler_Effect</b>\n           <b>The_Electron</b>\n           <b>Doppler_Shift</b>\n           <b>Modern_War</b>\n           <b>Plank's_Law</b>\n           <b>Television</b>\n           <b>Hawking_Radiation</b>\n           <b>Videotape_Records</b>\n           <b>Moravec's_Paradox</b>\n           <b>Electronic_Music</b>\n           <b>De_Broglie_Theory</b>\n           <b>Radio_Isotopes</b>\n           <b>Fermi_Paradox</b>\n           <b>Hardness_Test</b>\n           <b>Pascal's_Wager</b>\n           <b>Conclusion</b>\n           <b>back</b>");
+            //     break;
             case "Radio_Days":
                 Interactor.StoryMode(0);
                 break;
@@ -232,9 +237,11 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.StoryMode(18);
                 break;
             case "tutorial":
-            case "⍰⍰_Help":
-                Interactor.Sound("Warning");
-                Interactor.AppendText("$ tutorial <b>Binary</b>\n           <b>Morse_Code</b>\n           <b>Decimals</b>\n           <b>Arithmetic</b>\n           <b>Ship_Control</b>\n           <b>back</b>");
+            // case "⍰⍰_Help":
+                
+                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+                // Interactor.Sound("Warning");
+                // Interactor.AppendText("$ tutorial <b>Binary</b>\n           <b>Morse_Code</b>\n           <b>Decimals</b>\n           <b>Arithmetic</b>\n           <b>Ship_Control</b>\n           <b>back</b>");
                 // Interactor.StartTutorial();
                 break;
             break;

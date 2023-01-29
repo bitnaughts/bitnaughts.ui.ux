@@ -40,26 +40,48 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void Resize() 
     {
-        string option = OverlayDropdown.options[OverlayDropdown.value].text;
-        Vector3 component_position = Ship.GetPosition(option);
+        Resize(OverlayDropdown.options[OverlayDropdown.value].text);
+    }
+    public void Resize(string name) 
+    {
+        Vector3 component_position, component_size;
+        float rotation;
+        string option;
+        print (name);
+        if (name.Contains("Marker")) {
+            component_position = GameObject.Find(name).transform.position;
+            component_size = new Vector2(5,5);
+            rotation = 0;
+            GameObject.Find(name).SetActive(false);
+            print (component_position.ToString());
+        }
+        else {
+            option = OverlayDropdown.options[OverlayDropdown.value].text;
+            component_position = Ship.GetPosition(option);
+            component_size = Ship.GetSize(option);
+            rotation = Ship.GetRotation(option);
+            print (component_position.ToString());
+            print (option);
+        }
         Camera.main.transform.position = new Vector3(component_position.x, 200, component_position.z);
-        Vector3 size_vector = new Vector3(Ship.GetSize(option).x, 0, Ship.GetSize(option).y);
+        Vector3 size_vector = new Vector3(component_size.x, 0, component_size.y);
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(component_screen_tr_position.x - component_screen_bl_position.x, component_screen_tr_position.y - component_screen_bl_position.y ); 
-        if (Ship.GetRotation(option) != (int)Ship.GetRotation(option)) {
+        if (rotation != (int)rotation) {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
         }
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            Mathf.Clamp(200+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 330)), 
+            Mathf.Clamp(200+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 150)), 
             Mathf.Clamp(240+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height - 300)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y);
     }
-    public void OnDropdownChange(string text) 
+    public void OnDropdownChange(string name) 
     {
+        MapScreenPanOverlay.SetActive(false);
         last_position = new Vector2 (999,999);
-        Resize();
+        Resize(name);
         OverlayOk.gameObject.SetActive(true);
         OverlayMove.gameObject.SetActive(true);
         OverlayDelete.gameObject.SetActive(true);
@@ -78,10 +100,7 @@ public class OverlayInteractor : MonoBehaviour
         OverlayResizeShrinkDown.gameObject.SetActive(false);
         OverlayResizeExpandRight.gameObject.SetActive(false);
         OverlayResizeShrinkRight.gameObject.SetActive(false);
-        Interactor.RenderComponent(text);
-    }
-    public void OnDropdownChange() {
-        OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
+        // Interactor.RenderComponent(name);
     }
     
     public void OnSubmit() {
@@ -95,7 +114,7 @@ public class OverlayInteractor : MonoBehaviour
         }
         else 
         {
-            OnDropdownChange();
+            OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
         }
     }
     public void OnExit() 
@@ -134,7 +153,7 @@ public class OverlayInteractor : MonoBehaviour
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);
             }
-            OnDropdownChange(); 
+            OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text); 
         }
     }
     public void DeleteComponent(string component)
