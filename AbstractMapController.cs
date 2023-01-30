@@ -24,20 +24,23 @@ public class AbstractMapController : MonoBehaviour
         if (Input.GetKeyDown("r")) 
         {
             int zoom = _map.AbsoluteZoom;
-            _map.UpdateMap(new Mapbox.Utils.Vector2d(47.438549f, -122.3071241f), zoom);
+            _map.UpdateMap(new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), zoom);
         } 
     }
+    // int delay = 0;
     void FixedUpdate() {
         if (Interactor.Stage == "MapZoom") {
-            Camera.main.transform.position = new Vector3(0, 200, 0);
-            zoom += .05f;
+            Camera.main.transform.localPosition = new Vector3(0, 0, -200);
+            // if (delay++ > 5) {  * 5f; delay = 1; }
+            zoom += .0275f;
             if (zoom >= 15) {
-                _map.UpdateMap(new Mapbox.Utils.Vector2d(47.438549f, -122.3071241f), 15f);
-                Interactor.Stage = "MapZoomed";
+                _map.UpdateMap(new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 15f);
+
+                Interactor.MapZoomed();
             }
             else {
-                _map.UpdateMap(new Mapbox.Utils.Vector2d(47.438549f, -122.3071241f), 2*((int)(zoom + .5f) / 2));
-                Camera.main.orthographicSize = Mathf.Clamp(250/15*((int)(zoom + .5f) / 2), 6f, 250f);
+                _map.UpdateMap(new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), zoom);
+                Camera.main.orthographicSize = Mathf.Clamp(5*zoom + 10f, 10f, 250f);
             }
         }
     }

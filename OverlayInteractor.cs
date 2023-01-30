@@ -11,7 +11,7 @@ public class OverlayInteractor : MonoBehaviour
     public Dropdown OverlayDropdown;
     public StructureController Ship;    
     public Interactor Interactor;
-    public GameObject OverlayOk, OverlayDelete, MapScreenPanOverlay, 
+    public GameObject OverlayOk, OverlayDelete, MapScreenPanOverlay, OverlayZoomIn, 
     OverlayMove, OverlayMoveUp, OverlayMoveLeft, OverlayMoveRight, OverlayMoveDown, OverlayMoveRotateCW, OverlayMoveRotateCCW, 
     OverlayResize, OverlayResizeExpandUp, OverlayResizeShrinkUp, OverlayResizeExpandLeft, OverlayResizeShrinkLeft, OverlayResizeExpandRight, OverlayResizeShrinkRight, OverlayResizeExpandDown, OverlayResizeShrinkDown;
     void Start()
@@ -20,6 +20,7 @@ public class OverlayInteractor : MonoBehaviour
         last_size = new Vector2 (999,999);
         Interactor = GameObject.Find("ScreenCanvas").GetComponent<Interactor>();
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
+        OverlayZoomIn = GameObject.Find("OverlayZoomIn");
     }
     void Update()
     {
@@ -48,22 +49,19 @@ public class OverlayInteractor : MonoBehaviour
         float rotation;
         string option;
         print (name);
-        if (name.Contains("Marker")) {
-            component_position = GameObject.Find(name).transform.position;
-            component_size = new Vector2(5,5);
-            rotation = 0;
-            GameObject.Find(name).SetActive(false);
-            print (component_position.ToString());
-        }
-        else {
-            option = OverlayDropdown.options[OverlayDropdown.value].text;
-            component_position = Ship.GetPosition(option);
-            component_size = Ship.GetSize(option);
-            rotation = Ship.GetRotation(option);
-            print (component_position.ToString());
-            print (option);
-        }
-        Camera.main.transform.position = new Vector3(component_position.x, 200, component_position.z);
+        option = OverlayDropdown.options[OverlayDropdown.value].text;
+        component_position = Ship.GetLocalPosition(option);
+        component_size = Ship.GetSize(option);
+        rotation = Ship.GetRotation(option);
+        print (component_position.ToString());
+        print (option);
+        // if (GameObject.Find(option) != null) {
+        //     Camera.main.transform.SetParent(GameObject.Find(option).transform);
+        //     Camera.main.transform.localPosition = new Vector3(0, 0, -200);
+        // } else {
+        //     Camera.main.transform.SetParent(GameObject.Find("Example").transform);
+        Camera.main.transform.localPosition = new Vector3(component_position.x, component_position.z, -200);
+        // }//
         Vector3 size_vector = new Vector3(component_size.x, 0, component_size.y);
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
@@ -80,6 +78,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnDropdownChange(string name) 
     {
         MapScreenPanOverlay.SetActive(false);
+        OverlayZoomIn.SetActive(false);
         last_position = new Vector2 (999,999);
         Resize(name);
         OverlayOk.gameObject.SetActive(true);
@@ -100,7 +99,7 @@ public class OverlayInteractor : MonoBehaviour
         OverlayResizeShrinkDown.gameObject.SetActive(false);
         OverlayResizeExpandRight.gameObject.SetActive(false);
         OverlayResizeShrinkRight.gameObject.SetActive(false);
-        // Interactor.RenderComponent(name);
+        Interactor.RenderComponent(name);
     }
     
     public void OnSubmit() {
@@ -110,6 +109,7 @@ public class OverlayInteractor : MonoBehaviour
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
+            OverlayZoomIn.SetActive(true);
             Interactor.ClearText();
         }
         else 
@@ -124,6 +124,7 @@ public class OverlayInteractor : MonoBehaviour
             DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
+            OverlayZoomIn.SetActive(true);
         } else {
             Application.Quit();
         }
@@ -144,6 +145,7 @@ public class OverlayInteractor : MonoBehaviour
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
+            OverlayZoomIn.SetActive(true);
             // Interactor.CancelTutorial();
             Interactor.ClearText();
             // 
@@ -161,6 +163,7 @@ public class OverlayInteractor : MonoBehaviour
         Ship.Remove(component);
         this.gameObject.SetActive(false);
         MapScreenPanOverlay.SetActive(true);
+        OverlayZoomIn.SetActive(true);
         Interactor.ClearText();
         Interactor.SetCommand("rm");
         Interactor.AppendText("$ rm <b>" + component + "</b>");

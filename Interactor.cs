@@ -72,7 +72,7 @@ public class Interactor : MonoBehaviour
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
     public AudioClip ThemeSong, Click, Click2;
     public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2, SoundWarning, SoundWarningOver;
-    public GameObject Overlay;
+    public GameObject Overlay, OverlayZoomIn;
     public GameObject Example;
     public GameObject PrinterPrint, PrinterRight, PrinterLeft;
     private string command = "";
@@ -105,6 +105,7 @@ public class Interactor : MonoBehaviour
         PrinterPrint = GameObject.Find("InputPrinterPrint");
         PrinterRight = GameObject.Find("InputPrinterRight");
         PrinterLeft = GameObject.Find("InputPrinterLeft");
+        OverlayZoomIn = GameObject.Find("OverlayZoomIn");
         TabToggle = GameObject.Find("TabToggle").GetComponent<Text>();
         SplashScreen.SetActive(true);
         Subtitles = GameObject.Find("Subtitles");
@@ -341,6 +342,7 @@ public class Interactor : MonoBehaviour
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
         SetBackground(new Color(0f, 0f, 0f));
         MapScreenPanOverlay.SetActive(false);
+        OverlayZoomIn.SetActive(false);
         volume_slider.SetActive(true);
         SubtitlesShadow.SetActive(true);
         Subtitles.SetActive(true);
@@ -490,6 +492,7 @@ public class Interactor : MonoBehaviour
         InputField.text = component_name;
         if (InputField.text == "Printer") {
             InputField.text = "▦ Printer";//" ⛴ Ship Select";
+            if (GameObject.Find("MarkerTutorial") != null) GameObject.Find("MarkerTutorial").SetActive(false);
             PrinterLeft.SetActive(true);
             PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
@@ -883,17 +886,40 @@ public class Interactor : MonoBehaviour
     int tutorial_clip_index = 0;
     int clip_index = 0;
     string credits_output = "";
+    public void MapZoomed() {
+        Stage = "MapZoomed";
+        Printer.SetActive(true);
+        
+        // InputField.text = "? Tutorial";//GameObject.Find(component_name).name = 
+        Ship.Start();
+        OverlayInteractor.UpdateOptions();
+        MapScreenPanOverlay.SetActive(true);
+        GameObject.Find("OverlayPanDown")?.SetActive(false);
+        GameObject.Find("BinocularToggle")?.SetActive(false);
+        GameObject.Find("CycleToggle")?.SetActive(false);
+        TutorialAssets.SetActive(true);
+        GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        PlayAudio(NarratorWelcome);
+    }
     public void MapZoom() {
-        if (GameObject.Find("MarkerTutorial") != null) GameObject.Find("MarkerTutorial").SetActive(false);
+        if (GameObject.Find("MarkerCampaign") != null) GameObject.Find("MarkerCampaign").SetActive(false);
+        if (GameObject.Find("MarkerMultiplay") != null) GameObject.Find("MarkerMultiplay").SetActive(false);
         Stage = "MapZoom";
+        PlayAudio(NarratorZoomInDetails);
     }
     public void MapInteractor() {
         NarrationTimer = 60;
         NarrationIndex = 9;
-        PlayAudio(NarratorWelcome);
+        PlayAudio(NarratorZoomInMap);
         GameObject.Find("MarkerTutorial").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-        MapScreenPanOverlay.SetActive(true);
-        if (GameObject.Find("OverlayPanDown")) { GameObject.Find("OverlayPanDown").SetActive(false); }
+        OverlayZoomIn.SetActive(true);
+        volume_slider.SetActive(false);
+        // MapScreenPanOverlay.SetActive(true);
+        // if (GameObject.Find("OverlayPanDown") != null) { GameObject.Find("OverlayPanDown").SetActive(false); }
+        // if (GameObject.Find("OverlayPanUp") != null) { GameObject.Find("OverlayUp").SetActive(false); }
+        // if (GameObject.Find("OverlayPanLeft") != null) { GameObject.Find("OverlayPanLeft").SetActive(false); }
+        // if (GameObject.Find("OverlayPanRight") != null) { GameObject.Find("OverlayPanRight").SetActive(false); }
+        // if (GameObject.Find("OverlayPanZoomOut") != null) { GameObject.Find("OverlayPanZoomOut").SetActive(false); }
     }
     void SpriteFlash(string name, float start) {
         if (tutorial_timer > start ) { 
@@ -920,6 +946,36 @@ public class Interactor : MonoBehaviour
     void FixedUpdate()
     {
         global_timer += Time.deltaTime;
+        Gamepad gamepad = Gamepad.current;
+        if (gamepad != null)
+        {
+            Vector2 stickL = gamepad.leftStick.ReadValue(); 
+            if (stickL.y < -1/5f) {
+                if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+            }
+            if (stickL.y > 1/5f) {
+                if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+                if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); }
+            }
+            if (stickL.x < -1/5f) {
+                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+            }
+            if (stickL.x > 1/5f) {
+                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+            }
+        }
         if (InputField.text.Contains("Processor") && TabToggle.text == "▤ TUI") { 
             RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
         }
@@ -938,7 +994,7 @@ public class Interactor : MonoBehaviour
         } else if (printing) {
             if (print_index < GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>().Length) {
                 if (print_obj == null) print_obj = GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index++].gameObject;
-                if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(print_obj.transform.localPosition + new Vector3(0, 1.5f, 0))) {
+                if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(print_obj.transform.localPosition + new Vector3(0, 0f, 0))) {
                     print_obj.GetComponent<ComponentController>().Launch();
                     print_obj = null;
                 }
@@ -950,14 +1006,17 @@ public class Interactor : MonoBehaviour
                 ClearText();
                 PrinterLeft.SetActive(false);
                 PrinterRight.SetActive(false);
-                PrinterPrint.SetActive(false);
+                PrinterPrint.SetActive(false);                
+                Ship.Start();
+                OverlayInteractor.UpdateOptions();
                 if (tutorial_clip_index < 3) {
                     tutorial_timer = 0; tutorial_clip_index = 3; PlayAudio(TutorialLookAround);
                 }
-                Ship.Start();
-                OverlayInteractor.UpdateOptions();
-                OverlayInteractor.OnDropdownChange("Printer"); 
+                // Ship.Start();
+                // OverlayInteractor.UpdateOptions();
+                // OverlayInteractor.OnDropdownChange("Printer"); 
                 OverlayInteractor.gameObject.SetActive(false);
+                OverlayZoomIn.SetActive(true);
                 MapScreenPanOverlay.SetActive(true);
                 if (tutorial_timer == -1) {
                     Subtitles.SetActive(false);
@@ -965,13 +1024,22 @@ public class Interactor : MonoBehaviour
                 }
                 else 
                 {
-                    if (GameObject.Find("OverlayPanDown")) { GameObject.Find("OverlayPanDown").SetActive(false); }
+                    // if (GameObject.Find("OverlayPanDown")) { GameObject.Find("OverlayPanDown").SetActive(false); }
                 }
                 printing = false;
             }
-        } else if (Stage == "MapInterface") {
-            NarrationTimer += Time.deltaTime;                
-            Timer.text = FloatToTime(global_timer) + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+        } else if (Stage == "MapInterface" || Stage == "MapZoom" || Stage == "MapZoomed") {
+            NarrationTimer += Time.deltaTime;              
+            if (Stage == "MapZoom") {
+                // if ((int)(global_timer / 4f) % 2 == 0) {
+
+                    Timer.text = "SEA-TAC\nINTERNAT\nAIRPORT";
+                // } else {
+                //     Timer.text = FloatToTime(global_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+                // }
+            } else {
+                Timer.text = FloatToTime(global_timer) + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
+            } 
             if (NarrationTimer >= NarrationTiming[NarrationIndex]) {
                 MapSubtitles(Narration[NarrationIndex]);
                 NarrationIndex++;
@@ -984,7 +1052,7 @@ public class Interactor : MonoBehaviour
             if (NarrationIndex >= 5 && NarrationIndex <= 8) {
                 GameObject.Find("MarkerTutorial").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
             }
-            else if (NarrationIndex >= 9 && NarrationIndex < 15) {
+            else if (NarrationIndex >= 9 && NarrationIndex < 14) {
                 if (GameObject.Find("OverlayZoomIn") != null) GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
             }
             // NarrationIndex
@@ -1284,36 +1352,6 @@ public class Interactor : MonoBehaviour
             } else {
                 Timer.text = System.DateTime.Now.ToString("h:mm:ss.f") + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy");
             } 
-            Gamepad gamepad = Gamepad.current;
-            if (gamepad != null)
-            {
-                Vector2 stickL = gamepad.leftStick.ReadValue(); 
-                if (stickL.y < -1/5f) {
-                    if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-                }
-                if (stickL.y > 1/5f) {
-                    if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-                    if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); }
-                }
-                if (stickL.x < -1/5f) {
-                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                }
-                if (stickL.x > 1/5f) {
-                    if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                    if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                    if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                    if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                }
-            }
         } else if (story_timer > -1 && clip_index > -1) {
             // story_timer += Time.deltaTime;
             //             MapSubtitlesAtTime("⛈", 0, story_timer);
