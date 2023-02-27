@@ -78,7 +78,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnDropdownChange(string name) 
     {
         MapScreenPanOverlay.SetActive(false);
-        OverlayZoomIn.SetActive(false);
+        // OverlayZoomIn.SetActive(false);
         last_position = new Vector2 (999,999);
         Resize(name);
         OverlayOk.gameObject.SetActive(true);
