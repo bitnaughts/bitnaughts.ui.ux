@@ -11,9 +11,16 @@ public class OverlayInteractor : MonoBehaviour
     public Dropdown OverlayDropdown;
     public StructureController Ship;    
     public Interactor Interactor;
+    public string State = "";
     public GameObject OverlayOk, OverlayDelete, MapScreenPanOverlay, OverlayZoomIn, 
     OverlayMove, OverlayMoveUp, OverlayMoveLeft, OverlayMoveRight, OverlayMoveDown, OverlayMoveRotateCW, OverlayMoveRotateCCW, 
-    OverlayResize, OverlayResizeExpandUp, OverlayResizeShrinkUp, OverlayResizeExpandLeft, OverlayResizeShrinkLeft, OverlayResizeExpandRight, OverlayResizeShrinkRight, OverlayResizeExpandDown, OverlayResizeShrinkDown;
+    OverlayResize, OverlayResizeExpandUp, OverlayResizeShrinkUp, OverlayResizeExpandLeft, OverlayResizeShrinkLeft, OverlayResizeExpandRight, OverlayResizeShrinkRight, OverlayResizeExpandDown, OverlayResizeShrinkDown,
+    OverlayCodePrimitive, OverlayCodeObject, OverlayCodeFlowControl, OverlayCodeComment, OverlayCodeInput,
+    OverlayCodePrimitiveBoolean, OverlayCodePrimitiveInteger, OverlayCodePrimitiveDouble, OverlayCodePrimitiveCharacter,
+    OverlayCodeObjectThis, OverlayCodeObjectString, OverlayCodeObjectComponent,
+    OverlayCodeFlowControlIf, OverlayCodeFlowControlWhile, OverlayCodeFlowControlFor, OverlayCodeFlowControlForEach,
+    OverlayCodeNameX, OverlayCodeNameY, OverlayCodeNameZ, OverlayCodeBooleanTrue, OverlayCodeBooleanFalse,
+    OverlayCodeComponentProcessor, OverlayCodeComponentBulkhead, OverlayCodeComponentGimbal, OverlayCodeComponentThruster, OverlayCodeComponentBooster, OverlayCodeComponentSensor, OverlayCodeComponentCannon;
     void Start()
     {
         last_position = new Vector2 (999,999);
@@ -33,7 +40,7 @@ public class OverlayInteractor : MonoBehaviour
     {
         OverlayDropdown.options = new List<Dropdown.OptionData>();
         if (Ship.components != null) {
-            foreach (var key in Ship.components.Keys) {
+            foreach (var key in Ship.GetControllers()) {
                 OverlayDropdown.options.Add(new Dropdown.OptionData(key));
             }
         }
@@ -45,23 +52,15 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void Resize(string name) 
     {
+        print (name);
         Vector3 component_position, component_size;
         float rotation;
         string option;
-        print (name);
-        option = OverlayDropdown.options[OverlayDropdown.value].text;
+        option = name;//OverlayDropdown.options[OverlayDropdown.value].text;
         component_position = Ship.GetLocalPosition(option);
         component_size = Ship.GetSize(option);
         rotation = Ship.GetRotation(option);
-        print (component_position.ToString());
-        print (option);
-        // if (GameObject.Find(option) != null) {
-        //     Camera.main.transform.SetParent(GameObject.Find(option).transform);
-        //     Camera.main.transform.localPosition = new Vector3(0, 0, -200);
-        // } else {
-        //     Camera.main.transform.SetParent(GameObject.Find("Example").transform);
-        Camera.main.transform.localPosition = new Vector3(component_position.x, component_position.z, -200);
-        // }//
+        Camera.main.transform.localPosition = new Vector3(component_position.x, component_position.y, -200);
         Vector3 size_vector = new Vector3(component_size.x, 0, component_size.y);
         Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
         Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
@@ -71,50 +70,69 @@ public class OverlayInteractor : MonoBehaviour
         }
         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
             Mathf.Clamp(200+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 150)), 
-            Mathf.Clamp(240+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height - 300)));
+            Mathf.Clamp(240+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height - 250)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y);
+        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y + 120);
     }
     public void OnDropdownChange(string name) 
     {
         MapScreenPanOverlay.SetActive(false);
-        // OverlayZoomIn.SetActive(false);
         last_position = new Vector2 (999,999);
         Resize(name);
-        OverlayOk.gameObject.SetActive(true);
-        OverlayMove.gameObject.SetActive(true);
-        OverlayDelete.gameObject.SetActive(true);
-        OverlayResize.gameObject.SetActive(true);
-        OverlayMoveUp.gameObject.SetActive(false);
-        OverlayMoveLeft.gameObject.SetActive(false);
-        OverlayMoveDown.gameObject.SetActive(false);
-        OverlayMoveRight.gameObject.SetActive(false);
-        OverlayMoveRotateCW.gameObject.SetActive(false);
-        OverlayMoveRotateCCW.gameObject.SetActive(false);
-        OverlayResizeExpandUp.gameObject.SetActive(false);
-        OverlayResizeShrinkUp.gameObject.SetActive(false);
-        OverlayResizeExpandLeft.gameObject.SetActive(false);
-        OverlayResizeShrinkLeft.gameObject.SetActive(false);
-        OverlayResizeExpandDown.gameObject.SetActive(false);
-        OverlayResizeShrinkDown.gameObject.SetActive(false);
-        OverlayResizeExpandRight.gameObject.SetActive(false);
-        OverlayResizeShrinkRight.gameObject.SetActive(false);
-        Interactor.RenderComponent(name);
+        if (State != "") {
+            print ("Code mode");
+            OverlayCodeInput.GetComponent<InputField>().text += name;
+
+        } else {
+            OverlayDropdown.gameObject.SetActive(true);
+            OverlayOk.gameObject.SetActive(true);
+            OverlayMove.gameObject.SetActive(true);
+            OverlayDelete.gameObject.SetActive(true);
+            OverlayResize.gameObject.SetActive(true);
+            OverlayMoveUp.gameObject.SetActive(false);
+            OverlayMoveLeft.gameObject.SetActive(false);
+            OverlayMoveDown.gameObject.SetActive(false);
+            OverlayMoveRight.gameObject.SetActive(false);
+            OverlayMoveRotateCW.gameObject.SetActive(false);
+            OverlayMoveRotateCCW.gameObject.SetActive(false);
+            OverlayResizeExpandUp.gameObject.SetActive(false);
+            OverlayResizeShrinkUp.gameObject.SetActive(false);
+            OverlayResizeExpandLeft.gameObject.SetActive(false);
+            OverlayResizeShrinkLeft.gameObject.SetActive(false);
+            OverlayResizeExpandDown.gameObject.SetActive(false);
+            OverlayResizeShrinkDown.gameObject.SetActive(false);
+            OverlayResizeExpandRight.gameObject.SetActive(false);
+            OverlayResizeShrinkRight.gameObject.SetActive(false);
+
+            OverlayCodePrimitive.gameObject.SetActive(false); OverlayCodeObject.gameObject.SetActive(false); OverlayCodeFlowControl.gameObject.SetActive(false);// OverlayCodeComment.gameObject.SetActive(true); 
+            Interactor.RenderComponent(name);
+        }
+
     }
     
     public void OnSubmit() {
         Interactor.Sound("Click");
-        Interactor.CompleteTutorial();
-        // Interactor.CancelTutorial();
-        if (last_position.x == 999) {
-            this.gameObject.SetActive(false);
-            MapScreenPanOverlay.SetActive(true);
-            OverlayZoomIn.SetActive(true);
-            Interactor.ClearText();
-        }
-        else 
+        if (State != "") 
         {
-            OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
+            Interactor.Processor.GetComponent<ProcessorController>().SetInstructions(OverlayCodeInput.GetComponent<InputField>().text);
+            // State = "";
+            OnCodeEditor();
+        }
+        else {
+            
+            // Interactor.CancelTutorial();
+            if (last_position.x == 999) {
+                this.gameObject.SetActive(false);
+                MapScreenPanOverlay.SetActive(true);
+                OverlayZoomIn.SetActive(true);
+                Interactor.ClearText();
+                OverlayCodeInput.SetActive(false);
+                OverlayCodeInput.GetComponent<InputField>().text = "";
+            }
+            else 
+            {
+                OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
+            }
         }
     }
     public void OnExit() 
@@ -125,6 +143,9 @@ public class OverlayInteractor : MonoBehaviour
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
             OverlayZoomIn.SetActive(true);
+            OverlayCodeInput.SetActive(false);
+            OverlayCodeInput.GetComponent<InputField>().text = "";
+            State = "";
         } else {
             Application.Quit();
         }
@@ -132,7 +153,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnHelp()
     {
         Interactor.Sound("Warning");
-        Interactor.StartTutorial();
+        // Interactor.StartTutorial();
     }
     public void OnReset() 
     {
@@ -141,7 +162,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnDelete() 
     {
         Interactor.Sound("Back");
-        Interactor.CompleteTutorial();
+        // Interactor.CompleteTutorial();
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
@@ -251,5 +272,395 @@ public class OverlayInteractor : MonoBehaviour
         OverlayResizeShrinkRight.gameObject.SetActive(true);
         OverlayResizeExpandDown.gameObject.SetActive(true);
         OverlayResizeShrinkDown.gameObject.SetActive(true);
+    }
+    public void OnCodeEditor() 
+    {
+        Interactor.InputField.text = "≜ Syntax";
+        State = "Code";
+        OverlayMove.gameObject.SetActive(false);
+        OverlayResize.gameObject.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodePrimitive.gameObject.SetActive(true);
+        OverlayCodeObject.gameObject.SetActive(true);
+        OverlayCodeFlowControl.gameObject.SetActive(true); // OverlayCodeComment.gameObject.SetActive(true);
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "";
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+        OverlayCodeObjectThis.gameObject.SetActive(false); 
+        OverlayCodeObjectString.gameObject.SetActive(false); 
+        OverlayCodeObjectComponent.gameObject.SetActive(false); 
+        OverlayCodeFlowControlIf.gameObject.SetActive(false); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(false); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(false); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(false);
+        OverlayCodeNameY.gameObject.SetActive(false);
+        OverlayCodeNameZ.gameObject.SetActive(false);
+        OverlayCodeBooleanTrue.SetActive(false);
+        OverlayCodeBooleanFalse.SetActive(false);
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+
+    }
+    public void OnCodeNameX() 
+    {
+        OverlayCodeNameX.gameObject.SetActive(false);
+        OverlayCodeNameY.gameObject.SetActive(false);
+        OverlayCodeNameZ.gameObject.SetActive(false);
+        OverlayCodeBooleanTrue.SetActive(true);
+        OverlayCodeBooleanFalse.SetActive(true);
+
+        OverlayCodeInput.GetComponent<InputField>().text += "x";
+    }
+    public void OnCodeNameY() 
+    {
+        OverlayCodeNameX.gameObject.SetActive(false);
+        OverlayCodeNameY.gameObject.SetActive(false);
+        OverlayCodeNameZ.gameObject.SetActive(false);
+        OverlayCodeBooleanTrue.SetActive(true);
+        OverlayCodeBooleanFalse.SetActive(true);
+        
+        OverlayCodeInput.GetComponent<InputField>().text += "y";
+    }
+
+    public void OnCodeNameZ() 
+    {
+        OverlayCodeNameX.gameObject.SetActive(false);
+        OverlayCodeNameY.gameObject.SetActive(false);
+        OverlayCodeNameZ.gameObject.SetActive(false);
+        OverlayCodeBooleanTrue.SetActive(true);
+        OverlayCodeBooleanFalse.SetActive(true);
+        
+        OverlayCodeInput.GetComponent<InputField>().text += "z";
+    }
+
+    public void OnCodePrimitive() 
+    {
+        Interactor.InputField.text = "≐ Primitive";
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(true); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(true); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(true); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(true);
+
+        OverlayCodePrimitive.gameObject.SetActive(false);
+        OverlayCodeObject.gameObject.SetActive(false);
+        OverlayCodeFlowControl.gameObject.SetActive(false); // OverlayCodeComment.gameObject.SetActive(true);
+        OverlayCodeInput.gameObject.SetActive(true);
+    }
+    public void OnCodePrimitiveBoolean() 
+    {
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+        if (State == "Code"){
+            Interactor.InputField.text = "≐ Boolean";
+            State = "Boolean";
+            OverlayCodeInput.GetComponent<InputField>().text = "boolean ";
+            OverlayCodeNameX.gameObject.SetActive(true);
+            OverlayCodeNameY.gameObject.SetActive(true);
+            OverlayCodeNameZ.gameObject.SetActive(true);
+        }
+        else {
+            //values/constants included
+            OverlayCodeBooleanTrue.SetActive(true);
+            OverlayCodeBooleanFalse.SetActive(true);
+        }
+
+    }
+    public void OnCodePrimitiveBooleanTrue() 
+    {
+        OverlayCodeInput.GetComponent<InputField>().text += "true";
+    }
+    public void OnCodePrimitiveBooleanFalse() 
+    {
+        OverlayCodeInput.GetComponent<InputField>().text += "false";
+    }
+
+    public void OnCodePrimitiveInteger() 
+    {
+        Interactor.InputField.text = "≐ Integer";
+        OverlayCodeInput.GetComponent<InputField>().text = "int ";
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodePrimitiveDouble() 
+    {
+        Interactor.InputField.text = "≐ Double";
+        OverlayCodeInput.GetComponent<InputField>().text = "double ";
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodePrimitiveCharacter() 
+    {
+        Interactor.InputField.text = "≐ Character";
+        OverlayCodeInput.GetComponent<InputField>().text = "char ";
+        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+
+    public void OnCodeObject() 
+    {
+        Interactor.InputField.text = "≗ Object";
+        OverlayCodeObjectThis.gameObject.SetActive(true); 
+        OverlayCodeObjectString.gameObject.SetActive(true); 
+        OverlayCodeObjectComponent.gameObject.SetActive(true); 
+        // OverlayCodePrimitiveCharacter.gameObject.SetActive(true);
+
+        OverlayCodePrimitive.gameObject.SetActive(false);
+        OverlayCodeObject.gameObject.SetActive(false);
+        OverlayCodeFlowControl.gameObject.SetActive(false); // OverlayCodeComment.gameObject.SetActive(true);
+        OverlayCodeInput.gameObject.SetActive(true);
+    }
+
+
+    public void OnCodeObjectThis() 
+    {
+        Interactor.InputField.text = "≗ This";
+        OverlayCodeObjectThis.gameObject.SetActive(false);
+        OverlayCodeObjectString.gameObject.SetActive(false);
+        OverlayCodeObjectComponent.gameObject.SetActive(false);
+
+    }
+
+    public void OnCodeObjectString() 
+    {
+        Interactor.InputField.text = "≗ String";
+        OverlayCodeInput.GetComponent<InputField>().text = "String ";
+        OverlayCodeObjectThis.gameObject.SetActive(false); 
+        OverlayCodeObjectString.gameObject.SetActive(false); 
+        OverlayCodeObjectComponent.gameObject.SetActive(false); 
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponent() 
+    {
+        Interactor.InputField.text = "≗ Component";
+        // OverlayCodeInput.GetComponent<InputField>().text = "Component ";
+        OverlayCodeObjectThis.gameObject.SetActive(false); 
+        OverlayCodeObjectString.gameObject.SetActive(false); 
+        OverlayCodeObjectComponent.gameObject.SetActive(false); 
+        OverlayCodeInput.gameObject.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(true);
+        OverlayDropdown.transform.Find("OverlayDropdownLabel").GetComponent<Text>().text = "Reference";
+        // OverlayDropdown.Show();
+        OverlayCodeComponentProcessor.SetActive(true);
+        OverlayCodeComponentBulkhead.SetActive(true);
+        OverlayCodeComponentGimbal.SetActive(true);
+        OverlayCodeComponentThruster.SetActive(true);
+        OverlayCodeComponentBooster.SetActive(true);
+        OverlayCodeComponentSensor.SetActive(true);
+        OverlayCodeComponentCannon.SetActive(true);
+
+    }
+    public void OnCodeObjectComponentProcessor() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Processor ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentBulkhead() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Bulkhead ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentGimbal() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Gimbal ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentThruster() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Thruster ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentBooster() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Booster ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentSensor() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Sensor ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+    public void OnCodeObjectComponentCannon() 
+    {
+        OverlayCodeInput.gameObject.SetActive(true);
+        OverlayCodeInput.GetComponent<InputField>().text = "Cannon ";
+        OverlayCodeComponentProcessor.SetActive(false);
+        OverlayCodeComponentBulkhead.SetActive(false);
+        OverlayCodeComponentGimbal.SetActive(false);
+        OverlayCodeComponentThruster.SetActive(false);
+        OverlayCodeComponentBooster.SetActive(false);
+        OverlayCodeComponentSensor.SetActive(false);
+        OverlayCodeComponentCannon.SetActive(false);
+        OverlayDropdown.gameObject.SetActive(false);
+        OverlayCodeNameX.gameObject.SetActive(true);
+        OverlayCodeNameY.gameObject.SetActive(true);
+        OverlayCodeNameZ.gameObject.SetActive(true);
+    }
+
+    public void OnCodeFlow()
+    {
+        Interactor.InputField.text = "≘ Flow";
+        OverlayCodeFlowControlIf.gameObject.SetActive(true); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(true); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(true); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(true);
+
+        OverlayCodePrimitive.gameObject.SetActive(false);
+        OverlayCodeObject.gameObject.SetActive(false);
+        OverlayCodeFlowControl.gameObject.SetActive(false); // OverlayCodeComment.gameObject.SetActive(true);
+        OverlayCodeInput.gameObject.SetActive(true);
+    }
+    public void OnCodeFlowIf()
+    {
+        Interactor.InputField.text = "≘ If";
+        State = "If";
+        OverlayCodeInput.GetComponent<InputField>().text = "if (";
+        OverlayCodeFlowControlIf.gameObject.SetActive(false); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(false); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(false); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(false);
+        OverlayCodePrimitive.gameObject.SetActive(true);
+        OverlayCodeObject.gameObject.SetActive(true);
+    }
+    public void OnCodeFlowWhile()
+    {
+        Interactor.InputField.text = "≘ While";
+        State = "While";
+        OverlayCodeInput.GetComponent<InputField>().text = "while (";
+        OverlayCodeFlowControlIf.gameObject.SetActive(false); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(false); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(false); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(false);
+
+        OverlayCodePrimitive.gameObject.SetActive(true);
+        OverlayCodeObject.gameObject.SetActive(true);
+    }
+    public void OnCodeFlowFor()
+    {
+        Interactor.InputField.text = "≘ For";
+        State = "For";
+        OverlayCodeInput.GetComponent<InputField>().text = "for (";
+        OverlayCodeFlowControlIf.gameObject.SetActive(false); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(false); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(false); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(false);
+
+        
+        OverlayCodePrimitive.gameObject.SetActive(true);
+        OverlayCodeObject.gameObject.SetActive(true);
+    }
+    public void OnCodeFlowForEach()
+    {
+        Interactor.InputField.text = "≘ For Each";
+        State = "ForEach";
+        OverlayCodeInput.GetComponent<InputField>().text = "foreach (";
+        OverlayCodeFlowControlIf.gameObject.SetActive(false); 
+        OverlayCodeFlowControlWhile.gameObject.SetActive(false); 
+        OverlayCodeFlowControlFor.gameObject.SetActive(false); 
+        OverlayCodeFlowControlForEach.gameObject.SetActive(false);
+
+        OverlayCodePrimitive.gameObject.SetActive(true);
+        OverlayCodeObject.gameObject.SetActive(true);
+    }
+    public void OnCodeComment()
+    {
+
+    }
+    public void OnCodeInput()
+    {
+
     }
 }

@@ -18,9 +18,25 @@ public class ClickableTextInteractor : MonoBehaviour
         initialized_text = text;
         if (text.StartsWith("<") && text.EndsWith(">")) text = text.Substring(3, text.Length - 7);
         // print (text + " " + line + " " + pos);
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-50f + (pos - (text.Length-1)/2f) * 50f, -150f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * 50f, 100f);//new Vector2(text.Length * 37.5f, 75f);
+
+    //    if (text.Contains("━") || text.Contains("║"))
+    //    {
+    //        button.GetComponent<Button>().interactable = false;
+    //    }
+    //    else
+    //    {
+    //        button.GetComponent<Button>().interactable = true;
+    //        button.GetComponent<Button>().onClick.AddListener ( delegate { Click (button.name); });
+    //    }
+
+
+
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-((Interactor.fontSize - 5) / 1.5f) + (pos - (text.Length - 1)/2f) * Interactor.fontSize / 2, line * -Interactor.fontSize) + new Vector2(50f, -85f);// + (pos - (text.Length-1)/2f) * 50f, -125f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        var text_length = text.Length * 50f;
+        if (text.StartsWith("<color=#")) text_length -= 23 * 50f;
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * Interactor.fontSize / 2, Interactor.fontSize);//new Vector2(text_length, 100f);//new Vector2(text.Length * 37.5f, 75f);
         this.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        this.transform.Find("Text").GetComponent<Text>().fontSize = (int)Interactor.fontSize;
 
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
             initialized_text = Formatter.comment(initialized_text);
@@ -46,6 +62,13 @@ public class ClickableTextInteractor : MonoBehaviour
                 initialized_text = Formatter.keyword(initialized_text);
                 break;
             case "Component":
+            case "Booster":
+            case "Thruster":
+            case "Bulkhead":
+            case "Processor":
+            case "Sensor":
+            case "Cannon":
+            case "Gimbal":
             case "Object":
             case "Vector":
             case "Shell":
@@ -80,8 +103,17 @@ public class ClickableTextInteractor : MonoBehaviour
             initialized_text = initialized_text.Split('>')[1].Split('<')[0];
         } 
         if (initialized_text == "$") {
-            // Interactor.SetCommand("$"); //\n  <b>git</b>
-            Interactor.AppendText("$ <b>about</b>\n  <b>clear</b>\n  <b>gui</b>\n  <b>tutorial</b>\n  <b>back</b>");
+            // If code editor:
+            print (Interactor.component_name);
+            if (Interactor.component_name != "") 
+            {
+                OverlayInteractor.gameObject.SetActive(true);
+                OverlayInteractor.OnCodeEditor();
+            }
+            else {
+                // else, TUI menu:
+                Interactor.AppendText("$ <b>about</b>\n  <b>tutorial</b>\n  <b>campaign</b>\n  <b>multiplay</b>\n  <b>clear</b>\n  <b>restart</b>\n  <b>back</b>");
+            }
         }
         foreach (var component in Interactor.GetComponents()) {
             if (initialized_text.Contains(component)) {
@@ -137,7 +169,11 @@ public class ClickableTextInteractor : MonoBehaviour
             case "status": 
                 Interactor.SetCommand("clone");
                 Interactor.AppendText("$ git clone <i>bitnaughts.db</i>\n            <i>bitnaughts.components</i>\n            <i>bitnaughts.ui.ux</i>\n            <i>bitnaughts.assets</i>\n            <i>bitnaughts.github.io</i>\n            <i>bitnaughts.interpreter</i>");
-            break;
+                break;
+            case "Print_()":
+            case "/*_Construct_Ship_*/":
+                Interactor.PrinterPrintFx();
+                break;
             // case "<i>bitnaughts.db</i>": 
             //     Interactor.SetCommand("bitnaughts.db");
             //     Interactor.AppendText("$ git clone bitnaughts.db\n...\n$");
@@ -164,6 +200,18 @@ public class ClickableTextInteractor : MonoBehaviour
             // break;
             case "gui":
                 Interactor.OnMapView();
+                break;
+            case "tutorial":
+                Interactor.OnMapView();
+                Interactor.MapInteractor("0");
+                break;
+            case "campaign":
+                Interactor.OnMapView();
+                Interactor.MapInteractor((Interactor.CampaignIndex + 1).ToString());
+                break;
+            case "multiplay":
+                Interactor.OnMapView();
+                Interactor.MapInteractor("6"); //7,8
                 break;
             case "about": 
                 Interactor.Sound("Warning");
@@ -236,7 +284,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Conclusion":
                 Interactor.StoryMode(18);
                 break;
-            case "tutorial":
+            case "restart":
             // case "⍰⍰_Help":
                 
                 SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
@@ -334,7 +382,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "Fire_()":
             case "/*_Weapon_control_*/":
-                Interactor.FireTutorial();
+                // Interactor.FireTutorial();
                 Interactor.Action(Interactor.GetInput(), -1);
                 // Interactor.Sound("Cannon");
                 break;
@@ -376,25 +424,25 @@ public class ClickableTextInteractor : MonoBehaviour
                 // Interactor.Action("Thruster", 100);
                 break;
             case "Component": 
-                Interactor.RenderText("abstract class Component : Object {\n  virtual Vector pos;\n  virtual Vector siz;\n  virtual double rot;\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("abstract class Component : Object {\n virtual Vector pos;\n virtual Vector siz;\n virtual double rot;\n}\n<b>Exit</b>");
                 break;
             case "Object": 
-                Interactor.RenderText("abstract class Object {\n  protected Object clone () { ... }\n  protected void finalize () { ... }\n  public class getClass () { ... }\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("abstract class Object {\n protected Object clone () { ... }\n protected void finalize () { ... }\n public class getClass () { ... }\n}\n<b>Exit</b>");
                 break;
             case "Nozzle": 
-                Interactor.RenderText("final class Nozzle : Component {\n  void GoTo (Vector position);\n  void Place (string type);\n  void Resize (Vector size);\n  void Rotate (double rotation);\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Nozzle : Component {\n void GoTo (Vector position)\n void Place (string type)\n void Resize (Vector size)\n void Rotate (double rotation)\n}\n<b>Exit</b>");
                 break;
             case "Heap": 
-                Interactor.RenderText("final class Heap : Object {\n\n  /*_New_allocates_objects */\n  void New (Object obj);\n\n  /*_Delete_deallocates_objects */\n  void Delete (Object obj);\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Heap : Object {\n /*_New_allocates_objects_*/\n void New (Object obj)\n /*_Delete_deallocates_objects_*/\n void Delete (Object obj);\n}\n<b>Exit</b>");
                 break;
             case "Shell": 
-                Interactor.RenderText("final class Shell : Component {\n  void OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Shell : Component {\n void OnCollision (Object other) {\n  delete other;\n  delete this;\n }\n}\n\n<b>Exit</b>");
                 break;
             case "Ray": 
-                Interactor.RenderText("final class Ray : Object {\n  double length;\n  public Ray (Vector dir) {\n    length = Cast (dir);\n  }\n\n  public double Length() {\n    return length;\n  }\n\n  public double Cast (Vector dir) { ... }\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Ray : Object {\n double length;\n public Ray (Vector dir) {\n  length = Cast (dir);\n }\n\n  public double Length() {\n    return length;\n  }\n\n  public double Cast (Vector dir) { ... }\n}\n<b>Exit</b>");
                 break;
             case "Torpedo":
-                Interactor.RenderText("final class Torpedo : Shell {\n  double thr;\n\n/*_Torpedo_constructor_*/\n  public Torpedo(double throttle) {\n    thr = throttle;\n  }\n  OnCollision (Object other) {\n    delete other;\n    delete this;\n  }\n}\n\n<b>Exit</b>");
+                Interactor.RenderText("final class Torpedo : Shell {\n double thr;\n /*_Torpedo_constructor_*/\n public Torpedo(double throttle) {\n  thr = throttle;\n }\n OnCollision (Object other) {\n  delete other;\n  delete this;\n }\n}\n<b>Exit</b>");
                 break;
             case "clear": 
                 Interactor.ClearHistory();

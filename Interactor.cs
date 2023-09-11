@@ -21,509 +21,589 @@ public class Interactor : MonoBehaviour {
     public Sprite PixelSprite, OverlaySprite;
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
-    public GameObject TutorialAssets;
-    public AudioClip IntroMusic;
+    public GameObject TutorialAssets, CampaignIntroAssets, CampaignIntroSatelliteAssets,  CampaignGroverAssets, CampaignGroverSatelliteAssets, CampaignPearlAssets, CampaignMidwayAssets, CampaignNexusAssets, CampaignAbyssAssets;
+    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsHeatRay, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
+    public int CampaignIndex = 0;
     AbstractMapController Map;
     List<Narration> Narration = new List<Narration> {
-        new Narration(-60.00f, "We interrupt this\n"),
-        new Narration(-59.50f, "We interrupt this\nprogram"),  
-        new Narration(-59.00f, "to bring you a special\n"), 
-        new Narration(-58.25f, "to bring you a special\nnews bulletin."),
-        new Narration(-57.50f, "A state of emergency\n"),  
-        new Narration(-56.50f, "A state of emergency\nhas been declared"), 
-        new Narration(-55.75f, "by the President of\n"), 
-        new Narration(-54.75f, "by the President of\nthe United States!"), 
-        new Narration(-53.75f, "We're switching live to\n"), 
-        new Narration(-53.00f, "We're switching live to\nWilsens Glenn,"),  
-        new Narration(-52.25f, "New Jersey,\n"),
-        new Narration(-51.50f, "New Jersey,\nwhere the landing of"), 
-        new Narration(-50.50f, "hundreds of unidentified\n"),
-        new Narration(-49.00f, "hundreds of unidentified\nspacecraft have now been"), 
-        new Narration(-47.25f, "officially confirmed as\n"),
-        new Narration(-46.25f, "officially confirmed as\na full scale invasion"), 
-        new Narration(-45.75f, "of the Earth\n"), 
-        new Narration(-45.00f, "of the Earth\nby Martians!"),
-        new Narration(-43.00f, "⛈\n"),
-        new Narration(-42.25f, "We're seeing ...\n"),
-        new Narration(-41.25f, "We're seeing ...\nit's horrible"),
-        new Narration(-40.25f, "I can't believe\n"),
-        new Narration(-39.25f, "I can't believe\nmy eyes ..."),    
-        new Narration(-38.25f, "People are dying ...\n"),   
-        new Narration(-37.25f, "People are dying ...\nbeing trampled"),    
-        new Narration(-36.25f, "in their efforts to\n"),    
-        new Narration(-35.25f, "in their efforts to\nescape!"), 
-        new Narration(-34.25f, "Power lines are down\n"),   
-        new Narration(-33.25f, "Power lines are down\neverywhere!"),   
-        new Narration(-32.25f, "We could be cut off at\n"),   
-        new Narration(-31.25f, "We could be cut off at\nany minute!"),    
-        new Narration(-30.25f, "⛈\n"),  
-        new Narration(-29.25f, "There's another group of\n"),     
-        new Narration(-28.25f, "There's another group of\nspaceships"),    
-        new Narration(-27.25f, "There's another group of\nalien ships"),    
-        new Narration(-26.25f, "They're coming out of\n"), 
-        new Narration(-25.25f, "They're coming out of\nthe sky!"), 
-        new Narration(-24.25f, "⛈\n"),
-        new Narration(-21.00f, "Click / tap\n"),
-        new Narration(-20.00f, "Click / tap\nto continue"),
+        // "Campaign Intro"
+        new Narration(-60.00f, "<b>⛅</b>"),
+        new Narration(-59.00f, "<b>We_know_now_that_in</b>"),
+        new Narration(-58.25f, "We_know_now_that_in\n<b>the_early_years_of_the</b>"),
+        new Narration(-57.50f, "We_know_now_that_in\nthe_early_years_of_the\n<b>twentieth_century_...</b>"), 
+        new Narration(-56.50f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_..."), 
+        new Narration(-55.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\n<b>This_world_was_being</b>"),
+        new Narration(-54.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\n<b>watched_closely_by</b>"),  
+        new Narration(-52.75f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\n<b>intelligences_...</b>"), 
+        new Narration(-52.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_..."), 
+        new Narration(-51.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_...\n\n<b>Greater_than_man!</b>"), 
+        new Narration(-49.50f, "<b>We_know_now_that</b>"), 
+        new Narration(-48.50f, "We_know_now_that\n<b>as_human-beings_busied</b>"), 
+        new Narration(-47.00f, "We_know_now_that\nas_human-beings_busied\n<b>themselves_about_their</b>"), 
+        new Narration(-46.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\n<b>various_concerns_...</b>"),
+        new Narration(-45.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_..."),
+        new Narration(-44.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\n<b>They_were_scruntizied</b>"),
+        new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
+        new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
+        new Narration(-42.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\nand_studied_..."),
+        new Narration(-41.25f, "<b>Perhaps_almost_as</b>"),
+        new Narration(-40.50f, "Perhaps_almost_as\n<b>narrowly_as_a_man</b>"),
+        new Narration(-39.50f, "Perhaps_almost_as\nnarrowly_as_a_man\n<b>with_a_microscope</b>"),
+        new Narration(-38.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\n<b>might_scruntinize_the</b>"),
+        new Narration(-37.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\n<b>transient_creatures</b>"),
+        new Narration(-36.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\n<b>that_swarm_and_multiply</b>"),
+        new Narration(-34.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\n<b>in_a_drop_of_water_...</b>"),
+        new Narration(-33.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\nin_a_drop_of_water_..."),
+        new Narration(-32.00f, "<b>With_infinite_complacence</b>"),
+        new Narration(-30.00f, "With_infinite_complacence\n<b>people_went_to_and_fro</b>"),
+        new Narration(-29.25f, "With_infinite_complacence\npeople_went_to_and_fro\n<b>over_the_Earth_about</b>"),
+        new Narration(-28.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\n<b>their_little_affairs_...</b>"),
+        new Narration(-27.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_..."),
+        new Narration(-26.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\n<b>Which_by_chance_or</b>"),
+        new Narration(-26.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\n<b>design,_man_has</b>"),
+        new Narration(-24.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\n<b>inherited_out_of_the</b>"),
+        new Narration(-23.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\n<b>dark_mystery_of_time</b>"),
+        new Narration(-21.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\ndark_mystery_of_time\n<b>and_space_...</b>"),
+        new Narration(-20.00f, "<b>Yet_across_an_immense</b>"),
+        new Narration(-19.00f, "Yet_across_an_immense\n<b>ethereal_gulf_...</b>"),
+        new Narration(-18.00f, "Yet_across_an_immense\nethereal_gulf_..."),
+        new Narration(-16.00f, "Yet_across_an_immense\nethereal_gulf_...\n\n<b>Intellect,_vast,_cool</b>"),
+        new Narration(-13.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic,</b>"),
+        new Narration(-11.25f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\n<b>regarded_this_Earth</b>"),
+        new Narration(-10.25f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\n<b>with_envious_eyes,</b>"),
+        new Narration(-08.50f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\n<b>slowly_and_surely_drew</b>"),
+        new Narration(-07.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\nslowly_and_surely_drew\n<b>their_plans_against_us!</b>"),
+        new Narration(-06.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\nslowly_and_surely_drew\ntheir_plans_against_us!"),
+        new Narration(-03.00f, "<b>⛈</b>"),
+        new Narration(-02.00f, "⛈"),
+        new Narration(-01.00f, ""),
+        // new Narration(-47.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\n<b>officially_confirmed_as</b>\n"),
+        // new Narration(-46.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\n<b>a_full_scale_invasion</b>\n"), 
+        // new Narration(-45.50f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\na_full_scale_invasion\n<b>of_Earth_by_Martians!</b>"), 
+        // new Narration(-42.25f, "<b>We're_seeing_..._it's</b>\n"),
+        // new Narration(-41.25f, "We're_seeing_..._it's\n<b>horrible_..._I_can't</b>\n"),
+        // new Narration(-40.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\n<b>believe_my_eyes_...</b>"),
+        // new Narration(-39.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\nbelieve_my_eyes_...\n"),    
+        // new Narration(-38.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\nbelieve_my_eyes_...\n<b>People_are_dying_...</b>\n"),   
+        // new Narration(-37.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\nbelieve_my_eyes_...\nPeople_are_dying_...\n<b>being_trampled_in_their</b>\n"),    
+        // new Narration(-36.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\nbelieve_my_eyes_...\nPeople_are_dying_...\nbeing_trampled_in_their\n<b>efforts_to_escape!</b>"),    
+        // new Narration(-35.25f, "We're_seeing_..._it's\nhorrible_..._I_can't\nbelieve_my_eyes_...\nPeople_are_dying_...\nbeing_trampled_in_their\nefforts_to_escape!"), 
+        // new Narration(-34.25f, "<b>Power_lines_are_down</b>\n"),   
+        // new Narration(-33.25f, "Power_lines_are_down\n<b>everywhere!_We_could_be</b>\n"),   
+        // new Narration(-32.25f, "Power_lines_are_down\neverywhere!_We_could_be\n<b>cut_off_at_any_minute!</b>"),   
+        // new Narration(-31.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\n"),    
+        // new Narration(-29.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\n<b>There's_another_group</b>\n"),     
+        // new Narration(-28.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\nThere's_another_group\n<b>of_spaceships_...</b>\n"),    
+        // new Narration(-27.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\nThere's_another_group\nof_spaceships_...\n<b>of_alien_ships_...</b>\n"),    
+        // new Narration(-26.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\nThere's_another_group\nof_spaceships_...\nof_alien_ships_...\n<b>They're_coming_out_of</b>\n"), 
+        // new Narration(-25.25f, "Power_lines_are_down\neverywhere!_We_could_be\ncut_off_at_any_minute!\nThere's_another_group\nof_spaceships_...\nof_alien_ships_...\nThey're_coming_out_of\n<b>the_sky!</b>"), 
+        // new Narration(-24.25f, "⛈\n"),
+        // new Narration(-21.00f, "Click / tap\n"),
+        // new Narration(-20.00f, "Click / tap\nto continue"),
+        // new Narration(-01.00f, ""),
+        // "Tutorial: Map Interface"
+        // new Narration( 00.00f, "<b>Today_you_will_learn_to</b>"), 
+        // new Narration( 01.00f, "Today_you_will_learn_to\n<b>use_the_Map_Interface</b>"),
+        // new Narration( 02.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\n<b>to_issue_tactical</b>"),
+        // new Narration( 03.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\n<b>commands.</b>"),
+        // new Narration( 04.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands."),
+        new Narration( 00.00f, "$"),
+        new Narration( 01.00f, "<b>$</b>"),
+        new Narration( 02.00f, "$"),
+        new Narration( 03.00f, "<b>$</b>"),
+        new Narration( 04.00f, "$"),
+        new Narration( 05.00f, "<b>$</b>"),
+        new Narration( 06.00f, "$"),
+        // "Tutorial: Zoom In"
+        // new Narration( 06.00f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\n<b>Press_the_⇲_Zoom_key</b>\nto_zoom_in."), 
+        // new Narration( 07.50f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\nPress_the_⇲_Zoom_key\n<b>to_zoom_in.</b>"),
+        // new Narration( 09.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\n<b>Click_/_tap</b>\n⇲_Zoom"),
+        // new Narration( 10.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\nClick_/_tap\n<b>⇲_Zoom</b>"),
+        // "Tutorial: Zooming In"
+        new Narration(60.00f, "<b>When_the_map_is_at</b>\n"), 
+        new Narration(61.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
+        new Narration(62.50f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed</b>\n"),
+        new Narration(64.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
+        new Narration(66.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
+        // "Tutorial: Intro"
+        new Narration(0100.00f, "⛈"),
+        new Narration(0102.25f, "⛅"),
+        new Narration(0106.80f, "7 ..."),
+        new Narration(0107.80f, "7 ...\n6 ..."),
+        new Narration(0108.80f, "7 ...\n6 ...\n5 ..."),
+        new Narration(0109.80f, "7 ...\n6 ...\n5 ...\n4 ..."),
+        new Narration(0110.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ..."),
+        new Narration(0111.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ..."),
+        new Narration(0112.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ...\n1 ..."),
+        new Narration(0114.80f, "Click / tap"),
+        new Narration(0115.80f, "Click / tap\nto continue ..."),
+        new Narration(0118.50f, "Today, orbitting\n"),
+        new Narration(0119.80f, "Today, orbitting\nsatellites of the"),
+        new Narration(0120.80f, "Today, orbitting\nsatellites of the\nNavy Navigation\n"),
+        new Narration(0121.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System"),
+        new Narration(0123.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\n"),
+        new Narration(0124.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise"),
+        new Narration(0126.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\n"), 
+        new Narration(0127.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space"), 
+        new Narration(0128.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\n"),
+        new Narration(0129.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,"),
+        new Narration(0130.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\n"),
+        new Narration(0131.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind"),
+        new Narration(0132.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind\nof weather.\n"),
+        new Narration(0134.30f, "⛈\n"),
+        new Narration(0139.00f, "Navigation\n"),
+        new Narration(0140.00f, "Navigation\nby satellite,"),
+        new Narration(0142.00f, "Navigation\nby satellite,\nhow and why\n"),
+        new Narration(0143.25f, "Navigation\nby satellite,\nhow and why\ndoes it work?"),
+        new Narration(0144.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\n"),
+        new Narration(0145.50f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics"),
+        new Narration(0146.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics\nto answer why.\n"),
+        new Narration(0148.25f, "⛈\n"),
+        new Narration(0154.50f, "Any satellite, man-\n"),
+        new Narration(0156.00f, "Any satellite, man-\nmade or not,"),
+        new Narration(0157.00f, "Any satellite, man-\nmade or not,\nremains in orbit\n"),
+        new Narration(0158.00f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with"),
+        new Narration(0159.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\n"),
+        new Narration(0160.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth"),
+        new Narration(0162.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\n"),
+        new Narration(0163.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull"),
+        new Narration(0164.75f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull\nof Earth."),
+        new Narration(0166.25f, "So it continues\n"),
+        new Narration(0167.25f, "So it continues\nmoving around Earth"),
+        new Narration(0168.75f, "So it continues\nmoving around Earth\nin an orbit whose\n"),
+        new Narration(0170.25f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very"),
+        new Narration(0171.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\n"),
+        new Narration(0172.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir"),
+        new Narration(0173.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\n"),
+        new Narration(0174.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\nand Johannes Kepler."),
+        new Narration(0176.80f, "Click / tap\n"),
+        new Narration(0177.80f, "Click / tap\nto continue ..."),
+        // new Narration(120.00f, "Click_/_tap_anywhere\nto_skip_introduction"),
+        // new Narration(124.25f, "<b>We're_inside_the</b>\n"), 
+        // new Narration(125.25f, "We're_inside_the\n<b>operation_center:</b>"), 
+        // new Narration(127.25f, "We're_inside_the\noperation_center:\n<b>command_post_for_the</b>\n"), 
+        // new Narration(128.25f, "We're_inside_the\noperation_center:\ncommand_post_for_the\n<b>operations_duty_officer.</b>"), 
+        // new Narration(133.00f, "<b>Mission_of_the_group:</b>\n"), 
+        // new Narration(135.00f, "around_the_clock,\n"), 
+        // new Narration(136.00f, "around_the_clock,\nseven_days_a_week,"), 
+        // new Narration(137.50f, "is_to_make_sure_that\n"), 
+        // new Narration(138.50f, "is_to_make_sure_that\neach_navigation"), 
+        // new Narration(139.50f, "satellite_always_has\n"), 
+        // new Narration(141.50f, "satellite_always_has\ncorrect,_up-to-date"), 
+        // new Narration(142.50f, "information_stored_in\n"), 
+        // new Narration(144.50f, "information_stored_in\nits_memory unit."), 
+        // new Narration(148.00f, "An informative array\n"), 
+        // new Narration(149.25f, "An informative array\nof actuated displays"), 
+        // new Narration(151.25f, "shows the performance,\n"), 
+        // new Narration(153.25f, "shows the performance,\nmemory,"), 
+        // new Narration(154.00f, "and injection status\n"), 
+        // new Narration(156.00f, "and injection status\nand helps the duty"), 
+        // new Narration(157.00f, "officer coordinate\n"), 
+        // new Narration(158.50f, "officer coordinate\nall network operations"), 
+        // new Narration(160.50f, "that keep the satellites\n"), 
+        // new Narration(161.50f, "that keep the satellites\nbroadcasting navigation"), 
+        // new Narration(163.25f, "data.\n"), 
+        // new Narration(165.25f, "Click / tap\nto continue"), 
+        // // "Tutorial: Welcome"
+        // new Narration(180.00f, "Welcome to the U.S.\n"), 
+        // new Narration(181.00f, "Welcome to the U.S.\nNaval Academy"),
+        // new Narration(182.50f, "Aerial Ordinance\n"), 
+        // new Narration(183.50f, "Aerial Ordinance\nTutorial"), 
+        // new Narration(185.00f, "Here, you will learn\n"),
+        // new Narration(186.25f, "Here, you will learn\nthe main ways"),
+        // new Narration(187.00f, "of attacking targets\n"),
+        // new Narration(188.50f, "of attacking targets\nfrom the air."),
+        // new Narration(189.50f, "So, be sure to pay\n"),
+        // new Narration(190.50f, "So, be sure to pay\nattention!"),
+        // // "Tutorial: Printer"
+        // new Narration(192.00f, "Aim the crosshair using\n"),
+        // new Narration(194.00f, "Aim the crosshair using\nthe mouse"),
+        // new Narration(195.00f, "or joystick.\n"),
+        // new Narration(196.00f, "When you're on target\n"),
+        // new Narration(197.00f, "When you're on target\nthe crosshair"),
+        // new Narration(198.00f, "alters shape to\n"),
+        // new Narration(199.00f, "alters shape to\nindicate a"),
+        // new Narration(200.00f, "lock-on.\n"),
+        // new Narration(202.00f, "Click / tap\n"),
+        // new Narration(203.00f, "Click / tap\n\"Printer\""),
+        // // "Tutorial: Print"
+        // new Narration(240.00f, "Good, good.\n"),
+        // new Narration(241.00f, "You can also use\n"),
+        // new Narration(241.75f, "You can also use\nthe crosshair"),
+        // new Narration(243.00f, "to issue orders to your\n"),
+        // new Narration(244.00f, "to issue orders to your\ncurrently seleted unit."),
+        // new Narration(246.00f, "Click / tap\n"),
+        // new Narration(247.00f, "Click / tap\n\"Print\""),
+        // // "Tutorial: Pan"
+        // new Narration(300.00f, "Your target will be\n"),
+        // new Narration(301.00f, "Your target will be\nthat cargo hulk there"),
+        // new Narration(302.00f, "While she moves into\n"),
+        // new Narration(303.00f, "While she moves into\nposition"),
+        // new Narration(304.00f, "Let's explain how\n"), 
+        // new Narration(305.00f, "Let's explain how\nartillery works."),
 
-        new Narration( 00.00f, "Today, you will learn\n"), // "Map Interface"
-        new Narration( 02.00f, "Today, you will learn\nto use the Map Interface"),
-        new Narration( 04.00f, "to issue tactical\n"),
-        new Narration( 05.00f, "to issue tactical\ncommands."),
-        new Narration( 07.00f, "Click / tap\n"),
-        new Narration( 09.00f, "Click / tap\n\"Tutorial\""),
+        // Looking Around
+        new Narration(180.00f, "First_off,_try\n"),
+        new Narration(181.00f, "First_off,_try\nlooking_around!"),
+        new Narration(182.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\n"),
+        new Narration(183.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for"),
+        new Narration(184.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for\ndog-fighting!"),
+        // Map Screen
+        new Narration(200.00f, "The_map_screen_shows\n"),
+        new Narration(201.00f, "The_map_screen_shows\nyou_your_mission_area,\n"),
+        new Narration(202.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,"),
+        new Narration(203.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\n"),
+        new Narration(204.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units."),
+        new Narration(205.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-"),
+        new Narration(206.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-\nlighted_in_yellow!"),
+        // new Narration(311.00f, "Click / tap\n"),
+        // new Narration(312.00f, "Click / tap\n\"Pan\" or Drag"),
+        // // "Tutorial: Target Button"
+        // new Narration(360.00f, "You can also use the\n"),
+        // new Narration(361.50f, "You can also use the\nTarget Button"),
+        // new Narration(363.00f, "to cycle targets\n"),
+        // new Narration(364.00f, "to cycle targets\nbetween all"),
+        // new Narration(365.00f, "detected enemy units.\n"),
+        // new Narration(367.00f, "Click / tap\n"),
+        // new Narration(368.00f, "Click / tap\n\"Target\""),
+        // // "Tutorial: Target 1"
+        // new Narration(420.00f, "Good.\n"),
+        // new Narration(422.00f, "Click / tap\n"),
+        // new Narration(423.00f, "Click / tap\n\"Target\""),
+        // // "Tutorial: Target 2"
+        // new Narration(480.00f, "Good.\n"),
+        // new Narration(482.00f, "Click / tap\n"),
+        // new Narration(483.00f, "Click / tap\n\"Target\""),
+        // // "Tutorial: Target 3"
+        // new Narration(540.00f, "Good!\n"),
+        // new Narration(542.00f, "Click / tap\n"),
+        // new Narration(543.00f, "Click / tap\n\"Target\""),
+        // // "Tutorial: Use Weapon"
+        // new Narration(600.00f, "Okay cadet, strafe\n"),
+        // new Narration(601.00f, "Okay cadet, strafe\nthat cargo ship"),
+        // new Narration(602.50f, "until she goes down!\n"),
+        // new Narration(605.00f, "Press the \"Use Weapon\"\n"),
+        // new Narration(606.50f, "Press the \"Use Weapon\"\ncontrol to fire!"),
+        // new Narration(608.50f, "Click / tap\n"),
+        // new Narration(609.50f, "Click / tap\n\"Use Weapon\""),
+        // // "Tutorial: Shoot 1"
+        // new Narration(660.00f, "Although torpedos are\n"),
+        // new Narration(661.50f, "Although torpedos are\npowerful, they're slow!"),
+        // new Narration(663.75f, "Firing a spread makes\n"),
+        // new Narration(664.75f, "Firing a spread makes\nit harder"),
+        // new Narration(665.75f, "for your enemy to\n"),
+        // new Narration(666.75f, "for your enemy to\navoid them."),
+        // new Narration(668.75f, "Click / tap\n"),
+        // new Narration(669.75f, "Click / tap\n\"Use Weapon\""),
+        // // "Tutorial: Destroy 1"
+        // new Narration(780.00f, "Hah, great stuff!\n"),
+        // new Narration(781.50f, "Hah, great stuff!\nLet's move on."),
+        // // "Tutorial: Joystick"
+        // new Narration(783.00f, "Now it's time to get\n"),
+        // new Narration(784.00f, "Now it's time to get\nthis old girl moving!"),
+        // new Narration(786.00f, "Set your throttle\n"),
+        // new Narration(787.00f, "Set your throttle\nto maximum!"),
+        // new Narration(789.00f, "Click / drag\n"),
+        // new Narration(790.00f, "Click / drag\n\"Joystick\""),
+        // // "Tutorial: Binocular"
+        // new Narration(842.00f, "You can also shoot from\n"),
+        // new Narration(844.00f, "You can also shoot from\nBinocular View"),
+        // new Narration(845.00f, "which can help you aim\n"),
+        // new Narration(846.00f, "which can help you aim\nmore accurately."),
+        // new Narration(848.00f, "Click / tap\n"),
+        // new Narration(848.00f, "Click / tap\n\"Binocular\""),
+        // // "Tutorial: Binocular"
+        // new Narration(880.00f, "Good!\n"),
+        // new Narration(882.00f, "\n"),
+        // // "Tutorial: Destroy 2"
+        // new Narration(930.00f, "That was right on\n"),
+        // new Narration(931.00f, "That was right on\nthe money!"),
+        // new Narration(933.00f, "Great stuff!\n"),
+        // new Narration(935.00f, ""),
+        // // "Tutorial: Destroy 3"
+        // new Narration(960.00f, "Excellence work!\n"),
+        // new Narration(961.50f, "You have now completed\n"),
+        // new Narration(962.50f, "You have now completed\nthe tutorial!"),
+        // new Narration(964.00f, "I hope you never have\n"),
+        // new Narration(965.00f, "I hope you never have\ncause to use"),
+        // new Narration(966.50f, "the knowledge you have\n"),
+        // new Narration(967.50f, "the knowledge you have\njust acquired."),
+        // new Narration(969.00f, "That is all for today!\n"),
+        // new Narration(970.50f, "That is all for today!\nDismissed!"),
+        // new Narration(972.50f, ""),
+        // new Narration(999.00f, "Click / tap\n"),
+        new Narration(1000.0f, "⛈"),
+        new Narration(1001.0f, "⛅"),
+        // CAMPAIGN LEVEL 1: INTRODUCTION
+        new Narration(2000.00f, "⛈\n"),
+        new Narration(2100.00f, "Professor_Pierson_has"),
+        new Narration(2101.00f, "Professor_Pierson_has\nbeen_located_where_he"),
+        new Narration(2102.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\n"),
+        new Narration(2103.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation"),
+        new Narration(2104.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!"),
+        new Narration(2105.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he"),
+        new Narration(2106.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he\nwill_give_his_assess"),
+        // new Narration(2001.25f, "Captain!\nThe radar scanner"),
+        // new Narration(2002.25f, "indicates two shining\n"),
+        // new Narration(2003.25f, "indicates two shining\npoints!"),
+        // new Narration(2004.25f, "They're approaching\n"),
+        // new Narration(2005.00f, "They're approaching\nrapidly!"),
+        // new Narration(2007.50f, "⛈\n"),
+        // new Narration(2010.25f, "All crews to your\n"),
+        // new Narration(2011.25f, "All crews to your\nstations!"),
+        // new Narration(2013.25f, "⛈\n"),
+        // new Narration(2015.25f, "Click / tap\n"),
+        // new Narration(2016.25f, "Click / tap\n⇲ Zoom"),
+        // new Narration(2100.00f, "Click / tap\nto continue."),
+        // new Narration(2102.00f, "⛅\n"),        
+        // new Narration(2104.00f, "\n"),        
+        // new Narration(2106.50f, "Establish contact\n"),
+        // new Narration(2107.50f, "Establish contact\nwith Base Ὠρίων."),
+        // new Narration(2109.25f, "Tell Commander\n"),
+        // new Narration(2110.00f, "Tell Commander\nArmstrong it's urgent!"),
+        // new Narration(2112.50f, "Spaceship MK-31 asks\n"),
+        // new Narration(2113.75f, "Spaceship MK-31 asks\nto speak with"),
+        // new Narration(2114.75f, "Commander Armstrong.\n"),
+        // new Narration(2116.00f, "Commander Armstrong.\nIt's urgent!"),
+        // new Narration(2118.00f, "Commander Armstrong's\n"),
+        // new Narration(2119.00f, "Commander Armstrong's\ncoming ..."),
+        // new Narration(2120.50f, "What's happening,\n"),
+        // new Narration(2121.00f, "What's happening,\nCaptain?"),
+        // new Narration(2122.00f, "Our radar is picking\n"),
+        // new Narration(2123.25f, "Our radar is picking\nup two strange"),
+        // new Narration(2124.00f, "metallic bodies.\n"),
+        // new Narration(2124.75f, "I presume they're\n"),
+        // new Narration(2125.75f, "I presume they're\nspaceships."),
+        // new Narration(2126.50f, "Spaceships in that\n"),
+        // new Narration(2127.25f, "Spaceships in that\npart of space?"),
+        // new Narration(2128.25f, "They could be\n"),
+        // new Narration(2129.00f, "They could be\nasteroids!"),
+        // new Narration(2130.00f, "They've got to be\n"),
+        // new Narration(2130.75f, "They've got to be\nasteroids!"),
+        // new Narration(2133.00f, "No asteroids could\n"),
+        // new Narration(2133.75f, "No asteroids could\nvary their speed"),
+        // new Narration(2134.50f, "like that!\n"),
+        // new Narration(2136.00f, "They're being\n"),
+        // new Narration(2136.50f, "They're being\ncontrolled somehow!"),
+        // new Narration(2137.75f, "Captain, try to find\n"),
+        // new Narration(2138.75f, "Captain, try to find\nout what's happening!"),
+        // new Narration(2139.75f, "But remember they're\n"),
+        // new Narration(2140.75f, "But remember they're\nnot terrestrial"),
+        // new Narration(2141.75f, "spaceships!\n"),
+        // new Narration(2142.75f, "That is if they are\n"),
+        // new Narration(2143.75f, "That is if they are\nspaceships!"),
+        // new Narration(2144.50f, "There is a way to get\n"),
+        // new Narration(2145.50f, "There is a way to get\nan answer to that."),
+        // new Narration(2146.50f, "Activate the scanners!\n"),
+        // new Narration(2150.25f, "Activate the scanners!\nExecuted."),
+        // new Narration(2151.50f, "Executed.\n"),
+        // new Narration(2152.50f, "Executed.\nExecuted."),
+        // new Narration(2154.50f, "⛅\n"),
+        // new Narration(2155.50f, "\n"),
+        // new Narration(2156.25f, "The two objects are\n"),
+        // new Narration(2157.25f, "The two objects are\nnow on our cameras!"),
+        // new Narration(2159.00f, "They'll be on your\n"),
+        // new Narration(2159.50f, "They'll be on your\nbase scanner"),
+        // new Narration(2160.50f, "momentarily.\n"),
+        // new Narration(2161.50f, "Transfer everything to\n"),
+        // new Narration(2162.25f, "Transfer everything to\nBase Ὠρίων."),
+        // new Narration(2164.00f, "⛅\n"),
+        // new Narration(2166.00f, "\n"),
+        // CAMPAIGN LEVEL 1: SELECT ALIEN
+        new Narration(2198.75f, "Armstrong calling ...\n"),
+        // new Narration(2200.50f, "⛅\n"),
+        // new Narration(2201.00f, "\n"),
+        // new Narration(2201.75f, "And they're really\n"),
+        // new Narration(2202.25f, "And they're really\nspaceships!"),
+        // new Narration(2203.50f, "There just isn't any\n"),
+        // new Narration(2204.75f, "There just isn't any\nother possibility."),
+        // new Narration(2206.75f, "Establish contact!\n"),
+        // new Narration(2208.00f, "Establish contact!\nNegative contact."),
+        // new Narration(2210.00f, "Hamilton, try again!\n"),
+        // new Narration(2211.75f, "Hamilton, try again!\nTry with all possible"),
+        // new Narration(2212.75f, "ways of communications.\n"),
+        // new Narration(2214.00f, "ways of communications.\nTry with a radio too!"),
+        // new Narration(2216.50f, "هالة          \n"),        
+        // new Narration(2217.75f, "هالة interrupt\n"),        
+        // new Narration(2218.50f, "هالة interrupt\ncontact with base."),
+        // new Narration(2219.50f, "⛈\n"),
+        // new Narration(2221.00f, "\n"),
+        // new Narration(2221.50f, "Мила            \n"),
+        // new Narration(2222.75f, "Мила analyze the\n"),
+        // new Narration(2223.25f, "Мила analyze the\nspaceship on our"),
+        // new Narration(2224.00f, "computer.\n"),
+        // new Narration(2225.00f, "Ask data about the\n"),
+        // new Narration(2225.75f, "Ask data about the\ncrew and their weapons"),
+        // new Narration(2227.50f, "in terms of absolute\n"),
+        // new Narration(2228.00f, "in terms of absolute\nprobability."),
+        // new Narration(2229.00f, "⛅\n"),
+        // new Narration(2230.00f, "\n"),
+        // new Narration(2230.50f, "Unmanned spaceships\n"),
+        // new Narration(2233.00f, "Unmanned spaceships\narmed with long-range"),
+        // new Narration(2235.25f, "disintegrators!\n"),
+        // new Narration(2237.00f, "disintegrators!\n70% chance."),
+        // new Narration(2239.75f, "Battlespeed!\n"),
+        // new Narration(2241.75f, "Battlespeed!\nBattlespeed."),
+        // new Narration(2242.50f, "Activate disintegrators!\n"),
+        // new Narration(2244.00f, "Activate disintegrators!\nCoordinate direction rays!"),
+        // new Narration(2246.00f, "Activate laser!\n"),
+        // new Narration(2248.00f, "⛅\n"),
+        // new Narration(2249.00f, "\n"),
+        // new Narration(2249.50f, "Best range ...\n"),
+        // new Narration(2250.50f, "Best range ...\n50 miles."),
+        // new Narration(2251.75f, "Approaching range ...\n"),
+        // new Narration(2254.75f, "\n"),
+        // new Narration(2256.50f, "\n"),
+        // new Narration(2257.50f, "\n"),
+        // new Narration(2258.50f, "\n"),
+        // new Narration(2261.25f, "\n"),
+        // new Narration(2262.50f, "\n"),
+        // new Narration(2264.00f, "\n"),
+        // new Narration(2265.00f, "\n"),
+        // new Narration(2266.75f, "\n"),
+        // new Narration(2267.75f, "\n"),
+        // new Narration(2269.00f, "\n"),
+        // new Narration(2270.00f, "\n"),
+        // new Narration(2272.00f, "\n"),
+        // new Narration(2274.00f, "\n"),
+        // new Narration(2276.00f, "⛈\n"),
+        // new Narration(2278.00f, "\n"),
+        // CAMPAIGN LEVEL 1: DESTROY ALIEN
+        // new Narration(2300.00f, "\n"),
+        // new Narration(2302.00f, "What's happening?\n"),
+        // new Narration(2303.00f, "Reactivate contact\n"),
+        // new Narration(2304.00f, "Reactivate contact\nat once!"),
+        // new Narration(2305.00f, "Our equipment seems to\n"),
+        // new Narration(2306.00f, "Our equipment seems to\nbe working perfectly"),
+        // new Narration(2306.75f, "Commander, they must've\n"),
+        // new Narration(2307.50f, "Commander, they must've\nstopped transmitting."),
+        // new Narration(2309.00f, "Commander, the news\n"),
+        // new Narration(2310.00f, "Commander, the news\npapermen are in the"),
+        // new Narration(2310.85f, "press hall. They\n"),
+        // new Narration(2312.00f, "press hall. They\nfollowed everything."),
+        // new Narration(2314.00f, "\n"),
+        // new Narration(2315.50f, "⛈\n"),
+        // new Narration(2320.00f, "Commander!\n"),
+        // new Narration(2320.50f, "Commander!\nThere he is!"),
+        // new Narration(2321.25f, "Commander, please give\n"),
+        // new Narration(2322.50f, "Commander, please give\nus some straight"),
+        // new Narration(2323.00f, "answers on this!\n"),
+        // new Narration(2323.85f, "answers on this!\nNow!"),
+        // new Narration(2324.25f, "We must get an answer\n"),
+        // new Narration(2325.00f, "We must get an answer\nto this!"),
+        // new Narration(2326.00f, "Commander! We've got\n"),
+        // new Narration(2327.00f, "Commander! We've got\na lot of questions"),
+        // new Narration(2327.65f, "to ask!\n"),
+        // new Narration(2328.25f, "to ask!\nAre there plans to"),
+        // new Narration(2329.00f, "answer this attack\n"),
+        // new Narration(2329.75f, "answer this attack\nagainst the Earth?"),
+        // new Narration(2330.75f, "What are you talking\n"),
+        // new Narration(2331.50f, "What are you talking\nabout?"),
+        // new Narration(2332.00f, "There's been no\n"),
+        // new Narration(2332.50f, "There's been no\nattack against our"),
+        // new Narration(2333.00f, "planet.\n"),
+        // new Narration(2334.00f, "planet.\nWe've all seen the"),
+        // new Narration(2335.00f, "spaceship.\n"),
+        // new Narration(2336.00f, "spaceship.\nDo you think MK-31"),
+        // new Narration(2337.75f, "has been hit as part\n"),
+        // new Narration(2338.75f, "has been hit as part\nof some weird game?"),
+        // new Narration(2339.50f, "Will you please stop\n"),
+        // new Narration(2340.25f, "Will you please stop\nmisrepresenting facts."),
+        // new Narration(2341.75f, "A space skirmish\n"),
+        // new Narration(2342.75f, "A space skirmish\ndoes not mean the"),
+        // new Narration(2343.25f, "Earth is in peril\n"),
+        // new Narration(2344.25f, "Earth is in peril\nand that we've been"),
+        // new Narration(2344.75f, "attacked!\n"),
+        // new Narration(2345.00f, "attacked!\nThe public must know"),
+        // new Narration(2345.75f, "about that ship!\n"),
+        // new Narration(2346.50f, "about that ship!\nWe may be facing"),
+        // new Narration(2347.25f, "the vangaurd of a\n"),
+        // new Narration(2348.00f, "the vangaurd of a\nwhole fleet!"),
+        // new Narration(2349.50f, "Damn, that's enough!\n"),
+        // new Narration(2350.50f, "Damn, that's enough!\nGet out of here!"),
+        // new Narration(2351.25f, "I won't answer any\n"),
+        // new Narration(2351.85f, "I won't answer any\nmore questions!"),
+        // new Narration(2353.85f, "⛈\n"),
+        // new Narration(2357.00f, "The Earth is in danger!\n"),
+        // new Narration(2358.50f, "The Earth is in danger!\nThe Earth is in"),
+        // new Narration(2359.50f, "desperate, desperate\n"),
+        // new Narration(2361.00f, "desperate, desperate\ndanger!"),
+        // new Narration(2363.00f, "It is very urgent\n"),
+        // new Narration(2364.00f, "It is very urgent\nthat we prepare"),
+        // new Narration(2365.00f, "ourselves!\n"),
+        // new Narration(2365.25f, "ourselves!\nAliens are attacking"),
+        // new Narration(2366.00f, "Earth!\n"),
+        // new Narration(2367.00f, "Earth!\nThe vangaurd of a"),
+        // new Narration(2367.65f, "fleet!\n"),
+        // new Narration(2368.50f, "fleet!\nAll bases prepare"),
+        // new Narration(2369.75f, "defenses!\n"),
+        // new Narration(2370.85f, "defenses!\nEarth can be"),
+        // new Narration(2372.00f, "destroyed like MK-31.\n"),
+        // new Narration(2372.75f, "destroyed like MK-31.\nSpaceship enters our"),
+        // new Narration(2373.75f, "Solar System.\n"),
+        // new Narration(2374.25f, "Solar System.\nRepeat, spaceship"),
+        // new Narration(2375.50f, "enters our\n"),
+        // new Narration(2376.00f, "enters our\nSolar System."),
+        // new Narration(2376.50f, "Lo Base Ὠρίων's monitor\n"),
+        // new Narration(2378.50f, "Lo Base Ὠρίων's monitor\nWe have seen the"),
+        // new Narration(2379.50f, "beginning of the end!\n"),
+        // new Narration(2381.50f, "⛈\n"),
+        // new Narration(2382.50f, "\n"),
+        // CAMPAIGN LEVEL 2: PEARL HARBOR
+        // new Narration(2500.00f, "\n"),
+        // new Narration(2500.25f, "General quarters!\n"),
+        // new Narration(2501.00f, "General quarters!\nGeneral quarters!"),
+        // new Narration(2502.00f, "Enemy aircraft\n"),
+        // new Narration(2502.65f, "Enemy aircraft\nincoming!"),
+        // new Narration(2503.50f, "All combat vessels:\n"),
+        // new Narration(2504.50f, "All combat vessels:\nevacuate the harbor!"),
+        // new Narration(2505.75f, "Repeat:\n"),
+        // new Narration(2506.15f, "Repeat:\nall combat vessels:"),
+        // new Narration(2507.15f, "evacuate the harbor!\n"),
+        // new Narration(2508.50f, "⛈\n"),
+        // CAMPAIGN LEVEL 2: INTRODUCTION
+        // CAMPAIGN LEVEL 2: DESTROY ALIEN
+        // new Narration(2800.00f, "\n"),
+        // new Narration(2801.00f, "⛅\n"),
+        // new Narration(2803.25f, "⛈\n"),
+        // new Narration(2805.00f, "Commander!\n"),
+        // new Narration(2805.50f, "Commander!\nThere he is!"),
+        // new Narration(2806.00f, "Commander!\n"),
+        // new Narration(2806.75f, "Commander!\nIf you could"),
+        // new Narration(2807.25f, "Pay attention please!\n"),
+        // new Narration(2809.00f, "Are you withholding\n"),
+        // new Narration(2810.00f, "Are you withholding\nanything?"),
+        // new Narration(2810.50f, "Did you locate\n"),
+        // new Narration(2811.25f, "Did you locate\nthe ship, Captain?"),
+        // new Narration(2812.25f, "Uh, I don't know\n"),
+        // new Narration(2813.25f, "Uh, I don't know\nthat, sir."),
+        // new Narration(2813.75f, "Did you?!\n"),
+        // new Narration(2814.25f, "I believe so.\n"),
+        // new Narration(2815.25f, "I believe so.\nThe enemy spaceship"),
+        // new Narration(2816.50f, "should be in the Artic.\n"),
+        // new Narration(2817.75f, "should be in the Artic.\nThe situation is under"),
+        // new Narration(2819.25f, "control ... I'm sorry\n"),
+        // new Narration(2820.85f, "control ... I'm sorry\nfor the headlines you"),
+        // new Narration(2821.75f, "had in mind but Earth\n"),
+        // new Narration(2823.50f, "had in mind but Earth\nis not in any danger."),
+        // new Narration(2825.00f, "⛈\n"),
+        // new Narration(2831.25f, "Earth is in danger!\n"),
+        // new Narration(2832.65f, "Earth is in danger!\nDidn't buy it ..."),
+        // new Narration(2833.65f, "No ...\n"),
+        // new Narration(2837.00f, "⛈\n"),
 
-        new Narration( 60.00f, "Press the Zoom key\n"), // "Zoom In"
-        new Narration( 61.50f, "Press the Zoom key\nto zoom in."),
-        new Narration( 63.50f, "Click / tap\n"),
-        new Narration( 64.50f, "Click / tap\n\"Zoom\""),
+        // new Narration(3001.00f, "⛅"),
 
-        new Narration(120.00f, "When the map is at\n"), // "Zooming In"
-        new Narration(121.00f, "When the map is at\nmaximum zoom,"),
-        new Narration(122.50f, "extra detail is\n"),
-        new Narration(123.50f, "extra detail is\nrevealed,"),
-        new Narration(124.75f, "such as fortifications\n"),
-        new Narration(126.00f, "such as fortifications\nand individual planes."),
-        
-        new Narration(180.00f, "Welcome to the U.S.\n"), // "Welcome"
-        new Narration(181.00f, "Welcome to the U.S.\nNaval Academy"),
-        new Narration(182.50f, "Aerial Ordinance\n"), 
-        new Narration(183.50f, "Aerial Ordinance\nTutorial"), 
-        new Narration(185.00f, "Here, you will learn\n"),
-        new Narration(186.25f, "Here, you will learn\nthe main ways"),
-        new Narration(187.00f, "of attacking targets\n"),
-        new Narration(188.50f, "of attacking targets\nfrom the air."),
-        new Narration(189.50f, "So, be sure to pay\n"),
-        new Narration(190.50f, "So, be sure to pay\nattention!"),
+        // CAMPAIGN LEVEL 3: MIDWAY
+        // new Narration(3000.00f, "\n"),
+        // new Narration(3000.25f, "Stand by!\n"),
+        // new Narration(3001.00f, "Stand by!\nStand by!"),
+        // new Narration(3002.00f, "Enemy aircraft\n"),
+        // new Narration(3002.65f, "Enemy aircraft\ninbound!"),
+        // new Narration(3008.50f, "\n"),
 
-        new Narration(192.00f, "Aim the crosshair using\n"),
-        new Narration(194.00f, "Aim the crosshair using\nthe mouse"),
-        new Narration(195.00f, "or joystick.\n"),
-        new Narration(196.00f, "When you're on target\n"),
-        new Narration(197.00f, "When you're on target\nthe crosshair"),
-        new Narration(198.00f, "alters shape to\n"),
-        new Narration(199.00f, "alters shape to\nindicate a"),
-        new Narration(200.00f, "lock-on.\n"),
-        new Narration(202.00f, "Click / tap\n"),
-        new Narration(203.00f, "Click / tap\n\"Printer\""),
-        
-        new Narration(240.00f, "You can also use the\n"),
-        new Narration(240.75f, "You can also use the\ncrosshair"),
-        new Narration(242.00f, "to issue orders to your\n"),
-        new Narration(243.00f, "currently seleted unit.\n"),
-        new Narration(245.00f, "Click / tap\n"),
-        new Narration(246.00f, "Click / tap\n\"Print\""),
-
-        new Narration(300.00f, "Your target will be\n"), // "Look around"
-        new Narration(301.00f, "Your target will be\nthat cargo hulk there"),
-        new Narration(302.00f, "While she moves into\n"),
-        new Narration(303.00f, "While she moves into\nposition"),
-        new Narration(304.00f, "Let's explain how\n"), 
-        new Narration(305.00f, "Let's explain how\nartillery works."),
-        new Narration(306.00f, "First off, try looking\n"),
-        new Narration(307.00f, "First off, try looking\naround"),
-        new Narration(308.00f, "360° awareness is needed\n"),
-        new Narration(309.00f, "360° awareness is needed\nfor dogfighting."),
-        new Narration(311.00f, "Click / tap\n"),
-        new Narration(312.00f, "Click / tap\n\"Pan\" or Drag"),
-
-        new Narration(360.00f, "You can also use the\n"), // "Target Button"
-        new Narration(361.00f, "You can also use the\nTarget Button"),
-        new Narration(362.00f, "to cycle targets\n"),
-        new Narration(363.00f, "to cycle targets\nbetween all"),
-        new Narration(364.00f, "detected enemy units.\n"),
-        new Narration(366.00f, "Click / tap\n"),
-        new Narration(367.00f, "Click / tap\n\"Target\""),
-
-        // "Press the Use Weapon\n",
-        // "Press the Use Weapon\ncontrol",
-        // "to fire!\n",
-
-        // "You can also shoot from\n",
-        // "You can also shoot from\nBinocular View",
-        // "which can help you aim\n",
-        // "which can help you aim\nmore accurately.",
-
-        // "Great!\n", 
-        // "Time to get this baby\n",
-        // "Time to get this baby\nairborn",
-        // "Set your throttle to\n",
-        // "Set your throttle to\nmaximum.",
-
-        // "Excellence work!\n",
-        // "You have now completed\n",
-        // "You have now completed\nthe tutorial",
-        // "I hope you never have\n",
-        // "I hope you never have\ncause to use",
-        // "the knowledge you have\n", 
-        // "the knowledge you have\njust acquired.",
-        // "That is all for today!\n",
-        // "That is all for today!\nDismissed!",
-
-        // "", // ""
-        // "2",
-        // "3",
-        // "⛈", 0
-        // "⛅", 2f
-        // "7 ...", 6.75f
-        // "6 ...", 7.75f
-        // "5 ...", 8.75f
-        // "4 ...", 9.75f
-        // "3 ...", 10.75f
-        // "2 ...", 11.75f
-        // "1 ...", 12.75f
-        // "☄ Tap to continue", 13.75f
-        // "Today, orbitting", 18.5f
-        // "satellites of the", 19.75f
-        // "Navy Navigation", 20.75f
-        // "Satellite System", 21.5f
-        // "provide around-the-", 23.5f
-        // "clock ultraprecise", 24.5f
-        // "position fixes", 26.25f
-        // "from space", 27.5f
-        // "to units of", 28.5f
-        // "the fleet,", 29.25f
-        // "everywhere,", 30f
-        // "in any kind", 31f
-        // "of weather.", 32.25f
-        // "⛈", 34.25f
-        // "Navigation", 39f
-        // "by satellite,", 40f
-        // "how and why", 42f
-        // "does it work?", 43.25f
-        // "First, a little", 44.75f
-        // "astrophysics", 45.5f
-        // "to answer why.", 46.75f
-        // "⛈", 48.25f
-        // "Any satellite, man-", 54.5f
-        // "made or not,", 56f
-        // "remains in orbit", 57f
-        // "because the force with", 58f
-        // "which it is trying to", 59.5f
-        // "fly away from Earth", 60.5f
-        // "is matched by the", 62.25f
-        // "gravitation pull", 63.25f
-        // "of Earth.", 64.75f
-        // "So it continues", 66.25f
-        // "moving around Earth", 67.25f
-        // "in an orbit whose", 68.75f
-        // "path conforms very", 70.25f
-        // "nearly to the", 71f
-        // "classic laws of Sir", 72f
-        // "Isaac Newton", 73f
-        // "and Johannes Kepler", 74f
-        // "Tap to continue ...", 76f
-        // "⛈", 0
-        // "⛅", 2f
-        // "Suppose we put", 3.5f
-        // "a radio transmitter", 4.5f
-        // "in a satellite.", 5.5f
-        // "You will detect", 9.25f
-        // "that the radio", 10.25f
-        // "frequency is", 11f
-        // "doppler shifted", 11.75f
-        // "while the satellite", 13f
-        // "passes by.", 14f
-        // "The doppler effect", 18.25f
-        // "shows up as an", 19.25f
-        // "apparent change in", 20.25f
-        // "frequency, and", 21.25f
-        // "is caused by the", 22.25f
-        // "relative motion", 23.25f
-        // "between the satellite", 24.5f
-        // "transmitter and the", 25.25f
-        // "receiving antenna", 27f
-        // "on Earth.", 29f
-        // "Tap to continue ...", 31
-        // "⛅", 2f
-        // "Doppler shift", 3.5f
-        // "can be plotted", 4.5f
-        // "frequency versus", 5.5f
-        // "time.", 7.25f
-        // "to produce a", 8.25f
-        // "unique curve.", 9.25f
-        // "Which can be", 10.75f
-        // " received at only", 11.8f
-        // "one point on Earth", 11.8f
-        // "at a given instant.", 13.75f
-        // "Knowing your position", 18f
-        // "on Earth,", 18f
-        // "you can use the", 20f
-        // "Doppler Curve", 21.25f
-        // "to calculate", 22.25f
-        // "the exact orbit", 23f
-        // "of the satellite", 24f
-        // "And the reverse", 27f
-        // "is true,", 28f
-        // "if you start with", 30f
-        // "the satellite of", 31f
-        // "known orbit,", 31f
-        // "analysis of the", 33f
-        // "Doppler Shift as", 34f
-        // "the satellite passes,", 35f
-        // "will tell you exactly", 36.5f
-        // "where you are,", 37.75f
-        // "anywhere on Earth.", 39f
-        // "This fact", 41f
-        // "forms the basis", 42.5f
-        // "of the Navy", 43.5f
-        // "Navigation Satellite", 44.25f
-        // "System.", 45.5f
-        // "The system is more", 47.75f
-        // "accurate than", 48.75f
-        // "any other navigation", 50f
-        // "system known today.", 51f
-        // "Accuracy that can", 54.5f
-        // "establish a pinpoint of", 55.5f
-        // "latitude and longitude.", 57.5f
-        // "This precision", 59.5f
-        // "is the result", 60.5f
-        // "of new techiques", 61.5f
-        // "for fine control", 62.5f
-        // "and measurement", 63.5f
-        // "of time", 64.5f
-        // "in terms of", 64.5f
-        // "frequencies generated", 64.5f
-        // "by ultrastable", 64.5f
-        // "oscillators.", 64.5f
-        // "Of course,", 71.75f
-        // "There are many", 72.25f
-        // "astronautical", 73.25f
-        // "problems that", 74.25f
-        // "confront this new", 75.5f
-        // "system.", 76.5f
-        // "Tap to continue ...", 78.5f
-        // "⛈", 0
-        // "⛅", 2f
-        // "Series of experi-", 2.5f
-        // "mental satellites.", 3.5f
-        // "Beginning with the", 4.5f
-        // "launch of the", 5.5f
-        // "\"NAV-1B\" satellite", 6.25f
-        // "in April, nineteen sixty.", 7.5f
-        // "⛈", 9.5f
-        // "To cover the whole Earth", 11f
-        // "a satellite must be in", 12.5f
-        // "near-polar orbit.", 13.5f
-        // "That is, an", 15f
-        // "orbit passing", 16f
-        // "near the north and", 17f
-        // "south poles.", 18f
-        // "As the Earth", 20.5f
-        // "rotates beneath the", 21.5f
-        // "fixed plane of", 22.5f
-        // "the orbit,", 23.5f
-        // "which passes completely", 24.5f
-        // "around Earth,", 25.75f
-        // "Sooner or later", 28f
-        // "the satellite will", 29.5f
-        // "pass within", 30.5f
-        // "range of any", 31.25f
-        // "part of the globe.", 32.25f
-        // "With one satellite", 35f
-        // "in orbit,", 35.75f
-        // "a particular point", 37.25f
-        // "on the Earth", 38.25f
-        // "is within range", 39.25f
-        // "at least once", 40.25f
-        // "each twelve hours.", 41.75f
-        // "Ships and submarines", 46.5f
-        // "need to know", 47.75f
-        // "their position more", 48.25f
-        // "frequently that this", 49.25f
-        // "and therefore", 51.75f
-        // "the \"Navy Navigation\"", 52.5f
-        // "\"Satellite System\"", 53.75f
-        // "employs a constell-", 54.75f
-        // "ation of satellites,", 55.75f
-        // "each in a polar orbit.", 57.5f
-        // "Tap to continue ...", 59.5f
-        // "⛈", 0
-        // "⛅", 2f
-        // "The message is", 3.5f
-        // "injected into the", 4.25f
-        // "satellite by", 5.25f
-        // "high-power radio", 6.25f
-        // "radio transmission.", 7f
-        // "This updates", 11.5f
-        // "old information", 12.5f
-        // "stored in satellite", 14f
-        // "memory,", 15f
-        // "and extends the", 16.5f
-        // "navigational utility", 17.25f
-        // "of that satellite.", 18.5f
-        // "The system works", 20f
-        // "anywhere in the world", 21.25f
-        // "night or day, in", 23f
-        // "any kind of weather.", 25f
-        // "For every pound", 35f
-        // "of satellite in", 36f
-        // "orbit, there are", 37f
-        // "tons of equipment", 38f
-        // "on Earth", 39f
-        // "that make navigation", 40.25f
-        // "by satellite", 41.25f
-        // "possible.", 42.75f
-        // "Tap to continue ...", 44.75f
-        // "⛈", 0
-        // "⛅", 2f
-        // "We're inside the", 4.25f
-        // "\"Operation Center\"", 5.25f
-        // "command post for", 7.25f
-        // "the \"Operations Duty\"", 8.25f
-        // "\"Officer\".", 9.25f
-        // "The mission of", 13f
-        // "the group-", 13.5f
-        // "around the clock,", 15f
-        // "seven days a week,", 16f
-        // "is to make sure", 17.5f
-        // "that each navagation", 18.5f
-        // "satellite", 19.5f
-        // "always has", 20f
-        // "correct, up-to-date", 21.5f
-        // "information", 22.5f
-        // "stored in its", 23.5f
-        // "memory unit.", 24.5f
-        // "An informative array", 28f
-        // "of actuated displays", 29.25f
-        // "shows the performance,", 31.25f
-        // "memory,", 33.25f
-        // "and injection status", 34f
-        // "and helps the duty", 36f
-        // "officer coordinate", 37f
-        // "all network operations", 38.5f
-        // "that keep the satellites", 40.5f
-        // "broadcasting navigation", 41.5f
-        // "data.", 43.25f
-        // "Tap to continue ...", 45.24f
-        // "⛈", 0
-        // "⛅", 2f
-        // "Satellite memory", 4f
-        // "units and", 5f
-        // "control circuitry", 6f
-        // "can handle nearly", 7f
-        // "twenty-five thousand", 8f
-        // "separate bits", 9f
-        // "of modulated", 10f
-        // "information", 11f
-        // "⛈", 12.5f
-        // "The satellite", 16f
-        // "gets its power", 17f
-        // "from the sun.", 18f
-        // "Sixteen thousand", 20f
-        // "individual solar", 21f
-        // "cells convert", 22f
-        // "sunlight into", 23f
-        // "electrical energy", 24f
-        // "that is stored", 25f
-        // "in Nickle-", 25.75f
-        // "Cadium batteries", 26.75f
-        // "inside the satellite.", 28f
-        // "Tap to continue ...", 30
-        // "⛈", 0
-        // "⛅", 2f
-        // "A few years later", 3.25f
-        // "the French genius", 4.25f
-        // "Blaise Pascal", 5.5f
-        // "invented and built", 7.5f
-        // "the world's first", 8.5f
-        // "mechanical adding", 9.5f
-        // "machines.", 10.5f
-        // "The is one of them.", 11.5f
-        // "Made in the sixteen-", 13f
-        // "forties.", 14f
-        // "Pascal's acheievement", 16.5f
-        // "lay in the", 18f
-        // "gear mechanism", 18.5f
-        // "which automatically", 20f
-        // "took care of carry-", 20.75f
-        // "overs.", 21.75f
-        // "For example,", 23.25f
-        // "six", 25f
-        // "plus nine", 28.5f
-        // "and the one carried", 30.75f
-        // "over to the next place.", 32f
-        // "⛈", 34f
-        // "In every area", 36.75f
-        // "of defense,", 37f
-        // "science,", 38.5f
-        // "engineering and", 39.5f
-        // "business,", 40.5f
-        // "progress depends", 41.5f
-        // "on the availability", 42.5f
-        // "of fast, accurate", 43.75f
-        // "methods of calculation.", 45f
-        // "They've enabled us", 48.5f
-        // "to take giant", 49.75f
-        // "steps forward", 50.25f
-        // "in power,", 51f
-        // "in control,", 52.5f
-        // "in design,", 54.5f
-        // "in processing,", 55.5f
-        // "and in research.", 57f
-        // "Tap to continue ...", 59f
-        // "These current tests", 35.25f
-        // "are enabling", 36.75f
-        // "N.A.S.A", 37.75f
-        // "and the broadcasting", 38.25f
-        // "community", 39.25f
-        // "to iron out", 40.25f
-        // "technical problems", 41.25f
-        // "that are involved", 42.25f
-        // "in this form of", 43.25f
-        // "transmission.", 44.25f
-        // "And to determine", 45.25f
-        // "the costs of such", 46.75f
-        // "future operations.", 47.75f
-        // "If these tests are", 50f
-        // "successful,", 51f
-        // "we have every reason", 52.5f
-        // "to believe that", 53.25f
-        // "they will be,", 53.75f
-        // "The American", 55.25f
-        // "people will", 55.75f
-        // "reap a major", 56.75f
-        // "domestic dividend", 57.75f
-        // "from the national", 59.25f
-        // "space efforts.", 60.25f
-        // "⛈", 61.25f
-        // "The current goal", 87.25f
-        // "of satellite", 88.25f
-        // "geodesy", 89f
-        // "is to tie all", 89.5f
-        // "geodetic", 90.5f
-        // "grids together", 91.25f
-        // "within an", 92f
-        // "accuracy of", 92.5f
-        // "thirty feet.", 93.25f
-        // "Using high-flying", 95f
-        // "satellites as geo-", 96f
-        // "detic markers,", 97f
-        // "the world's", 98.5f
-        // "contentients", 99f
-        // "will eventually be", 99.5f
-        // "tied together", 100.5f
-        // "to one common", 101.25f
-        // "reference system.", 102.25f
-        // "Educational and", 104.5f
-        // "cultural programs", 105.5f
-        // "to populations of", 106.5f
-        // "entire nations", 107.75f
-        // "through inter-", 109.5f
-        // "contentiential", 110f
-        // "television!", 110.5f
-        // "⛈", 112.5f
-        // "As we develop", 114.4f
-        // "this potential in", 115.5f
-        // "the future,", 116.5f
-        // "applications from", 117.5f
-        // "space will have", 118.5f
-        // "continued", 119.25f
-        // "profound and", 120.25f
-        // "direct effects", 121f
-        // "on our", 122f
-        // "everyday lives", 122.75f
-        // "here on Earth.", 124f
+        // new Narration(9999.99f, "\n"),
+        // new Narration(19999.9f, "\n")
         // "⛅", 126f
         // "⛈", 148
         // "⛈", 0
@@ -569,171 +649,86 @@ public class Interactor : MonoBehaviour {
     };
     float NarrationTimer = -60;
     int NarrationIndex = 0;
-    // List<float> NarrationTiming = new List<float> {
-    //     -60f,
-    //     0f - 60f,
-    //     0.75f - 60f,
-    //     1.25f - 60f,
-    //     2f - 60f,
-    //     2.75f - 60f,
-    //     3.5f - 60f,
-    //     4.5f - 60f,
-    //     5.25f - 60f,
-    //     6.25f - 60f,
-    //     7.25f - 60f,
-    //     8f - 60f,
-    //     8.75f - 60f,
-    //     9.5f - 60f,
-    //     10.5f - 60f,
-    //     11.5f - 60f,
-    //     12.5f - 60f,
-    //     13.5f - 60f,
-    //     14.5f - 60f,
-    //     15.25f - 60f,
-    //     16f - 60f,
-    //     18.75f - 60f,
-    //     19.25f - 60f,
-    //     20.25f - 60f,
-    //     20.75f - 60f,
-    //     21.5f - 60f,
-    //     22.25f - 60f,
-    //     23.25f - 60f,
-    //     24f - 60f,
-    //     25.5f - 60f,
-    //     26.5f - 60f,
-    //     27.5f - 60f,
-    //     28.5f - 60f,
-    //     29f - 60f,
-    //     30.25f - 60f,
-    //     31.25f - 60f,
-    //     32.25f - 60f,
-    //     33f - 60f,
-    //     34f - 60f,
-    //     35 - 60f, 
-    //     37 - 60f, 
-    //     38 - 60f, 
-
-    //     0, // Map Interface
-    //     1.5f,
-    //     3f,
-    //     5f,
-    //     7f, // Crosshairs
-    //     9f,
-    //     10f,
-    //     11,
-    //     12,
-    //     13,
-    //     14,
-    //     15,
-
-    //     60, // Zoom
-    //     61.5f,
-
-    //     120, // Zoom details
-    //     121,
-    //     122.5f,
-    //     123.75f,
-    //     124.75f,
-    //     126.5f,
-    //     127.5f,
-    //     128.5f,
-
-    //     // 180, // Welcome
-    //     181f,
-    //     182.5f,
-    //     183.5f,
-    //     185f,
-    //     186.25f,
-    //     187f,
-    //     188.5f,
-    //     189.5f,
-    //     190.5f,
-    //     191.5f,
-
-    //     240,
-    //     241,
-    //     242,
-    //     243,
-    //     244,
-
-        
-    //     //
-    //     // 123f,
-    //     // 124.5f,
-    //     // 150, // ""
-    //     // 180, //"Welcome to the Tutorial"
-    //     240
-    // };
+    public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
     public AudioClip NarratorSwitchToMap, NarratorZoomInMap, NarratorZoomInDetails, NarratorAimTheCrosshair, NarratorWelcome;
     public AudioClip TutorialOpening, TutorialLockOn, TutorialPrint, TutorialPrinted, TutorialComponentsIcons, TutorialLook, TutorialUseWeapon, TutorialBinocular, TutorialHitTarget, TutorialRightOn, TutorialAttackTarget, TutorialCycle, TutorialHulkDestroyed, TutorialTorpedoFired, TutorialCannonFired, TutorialSensorFired, TutorialTarget;
     public GameObject CampaignNewtonsLaws, CampaignDopplerShift, CampaignDopplerEffect, CampaignPlanksLaw, CampaignHawkingRadiation, CampaignMoracevsParadox, CampaignDeBroglieTheory, CampaignFermiParadox, CampaignPascalsWager;
     public AudioClip HookNarration, SplashScreenNarration, CampaignRadioDaysNarration, CampaignNewtonsLawsNarration, CampaignTheAtomNarration, CampaignDopplerShiftNarration, CampaignTheElectronNarration, CampaignDopplerEffectNarration, CampaignModernWarNarration, CampaignPlanksLawNarration, CampaignTelevisionNarration, CampaignHawkingRadiationNarration, CampaignVideotapeRecordsNarration, CampaignMoracevsParadoxNarration, CampaignElectronicMusicNarration, CampaignDeBroglieTheoryNarration, CampaignRadioIsotopesNarration, CampaignFermiParadoxNarration, CampaignHardnessTestNarration, CampaignPascalsWagerNarration, CampaignConclusionNarration, CampaignCreditsNarration;
-    public GameObject Content, InterpreterPanel, InterpreterPanelEdge, MapPanel, SubtitlesShadow, Subtitles; 
+    public GameObject Content, InterpreterPanel, MapPanel, SubtitlesShadow, Subtitles; 
     public AudioClip TutorialIntro, TutorialLookAround, TutorialMapInterface, TutorialMapScreen, TutorialIssueOrders, TutorialTargetWindow, TutorialTargetWindowHelp, TutorialTargetWindowSelected, TutorialGood, TutorialGood2, TutorialGood3, TutorialTry, TutorialBetter, TutorialCancel, TutorialOther, TutorialMusic, TutorialComponents, TutorialGetMoving, TutorialThrottle, TutorialDogfight, TutorialOutro, TutorialLeftWindow, TutorialRightWindow, TutorialCursor, TutorialSelect;
     public AudioClip CannonFire, ThrusterThrottle, SonarScan, TorpedoFact, ProcessorPing, GimbalRotate, TorpedoLaunch;
     public AudioClip ThemeSong, Click, Click2;
     public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2, SoundWarning, SoundWarningOver;
-    public GameObject Overlay, OverlayZoomIn;
+    public GameObject Overlay, OverlayZoomIn, OverlayZoomOut;
     public GameObject Example;
     public GameObject PrinterPrint, PrinterRight, PrinterLeft;
     private string command = "";
     private string history = "";
-    public StructureController Ship;
+    public StructureController Ship, Enemy;
     public GameObject volume_slider;
+    public GameObject InterpreterZoomIn, InterpreterZoomOut;
     public string start_text = "$"; 
     public OverlayInteractor OverlayInteractor;
     public GameObject ClickableText;
     Text TabToggle;
-    GameObject MapScreenPanOverlay;
+    GameObject MapScreenPanOverlay, CycleToggle, BinocularToggle;
     public Text InputField;
     public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
     GameObject camera;
     public List<GameObject> ButtonsCache = new List<GameObject>();
     int cache_size = 125;
-    string audio_queue = "Splash Screen";
     public AudioClip clip_queue;
-
-    // example ship ui
-    // public GameObject InputUp, InputLeft, InputRight, InputDown, InputA, InputB;
-    // example ship objects
     public GameObject CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
-    // Start is called before the first frame update
     void Start()
     {
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
-
         PrinterPrint = GameObject.Find("InputPrinterPrint");
         PrinterRight = GameObject.Find("InputPrinterRight");
         PrinterLeft = GameObject.Find("InputPrinterLeft");
         OverlayZoomIn = GameObject.Find("OverlayZoomIn");
-        TabToggle = GameObject.Find("TabToggle").GetComponent<Text>();
+        OverlayZoomOut = GameObject.Find("OverlayZoomOut");
+        TabToggle = GameObject.Find("TabToggle")?.GetComponent<Text>();
         SplashScreen.SetActive(true);
-        Subtitles = GameObject.Find("Subtitles");
-        SubtitlesShadow = GameObject.Find("SubtitlesShadow");
-        SubtitlesShadow.SetActive(false);
-        Subtitles.SetActive(false);
+        // Subtitles = GameObject.Find("Subtitles");
+        // SubtitlesShadow = GameObject.Find("SubtitlesShadow");
+        // SubtitlesShadow.SetActive(true);
+        // Subtitles.SetActive(true);
+        MapSubtitles("Click / tap\nto continue");
         camera = GameObject.Find("Main Camera");
         volume_slider = GameObject.Find("VolumeSlider");
+        InterpreterZoomIn = GameObject.Find("InterpreterZoomIn");
+        InterpreterZoomOut = GameObject.Find("InterpreterZoomOut");
         for (int i = 0; i < cache_size; i++) {
             ButtonsCache.Add(Instantiate(ClickableText, Content.transform) as GameObject);
         } 
         OverlayInteractor = GameObject.Find("OverlayBorder")?.GetComponent<OverlayInteractor>();
-        InterpreterPanelEdge = GameObject.Find("InterpreterPanelEdge");
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
-        RenderText("$ <b>tutorial</b>\n$");
-
-        Timer.text = "⛅";
-        PlayVideo(audio_queue);
+        RenderText("$");
+        // PlayVideo("SplashScreen");
+        PlayVideo("WarOfTheWorldsIntro");
         OnMapView();
+        OverlayZoomIn.SetActive(false);
         PrinterLeft.SetActive(false);
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
-        Printer.SetActive(false);
-
-        Map = GameObject.Find("Map").GetComponent<AbstractMapController>();
+        // Printer.SetActive(false);
+        BinocularToggle = GameObject.Find("BinocularToggle");
+        CycleToggle = GameObject.Find("CycleToggle");
+        BinocularToggle.SetActive(false);
+        CycleToggle.SetActive(false);
+        Map = GameObject.Find("Map")?.GetComponent<AbstractMapController>();
     }
-    
+    public string GetBinocular() {
+        return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
+    }
+    public void SetBinocular(string text) {
+        BinocularToggle.GetComponentsInChildren<Text>()[0].text = text;
+        if (NarrationIndex > 1 && NarrationIndex < 141 + 26 && text == "⛯") {
+            NarrationTimer = 880;
+            NarrationIndex = 141 + 26;
+        }
+    }
     public void HitSfx() {
         if (tutorial_clip_index == 6) {
             tutorial_clip_index = 7;
@@ -741,128 +736,129 @@ public class Interactor : MonoBehaviour {
             PlayAudio(TutorialHitTarget);
         }
     }
-    public void PrinterLeftFx() {
-        if (BoosterR.activeSelf)
-        {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◌")});
-            BoosterL.SetActive(false);
-            BoosterR.SetActive(false);
-            SensorL.SetActive(true);
-            SensorR.SetActive(true);
-            ThrusterL.SetActive(true);
-            ThrusterR.SetActive(true);
-            Thruster.SetActive(false);
-        } else if (CannonR.activeSelf) {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◎")});
-            CannonL.SetActive(false);
-            CannonR.SetActive(false);
-            BoosterL.SetActive(true);
-            BoosterR.SetActive(true);
-            Thruster.SetActive(true);
-            ThrusterL.SetActive(false);
-            ThrusterR.SetActive(false);
-        } else {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◍")});
-            SensorL.SetActive(false);
-            SensorR.SetActive(false);
-            CannonL.SetActive(true);
-            CannonR.SetActive(true);
-        }
+    // public void PrinterLeftFx() {
+    //     if (BoosterR.activeSelf)
+    //     {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◌")});
+    //         BoosterL.SetActive(false);
+    //         BoosterR.SetActive(false);
+    //         SensorL.SetActive(true);
+    //         SensorR.SetActive(true);
+    //         ThrusterL.SetActive(true);
+    //         ThrusterR.SetActive(true);
+    //         Thruster.SetActive(false);
+    //     } else if (CannonR.activeSelf) {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◎")});
+    //         CannonL.SetActive(false);
+    //         CannonR.SetActive(false);
+    //         BoosterL.SetActive(true);
+    //         BoosterR.SetActive(true);
+    //         Thruster.SetActive(true);
+    //         ThrusterL.SetActive(false);
+    //         ThrusterR.SetActive(false);
+    //     } else {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◍")});
+    //         SensorL.SetActive(false);
+    //         SensorR.SetActive(false);
+    //         CannonL.SetActive(true);
+    //         CannonR.SetActive(true);
+    //     }
 
-    }
-    public void PrinterRightFx() {
-        if (BoosterR.activeSelf)
-        {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◍")});
-            BoosterL.SetActive(false);
-            BoosterR.SetActive(false);
-            CannonL.SetActive(true);
-            CannonR.SetActive(true);
-            ThrusterL.SetActive(true);
-            ThrusterR.SetActive(true);
-            Thruster.SetActive(false);
-        } else if (CannonR.activeSelf) {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◌")});
-            CannonL.SetActive(false);
-            CannonR.SetActive(false);
-            SensorL.SetActive(true);
-            SensorR.SetActive(true);
-        } else {
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◎")});
-            SensorL.SetActive(false);
-            SensorR.SetActive(false);
-            BoosterL.SetActive(true);
-            BoosterR.SetActive(true);
-            Thruster.SetActive(true);
-            ThrusterL.SetActive(false);
-            ThrusterR.SetActive(false);
-        }
-    }
-    public void InputWFx() {
-        if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(25);
-        } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
-        }
-    }
-    public void InputDFx() {
-        if (Thruster.activeSelf) {
-            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(25);
-        } else {
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
-        }
+    // }
+    // public void PrinterRightFx() {
+    //     if (BoosterR.activeSelf)
+    //     {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◍")});
+    //         BoosterL.SetActive(false);
+    //         BoosterR.SetActive(false);
+    //         CannonL.SetActive(true);
+    //         CannonR.SetActive(true);
+    //         ThrusterL.SetActive(true);
+    //         ThrusterR.SetActive(true);
+    //         Thruster.SetActive(false);
+    //     } else if (CannonR.activeSelf) {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◌")});
+    //         CannonL.SetActive(false);
+    //         CannonR.SetActive(false);
+    //         SensorL.SetActive(true);
+    //         SensorR.SetActive(true);
+    //     } else {
+    //         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◎")});
+    //         SensorL.SetActive(false);
+    //         SensorR.SetActive(false);
+    //         BoosterL.SetActive(true);
+    //         BoosterR.SetActive(true);
+    //         Thruster.SetActive(true);
+    //         ThrusterL.SetActive(false);
+    //         ThrusterR.SetActive(false);
+    //     }
+    // }
+    // public void InputWFx() {
+    //     if (Thruster.activeSelf) {
+    //         GameObject.Find("Thruster").GetComponent<ComponentController>().Action(25);
+    //     } else {
+    //         GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
+    //         GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
+    //     }
+    // }
+    // public void InputDFx() {
+    //     if (Thruster.activeSelf) {
+    //         GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(25);
+    //     } else {
+    //         GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(25);
+    //         GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
+    //     }
 
-    }
-    public void InputSFx() {
-        if (Thruster.activeSelf) {
-            GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-25);
-        } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
-        }
+    // }
+    // public void InputSFx() {
+    //     if (Thruster.activeSelf) {
+    //         GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-25);
+    //     } else {
+    //         GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-25);
+    //         GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
+    //     }
         
-    }
-    public void InputAFx() {
-        if (Thruster.activeSelf) {
-            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(25);
-        } else {
-            GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
-            GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
-        }
-    }
-    public void InputXFx() {
-        if (BoosterR.activeSelf)
-        {
-            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
-        } else if (CannonR.activeSelf) {
-            GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
-        } else {
-            GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
-        }
-    }
-    public void InputYFx() {
-        if (tutorial_clip_index < 7) { 
-            tutorial_timer = 0; tutorial_clip_index = 7; 
-            if (BoosterR.activeSelf) PlayAudio(TutorialTorpedoFired); 
-            if (CannonR.activeSelf) PlayAudio(TutorialCannonFired);
-            if (SensorR.activeSelf) PlayAudio(TutorialCannonFired);
+    // }
+    // public void InputAFx() {
+    //     if (Thruster.activeSelf) {
+    //         GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(25);
+    //     } else {
+    //         GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(25);
+    //         GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-25);
+    //     }
+    // }
+    // public void InputXFx() {
+    //     if (BoosterR.activeSelf)
+    //     {
+    //         GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
+    //     } else if (CannonR.activeSelf) {
+    //         GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
+    //     } else {
+    //         GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
+    //     }
+    // }
+    // public void InputYFx() {
+    //     if (NarrationTimer > 0 && NarrationTimer < 660) { 
+    //         NarrationTimer = 660;
+    //         if (BoosterR.activeSelf) PlayAudio(TutorialTorpedoFired); 
+    //         // if (CannonR.activeSelf) PlayAudio(TutorialCannonFired);
+    //         // if (SensorR.activeSelf) PlayAudio(TutorialCannonFired);
             
-        }
-        if (BoosterR.activeSelf)
-        {
-            GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
-            GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-1);
-        } else if (CannonR.activeSelf) {
-            GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
-            GameObject.Find("CannonR").GetComponent<ComponentController>().Action(-1);
-        } else {
-            GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
-            GameObject.Find("SensorR").GetComponent<ComponentController>().Action(-1);
-        }
+    //     }
+    //     if (BoosterR.activeSelf)
+    //     {
+    //         GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-1);
+    //         GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-1);
+    //     } 
+    //    //else if (CannonR.activeSelf) {
+    //     //     GameObject.Find("CannonL").GetComponent<ComponentController>().Action(-1);
+    //     //     GameObject.Find("CannonR").GetComponent<ComponentController>().Action(-1);
+    //     // } else {
+    //     //     GameObject.Find("SensorL").GetComponent<ComponentController>().Action(-1);
+    //     //     GameObject.Find("SensorR").GetComponent<ComponentController>().Action(-1);
+    //     // }
         
-    }
+    // }
     bool printing = false;
     public void PrinterPrintFx() {
         if (InputField.text.Contains("Printer")) {
@@ -870,13 +866,15 @@ public class Interactor : MonoBehaviour {
             PrinterLeft.SetActive(false);
             PrinterRight.SetActive(false);
             PrinterPrint.SetActive(false);
-
+            
+            OverlayZoomOut.SetActive(true);
             OverlayZoomIn.SetActive(true);
+
             //MapScreenPanOverlay.SetActive(true);
             
-            if (NarrationTimer < 300) {
-                NarrationTimer = 300;
-                PlayAudio(TutorialTarget);
+            if (NarrationTimer > 0 && NarrationTimer < 300) {
+                // NarrationTimer = 300;
+                // PlayAudio(TutorialTarget);
             }
 
         } else if (InputField.text.Contains("Processor")) {
@@ -919,10 +917,18 @@ public class Interactor : MonoBehaviour {
             }
         }
     }
+    public float GetVolume() {
+        return volume_slider.GetComponent<Slider>().value;
+    }
     public void SetVolume() 
     {
-        camera.GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
-        GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
+        if (volume_slider.GetComponent<Slider>().value != camera.GetComponent<AudioSource>().volume) {
+
+            camera.GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
+            GameObject.Find("World").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
+            GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value / 8;
+            Camera.main.GetComponent<CameraController>().bDragging = false;
+        }
     }
     public void PlayMusic(AudioClip clip) {
         if (GameObject.Find("Video Player") != null) {
@@ -933,42 +939,40 @@ public class Interactor : MonoBehaviour {
         }
     }
     public void PlayAudio(AudioClip clip) {
-        if (camera != null) {
-            camera.GetComponent<AudioSource>().clip = clip;
-            camera.GetComponent<AudioSource>().Play();
-            camera.GetComponent<AudioSource>().loop = false;
-        }
+        // if (camera != null) {
+            print ("Playing(" + clip.name + ")");
+            GameObject.Find("World").GetComponent<AudioSource>().clip = clip;
+            GameObject.Find("World").GetComponent<AudioSource>().loop = false;
+            GameObject.Find("World").GetComponent<AudioSource>().Play();
+        // }
     }
     string queue_audio = "";
     public void PlayVideo(string url) 
     {
-        LoadingScreen.SetActive(true);
+        print (url);
+        // LoadingScreen.SetActive(false);
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
         queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
-        // string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
+        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
         // #if UNITY_WEBGL
-        string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + trimmed_url + "480p.mp4";
+        // string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + trimmed_url + "480p.mp4";
         // #endif
         // print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
-        SetBackground(new Color(0f, 0f, 0f));
+        SetBackground(new Color(20f/255f, 20f/255f, 20f/255f));
         MapScreenPanOverlay.SetActive(false);
         OverlayZoomIn.SetActive(false);
+        OverlayZoomOut.SetActive(false);
         volume_slider.SetActive(true);
-        SubtitlesShadow.SetActive(true);
-        Subtitles.SetActive(true);
-        volume_slider.SetActive(true);
-        // if (url.Length < 15) {
-        //     InputField.text = "⧆ " + url;
-        // }
-        // else 
-        // {
-        //     InputField.text = url;
-        // }
+        InterpreterZoomIn.SetActive(true);
+        InterpreterZoomOut.SetActive(true);
+        InputJoystick.SetActive(false);
+        InputUseWeapon.SetActive(false);
+        // SubtitlesShadow.SetActive(true);
+        // Subtitles.SetActive(true);
     }
-
     public void StoryMode(int index) {
         story_timer = 0f;
         start_timer = -1f;
@@ -980,12 +984,41 @@ public class Interactor : MonoBehaviour {
     }
     public AudioClip LookupNarration(string clip) 
     {
+        print (clip);
         switch (clip)
         {
+            case "Loading":
+                return LoadingNarration;
             case "Hook":
                 return HookNarration;
             case "SplashScreen":
                 return SplashScreenNarration;
+            case "WarOfTheWorldsCredit":
+                return WarOfTheWorldsCredit;
+            case "WarOfTheWorldsIntro":
+                return WarOfTheWorldsIntro;
+            case "WarOfTheWorldsFirstContact":
+                return WarOfTheWorldsFirstContact;
+            case "WarOfTheWorldsHeatRay":
+                return WarOfTheWorldsHeatRay;
+            case "WarOfTheWorldsRedCross":
+                return WarOfTheWorldsRedCross;
+            case "WarOfTheWorldsGroversMill":
+                return WarOfTheWorldsGroversMill;
+            case "TutorialIntroduction":
+                return TutorialIntroduction;
+            case "Cosmos0":
+                return CampaignCosmos0;
+            case "Cosmos1":
+                return CampaignCosmos1;
+            case "Cosmos2":
+                return CampaignCosmos2;
+            case "Cosmos3":
+                return CampaignCosmos3;
+            case "Cosmos4":
+                return CampaignCosmos4;
+            case "Cosmos5":
+                return CampaignCosmos5;
             case "RadioDays":
                 return CampaignRadioDaysNarration;
             case "NewtonsLaws":
@@ -1041,18 +1074,26 @@ public class Interactor : MonoBehaviour {
     }
     public void OnMapView() {
         MapPanel.SetActive(true);
-        if (volume_slider.activeSelf == false) MapScreenPanOverlay.SetActive(true);
-        InterpreterPanel.SetActive(false);
-        InterpreterPanelEdge.SetActive(false);
-        TabToggle.text = "▦ GUI";
-        volume_slider.SetActive(false);
+        InterpreterPanel.SetActive(true);
+        // TabToggle.text = "▦ GUI";
+        
+        // TabToggle.text = "▤ TUI";
+        // OverlayZoomIn.SetActive(true);
+        // OverlayZoomOut.SetActive(true);
+        // OverlayPanUp
+        // OverlayPanDown
+        
+        // volume_slider.SetActive(false);
     }
     public void OnCodeView() {
-        MapPanel.SetActive(false);
+        MapPanel.SetActive(true);
         InterpreterPanel.SetActive(true);
-        InterpreterPanelEdge.SetActive(true);
-        TabToggle.text = "▤ TUI";
-        volume_slider.SetActive(true);
+        // TabToggle.text = "▤ TUI";
+        // volume_slider.SetActive(true);
+        // 
+        
+        InterpreterZoomIn.SetActive(true);
+        InterpreterZoomOut.SetActive(true);
     }
     public void AppendText(string text) {
         if (history.LastIndexOf("$") != -1) history = history.Substring(0, history.LastIndexOf("$"));
@@ -1062,8 +1103,9 @@ public class Interactor : MonoBehaviour {
     public void ClearText() {
         if (history == "") history = "$";
         InputField.text = "☄ BitNaughts";
-        MapScreenPanOverlay.SetActive(true);
-        // volume_slider.SetActive(false/);
+        component_name = "";
+        // MapScreenPanOverlay.SetActive(true);
+        // volume_slider.SetActive(false);
         RenderText(history);
     }
     public void ClearHistory() {
@@ -1092,78 +1134,167 @@ public class Interactor : MonoBehaviour {
                 if (words[word].StartsWith("<") && words[word].EndsWith(">")) character_count -= 7;
                 InitializeClickableText(words[word], line, character_count);
             }
-            if (character_count > max_line_length) {
-                max_line_length = character_count;
+            if (lines[line].Contains("<color=#")) {
+                if (character_count > max_line_length + 18) {
+                    max_line_length = character_count - 18;
+                }
+            } else {
+                if (character_count > max_line_length) {
+                    max_line_length = character_count;
+                }
             }
         }
-        SetContentSize(max_line_length * 50f, lines.Length * 100f);
+        SetContentSize((max_line_length - 2) * fontSize / 2, lines.Length * fontSize);
     }
     public string component_name = "";
     public string component_text = "";
     public void RenderComponent(string component) {
-        var component_string = Ship.GetComponentToString(component);
-        var component_header = component_string.IndexOf("\n");
-        component_name = component_string.Substring(0, component_header);
+        if (component == "") return;
+        var component_string = "";
+        if (component[1] == ' ') component = component.Substring(2);
+        if (Ship.IsComponent(component)) {
+            component_string = Ship.GetComponentToString(component);
+        }
+        if (Enemy.IsComponent(component)) {
+            component_string = Enemy.GetComponentToString(component);
+        }
+
+        component_name = component_string.Substring(0, component_string.IndexOf("\n"));// + component_string.Substring(component_string.IndexOf("class ") + 6, component_string.IndexOf(":") - (component_string.IndexOf("class ") + 6));
+        // print("\"" + component_name + "\"");
         InputField.text = component_name;
-        if (InputField.text == "Printer") {
-            InputField.text = "▦ Printer";//" ⛴ Ship Select";
-            if (GameObject.Find("0") != null) GameObject.Find("0").SetActive(false);
-            PrinterLeft.SetActive(true);
-            PrinterRight.SetActive(true);
+        InterpreterZoomIn.SetActive(true);
+        InterpreterZoomOut.SetActive(true);
+        volume_slider.SetActive(false);
+        if (InputField.text.Contains("Printer")) {
+            // InputField.text = "▦ Printer";//" ⛴ Ship Select";
+            switch (MarkerIndex) {
+                case 0:
+                    Processor.SetActive(true);
+                    Bulkhead.SetActive(true);
+                    Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
+                        new ClassObj("▩ Process"),
+                        new ClassObj("▥ Bulk"),
+                        new ClassObj("◉ Engine"),
+                        new ClassObj("◎ Right"),
+                        new ClassObj("◎ Left")
+                    });
+                    Thruster.SetActive(true);
+                    BoosterL.SetActive(true);
+                    BoosterR.SetActive(true);
+                    Ship.Start();
+                    if (GameObject.Find("0") != null) {
+                        GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                        GameObject.Find("0").SetActive(false);
+                    }
+                    break;
+                case 1:
+                    
+                    Processor.SetActive(true);
+                    if (NarrationTimer < 3000) {
+
+                        CampaignIntroAssets.SetActive(true);
+                        CampaignIntroSatelliteAssets.SetActive(true);
+                        
+                        Ship.Start();
+                        Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
+                            new ClassObj("▩ ScanProcess"),
+                            new ClassObj("▣ Swivel"),
+                            new ClassObj("◉ Engine"),
+                            new ClassObj("◌ Scanner"),
+                            new ClassObj("▨ Antenna")
+                        });
+                    }
+                    else if (NarrationTimer < 4000) {
+                        CampaignGroverAssets.SetActive(true);
+                        CampaignGroverSatelliteAssets.SetActive(true);
+                        
+                        Ship.Start();
+                        Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
+                            new ClassObj("▩ GroverProcess"),
+                            new ClassObj("▣ Swivel"),
+                            new ClassObj("◌ Scanner"),
+                            new ClassObj("◉ LeftEngine"),
+                            new ClassObj("◉ RightEngine"),
+                            new ClassObj("◍ LeftCannon"),
+                            new ClassObj("◍ RightCannon"),
+                        });
+                    }
+                    if (GameObject.Find("1") != null) {
+                        GameObject.Find("1").SetActive(false);
+                    }
+                    break;
+                case 2:
+                    if (GameObject.Find("2") != null) {
+                        GameObject.Find("2").SetActive(false);
+                    }
+                    break;
+                case 3:
+                    if (GameObject.Find("3") != null) {
+                        GameObject.Find("3").SetActive(false);
+                    }
+                    break;
+                case 4:
+                    if (GameObject.Find("4") != null) {
+                        GameObject.Find("4").SetActive(false);
+                    }
+                    break;
+                case 5:
+                    if (GameObject.Find("5") != null) {
+                        GameObject.Find("5").SetActive(false);
+                    }
+                    break;
+
+            }
+            // PrinterLeft.SetActive(true);
+            // PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Print";
-            if (NarrationTimer < 240) {
+            if (NarrationTimer > 0 && NarrationTimer < 240) {
                 NarrationTimer = 240;
-                // tutorial_timer = 0; tutorial_clip_index = 2; 
                 PlayAudio(TutorialComponentsIcons);
             }
-            Processor.SetActive(true);
-            Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){new ClassObj("◎")});
-            Thruster.SetActive(true);
-            BoosterL.SetActive(true);
-            BoosterR.SetActive(true);
         }
         else if (InputField.text.Contains("Processor")) {
-            InputField.text = "▩ " + InputField.text;
-            PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "▤ TUI";
-            PrinterRight.SetActive(false);
-            PrinterLeft.SetActive(false);
+            // InputField.text = "▩ " + InputField.text;
+            // PrinterPrint.SetActive(true);
+            // PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "▤ TUI";
+            // PrinterRight.SetActive(false);
+            // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("Cannon")) {
-            InputField.text = "◍ " + InputField.text;
+            // InputField.text = "◍ " + InputField.text;
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◍ Fire";
-            PrinterRight.SetActive(false);
-            PrinterLeft.SetActive(false);
+            // PrinterRight.SetActive(false);
+            // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("Booster")) {
-            InputField.text = "◎ " + InputField.text;
+            // InputField.text = "◎ " + InputField.text;
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◎ Fire";
-            PrinterRight.SetActive(true);
-            PrinterLeft.SetActive(true);
+            // PrinterRight.SetActive(true);
+            // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("Sensor")) {
-            InputField.text = "◌ " + InputField.text;
+            // InputField.text = "◌ " + InputField.text;
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◌ Fire";
-            PrinterRight.SetActive(true);
-            PrinterLeft.SetActive(true);
+            // PrinterRight.SetActive(true);
+            // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("Thruster")) {
-            InputField.text = "◉ " + InputField.text;
+            // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◉ Fire";
-            PrinterRight.SetActive(false);
-            PrinterLeft.SetActive(false);
+            // PrinterRight.SetActive(false);
+            // PrinterLeft.SetActive(false);
         }
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
-        component_text = component_string.Substring(component_header + 1);
+        component_text = component_string.Substring(2);
+        RenderText(component_text);
         // RenderText(component_text);
         // RenderText(Ship.interpreter.ToString());
     }
-
     public string[] GetComponents() {
         return Ship.GetControllers();
     }
@@ -1174,11 +1305,27 @@ public class Interactor : MonoBehaviour {
         InputField.text = "";//placeholder;
     }
     public string GetInput() {
+        if (InputField.text[1] == ' ') return InputField.text.Substring(2);
         return InputField.text;
     }
+    public int fontSize = 75;
+    public void OnZoomIn() {
+        fontSize += 5;
+        if (fontSize > 100) fontSize = 100;
+        if (component_name == "") ClearText();//RenderText(history);
+        // if RenderComponent("Process");
+    }
+    public void OnZoomOut() {
+        fontSize -= 5;
+        if (fontSize < 10) fontSize = 10;
+        if (component_name == "") ClearText();//RenderText(history);
+        // RenderComponent("Process");
+    }
+    
+    public void OnInputFire() {
+        Processor.GetComponent<ProcessorController>().interpreter_input.fire = true;
+    }
     public void OnInput() {
-        //create new component...
-        // InputField.interactable = false;
         switch (GetCommand()) {
             case "nano":
                 var component_gameObject = Instantiate(Overlay, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
@@ -1187,7 +1334,6 @@ public class Interactor : MonoBehaviour {
                 component_gameObject.transform.SetParent(Ship.transform.Find("Rotator"));
                 Ship.Start();
                 OverlayInteractor.UpdateOptions();
-                // OverlayInteractor.OnDropdownChange(); 
             break;
             default:
                 GameObject.Find(component_name).name = InputField.text;
@@ -1208,115 +1354,96 @@ public class Interactor : MonoBehaviour {
         }
         this.command = command;
     }
-
     float timer = 0f;
     bool onLoad = true, aboutIntro = false, tutorialIntro = false, tutorialPan = false, tutorialTarget = false, tutorialFire = false, tutorialCancel = false, tutorialThrust = false, tutorialFinish = false, tutorialComplete = false;
-    public bool TutorialRunning() {
-        return tutorialIntro || tutorialPan || tutorialTarget || tutorialFire || tutorialCancel || tutorialThrust || tutorialFinish;
-    }
-    public void StartTutorial() {
-        if (tutorialIntro == false) {
-            onLoad = false;
-            aboutIntro = false;
-            tutorialIntro = true;
-            tutorialPan = false;
-            tutorialTarget = false;
-            tutorialFire = false;
-            tutorialCancel = false;
-            tutorialThrust = false;
-            tutorialFinish = false;
-            timer = 0;
-            global_timer = 0;
-        }
-    }
     public void UseWeapon() {
         Action("Cannon", -1);//GetInput(), -1);
         if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
     }
     public void CycleTutorial() {
-        if (tutorial_clip_index == 10) {
-            tutorial_clip_index = 11;
-            tutorial_timer = 0;
+        if (NarrationTimer > 0 && NarrationTimer < 420) {
             PlayAudio(TutorialGood2);
-        } else if (tutorial_clip_index == 11) {
-            tutorial_clip_index = 12;
-            tutorial_timer = 0;
+            NarrationTimer = 420;
+        }
+        else if (NarrationTimer > 0 && NarrationTimer < 480) {
+            PlayAudio(TutorialGood2);
+            NarrationTimer = 480;
+        }
+        else if (NarrationTimer > 0 && NarrationTimer < 540) {
             PlayAudio(TutorialGood3);
+            NarrationTimer = 540;
+        }
+        else if (NarrationTimer > 0 && NarrationTimer < 600) {
+            // PlayAudio(TutorialGetMoving);
+            // InputJoystick.SetActive(true);
+            NarrationTimer = 600;
+        }
+        else if (NarrationTimer > 2000 && NarrationTimer < 2200) {
+            NarrationTimer = 2198;
+            // PlayVideo("Cosmos2");
         }
     }
-    public void BinocularTutorial() {
-        if (tutorial_clip_index == 9) {
-            tutorial_clip_index = 10;
-            tutorial_timer = 0;
-            PlayAudio(TutorialCycle);
-            // PlayAudio(TutorialGood2);
-        }
-    }
+    // public void BinocularTutorial() {
+    //     if (NarrationTimer > 0 && NarrationTimer < 840) {
+    //         NarrationTimer = 840;
+    //         PlayAudio(TutorialGood2);
+    //         BinocularToggle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+    //     }
+    // }
     public void PanTutorial() {
         if (NarrationTimer > 300 && NarrationTimer < 360) { 
             NarrationTimer = 360; 
             PlayAudio(TutorialCycle); 
-            GameObject.Find("CycleToggle")?.SetActive(true);
-            // InputJoystick.SetActive(true);
-
-        }
-        // if (clip_index == 2 && campaign_stage == 0) { campaign_stage++; story_timer = 0f; }
-    }
-    public void TargetTutorial() {
-        if (clip_index == 2 && campaign_stage == 1) { 
-            campaign_stage++; story_timer = 0f;
+            CycleToggle.SetActive(true);
+            if (GameObject.Find("OverlayPanUp") != null) GameObject.Find("OverlayPanUp").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            if (GameObject.Find("OverlayPanDown") != null) GameObject.Find("OverlayPanDown").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            if (GameObject.Find("OverlayPanRight") != null) GameObject.Find("OverlayPanRight").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            if (GameObject.Find("OverlayPanLeft") != null) GameObject.Find("OverlayPanLeft").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             
         }
-        InputJoystick.SetActive(true);
-    }
-    public void FireTutorial() {
-        if (clip_index == 2 && campaign_stage == 2) { campaign_stage++; story_timer = 0f; }
     }
     public void CancelTutorial() {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-
     }
     public void ThrustTutorial() {
     }
-    public void FinishTutorial() {
-        Sound("Back");
-        if (story_timer != -1) {
-            campaign_splits[clip_index - 1] = story_timer;//999 ; in the future
-            story_timer = 0f;
-            if (clip_index < 20) {
-                PlayVideo(campaign_clips[clip_index]);
-                clip_index++;
-            }
-            else 
-            {
-                
-                Application.Quit();
-            }
-        } else {
-            Application.Quit();
+    public void Unzoom() {
+        TutorialAssets.SetActive(false);
+        // SubtitlesShadow.SetActive(false);
+        // Subtitles.SetActive(false);
+        CycleToggle.SetActive(false);
+        BinocularToggle.SetActive(false);
+        InputUseWeapon.SetActive(false);
+        InputJoystick.SetActive(false);
+        Stage = "MapUnzoom";
+        camera.GetComponent<AudioSource>().Stop();
+        NarrationTimer = -1f;
+        for (int i = 0; i < Example.transform.GetChild(0).childCount; i++) {
+            if (Example.transform.GetChild(0).GetChild(i).gameObject.name != "Main Camera") 
+                Example.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
         }
     }
-    public void CompleteTutorial() {
-        if (tutorialFinish) {
-            tutorialComplete = true;
-            tutorialIntro = false;
-            tutorialPan = false;
-            tutorialTarget = false;
-            tutorialFire = false;
-            tutorialCancel = false;
-            tutorialThrust = false;
-            tutorialFinish = false;
-            onLoad = true;
-            timer = 0;
-            animation_timer = 0;
-            MapSubtitlesAtTime("", 0f);
-            SubtitlesAtTime("$ tutorial\n$", 0f);
-            Sound("WarningOver");
-            GetComponent<AudioSource>().Stop();
-        }
+    public void FinishTutorial() {
+        // Sound("Back");
+        if (Stage == "MapZoomed") {
+            NarrationIndex = 0;
+            NarrationTimer = -1;
+            
+            PlayAudio(SoundBack);
+            Subtitles.SetActive(false);
+            SubtitlesShadow.SetActive(false);
+            CycleToggle.SetActive(false);
+            BinocularToggle.SetActive(false);
+            InputUseWeapon.SetActive(false);
+            InputJoystick.SetActive(false);
+            Unzoom();
+        } 
+    }
+    public void OnExit() {
+        Application.Quit();
     }
     public void Action(string name, int action) {
-        GameObject.Find(name).GetComponent<ComponentController>().Action(action);
+        GameObject.Find(name.Substring(2)).GetComponent<ComponentController>().Action(action);
     }
     public void Sound(string clip) {
         switch (clip) {
@@ -1339,7 +1466,6 @@ public class Interactor : MonoBehaviour {
             case "WarningOver": Sound(SoundWarningOver); break;
         }
     }
-
     public void PlayTheme() {
         timer = 0;
         global_timer = 0; 
@@ -1350,9 +1476,6 @@ public class Interactor : MonoBehaviour {
         GameObject.Find("World").GetComponent<AudioSource>().clip = ThemeSong;
         GameObject.Find("World").GetComponent<AudioSource>().volume = .05f;
         GameObject.Find("World").GetComponent<AudioSource>().Play();
-    }
-    public bool IsIntroCompleted() {
-        return aboutIntro;
     }
     public void PlayGimbal() {
         Play(GimbalRotate);
@@ -1395,28 +1518,32 @@ public class Interactor : MonoBehaviour {
         if (camera == null) {
             camera = GameObject.Find("Main Camera");
         }
-        // camera.GetComponent<AudioSource>().clip = clip;
-        // camera.GetComponent<AudioSource>().volume = .5f;
-        // camera.GetComponent<AudioSource>().Play();
     }
     void MapSubtitlesAtTime(string text, float time, float timer) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
-            Subtitles.GetComponent<Text>().text = text;
+            // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
+            // else Subtitles.GetComponent<Text>().text = text;
+            RenderText(text);
         }
     }
     void SubtitlesAtTime(string text, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
-            // GameObject.Find("Subtitles").GetComponent<Text>().text = text + "\n";
+            // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
+            // else Subtitles.GetComponent<Text>().text = text;
             RenderText(text);
         }
     }
     void MapSubtitlesAtTime(string text, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
-            Subtitles.GetComponent<Text>().text = text + "\n";
+            // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
+            // else Subtitles.GetComponent<Text>().text = text;
+            RenderText(text);
         }
     }
     void MapSubtitles(string text) {
-        Subtitles.GetComponent<Text>().text = text;
+            // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
+            // else Subtitles.GetComponent<Text>().text = text;
+        RenderText(text);
     }
     double click_duration = 0;
     public double GetClickDuration() {
@@ -1438,99 +1565,223 @@ public class Interactor : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             click_duration = 0;
         }
-        if (Input.GetKeyDown("x")) {
-            InputYFx();
-        }
-        if (Input.GetKey("w")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
-            if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); InputJoystick.SetActive(true); }
-        }
-        if (Input.GetKey("q")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
-            if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); InputJoystick.SetActive(true); }
-        }
-        if (Input.GetKey("e")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
-            if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); InputJoystick.SetActive(true); }
-        }
-        if (Input.GetKey("a")) {
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
-        }
-        if (Input.GetKey("d")) {
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
-        }
-        if (Input.GetKey("s")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
-        }
-        if (Input.GetKey("z")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
-        }
-        if (Input.GetKey("c")) {
-            if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
-            if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
-            if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
-        }
-        Gamepad gamepad = Gamepad.current;
-        if (gamepad != null)
+        if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
         {
-            Vector2 stickL = gamepad.leftStick.ReadValue(); 
-            if (stickL.y < -1/5f) {
-                if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-            }
-            if (stickL.y > 1/5f) {
-                if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
-                if (tutorial_clip_index < 5) { tutorial_timer = 0; tutorial_clip_index = 5; PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true); }
-            }
-            if (stickL.x < -1/5f) {
-                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-            }
-            if (stickL.x > 1/5f) {
-                if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
-                if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
-                if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+            ResetVideo();
+
+            if (Stage == "SplashScreen") // Splash Screen
+            {
+                // Printer.SetActive(false);
+                OverlayZoomIn.SetActive(true);
+                OverlayZoomOut.SetActive(true);
+                MapScreenPanOverlay.SetActive(true);
+                print (NarrationTimer);
+                NarrationTimer = -1;
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false);
+                camera.GetComponent<AudioSource>().Stop();
+                Stage = "MapInterface";
+                SplashScreen.SetActive(false);
+                InputField.text = "☄ BitNaughts";
+                component_name = "";
+                ResetVideo();
+                MapUnzoomed();
+                Map.SetEarth();
+                volume_slider.SetActive(false);
+                InterpreterZoomIn.SetActive(true);
+                InterpreterZoomOut.SetActive(true);
+                // PlayAudio(SplashScreenComplete);
+            } else {
+                if (NarrationTimer >= 100 && NarrationTimer < 180) {
+                    Stage = "MapZoomed"; 
+                    NarrationTimer = 180;
+                    // PlayAudio(NarratorWelcome);
+                    
+                    PlayAudio(TutorialLookAround);
+                    PlayMusic(IntroMusic);
+                    ResetVideo();
+                    InputField.text = "☄ Tutorial";
+                    
+                    Printer.SetActive(true);
+                    Ship.Start();
+                    Map.SetEarth();
+                } else if (NarrationTimer >= 1100 && NarrationTimer < 1200) {
+                    Stage = "MapZoomed";
+                    NarrationTimer = 1200;
+                    NarrationIndex = 0;
+                    GameObject.Find("World").GetComponent<AudioSource>().Stop();
+                    PlayMusic(CampaignPearlMusic);
+                    ResetVideo();
+                    Map.SetMars();
+                    
+                    Printer.SetActive(true);
+                    Ship.Start();
+                    MapScreenPanOverlay.SetActive(true);
+                    volume_slider.SetActive(false);
+                    OverlayZoomIn.SetActive(true);
+                    OverlayZoomOut.SetActive(true);
+                    camera.GetComponent<Camera>().backgroundColor = new Color(80f/255f, 80f/255f, 80f/255f);
+                    // PlayAudio(CampaignPearlIntroduction);
+                    InputField.text = "☄ Mars";
+                } else if (NarrationTimer >= 2000 && NarrationTimer <= 3000) {
+                    Map.SetEarth();
+                    Map.SetGroversMill();
+                    InputField.text = "☄ BitNaughts";
+                    MapScreenPanOverlay.SetActive(true);
+                    volume_slider.SetActive(false);
+                    OverlayZoomIn.SetActive(true);
+                    OverlayZoomOut.SetActive(true);
+                    // PlayAudio(NarratorWelcome);
+                    ResetVideo();
+                    NarrationTimer = 3100;
+                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Campaign";
+                }
+                // } else if (NarrationTimer >= 1999 && NarrationTimer < 2100){
+                //     Stage = "MapZoomed";
+                //     // NarrationTimer = 2100;
+                //     // PlayMusic(CampaignMidwayMusic);
+                //     ResetVideo();
+
+                //     MapScreenPanOverlay.SetActive(true);
+                //     OverlayZoomIn.SetActive(true);
+                //     OverlayZoomOut.SetActive(true);
+                //     BinocularToggle.SetActive(true);
+                //     CycleToggle.SetActive(true);
+                //     // volume_slider.SetActive(false);
+                //     InputField.text = "☄ BitNaughts";
+                //     component_name = "";
+                // } else if (NarrationTimer >= 2100 && NarrationTimer < 2166){
+                //     Stage = "MapZoomed";
+                //     // NarrationTimer = 2166;
+                //     // PlayMusic(CampaignMidwayMusic);
+                //     ResetVideo();
+                    
+                //     MapScreenPanOverlay.SetActive(true);
+                //     OverlayZoomIn.SetActive(true);
+                //     OverlayZoomOut.SetActive(true);
+                //     BinocularToggle.SetActive(true);
+                //     CycleToggle.SetActive(true);
+                //     // volume_slider.SetActive(false);
+                //     InputField.text = "☄ BitNaughts";
+                //     component_name = "";
+                // } else if (NarrationTimer >= 2200 && NarrationTimer < 2278){
+                //     Stage = "MapZoomed";
+                //     // NarrationTimer = 2278;
+                //     // PlayMusic(CampaignMidwayMusic);
+                    
+                //     MapScreenPanOverlay.SetActive(true);
+                //     OverlayZoomIn.SetActive(true);
+                //     OverlayZoomOut.SetActive(true);
+                //     BinocularToggle.SetActive(true);
+                //     CycleToggle.SetActive(true);
+                //     // volume_slider.SetActive(false);
+                //     InputField.text = "☄ BitNaughts";
+                //     component_name = "";
+                // }
+                // else if (NarrationTimer > 2300 && NarrationTimer < 2400 && CampaignIntroAssets.transform.GetChild(0).childCount == 0) {
+                //     NarrationTimer = 2400;
+                //     ResetVideo();
+                //     Unzoom();
+                // }
             }
         }
+        // if (Input.GetKeyDown("x")) {
+        //     InputYFx();
+        // }
+        // if (Input.GetKey("w")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (NarrationTimer > 0 && NarrationTimer < 842) { NarrationTimer = 842; InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+        // }
+        // if (Input.GetKey("q")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (NarrationTimer > 0 && NarrationTimer < 842) { NarrationTimer = 842; InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+        // }
+        // if (Input.GetKey("e")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (NarrationTimer > 0 && NarrationTimer < 842) { NarrationTimer = 842; InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+        // }
+        // if (Input.GetKey("a")) {
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
+        // }
+        // if (Input.GetKey("d")) {
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
+        // }
+        // if (Input.GetKey("s")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
+        // }
+        // if (Input.GetKey("z")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(0.5f);
+        // }
+        // if (Input.GetKey("c")) {
+        //     if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-0.5f);
+        //     if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(0.5f);
+        //     if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-0.5f);
+        // }
+        // Gamepad gamepad = Gamepad.current;
+        // if (gamepad != null)
+        // {
+        //     Vector2 stickL = gamepad.leftStick.ReadValue(); 
+        //     if (stickL != Vector2.zero) Camera.main.GetComponent<CameraController>().bDragging = false;
+        //     if (stickL.y < -1/5f) {
+        //         // if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //     }
+        //     if (stickL.y > 1/5f) {
+        //         // if (GameObject.Find("Thruster")) GameObject.Find("Thruster").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(stickL.y * 5);
+        //         // if (NarrationTimer > 0 && NarrationTimer < 842) { NarrationTimer = 842; InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); }
+        //     }
+        //     if (stickL.x < -1/5f) {
+        //         // if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+        //         // if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+        //         // if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+        //         // if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+        //     }
+        //     if (stickL.x > 1/5f) {
+        //         // if (GameObject.Find("ThrusterL")) GameObject.Find("ThrusterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+        //         // if (GameObject.Find("ThrusterR")) GameObject.Find("ThrusterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+        //         // if (GameObject.Find("BoosterL")) GameObject.Find("BoosterL").GetComponent<ComponentController>().Action(stickL.x * 5);
+        //         // if (GameObject.Find("BoosterR")) GameObject.Find("BoosterR").GetComponent<ComponentController>().Action(-stickL.x * 5);
+        //     }
+        // }
     }
     bool CheckInsideEdge() {
-        return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100);
+        // TODO
+        // Needs to check horizonal versus verticle,
+        // if over volume slider...
+        return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100); //&& Input.mousePosition.x - Screen);
     }
     string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", "☄ BitNaughts   " };
@@ -1544,43 +1795,205 @@ public class Interactor : MonoBehaviour {
     int clip_index = 0;
     string credits_output = "";
     public void MapZoomed() {
-        PlayMusic(IntroMusic);
         Stage = "MapZoomed";
-        Printer.SetActive(true);
         Ship.Start();
         OverlayInteractor.UpdateOptions();
         // MapScreenPanOverlay.SetActive(true);
-        GameObject.Find("OverlayPanDown")?.SetActive(false);
-        GameObject.Find("BinocularToggle")?.SetActive(false);
-        GameObject.Find("CycleToggle")?.SetActive(false);
-        TutorialAssets.SetActive(true);
+        // GameObject.Find("OverlayPanDown")?.SetActive(false);
+        if (BinocularToggle != null) BinocularToggle.SetActive(false);
+        if (CycleToggle != null) CycleToggle.SetActive(false);
         GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        PlayAudio(NarratorWelcome);
-        NarrationTimer = 180;
+        switch (MarkerIndex){
+            case 0:
+                Printer.SetActive(true);      
+                Ship.Start();
+                PlayVideo("NewtonsLaws");
+                PlayAudio(LookupNarration("NewtonsLaws"));
+                NarrationTimer = 100;
+                TutorialAssets.SetActive(true);
+                break;
+            case 1:
+                Printer.SetActive(true);           
+                Ship.Start();
+                NarrationIndex = 0;
+                if (NarrationTimer < 1100) {
+                    
+                    PlayVideo("WarOfTheWorldsFirstContact");
+                    NarrationTimer = 1100;
+                }
+                else if (NarrationTimer < 3300) {
+                    PlayVideo("WarOfTheWorldsGroversMill");
+                    NarrationTimer = 3300;
 
-        Map.Zoom(15);
+                }
+                // GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "MK-31";
+                // PlayVideo("WarOfTheWorldsIntro");
+                // PlayVideo("MoravecsParadox");
+                // PlayAudio(CampaignPearlIntroduction);CampaignIntroAssets
+                // CampaignIntroAssets.SetActive(true);
+                break;
+            case 2:
+                PlayVideo("NewtonsLaws");
+                // PlayAudio(CampaignMidwayIntroduction);
+                NarrationTimer = 2600;
+                CampaignPearlAssets.SetActive(true);
+                break;
+            case 3:
+                PlayVideo("HawkingRadiation");
+                CampaignMidwayAssets.SetActive(true);
+                // PlayAudio(CampaignMidwayIntroduction);
+                NarrationTimer = 2999;
+                // CampaignMidwayAssets.SetActive(true);
+                break;
+            case 4:
+                PlayVideo("DopplerEffect");
+                // PlayAudio(CampaignMidwayIntroduction);
+                NarrationTimer = 3999;
+                // CampaignMidwayAssets.SetActive(true);
+                break;
+            case 5:
+                PlayVideo("DopplerShift");
+                // PlayAudio(CampaignMidwayIntroduction);
+                NarrationTimer = 4999;
+                // CampaignMidwayAssets.SetActive(true);
+                break;
+        }
+
+        Map?.Zoom(15);
+    }
+    public void MapUnzoomed() {
+        Stage = "MapInterface";
+        Map?.Zoom(0.825f);
+        if (NarrationTimer > 2000) {
+            NarrationTimer = 2100;
+            GameObject.Find("Video Player").GetComponent<AudioSource>().Stop();
+            PlayVideo("WarOfTheWorldsHeatRay");
+        CampaignIntroAssets.SetActive(false);
+        CampaignIntroSatelliteAssets.SetActive(false);
+        }
+    }
+    public void MapUnzoom() {
+        print ("unzoom");
+        PlayAudio(SoundBack);
+        NarrationIndex = -1;  
+        // SubtitlesShadow.SetActive(false);
+        // Subtitles.SetActive(false);   
+        Unzoom();
     }
     public void MapZoom() {
+        OverlayZoomOut.SetActive(true);
         if (Stage == "MapZoom") {
             MapZoomed();
         } else {
-            Stage = "MapZoom";
-            PlayAudio(NarratorZoomInDetails);
-            NarrationTimer = 120;
+            // Stage = "MapZoom";
+            switch (MarkerIndex) {
+                case 0:
+                    // NarrationTimer = 60;
+                    // GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                    // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Zooming";
+                    // PlayAudio(NarratorZoomInDetails);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    // NarrationTimer = 2999;
+                    break;
+                default:
+                    // PlayMusic(MultiplayerSelectMusic);
+                    
+                    // Stage = "MapInterface";
+                    break;
+            }
         }
         
     }
-    public int MarkerIndex = 0;
+    public int MarkerIndex = -1;
     public void MapInteractor(string marker) {
+        print (marker);
+        Sound("OnMouse");
+        var target = GameObject.Find(marker);
+        Camera.main.transform.localPosition = new Vector3(target.transform.position.x, target.transform.position.z, -100);
         if (int.TryParse(marker, out MarkerIndex)) {
+            if (GameObject.Find("0") != null) GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);               
+            print (MarkerIndex);
             if (MarkerIndex == 0) {
-                GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-                PlayAudio(NarratorZoomInMap);
-                NarrationTimer = 60;
-                // NarrationIndex = 10;
+                if (TutorialAssets.transform.childCount == 0) {
+                    PlayAudio(TutorialOutro);
+                }
+                else {
+                    GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Tutorial";
+                    PlayAudio(NarratorZoomInDetails);
+                    MapScreenPanOverlay.SetActive(false);
+                    volume_slider.SetActive(true);
+                    global_timer = 0;
+                    NarrationTimer = 60;
+                    NarrationIndex = 0;
+                    Stage = "MapZoom";
+                } 
+                // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Zooming";
+                // SubtitlesShadow.SetActive(true);
+                // Subtitles.SetActive(true);
+            } else if (MarkerIndex == 1) {
+                //Grover's Mill";
+                
+                MapScreenPanOverlay.SetActive(false);
+                volume_slider.SetActive(true);
+                if (NarrationTimer < 1000) {
+                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";    
+                    NarrationTimer = 1000;
+                    global_timer = 0;
+                    // if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";
+                    PlayAudio(LookupNarration("WarOfTheWorldsCredit"));
+                } else if (NarrationTimer < 3200) {
+                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "□ Grover's"; 
+                    NarrationTimer = 3200;
+                    PlayAudio(LookupNarration("WarOfTheWorldsRedCross"));
+                }
+                NarrationIndex = 0;
+                Stage = "MapZoom";
+                // SubtitlesShadow.SetActive(true);
+                // Subtitles.SetActive(true);
+            } else if (MarkerIndex == 2 && CampaignIndex == 1) { //and finished previous level
+                GameObject.Find("2").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Pearl";
+                PlayAudio(CampaignPearl);
+                NarrationTimer = 2500;
+                NarrationIndex = 0;
+                global_timer = 0;
+                // SubtitlesShadow.SetActive(true);
+                // Subtitles.SetActive(true);
+            } else if (MarkerIndex == 3 && CampaignIndex == 2) {
+                GameObject.Find("3").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Midway";
+                PlayAudio(CampaignMidway);
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false);
+                global_timer = 0;
+                NarrationTimer = 3000;
+                NarrationIndex = 0;
+            } else if (MarkerIndex == 4 && CampaignIndex == 3) {
+                GameObject.Find("4").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Finale";
+                PlayAudio(CampaignMidway);
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false);
+                global_timer = 0;
+                NarrationTimer = 2999;                
+            } else if (MarkerIndex == 4 && CampaignIndex == 3) {
+                GameObject.Find("4").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Finale";
+                PlayAudio(CampaignMidway);
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false);
+                global_timer = 0;
+                NarrationTimer = 2999;                
+            } 
+            else if (MarkerIndex >= 6 && MarkerIndex <= 8) {
+                global_timer = 0;
+                NarrationTimer = 9999;    
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false); 
+                // PlayAudio(MultiplayerSelectMusic);
             }
-            OverlayZoomIn.SetActive(true);
-            volume_slider.SetActive(false);
+            // OverlayZoomIn.SetActive(true);
+            // OverlayZoomOut.SetActive(true);
+            // volume_slider.SetActive(false);
         }
     }
     void SpriteFlash(string name, float start) {
@@ -1605,33 +2018,41 @@ public class Interactor : MonoBehaviour {
     }
     int print_index = 0;
     GameObject print_obj;
+    void ResetVideo() {
+        if (Stage == "MapInterface") GameObject.Find("World").GetComponent<AudioSource>().Stop();
+        SetBackground(new Color(128/255f, 167/255f, 174/255f));
+        GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
+
+    }
+    public void RenderProcess() {
+        if (InputField.text.Contains("▩")) {
+            RenderComponent("Process");
+        }
+    }
     void FixedUpdate()
     {
-        global_timer += Time.deltaTime;
-        if (InputField.text.Contains("Processor") && TabToggle.text == "▤ TUI") { 
-            RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
+        if (Stage == "Loading") {
+            Stage = "SplashScreen";
+            Printer.SetActive(false);
         }
-        if (queue_audio != "") {
-            if (GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) {
-                LoadingScreen.SetActive(false);
-                PlayAudio(LookupNarration(queue_audio));
-                queue_audio = "";
-                if (story_timer != -1) {
-                    story_timer = 0;
-                }
-                if (start_timer != -1) {
-                    start_timer = 0;
-                }
-            }
-        } else if (printing) {
+        // print (Stage);
+        global_timer += Time.deltaTime;
+        // if (TabToggle.text == "▤ TUI") { //InputField.text.Contains("Processor") && 
+        //     RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
+        // }
+        if (printing) {
             if (print_index < GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>().Length) {
-                if (print_obj == null) print_obj = GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index++].gameObject;
-                if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(print_obj.transform.localPosition + new Vector3(0, 0f, 0))) {
-                    print_obj.GetComponent<ComponentController>().Launch();
-                    print_obj = null;
+                if (GameObject.Find("Printer").GetComponent<PrinterController>().print_index == -1) {
+                    GameObject.Find("Printer").GetComponent<PrinterController>().print_index = 0;
+                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("Printer");
                 }
-                else {
-                    return;
+                if (print_obj == null) {
+                    print_obj = GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index++].gameObject;
+                }
+                if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(new Vector2(print_obj.transform.position.x, print_obj.transform.position.z))) {
+                    print_obj.GetComponent<ComponentController>().Launch();
+                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("Printer");
+                    print_obj = null;
                 }
             } else {
                 Printer.SetActive(false);
@@ -1641,96 +2062,252 @@ public class Interactor : MonoBehaviour {
                 PrinterPrint.SetActive(false);                
                 Ship.Start();
                 OverlayInteractor.UpdateOptions();
-
-                // Ship.Start();
-                // OverlayInteractor.UpdateOptions();
-                // OverlayInteractor.OnDropdownChange("Printer"); 
                 OverlayInteractor.gameObject.SetActive(false);
-                // OverlayZoomIn.SetActive(true);
                 MapScreenPanOverlay.SetActive(true);
+                InputJoystick.SetActive(true);
+                InputUseWeapon.SetActive(true);
                 printing = false;
+                if (MarkerIndex != 0) {
+                    CycleToggle.SetActive(true);
+                    BinocularToggle.SetActive(true);
+                    InputUseWeapon.SetActive(true);
+                    InputJoystick.SetActive(true);
+                    // volume_slider.SetActive(false);
+        
+                    if (MarkerIndex == 0) {
+                        InputUseWeapon.transform.Find("Text").GetComponent<Text>().text = "Launch";
+                    }
+                    if (MarkerIndex == 1) {
+                        if (NarrationTimer < 3000) {
+                            InputUseWeapon.transform.Find("Text").GetComponent<Text>().text = "Scan";
+                        }
+                        else {
+                            
+                            InputUseWeapon.transform.Find("Text").GetComponent<Text>().text = "Fire";
+                        }
+                    }
+
+                }
             }
-        } else {// if (Stage == "MapInterface" || Stage == "MapZoom" || Stage == "MapZoomed") {
-            // Wait for user interaction on Splash Screen
-            if (NarrationTimer < -1 || NarrationTimer >= 0) NarrationTimer += Time.deltaTime;
+        }
+        if (queue_audio != "") {
+            if (GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) {
+                LoadingScreen.SetActive(false);
+                if (CycleToggle != null) CycleToggle.SetActive(false);
+                if (BinocularToggle != null) BinocularToggle.SetActive(false);
+                PlayAudio(LookupNarration(queue_audio));
+                queue_audio = "";
+                SetVolume();
+            }
+            else {
+                // print ("play" + );
+                if (!GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().isPrepared) {
+                    print ("Preparing ...");
+                    // GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Prepare();
+                }
+                else if (!GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().isPlaying) {
+                    print ("Playing ...");
+                    GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
+                }
+
+                // PlayVideo("WarOfTheWorldsIntro");
+            }
+        }
+        // } else {
+            // if (Stage == "MapInterface" || Stage == "MapZoom" || Stage == "MapZoomed") {
+            // Wait for user interaction on Splash Screen  && (NarrationTimer < -1 || (NarrationTimer >= 0 && NarrationTimer != 179))
+            
+            // DISABLED FOR TESTING TODO ENABLE
+            if (Stage != "Loading") NarrationTimer += Time.deltaTime;
 
             // if (Stage == "MapZoom") {
             // } else {
-            Timer.text = FloatToTime(global_timer) + "\n" + System.DateTime.Now.AddYears(-54).ToString("MM/dd/yyyy") + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
+            Timer.text = FloatToTime(global_timer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
             // } 
-            if (NarrationTimer < 0) // Splash Screen
-            {
-                if (Input.GetMouseButton(0) && CheckInsideEdge())
-                {
-                    NarrationTimer = 0;
-                    Stage = "MapInterface";
-                    InputField.text = "☄ BitNaughts";
-                    SplashScreen.SetActive(false);
-                    PlayAudio(NarratorSwitchToMap);
-                    SetBackground(new Color(158/255f, 188/255f, 194/255f));
-                    GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
-                    InputField.text = "☄ BitNaughts";
-                }
-            }
+            // if (Stage == "Loading" && (ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1) {
+            //     PlayVideo("SplashScreen");
+            //     Stage = "SplashScreen";
+            // }
+ 
             bool updated = false;
-            while (NarrationTimer >= Narration[NarrationIndex].time) {
+            while (NarrationIndex < Narration.Count && NarrationTimer >= Narration[NarrationIndex].time) {
                 NarrationIndex++;
                 updated = true;
             }
-            if (updated) {
+            // print (NarrationTimer + " - " + NarrationIndex + " : " + Narration[NarrationIndex - 1].text);
+            if (Stage != "Loading" && updated && component_name == "" && NarrationIndex < Narration.Count) { // TODO DISABLE
                 MapSubtitles(Narration[NarrationIndex - 1].text);
-
-                if (NarrationIndex == 68) {
-                    PlayAudio(NarratorAimTheCrosshair);
-                }           
-                if (NarrationIndex == 90) {
-                    PlayAudio(TutorialLookAround);
-                }
-                // switch (NarrationIndex) {
-                //     case 43: 
-                //     break;
-                    // case 47:
-                    //     PlayAudio(NarratorAimTheCrosshair);
-                    // break;
+                history = Narration[NarrationIndex - 1].text;
+                // if (NarrationIndex == 47) {
+                //     // PlayAudio(SplashScreenComplete);
+                //     // PlayAudio(NarratorZoomInMap);
                 // }
-            }
-            if (NarrationTimer >= 0 && NarrationTimer < 60) {
-                GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-            }
-            else if (NarrationTimer >= 60 && NarrationTimer < 180) {
-                if (GameObject.Find("OverlayZoomIn") != null) GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-            }
-            else if (NarrationTimer >= 192 && NarrationTimer < 240) {
-                GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
-                GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-            }
-            else if (NarrationTimer >= 240 && NarrationTimer < 300) {
-                PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-            }
-                //     MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 0f
-                //     MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("h:mm:ss.f") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 5f
-                //     MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 7.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Woody Allen's      ║\n║ Radio Days         ║\n║             (1987) ║\n╚════════════════════╝\n\nTap to continue ...", 10f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Jay Bonafield's    ║\n║ The Future Is Now  ║\n║             (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 12.25f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's        ║\n║ Navigation Satel-  ║\n║ lite System (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 14.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's        ║\n║ Digital Computer   ║\n║ Techniques  (1962) ║\n╚════════════════════╝\n\nTap to continue ...", 16.75f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ N.A.S.A's          ║\n║ Space Down to      ║\n║ Earth       (1970) ║\n╚════════════════════╝\n\nTap to continue ...", 19f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sprite *     ║\n║ Alejandro Monge's  ║\n║ Modular Spaceships ║\n║             (2014) ║\n╚════════════════════╝\n\nTap to continue ...", 21.25f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sound  *     ║\n║ Eidos Interactive  ║\n║ Battlestations     ║\n║ Pacific     (2009) ║\n╚════════════════════╝\n\nTap to continue ...", 23.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n╚════════════════════╝\n\nTap to continue ...", 25.75f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n╚════════════════════╝\n\nTap to continue ...", 28f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n\n\nTap to continue ...", 33f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n\n\n\nTap to continue ...", 33.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n\n\n\n\nTap to continue ...", 34f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n\n\n\n\n\nTap to continue ...", 34.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╚════════════════════╝\n\n\n\n\n\n\nTap to continue ...", 35f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n╚════════════════════╝\n\nTap to continue ...", 62.25f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n\n\nTap to continue ...", 85f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n\n\n\nTap to continue ...", 85.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n\n\n\n\nTap to continue ...", 86f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n\n\n\n\n\nTap to continue ...", 86.5f, story_timer);
-                //     MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╚════════════════════╝\n\n\n\n\n\n\nTap to continue ...", 87f, story_timer);
+                // if (NarrationIndex == 68 + 26) {
+                //     PlayAudio(NarratorAimTheCrosshair);
+                // }           
+                // // if (NarrationIndex == 91 + 26) {
+                // //     PlayAudio(TutorialLookAround);
+                // // }        
+                // if (NarrationIndex == 113 + 26) {
+                //     PlayAudio(TutorialAttackTarget); InputUseWeapon.SetActive(true);
+                    
+                // }  
+                // if (NarrationIndex == 116 + 26) {
+                //     PlayAudio(TutorialUseWeapon);
+
+                // }
+                // if (NarrationIndex == 128 + 26) {
+                //     InputJoystick.SetActive(true);
+                // }
+                // if (NarrationIndex == 130 + 26) {
+                //     PlayAudio(TutorialGetMoving);
+                // }
+                // if (NarrationIndex == 132 + 26) {
+                //     PlayAudio(TutorialThrottle);
+                // }
+                // if (NarrationIndex == 137 + 26) {
+                //     InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                //     BinocularToggle.SetActive(true);
+                //     PlayAudio(TutorialBinocular);
+                // }
+                // if (NarrationIndex == 142 + 26) {
+                //     PlayAudio(TutorialGood2);
+                //     BinocularToggle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                // }
+            // }
+            // if (NarrationTimer < 60 && TutorialAssets.transform.childCount > 0) {
+            //     if (GameObject.Find("0") != null) GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // else if (NarrationTimer >= 2 && NarrationTimer < 6) {
+            //     if (GameObject.Find("0") != null) GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            // } else if ((NarrationTimer >= 6 && NarrationTimer < 60)) {
+            //     if (GameObject.Find("OverlayZoomIn") != null) GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // } else if ((NarrationTimer >= 60 && NarrationTimer < 61)) {
+            //     if (GameObject.Find("OverlayZoomIn") != null) GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            // }
+            // else if (NarrationTimer >= 180 && NarrationTimer < 240) {
+            //     GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
+            //     GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // else if (NarrationTimer >= 240 && NarrationTimer < 300) { 
+            //     PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // else if (NarrationTimer >= 300 && NarrationTimer < 360) {
+            //     if (GameObject.Find("OverlayOk") != null) GameObject.Find("OverlayOk").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("OverlayPanUp") != null) GameObject.Find("OverlayPanUp").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("OverlayPanDown") != null) GameObject.Find("OverlayPanDown").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("OverlayPanRight") != null) GameObject.Find("OverlayPanRight").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("OverlayPanLeft") != null) GameObject.Find("OverlayPanLeft").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // else if (NarrationTimer >= 360 && NarrationTimer < 600) {
+            //     if (GameObject.Find("CycleToggle") != null) GameObject.Find("CycleToggle").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // else if (NarrationTimer >= 600 && NarrationTimer < 780) {
+            //     if (GameObject.Find("CycleToggle") != null) GameObject.Find("CycleToggle").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            //     InputUseWeapon.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+            // if (NarrationTimer > 0 && NarrationTimer < 780 && TutorialAssets.transform.childCount == 2) {
+            //     InputUseWeapon.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            //     PlayAudio(TutorialHulkDestroyed);
+            //     NarrationTimer = 780;
+            // }
+            // if (NarrationTimer >= 783 && NarrationTimer < 844) {
+            //     InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // } else if (NarrationTimer >= 844 && NarrationTimer < 880) {
+            //     BinocularToggle.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // } else if (NarrationTimer > 880 && NarrationTimer < 930 && TutorialAssets.transform.childCount == 1) {
+            //     PlayAudio(TutorialRightOn);
+            //     NarrationTimer = 930;
+            // }
+            // else if (NarrationTimer > 974 && NarrationTimer < 999) {
+            //     Unzoom();
+            // }
+            // if (NarrationTimer > 0 && NarrationTimer < 960 && TutorialAssets.transform.childCount == 0) {
+            //     PlayAudio(TutorialOutro);
+            //     NarrationTimer = 960;
+            //     BinocularToggle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            // }
+            // if (NarrationTimer > 880 && NarrationTimer < 960)
+            // {
+            //     if (GameObject.Find("martian_hulk_1") != null) GameObject.Find("martian_hulk_1").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("martian_hulk_2") != null) GameObject.Find("martian_hulk_2").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            //     if (GameObject.Find("martian_hulk_3") != null) GameObject.Find("martian_hulk_3").GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // }
+
+            // /* Campaign Levels End Conditions */
+            // if (NarrationTimer > 2200 && NarrationTimer < 2201) {
+            //     PlayVideo("Cosmos2");
+            //     NarrationTimer = 2201;
+            // }
+            // if (NarrationTimer > 2000 && NarrationTimer < 2300 && CampaignIntroAssets.transform.GetChild(0).childCount == 0) {
+            //     NarrationTimer = 2300;
+            //     PlayVideo("Cosmos4");
+            //     print ("Level 1 finished");
+            //     CampaignIndex = 1;
+            //     GameObject.Find("2").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Pearl";
+            //     GameObject.Find("3").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+            //     GameObject.Find("4").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+            //     GameObject.Find("5").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+                
+            // }
+            // if (NarrationTimer > 2400 && NarrationTimer < 2800 && CampaignPearlAssets.transform.GetChild(0).childCount <= 3) {
+            //     NarrationTimer = 2800;
+            //     PlayVideo("Cosmos5");
+            //     print ("Level 2 finished");
+            //     CampaignIndex = 2;
+            //     GameObject.Find("3").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Midway";
+            //     GameObject.Find("4").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+            //     GameObject.Find("5").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+                
+            // }
+            // if (NarrationTimer > 3000 && NarrationTimer < 4000 && CampaignMidwayAssets.transform.GetChild(0).childCount <= 2) {
+            //     NarrationTimer = 4000;
+            //     PlayVideo("Cosmos6");
+            //     print ("Level 3 finished");
+            //     CampaignIndex = 3;
+            //     GameObject.Find("4").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Nexus";
+            //     GameObject.Find("5").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "...";
+                
+            // }
+            // if (NarrationTimer > 4000 && NarrationTimer < 5000 && CampaignMidwayAssets.transform.GetChild(0).childCount <= 1) {
+            //     NarrationTimer = 5000;
+            //     PlayVideo("Cosmos6");
+            //     print ("Level 4 finished");
+            //     CampaignIndex = 4;
+            //     GameObject.Find("5").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Abyss";
+                
+            // }
+            // if (NarrationTimer > 5000 && NarrationTimer < 6000 && CampaignMidwayAssets.transform.GetChild(0).childCount == 0) {
+            //     NarrationTimer = 6000;
+            //     PlayVideo("Cosmos7");
+            //     print ("Level 5 finished");
+            //     CampaignIndex = 4;
+            //     GameObject.Find("5").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Abyss";
+            // }
         }
+        // MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Time: " + FloatToTime(global_timer) + "\t\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 0f
+        // MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("h:mm:ss.f") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 5f
+        // MapSubtitlesAtTime("╔═════════════════════╗\n║ BitNaughts Campaign ║\n║   * Report Card *   ║\n╠═════════════════════╣\n║ Date: " + System.DateTime.Now.ToString("MM/dd/yyyy") + "\t  ║\n╚═════════════════════╝\n\nThanks for playing!", 7.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Woody Allen's      ║\n║ Radio Days         ║\n║             (1987) ║\n╚════════════════════╝\n\nTap to continue ...", 10f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ Jay Bonafield's    ║\n║ The Future Is Now  ║\n║             (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 12.25f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's        ║\n║ Navigation Satel-  ║\n║ lite System (1955) ║\n╚════════════════════╝\n\nTap to continue ...", 14.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ U.S. Navy's        ║\n║ Digital Computer   ║\n║ Techniques  (1962) ║\n╚════════════════════╝\n\nTap to continue ...", 16.75f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Videos *     ║\n║ N.A.S.A's          ║\n║ Space Down to      ║\n║ Earth       (1970) ║\n╚════════════════════╝\n\nTap to continue ...", 19f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sprite *     ║\n║ Alejandro Monge's  ║\n║ Modular Spaceships ║\n║             (2014) ║\n╚════════════════════╝\n\nTap to continue ...", 21.25f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Sound  *     ║\n║ Eidos Interactive  ║\n║ Battlestations     ║\n║ Pacific     (2009) ║\n╚════════════════════╝\n\nTap to continue ...", 23.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n╚════════════════════╝\n\nTap to continue ...", 25.75f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n╚════════════════════╝\n\nTap to continue ...", 28f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n║             (2013) ║\n\n\nTap to continue ...", 33f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n║ Valentine          ║\n\n\n\nTap to continue ...", 33.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n║ Wintergatan's      ║\n\n\n\n\nTap to continue ...", 34f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     * Music  *     ║\n\n\n\n\n\nTap to continue ...", 34.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╚════════════════════╝\n\n\n\n\n\n\nTap to continue ...", 35f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n╚════════════════════╝\n\nTap to continue ...", 62.25f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n║             (2022) ║\n\n\nTap to continue ...", 85f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n║ brianhungerman.com ║\n\n\n\nTap to continue ...", 85.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n║ Brian Hungerman    ║\n\n\n\n\nTap to continue ...", 86f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╠════════════════════╣\n║     *   By   *     ║\n\n\n\n\n\nTap to continue ...", 86.5f, story_timer);
+        // MapSubtitlesAtTime("╔════════════════════╗\n║ BitNaughts Credits ║\n╚════════════════════╝\n\n\n\n\n\n\nTap to continue ...", 87f, story_timer);
     }
     void InitializeClickableText(string text, int line, int pos) {
         foreach (var button in ButtonsCache) {
@@ -1739,5 +2316,9 @@ public class Interactor : MonoBehaviour {
                 break;
             }
         }
+    }
+    public void ProgressCampaign() {
+        Unzoom();
+        if (NarrationTimer < 2000) NarrationTimer = 2000;
     }
 }
