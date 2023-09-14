@@ -58,6 +58,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "private":
             case "for":
             case "if":
+            case "var":
             case "return":
                 initialized_text = Formatter.keyword(initialized_text);
                 break;
@@ -112,7 +113,7 @@ public class ClickableTextInteractor : MonoBehaviour
             }
             else {
                 // else, TUI menu:
-                Interactor.AppendText("$ <b>about</b>\n  <b>tutorial</b>\n  <b>campaign</b>\n  <b>multiplay</b>\n  <b>clear</b>\n  <b>restart</b>\n  <b>back</b>");
+                Interactor.AppendText("$ <b>about</b>\n  <b>start</b>\n  <b>clear</b>\n  <b>restart</b>\n  <b>back</b>");
             }
         }
         foreach (var component in Interactor.GetComponents()) {
@@ -134,7 +135,7 @@ public class ClickableTextInteractor : MonoBehaviour
                         }
                         GameObject.Find("MapScreenPanOverlay").SetActive(false);
                         // OverlayInteractor.gameObject.SetActive(true);
-                        // OverlayInteractor.OnDropdownChange(); 
+                        OverlayInteractor.OnDropdownChange(0); 
                         break;
                 }
                 break;
@@ -201,7 +202,7 @@ public class ClickableTextInteractor : MonoBehaviour
             case "gui":
                 Interactor.OnMapView();
                 break;
-            case "tutorial":
+            case "start":
                 Interactor.OnMapView();
                 Interactor.MapInteractor("0");
                 break;
@@ -349,9 +350,12 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>▥_Processor</b>\n$ ");
                 Interactor.SetInputPlaceholder("Processor");
                 break;
+            case "Main":
             case "Main_()":
             case "/*_Main_method_*/":
+            case "/*_Entry_point_*/":
                 Interactor.Sound("Processor");
+                Interactor.ResetProcessor();
                 break;
             case "▩_Bulkhead": 
                 Interactor.AppendText("$ make <b>▩_Bulkhead</b>\n$ ");

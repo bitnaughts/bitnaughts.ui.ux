@@ -20,7 +20,10 @@ public class OverlayInteractor : MonoBehaviour
     OverlayCodeObjectThis, OverlayCodeObjectString, OverlayCodeObjectComponent,
     OverlayCodeFlowControlIf, OverlayCodeFlowControlWhile, OverlayCodeFlowControlFor, OverlayCodeFlowControlForEach,
     OverlayCodeNameX, OverlayCodeNameY, OverlayCodeNameZ, OverlayCodeBooleanTrue, OverlayCodeBooleanFalse,
-    OverlayCodeComponentProcessor, OverlayCodeComponentBulkhead, OverlayCodeComponentGimbal, OverlayCodeComponentThruster, OverlayCodeComponentBooster, OverlayCodeComponentSensor, OverlayCodeComponentCannon;
+    OverlayCodeComponentProcessor, OverlayCodeComponentBulkhead, OverlayCodeComponentGimbal, OverlayCodeComponentThruster, OverlayCodeComponentBooster, OverlayCodeComponentSensor, OverlayCodeComponentCannon,
+    OverlayCodeCustomMethod, OverlayCodeSystem, OverlayCodeSystemInX, OverlayCodeSystemInY, OverlayCodeSystemInButton, OverlayCodeOperator,
+    OverlayCodeAdd, OverlayCodeSubtract, OverlayCodeMultiply, OverlayCodeDivide, OverlayCodeModulus,
+    OverlayCodeConstant, OverlayCodeConstantAddPointOne, OverlayCodeConstantAddOne, OverlayCodeConstantAddTen, OverlayCodeConstantAddHundred, OverlayCodeConstantMinusPointOne, OverlayCodeConstantMinusOne, OverlayCodeConstantMinusTen, OverlayCodeConstantMinusHundred;
     void Start()
     {
         last_position = new Vector2 (999,999);
@@ -41,8 +44,12 @@ public class OverlayInteractor : MonoBehaviour
         OverlayDropdown.options = new List<Dropdown.OptionData>();
         if (Ship.components != null) {
             foreach (var key in Ship.GetControllers()) {
+                print ("Adding dropdown option " + key);
                 OverlayDropdown.options.Add(new Dropdown.OptionData(key));
             }
+        }
+        else {
+            print ("unexpected null components");
         }
         this.gameObject.SetActive(false);
     }
@@ -72,16 +79,25 @@ public class OverlayInteractor : MonoBehaviour
             Mathf.Clamp(200+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 150)), 
             Mathf.Clamp(240+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height - 250)));
         var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y + 120);
+        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y * 2);
     }
-    public void OnDropdownChange(string name) 
+    string function_parameter_type = "";
+    public void OnDropdownChange(int index) 
     {
+        var name = OverlayDropdown.options[OverlayDropdown.value].text;
+        if (name[1] == ' ') name = name.Substring(2);
+        print ("mode OnDropdownChange " + OverlayDropdown.value + " " + name);
         MapScreenPanOverlay.SetActive(false);
         last_position = new Vector2 (999,999);
         Resize(name);
         if (State != "") {
-            print ("Code mode");
-            OverlayCodeInput.GetComponent<InputField>().text += name;
+            print ("Code mode dropdown " + name);
+            OverlayDropdown.gameObject.SetActive(false);
+            OverlayCodeInput.SetActive(true);
+            OverlayCodeInput.GetComponent<InputField>().text += name + ".";
+            OverlayCodeCustomMethod.gameObject.SetActive(true);
+            OverlayCodeCustomMethod.transform.GetChild(0).GetComponent<Text>().text = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(name)[0];
+            function_parameter_type = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethodParameter(name, Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(name)[0]);
 
         } else {
             OverlayDropdown.gameObject.SetActive(true);
@@ -114,8 +130,18 @@ public class OverlayInteractor : MonoBehaviour
         Interactor.Sound("Click");
         if (State != "") 
         {
-            Interactor.Processor.GetComponent<ProcessorController>().SetInstructions(OverlayCodeInput.GetComponent<InputField>().text);
+            var injection = OverlayCodeInput.GetComponent<InputField>().text;
+            if (State == "If" || State == "While" || State == "For") {
+                injection += ")\n{\n}";
+            }
+            if (State == "Function") {
+                injection += ");";
+            }
+            print ("Sent " + injection);
+            Interactor.Processor.GetComponent<ProcessorController>().SetInstructions("Process", "Main", injection);
+            print ("received " + Interactor.Processor.GetComponent<ProcessorController>().interpreter.ToString("Process"));
             // State = "";
+            Interactor.RenderComponent("Process");
             OnCodeEditor();
         }
         else {
@@ -131,7 +157,7 @@ public class OverlayInteractor : MonoBehaviour
             }
             else 
             {
-                OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text);
+                OnDropdownChange(0);//OverlayDropdown.options[OverlayDropdown.value].text);
             }
         }
     }
@@ -176,7 +202,7 @@ public class OverlayInteractor : MonoBehaviour
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);
             }
-            OnDropdownChange(OverlayDropdown.options[OverlayDropdown.value].text); 
+            OnDropdownChange(0);//-OverlayDropdown.options[OverlayDropdown.value].text); 
         }
     }
     public void DeleteComponent(string component)
@@ -308,6 +334,14 @@ public class OverlayInteractor : MonoBehaviour
         OverlayCodeComponentBooster.SetActive(false);
         OverlayCodeComponentSensor.SetActive(false);
         OverlayCodeComponentCannon.SetActive(false);
+        OverlayCodeOperator.SetActive(false);
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+        OverlayCodeCustomMethod.gameObject.SetActive(false);
+
 
     }
     public void OnCodeNameX() 
@@ -379,10 +413,16 @@ public class OverlayInteractor : MonoBehaviour
     public void OnCodePrimitiveBooleanTrue() 
     {
         OverlayCodeInput.GetComponent<InputField>().text += "true";
+        OverlayCodeBooleanTrue.SetActive(false);
+        OverlayCodeBooleanFalse.SetActive(false);
+        OverlayCodeOperator.SetActive(true);
     }
     public void OnCodePrimitiveBooleanFalse() 
     {
         OverlayCodeInput.GetComponent<InputField>().text += "false";
+        OverlayCodeBooleanTrue.SetActive(false);
+        OverlayCodeBooleanFalse.SetActive(false);
+        OverlayCodeOperator.SetActive(true);
     }
 
     public void OnCodePrimitiveInteger() 
@@ -399,15 +439,21 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnCodePrimitiveDouble() 
     {
-        Interactor.InputField.text = "≐ Double";
-        OverlayCodeInput.GetComponent<InputField>().text = "double ";
-        OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
-        OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
-        OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
-        OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
-        OverlayCodeNameX.gameObject.SetActive(true);
-        OverlayCodeNameY.gameObject.SetActive(true);
-        OverlayCodeNameZ.gameObject.SetActive(true);
+        if (State == "Function") {
+            OverlayCodeSystemInX.gameObject.SetActive(true);
+            OverlayCodeSystemInY.gameObject.SetActive(true);
+            OverlayCodeConstant.SetActive(true);
+        } else {
+            Interactor.InputField.text = "≐ Double";
+            OverlayCodeInput.GetComponent<InputField>().text = "double ";
+            OverlayCodePrimitiveBoolean.gameObject.SetActive(false); 
+            OverlayCodePrimitiveInteger.gameObject.SetActive(false); 
+            OverlayCodePrimitiveDouble.gameObject.SetActive(false); 
+            OverlayCodePrimitiveCharacter.gameObject.SetActive(false);
+            OverlayCodeNameX.gameObject.SetActive(true);
+            OverlayCodeNameY.gameObject.SetActive(true);
+            OverlayCodeNameZ.gameObject.SetActive(true);   
+        }
     }
     public void OnCodePrimitiveCharacter() 
     {
@@ -460,6 +506,7 @@ public class OverlayInteractor : MonoBehaviour
     public void OnCodeObjectComponent() 
     {
         Interactor.InputField.text = "≗ Component";
+        State = "Function";
         // OverlayCodeInput.GetComponent<InputField>().text = "Component ";
         OverlayCodeObjectThis.gameObject.SetActive(false); 
         OverlayCodeObjectString.gameObject.SetActive(false); 
@@ -467,14 +514,14 @@ public class OverlayInteractor : MonoBehaviour
         OverlayCodeInput.gameObject.SetActive(false);
         OverlayDropdown.gameObject.SetActive(true);
         OverlayDropdown.transform.Find("OverlayDropdownLabel").GetComponent<Text>().text = "Reference";
-        // OverlayDropdown.Show();
-        OverlayCodeComponentProcessor.SetActive(true);
-        OverlayCodeComponentBulkhead.SetActive(true);
-        OverlayCodeComponentGimbal.SetActive(true);
-        OverlayCodeComponentThruster.SetActive(true);
-        OverlayCodeComponentBooster.SetActive(true);
-        OverlayCodeComponentSensor.SetActive(true);
-        OverlayCodeComponentCannon.SetActive(true);
+        OverlayDropdown.Show();
+        // OverlayCodeComponentProcessor.SetActive(true);
+        // OverlayCodeComponentBulkhead.SetActive(true);
+        // OverlayCodeComponentGimbal.SetActive(true);
+        // OverlayCodeComponentThruster.SetActive(true);
+        // OverlayCodeComponentBooster.SetActive(true);
+        // OverlayCodeComponentSensor.SetActive(true);
+        // OverlayCodeComponentCannon.SetActive(true);
 
     }
     public void OnCodeObjectComponentProcessor() 
@@ -662,5 +709,130 @@ public class OverlayInteractor : MonoBehaviour
     public void OnCodeInput()
     {
 
+    }
+    public void OnCodeCustomMethod() {
+        OverlayCodeInput.GetComponent<InputField>().text += OverlayCodeCustomMethod.transform.GetChild(0).GetComponent<Text>().text + " (";
+        OverlayCodeCustomMethod.gameObject.SetActive(false);
+        
+        if (function_parameter_type == "double") {
+            function_parameter_type = "";
+            OnCodePrimitiveDouble();
+        }
+
+        // if parameter for function?
+    }
+    public void OnCodeInY() {
+        OverlayCodeInput.GetComponent<InputField>().text += "System.in.Y";
+        OverlayCodeSystemInX.SetActive(false);
+        OverlayCodeSystemInY.SetActive(false);
+        OverlayCodeConstant.SetActive(false);
+        OverlayCodeOperator.SetActive(true);
+        // if (function_parameter_type == "double") {
+        //     function_parameter_type = "";
+        //     OnCodePrimitiveDouble();
+        // }
+
+        // if parameter for function?
+    }
+    public void OnCodeInX() {
+        OverlayCodeInput.GetComponent<InputField>().text += "System.in.X";
+        OverlayCodeSystemInX.SetActive(false);
+        OverlayCodeSystemInY.SetActive(false);
+        OverlayCodeConstant.SetActive(false);
+        OverlayCodeOperator.SetActive(true);
+        // if (function_parameter_type == "double") {
+        //     function_parameter_type = "";
+        //     OnCodePrimitiveDouble();
+        // }
+
+        // if parameter for function?
+    }
+
+    public void OnCodeOperator() {
+        OverlayCodeAdd.SetActive(true);
+        OverlayCodeSubtract.SetActive(true);
+        OverlayCodeMultiply.SetActive(true);
+        OverlayCodeDivide.SetActive(true);
+        OverlayCodeModulus.SetActive(true);
+
+        
+        // Arithmetic.MULTIPLICATION + TAB + Arithmetic.DIVISION + TAB + Arithmetic.REMAINDER + TAB, 
+        // Arithmetic.ADDITION + TAB + Arithmetic.SUBTRACTION + TAB,
+    }
+    public void OnCodeAdd() {
+        OverlayCodeInput.GetComponent<InputField>().text += " + ";
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+
+        OverlayCodeConstant.SetActive(true);
+        OverlayCodeSystemInX.SetActive(true);
+        OverlayCodeSystemInY.SetActive(true);
+    }
+    public void OnCodeSubtract() {
+        OverlayCodeInput.GetComponent<InputField>().text += " - ";
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+        
+        OverlayCodeConstant.SetActive(true);
+        OverlayCodeSystemInX.SetActive(true);
+        OverlayCodeSystemInY.SetActive(true);
+    }
+    public void OnCodeMultiply() {
+        OverlayCodeInput.GetComponent<InputField>().text += " * ";
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+
+        
+        OverlayCodeConstant.SetActive(true);
+        OverlayCodeSystemInX.SetActive(true);
+        OverlayCodeSystemInY.SetActive(true);
+    }
+    public void OnCodeDivide() {
+        OverlayCodeInput.GetComponent<InputField>().text += " / ";
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+
+        OverlayCodeConstant.SetActive(true);
+        OverlayCodeSystemInX.SetActive(true);
+        OverlayCodeSystemInY.SetActive(true);
+    }
+    public void OnCodeModulus() {
+        OverlayCodeInput.GetComponent<InputField>().text += " % ";
+        OverlayCodeAdd.SetActive(false);
+        OverlayCodeSubtract.SetActive(false);
+        OverlayCodeMultiply.SetActive(false);
+        OverlayCodeDivide.SetActive(false);
+        OverlayCodeModulus.SetActive(false);
+
+        OverlayCodeConstant.SetActive(true);
+        OverlayCodeSystemInX.SetActive(true);
+        OverlayCodeSystemInY.SetActive(true);
+    }
+    public void OnCodeConstant() {
+        
+        OverlayCodeConstant.SetActive(false);
+        OverlayCodeSystemInX.SetActive(false);
+        OverlayCodeConstant.SetActive(false);
+        OverlayCodeOperator.SetActive(true);
+        OverlayCodeConstantAddPointOne.SetActive(true);
+        OverlayCodeConstantAddOne.SetActive(true);
+        OverlayCodeConstantAddTen.SetActive(true);
+        OverlayCodeConstantAddHundred.SetActive(true);
+        OverlayCodeConstantMinusPointOne.SetActive(true);
+        OverlayCodeConstantMinusOne.SetActive(true);
+        OverlayCodeConstantMinusTen.SetActive(true);
+        OverlayCodeConstantMinusHundred.SetActive(true);
     }
 }

@@ -5,7 +5,24 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+// Starting Center 44.3812661305678, -97.9222112121185
+
+
 // Mexico 19.419892, -99.088050
+
+
+// 47.43855, -122.3071241 SEATAC
+// 38.870983, -77.055977 Penatgon
+// 14.52437664,-138.5327714
+// 21.366984, -157.956068
+
+// 28.2095913577275, -177.37936452302
+// 35.05219871545,-196.802661046
+// 41.8948060731725,-216.22595756898
+// -33.939937, 151.175268
+// 52.35932, 0.47298
+// 37.454082, 126.435638
+
 public class Narration {
     public string text;
     public float time;
@@ -22,61 +39,61 @@ public class Interactor : MonoBehaviour {
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
     public GameObject TutorialAssets, CampaignIntroAssets, CampaignIntroSatelliteAssets,  CampaignGroverAssets, CampaignGroverSatelliteAssets, CampaignPearlAssets, CampaignMidwayAssets, CampaignNexusAssets, CampaignAbyssAssets;
-    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsHeatRay, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
+    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
     public int CampaignIndex = 0;
     AbstractMapController Map;
     List<Narration> Narration = new List<Narration> {
         // "Campaign Intro"
-        new Narration(-60.00f, "<b>⛅</b>"),
-        new Narration(-59.00f, "<b>We_know_now_that_in</b>"),
-        new Narration(-58.25f, "We_know_now_that_in\n<b>the_early_years_of_the</b>"),
-        new Narration(-57.50f, "We_know_now_that_in\nthe_early_years_of_the\n<b>twentieth_century_...</b>"), 
-        new Narration(-56.50f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_..."), 
-        new Narration(-55.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\n<b>This_world_was_being</b>"),
-        new Narration(-54.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\n<b>watched_closely_by</b>"),  
-        new Narration(-52.75f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\n<b>intelligences_...</b>"), 
-        new Narration(-52.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_..."), 
-        new Narration(-51.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_...\n\n<b>Greater_than_man!</b>"), 
-        new Narration(-49.50f, "<b>We_know_now_that</b>"), 
-        new Narration(-48.50f, "We_know_now_that\n<b>as_human-beings_busied</b>"), 
-        new Narration(-47.00f, "We_know_now_that\nas_human-beings_busied\n<b>themselves_about_their</b>"), 
-        new Narration(-46.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\n<b>various_concerns_...</b>"),
-        new Narration(-45.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_..."),
-        new Narration(-44.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\n<b>They_were_scruntizied</b>"),
-        new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
-        new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
-        new Narration(-42.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\nand_studied_..."),
-        new Narration(-41.25f, "<b>Perhaps_almost_as</b>"),
-        new Narration(-40.50f, "Perhaps_almost_as\n<b>narrowly_as_a_man</b>"),
-        new Narration(-39.50f, "Perhaps_almost_as\nnarrowly_as_a_man\n<b>with_a_microscope</b>"),
-        new Narration(-38.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\n<b>might_scruntinize_the</b>"),
-        new Narration(-37.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\n<b>transient_creatures</b>"),
-        new Narration(-36.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\n<b>that_swarm_and_multiply</b>"),
-        new Narration(-34.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\n<b>in_a_drop_of_water_...</b>"),
-        new Narration(-33.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\nin_a_drop_of_water_..."),
-        new Narration(-32.00f, "<b>With_infinite_complacence</b>"),
-        new Narration(-30.00f, "With_infinite_complacence\n<b>people_went_to_and_fro</b>"),
-        new Narration(-29.25f, "With_infinite_complacence\npeople_went_to_and_fro\n<b>over_the_Earth_about</b>"),
-        new Narration(-28.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\n<b>their_little_affairs_...</b>"),
-        new Narration(-27.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_..."),
-        new Narration(-26.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\n<b>Which_by_chance_or</b>"),
-        new Narration(-26.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\n<b>design,_man_has</b>"),
-        new Narration(-24.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\n<b>inherited_out_of_the</b>"),
-        new Narration(-23.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\n<b>dark_mystery_of_time</b>"),
-        new Narration(-21.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\ndark_mystery_of_time\n<b>and_space_...</b>"),
-        new Narration(-20.00f, "<b>Yet_across_an_immense</b>"),
-        new Narration(-19.00f, "Yet_across_an_immense\n<b>ethereal_gulf_...</b>"),
-        new Narration(-18.00f, "Yet_across_an_immense\nethereal_gulf_..."),
-        new Narration(-16.00f, "Yet_across_an_immense\nethereal_gulf_...\n\n<b>Intellect,_vast,_cool</b>"),
-        new Narration(-13.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic,</b>"),
-        new Narration(-11.25f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\n<b>regarded_this_Earth</b>"),
-        new Narration(-10.25f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\n<b>with_envious_eyes,</b>"),
-        new Narration(-08.50f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\n<b>slowly_and_surely_drew</b>"),
-        new Narration(-07.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\nslowly_and_surely_drew\n<b>their_plans_against_us!</b>"),
-        new Narration(-06.00f, "Yet_across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,\nslowly_and_surely_drew\ntheir_plans_against_us!"),
+        new Narration(-20.00f, "<b>⛅</b>"),
+        // new Narration(-59.00f, "<b>We_know_now_that_in</b>"),
+        // new Narration(-58.25f, "We_know_now_that_in\n<b>the_early_years_of_the</b>"),
+        // new Narration(-57.50f, "We_know_now_that_in\nthe_early_years_of_the\n<b>twentieth_century_...</b>"), 
+        // new Narration(-56.50f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_..."), 
+        // new Narration(-55.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\n<b>This_world_was_being</b>"),
+        // new Narration(-54.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\n<b>watched_closely_by</b>"),  
+        // new Narration(-52.75f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\n<b>intelligences_...</b>"), 
+        // new Narration(-52.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_..."), 
+        // new Narration(-51.00f, "We_know_now_that_in\nthe_early_years_of_the\ntwentieth_century_...\n\nThis_world_was_being\nwatched_closely_by\nintelligences_...\n\n<b>Greater_than_man!</b>"), 
+        // new Narration(-49.50f, "<b>We_know_now_that</b>"), 
+        // new Narration(-48.50f, "We_know_now_that\n<b>as_human-beings_busied</b>"), 
+        // new Narration(-47.00f, "We_know_now_that\nas_human-beings_busied\n<b>themselves_about_their</b>"), 
+        // new Narration(-46.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\n<b>various_concerns_...</b>"),
+        // new Narration(-45.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_..."),
+        // new Narration(-44.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\n<b>They_were_scruntizied</b>"),
+        // new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
+        // new Narration(-43.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\n<b>and_studied_...</b>"),
+        // new Narration(-42.00f, "We_know_now_that\nas_human-beings_busied\nthemselves_about_their\nvarious_concerns_...\n\nThey_were_scruntizied\nand_studied_..."),
+        // new Narration(-41.25f, "<b>Perhaps_almost_as</b>"),
+        // new Narration(-40.50f, "Perhaps_almost_as\n<b>narrowly_as_a_man</b>"),
+        // new Narration(-39.50f, "Perhaps_almost_as\nnarrowly_as_a_man\n<b>with_a_microscope</b>"),
+        // new Narration(-38.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\n<b>might_scruntinize_the</b>"),
+        // new Narration(-37.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\n<b>transient_creatures</b>"),
+        // new Narration(-36.25f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\n<b>that_swarm_and_multiply</b>"),
+        // new Narration(-34.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\n<b>in_a_drop_of_water_...</b>"),
+        // new Narration(-33.75f, "Perhaps_almost_as\nnarrowly_as_a_man\nwith_a_microscope\nmight_scruntinize_the\ntransient_creatures\nthat_swarm_and_multiply\nin_a_drop_of_water_..."),
+        // new Narration(-32.00f, "<b>With_infinite_complacence</b>"),
+        // new Narration(-30.00f, "With_infinite_complacence\n<b>people_went_to_and_fro</b>"),
+        // new Narration(-29.25f, "With_infinite_complacence\npeople_went_to_and_fro\n<b>over_the_Earth_about</b>"),
+        // new Narration(-28.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\n<b>their_little_affairs_...</b>"),
+        // new Narration(-27.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_..."),
+        // new Narration(-26.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\n<b>Which_by_chance_or</b>"),
+        // new Narration(-26.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\n<b>design,_man_has</b>"),
+        // new Narration(-24.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\n<b>inherited_out_of_the</b>"),
+        // new Narration(-23.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\n<b>dark_mystery_of_time</b>"),
+        // new Narration(-21.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\ndark_mystery_of_time\n<b>and_space_...</b>"),
+        new Narration(-19.00f, "<b>Across_an_immense</b>"),
+        new Narration(-18.00f, "Across_an_immense\n<b>ethereal_gulf_...</b>"),
+        new Narration(-17.00f, "Across_an_immense\nethereal_gulf_..."),
+        new Narration(-16.00f, "Across_an_immense\nethereal_gulf_...\n\n<b>Intellect,</b>"),
+        new Narration(-15.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast,_cool</b>"),
+        new Narration(-13.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic,</b>"),
+        new Narration(-11.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\n<b>regarded_this_Earth</b>"),
+        new Narration(-10.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\n<b>with_envious_eyes,_and</b>"),
+        new Narration(-07.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\n<b>slowly_and_surely_drew</b>"),
+        new Narration(-06.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\nslowly_and_surely_drew\n<b>their_plans_against_us!</b>"),
+        new Narration(-05.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\nslowly_and_surely_drew\ntheir_plans_against_us!"),
         new Narration(-03.00f, "<b>⛈</b>"),
         new Narration(-02.00f, "⛈"),
-        new Narration(-01.00f, ""),
         // new Narration(-47.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\n<b>officially_confirmed_as</b>\n"),
         // new Narration(-46.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\n<b>a_full_scale_invasion</b>\n"), 
         // new Narration(-45.50f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\na_full_scale_invasion\n<b>of_Earth_by_Martians!</b>"), 
@@ -107,24 +124,29 @@ public class Interactor : MonoBehaviour {
         // new Narration( 02.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\n<b>to_issue_tactical</b>"),
         // new Narration( 03.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\n<b>commands.</b>"),
         // new Narration( 04.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands."),
-        new Narration( 00.00f, "$"),
-        new Narration( 01.00f, "<b>$</b>"),
-        new Narration( 02.00f, "$"),
-        new Narration( 03.00f, "<b>$</b>"),
-        new Narration( 04.00f, "$"),
-        new Narration( 05.00f, "<b>$</b>"),
-        new Narration( 06.00f, "$"),
+        new Narration(000.00f, "<b>⛅</b>"),
+        
+        new Narration(001.00f, "<b>The_map_screen_shows</b>"),
+        new Narration(002.00f, "The_map_screen_shows\n<b>you_your_mission_area.</b>"),
+        new Narration(005.00f, "The_map_screen_shows\nyou_your_mission_area.\n\n<b>Select_units_high-</b>"),
+        new Narration(007.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\n<b>lighted_in_yellow!</b>"),
+        new Narration(008.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\nlighted_in_yellow!"),
+        // new Narration( 01.00f, "<b>The_Map_Screen_shows</b>"),
+        // new Narration( 02.00f, "The_Map_Screen_shows\n<b>you_your_mission_area</b>"),
+
+        new Narration(010.00f, "<b>$</b>"),
+        new Narration(011.00f, "$"),
         // "Tutorial: Zoom In"
         // new Narration( 06.00f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\n<b>Press_the_⇲_Zoom_key</b>\nto_zoom_in."), 
         // new Narration( 07.50f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\nPress_the_⇲_Zoom_key\n<b>to_zoom_in.</b>"),
         // new Narration( 09.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\n<b>Click_/_tap</b>\n⇲_Zoom"),
         // new Narration( 10.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\nClick_/_tap\n<b>⇲_Zoom</b>"),
         // "Tutorial: Zooming In"
-        new Narration(60.00f, "<b>When_the_map_is_at</b>\n"), 
-        new Narration(61.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
-        new Narration(62.50f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed</b>\n"),
-        new Narration(64.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
-        new Narration(66.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
+        new Narration(060.00f, "<b>When_the_map_is_at</b>\n"), 
+        new Narration(061.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
+        new Narration(062.50f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed</b>\n"),
+        new Narration(064.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
+        new Narration(066.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
         // "Tutorial: Intro"
         new Narration(0100.00f, "⛈"),
         new Narration(0102.25f, "⛅"),
@@ -647,7 +669,7 @@ public class Interactor : MonoBehaviour {
         // "🔚", 43.5f
         // "⛈", 47f
     };
-    float NarrationTimer = -60;
+    float NarrationTimer = -20f; //-60;
     int NarrationIndex = 0;
     public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
     public AudioClip NarratorSwitchToMap, NarratorZoomInMap, NarratorZoomInDetails, NarratorAimTheCrosshair, NarratorWelcome;
@@ -706,7 +728,7 @@ public class Interactor : MonoBehaviour {
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         // PlayVideo("SplashScreen");
-        PlayVideo("WarOfTheWorldsIntro");
+        PlayVideo("WarOfTheWorldsStinger");
         OnMapView();
         OverlayZoomIn.SetActive(false);
         PrinterLeft.SetActive(false);
@@ -718,6 +740,7 @@ public class Interactor : MonoBehaviour {
         BinocularToggle.SetActive(false);
         CycleToggle.SetActive(false);
         Map = GameObject.Find("Map")?.GetComponent<AbstractMapController>();
+        Map.SetMars();
     }
     public string GetBinocular() {
         return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
@@ -872,8 +895,8 @@ public class Interactor : MonoBehaviour {
 
             //MapScreenPanOverlay.SetActive(true);
             
-            if (NarrationTimer > 0 && NarrationTimer < 300) {
-                // NarrationTimer = 300;
+            if (NarrationTimer > 0 && NarrationTimer < 200) {
+                NarrationTimer = 200;
                 // PlayAudio(TutorialTarget);
             }
 
@@ -934,16 +957,15 @@ public class Interactor : MonoBehaviour {
         if (GameObject.Find("Video Player") != null) {
             GameObject.Find("Video Player").GetComponent<AudioSource>().clip = clip;
             GameObject.Find("Video Player").GetComponent<AudioSource>().Play();
-            GameObject.Find("Video Player").GetComponent<AudioSource>().loop = false;
+            GameObject.Find("Video Player").GetComponent<AudioSource>().loop = true;
             GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value / 8;
         }
     }
     public void PlayAudio(AudioClip clip) {
         // if (camera != null) {
-            print ("Playing(" + clip.name + ")");
-            GameObject.Find("World").GetComponent<AudioSource>().clip = clip;
-            GameObject.Find("World").GetComponent<AudioSource>().loop = false;
-            GameObject.Find("World").GetComponent<AudioSource>().Play();
+        GameObject.Find("World").GetComponent<AudioSource>().clip = clip;
+        GameObject.Find("World").GetComponent<AudioSource>().loop = false;
+        GameObject.Find("World").GetComponent<AudioSource>().Play();
         // }
     }
     string queue_audio = "";
@@ -954,10 +976,11 @@ public class Interactor : MonoBehaviour {
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
         queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
+        #if UNITY_WEBGL
+        string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.unity/master/Assets/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
+        #else 
         string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
-        // #if UNITY_WEBGL
-        // string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.assets/master/Videos/BitNaughts" + trimmed_url + "480p.mp4";
-        // #endif
+        #endif
         // print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
@@ -997,6 +1020,8 @@ public class Interactor : MonoBehaviour {
                 return WarOfTheWorldsCredit;
             case "WarOfTheWorldsIntro":
                 return WarOfTheWorldsIntro;
+            case "WarOfTheWorldsStinger":
+                return WarOfTheWorldsStinger;
             case "WarOfTheWorldsFirstContact":
                 return WarOfTheWorldsFirstContact;
             case "WarOfTheWorldsHeatRay":
@@ -1146,6 +1171,7 @@ public class Interactor : MonoBehaviour {
         }
         SetContentSize((max_line_length - 2) * fontSize / 2, lines.Length * fontSize);
     }
+
     public string component_name = "";
     public string component_text = "";
     public void RenderComponent(string component) {
@@ -1169,22 +1195,40 @@ public class Interactor : MonoBehaviour {
             // InputField.text = "▦ Printer";//" ⛴ Ship Select";
             switch (MarkerIndex) {
                 case 0:
+
                     Processor.SetActive(true);
-                    Bulkhead.SetActive(true);
-                    Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
-                        new ClassObj("▩ Process"),
-                        new ClassObj("▥ Bulk"),
-                        new ClassObj("◉ Engine"),
-                        new ClassObj("◎ Right"),
-                        new ClassObj("◎ Left")
-                    });
-                    Thruster.SetActive(true);
-                    BoosterL.SetActive(true);
-                    BoosterR.SetActive(true);
+                    CampaignIntroAssets.SetActive(true);
+                    CampaignIntroSatelliteAssets.SetActive(true);
                     Ship.Start();
+                    Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
+                        new ClassObj("▩ ScanProcess"),
+                        new ClassObj("▣ Turret"),
+                        new ClassObj("◌ Scanner"),//,
+                        new ClassObj("◎ Right"),
+                        new ClassObj("◎ Left"),
+                        new ClassObj("◉ Engine")
+                        // new ClassObj("▨ Antenna")
+                    });
+                    //         var components = new string[]{"Processor Process = new Processor (0, 3, 4, 5);","Bulkhead Bulk = new Bulkhead (0, 0, 4, 4);","Booster Right = new Booster (4, 3, 2, 1);", "Booster Left = new Booster (1, 2, 3, 4);", "Thruster Engine = new Thruster (3, 4, 5, 6);"};
+
+                    // Bulkhead.SetActive(true);
+                    // Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
+                    //     new ClassObj("▩ Process"),
+                    //     new ClassObj("▥ Bulk"),
+                    //     new ClassObj("◉ Engine"),
+                    //     new ClassObj("◎ Right"),
+                    //     new ClassObj("◎ Left")
+                    // });
+                    // Thruster.SetActive(true);
+                    // BoosterL.SetActive(true);
+                    // BoosterR.SetActive(true);
+                    if (NarrationTimer < 120) NarrationTimer = 120;
+                    // Ship.Start();
                     if (GameObject.Find("0") != null) {
                         GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                        GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Exiting";
                         GameObject.Find("0").SetActive(false);
+
                     }
                     break;
                 case 1:
@@ -1198,10 +1242,10 @@ public class Interactor : MonoBehaviour {
                         Ship.Start();
                         Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
                             new ClassObj("▩ ScanProcess"),
-                            new ClassObj("▣ Swivel"),
+                            new ClassObj("▣ Turret"),
                             new ClassObj("◉ Engine"),
-                            new ClassObj("◌ Scanner"),
-                            new ClassObj("▨ Antenna")
+                            new ClassObj("◌ Scanner")//,
+                            // new ClassObj("▨ Antenna")
                         });
                     }
                     else if (NarrationTimer < 4000) {
@@ -1249,10 +1293,10 @@ public class Interactor : MonoBehaviour {
             // PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Print";
-            if (NarrationTimer > 0 && NarrationTimer < 240) {
-                NarrationTimer = 240;
-                PlayAudio(TutorialComponentsIcons);
-            }
+            // if (NarrationTimer > 0 && NarrationTimer < 240) {
+            //     NarrationTimer = 240;
+            //     PlayAudio(TutorialComponentsIcons);
+            // }
         }
         else if (InputField.text.Contains("Processor")) {
             // InputField.text = "▩ " + InputField.text;
@@ -1290,7 +1334,7 @@ public class Interactor : MonoBehaviour {
             // PrinterLeft.SetActive(false);
         }
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
-        component_text = component_string.Substring(2);
+        component_text = component_string.Substring(component_string.IndexOf("\n") + 1);
         RenderText(component_text);
         // RenderText(component_text);
         // RenderText(Ship.interpreter.ToString());
@@ -1339,7 +1383,7 @@ public class Interactor : MonoBehaviour {
                 GameObject.Find(component_name).name = InputField.text;
                 Ship.Start();
                 OverlayInteractor.UpdateOptions();
-                // OverlayInteractor.OnDropdownChange(); 
+                OverlayInteractor.OnDropdownChange(0); 
             break;
         }
         // InputFieldPlaceholder.text = "";
@@ -1391,16 +1435,16 @@ public class Interactor : MonoBehaviour {
     //     }
     // }
     public void PanTutorial() {
-        if (NarrationTimer > 300 && NarrationTimer < 360) { 
-            NarrationTimer = 360; 
-            PlayAudio(TutorialCycle); 
-            CycleToggle.SetActive(true);
-            if (GameObject.Find("OverlayPanUp") != null) GameObject.Find("OverlayPanUp").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            if (GameObject.Find("OverlayPanDown") != null) GameObject.Find("OverlayPanDown").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            if (GameObject.Find("OverlayPanRight") != null) GameObject.Find("OverlayPanRight").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            if (GameObject.Find("OverlayPanLeft") != null) GameObject.Find("OverlayPanLeft").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        // if (NarrationTimer > 300 && NarrationTimer < 360) { 
+        //     NarrationTimer = 360; 
+        //     PlayAudio(TutorialCycle); 
+        //     CycleToggle.SetActive(true);
+        //     if (GameObject.Find("OverlayPanUp") != null) GameObject.Find("OverlayPanUp").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     if (GameObject.Find("OverlayPanDown") != null) GameObject.Find("OverlayPanDown").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     if (GameObject.Find("OverlayPanRight") != null) GameObject.Find("OverlayPanRight").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     if (GameObject.Find("OverlayPanLeft") != null) GameObject.Find("OverlayPanLeft").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             
-        }
+        // }
     }
     public void CancelTutorial() {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
@@ -1417,7 +1461,7 @@ public class Interactor : MonoBehaviour {
         InputJoystick.SetActive(false);
         Stage = "MapUnzoom";
         camera.GetComponent<AudioSource>().Stop();
-        NarrationTimer = -1f;
+        // NarrationTimer = -1f;
         for (int i = 0; i < Example.transform.GetChild(0).childCount; i++) {
             if (Example.transform.GetChild(0).GetChild(i).gameObject.name != "Main Camera") 
                 Example.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
@@ -1557,6 +1601,7 @@ public class Interactor : MonoBehaviour {
         // if (mm == "") return ss + "." + pt;
         return mm + ":" + ss + "." + pt[0];
     }
+    GameObject MapMarker;
     void Update () {
         animation_timer += Time.deltaTime;
         if (Input.GetMouseButton(0)) {
@@ -1565,18 +1610,12 @@ public class Interactor : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             click_duration = 0;
         }
-        if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
-        {
-            ResetVideo();
-
-            if (Stage == "SplashScreen") // Splash Screen
-            {
-                // Printer.SetActive(false);
+        if (Stage == "SplashScreen" && NarrationTimer > -1f) {
                 OverlayZoomIn.SetActive(true);
                 OverlayZoomOut.SetActive(true);
                 MapScreenPanOverlay.SetActive(true);
                 print (NarrationTimer);
-                NarrationTimer = -1;
+                NarrationTimer = 0;
                 // SubtitlesShadow.SetActive(false);
                 // Subtitles.SetActive(false);
                 camera.GetComponent<AudioSource>().Stop();
@@ -1586,56 +1625,165 @@ public class Interactor : MonoBehaviour {
                 component_name = "";
                 ResetVideo();
                 MapUnzoomed();
-                Map.SetEarth();
+                PlayMusic(WarOfTheWorldsHum);
+                PlayAudio(WarOfTheWorldsBeep);
+                // Map.SetEarth();
                 volume_slider.SetActive(false);
                 InterpreterZoomIn.SetActive(true);
                 InterpreterZoomOut.SetActive(true);
+                MapMarker = GameObject.Find("0");
+
+        } 
+        if (NarrationTimer > 1 && NarrationTimer < 2) {
+            PlayAudio(WarOfTheWorldsMapScreen);
+            NarrationTimer = 2;
+        }
+        if (NarrationTimer >= 2 && NarrationTimer < 5) {
+            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer >= 6 && NarrationTimer < 7) {
+            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        }
+        if (NarrationTimer >= 6 && NarrationTimer < 61) {
+            MapMarker.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer >= 61 && NarrationTimer < 62) {
+            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            MapMarker.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            PlayAudio(NarratorZoomInDetails);
+            NarrationTimer = 62;
+        }
+        if (NarrationTimer >= 62 && NarrationTimer < 99) {
+            GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer > 99 && NarrationTimer < 100) {
+            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 100;
+            PlayAudio(WarOfTheWorldsTargetWindow);
+        }
+        if (NarrationTimer >= 100 && NarrationTimer < 120) {
+            MapMarker.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer > 120 && NarrationTimer < 121) {
+            MapMarker.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 121;
+            PlayAudio(WarOfTheWorldsTargetWindowGood);
+        }
+        if (NarrationTimer > 121 && NarrationTimer < 128) {
+            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer > 128 && NarrationTimer < 129) {
+            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 129;
+            PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
+        }
+        if (NarrationTimer > 129 && NarrationTimer < 180) {
+            PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer > 180 && NarrationTimer < 181) {
+            
+            PrinterPrint.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 181;
+            // PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
+        }
+        if (NarrationTimer > 200 && NarrationTimer < 201) {
+            PlayAudio(WarOfTheWorldsGetMoving);
+            // PlayMusic(WarOfTheWorldsTheme);
+            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 201;
+        }
+        if (NarrationTimer > 201f && NarrationTimer < 206.5f) {
+            Processor.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        }
+        if (NarrationTimer > 206.5f && NarrationTimer < 207) {
+            // PlayAudio(WarOfTheWorldsFirstContact);
+            NarrationTimer = 207;
+            Processor.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        }
+        if (NarrationTimer > 300 && NarrationTimer < 330) {
+            GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+
+        }
+        if (NarrationTimer > 330 && NarrationTimer < 331) {
+            GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            NarrationTimer = 331;
+            Unzoom();
+        }
+        if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
+        {
+            ResetVideo();
+            LoadingScreen.SetActive(false);
+            if (Stage == "SplashScreen") // Splash Screen
+            {
+                // Printer.SetActive(false);
+                OverlayZoomIn.SetActive(true);
+                OverlayZoomOut.SetActive(true);
+                MapScreenPanOverlay.SetActive(true);
+                print (NarrationTimer);
+                NarrationTimer = 0;
+                // SubtitlesShadow.SetActive(false);
+                // Subtitles.SetActive(false);
+                camera.GetComponent<AudioSource>().Stop();
+                Stage = "MapInterface";
+                SplashScreen.SetActive(false);
+                InputField.text = "☄ BitNaughts";
+                component_name = "";
+                ResetVideo();
+                MapUnzoomed();
+                // Map.SetEarth();
+                volume_slider.SetActive(false);
+                InterpreterZoomIn.SetActive(true);
+                InterpreterZoomOut.SetActive(true);
+                PlayMusic(WarOfTheWorldsHum);
+                PlayAudio(WarOfTheWorldsBeep);
+                MapMarker = GameObject.Find("0");
                 // PlayAudio(SplashScreenComplete);
             } else {
-                if (NarrationTimer >= 100 && NarrationTimer < 180) {
-                    Stage = "MapZoomed"; 
-                    NarrationTimer = 180;
-                    // PlayAudio(NarratorWelcome);
+                // if (NarrationTimer >= 100 && NarrationTimer < 180) {
+                //     Stage = "MapZoomed"; 
+                //     NarrationTimer = 180;
+                //     // PlayAudio(NarratorWelcome);
                     
-                    PlayAudio(TutorialLookAround);
-                    PlayMusic(IntroMusic);
-                    ResetVideo();
-                    InputField.text = "☄ Tutorial";
+                //     PlayAudio(TutorialLookAround);
+                //     PlayMusic(IntroMusic);
+                //     ResetVideo();
+                //     InputField.text = "☄ Tutorial";
                     
-                    Printer.SetActive(true);
-                    Ship.Start();
-                    Map.SetEarth();
-                } else if (NarrationTimer >= 1100 && NarrationTimer < 1200) {
-                    Stage = "MapZoomed";
-                    NarrationTimer = 1200;
-                    NarrationIndex = 0;
-                    GameObject.Find("World").GetComponent<AudioSource>().Stop();
-                    PlayMusic(CampaignPearlMusic);
-                    ResetVideo();
-                    Map.SetMars();
+                //     Printer.SetActive(true);
+                //     Ship.Start();
+                //     // Map.SetEarth();
+                // } else if (NarrationTimer >= 1100 && NarrationTimer < 1200) {
+                //     Stage = "MapZoomed";
+                //     NarrationTimer = 1200;
+                //     NarrationIndex = 0;
+                //     GameObject.Find("World").GetComponent<AudioSource>().Stop();
+                //     PlayMusic(CampaignPearlMusic);
+                //     ResetVideo();
+                //     Map.SetMars();
                     
-                    Printer.SetActive(true);
-                    Ship.Start();
-                    MapScreenPanOverlay.SetActive(true);
-                    volume_slider.SetActive(false);
-                    OverlayZoomIn.SetActive(true);
-                    OverlayZoomOut.SetActive(true);
-                    camera.GetComponent<Camera>().backgroundColor = new Color(80f/255f, 80f/255f, 80f/255f);
-                    // PlayAudio(CampaignPearlIntroduction);
-                    InputField.text = "☄ Mars";
-                } else if (NarrationTimer >= 2000 && NarrationTimer <= 3000) {
-                    Map.SetEarth();
-                    Map.SetGroversMill();
-                    InputField.text = "☄ BitNaughts";
-                    MapScreenPanOverlay.SetActive(true);
-                    volume_slider.SetActive(false);
-                    OverlayZoomIn.SetActive(true);
-                    OverlayZoomOut.SetActive(true);
-                    // PlayAudio(NarratorWelcome);
-                    ResetVideo();
-                    NarrationTimer = 3100;
-                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Campaign";
-                }
+                //     Printer.SetActive(true);
+                //     Ship.Start();
+                //     MapScreenPanOverlay.SetActive(true);
+                //     volume_slider.SetActive(false);
+                //     OverlayZoomIn.SetActive(true);
+                //     OverlayZoomOut.SetActive(true);
+                //     camera.GetComponent<Camera>().backgroundColor = new Color(80f/255f, 80f/255f, 80f/255f);
+                //     // PlayAudio(CampaignPearlIntroduction);
+                //     InputField.text = "☄ Mars";
+                // } else if (NarrationTimer >= 2000 && NarrationTimer <= 3000) {
+                //     Map.SetEarth();
+                //     Map.SetGroversMill();
+                //     InputField.text = "☄ BitNaughts";
+                //     MapScreenPanOverlay.SetActive(true);
+                //     volume_slider.SetActive(false);
+                //     OverlayZoomIn.SetActive(true);
+                //     OverlayZoomOut.SetActive(true);
+                //     // PlayAudio(NarratorWelcome);
+                //     ResetVideo();
+                //     NarrationTimer = 3100;
+                //     if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Campaign";
+                // }
                 // } else if (NarrationTimer >= 1999 && NarrationTimer < 2100){
                 //     Stage = "MapZoomed";
                 //     // NarrationTimer = 2100;
@@ -1807,10 +1955,14 @@ public class Interactor : MonoBehaviour {
             case 0:
                 Printer.SetActive(true);      
                 Ship.Start();
-                PlayVideo("NewtonsLaws");
-                PlayAudio(LookupNarration("NewtonsLaws"));
-                NarrationTimer = 100;
+                OverlayInteractor.UpdateOptions();
+                // PlayVideo("NewtonsLaws");
+                // PlayAudio(LookupNarration("NewtonsLaws"));
+                NarrationTimer = 99;
                 TutorialAssets.SetActive(true);
+                Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
+                
+                GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
                 break;
             case 1:
                 Printer.SetActive(true);           
@@ -1859,26 +2011,40 @@ public class Interactor : MonoBehaviour {
                 break;
         }
 
-        Map?.Zoom(15);
+        Map?.Zoom(10);//15);
     }
     public void MapUnzoomed() {
+
         Stage = "MapInterface";
         Map?.Zoom(0.825f);
         if (NarrationTimer > 2000) {
             NarrationTimer = 2100;
             GameObject.Find("Video Player").GetComponent<AudioSource>().Stop();
-            PlayVideo("WarOfTheWorldsHeatRay");
-        CampaignIntroAssets.SetActive(false);
-        CampaignIntroSatelliteAssets.SetActive(false);
+            // PlayVideo("WarOfTheWorldsHeatRay");
+            CampaignIntroAssets.SetActive(false);
+            CampaignIntroSatelliteAssets.SetActive(false);
+        }     
+        if (NarrationTimer > 300 && NarrationTimer < 340) {           
+            GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Navigate";
+            NarrationTimer = 340;
         }
     }
     public void MapUnzoom() {
-        print ("unzoom");
-        PlayAudio(SoundBack);
-        NarrationIndex = -1;  
-        // SubtitlesShadow.SetActive(false);
-        // Subtitles.SetActive(false);   
-        Unzoom();
+        if (Stage == "MapZoom") {
+            print ("unzoom");
+            PlayAudio(SoundBack);
+            NarrationIndex = -1;  
+            // SubtitlesShadow.SetActive(false);
+            // Subtitles.SetActive(false);   S
+            Unzoom();
+        } else {
+            if (NarrationTimer > 300 && NarrationTimer < 330) {
+                Unzoom();
+                CampaignIntroAssets.SetActive(false);
+                CampaignIntroSatelliteAssets.SetActive(false);
+                NarrationTimer = 330;
+            }
+        }
     }
     public void MapZoom() {
         OverlayZoomOut.SetActive(true);
@@ -1888,7 +2054,6 @@ public class Interactor : MonoBehaviour {
             // Stage = "MapZoom";
             switch (MarkerIndex) {
                 case 0:
-                    // NarrationTimer = 60;
                     // GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                     // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Zooming";
                     // PlayAudio(NarratorZoomInDetails);
@@ -1910,26 +2075,26 @@ public class Interactor : MonoBehaviour {
     public int MarkerIndex = -1;
     public void MapInteractor(string marker) {
         print (marker);
-        Sound("OnMouse");
+        // Sound("OnMouse");
+        PlayAudio(WarOfTheWorldsClick);
         var target = GameObject.Find(marker);
         Camera.main.transform.localPosition = new Vector3(target.transform.position.x, target.transform.position.z, -100);
         if (int.TryParse(marker, out MarkerIndex)) {
             if (GameObject.Find("0") != null) GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);               
-            print (MarkerIndex);
+            // print (MarkerIndex);
             if (MarkerIndex == 0) {
-                if (TutorialAssets.transform.childCount == 0) {
-                    PlayAudio(TutorialOutro);
-                }
-                else {
-                    GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Tutorial";
-                    PlayAudio(NarratorZoomInDetails);
-                    MapScreenPanOverlay.SetActive(false);
-                    volume_slider.SetActive(true);
-                    global_timer = 0;
-                    NarrationTimer = 60;
-                    NarrationIndex = 0;
-                    Stage = "MapZoom";
-                } 
+                // if (TutorialAssets.transform.childCount == 0) {
+                //     PlayAudio(TutorialOutro);
+                // }
+                // else {
+                GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Starting";
+                MapScreenPanOverlay.SetActive(false);
+                volume_slider.SetActive(true);
+                global_timer = 0;
+                NarrationTimer = 61f;
+                NarrationIndex = 0;
+                Stage = "MapZoom";
+                // } 
                 // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Zooming";
                 // SubtitlesShadow.SetActive(true);
                 // Subtitles.SetActive(true);
@@ -1996,6 +2161,18 @@ public class Interactor : MonoBehaviour {
             // volume_slider.SetActive(false);
         }
     }
+
+    
+    public void SetEarth() {
+        CampaignIntroAssets.SetActive(false);
+        CampaignIntroSatelliteAssets.SetActive(false);
+        Processor.SetActive(false);
+        SetBackground(new Color(128/255f, 167/255f, 174/255f));
+        MapMarker.transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Multiplay";
+        NarrationTimer = 1000;
+        Stage = "MapInterface";
+        InputJoystick.SetActive(false);
+    }
     void SpriteFlash(string name, float start) {
         if (tutorial_timer > start ) { 
             if (GameObject.Find(name) != null) GameObject.Find(name).GetComponent<SpriteRenderer>().color = new Color(.5f + (tutorial_timer * 2) % 1, .5f + (tutorial_timer * 2) % 1, 0, 1f);
@@ -2020,7 +2197,8 @@ public class Interactor : MonoBehaviour {
     GameObject print_obj;
     void ResetVideo() {
         if (Stage == "MapInterface") GameObject.Find("World").GetComponent<AudioSource>().Stop();
-        SetBackground(new Color(128/255f, 167/255f, 174/255f));
+        // SetBackground(new Color(128/255f, 167/255f, 174/255f));
+        SetBackground(new Color(150f/255f, 150f/255f, 150f/255f));
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
 
     }
@@ -2065,7 +2243,7 @@ public class Interactor : MonoBehaviour {
                 OverlayInteractor.gameObject.SetActive(false);
                 MapScreenPanOverlay.SetActive(true);
                 InputJoystick.SetActive(true);
-                InputUseWeapon.SetActive(true);
+                // InputUseWeapon.SetActive(true);
                 printing = false;
                 if (MarkerIndex != 0) {
                     CycleToggle.SetActive(true);
@@ -2122,7 +2300,7 @@ public class Interactor : MonoBehaviour {
 
             // if (Stage == "MapZoom") {
             // } else {
-            Timer.text = FloatToTime(global_timer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
+            Timer.text = FloatToTime(NarrationTimer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
             // } 
             // if (Stage == "Loading" && (ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1) {
             //     PlayVideo("SplashScreen");
@@ -2318,7 +2496,19 @@ public class Interactor : MonoBehaviour {
         }
     }
     public void ProgressCampaign() {
-        Unzoom();
-        if (NarrationTimer < 2000) NarrationTimer = 2000;
+        // Unzoom();
+        if (NarrationTimer < 300)  { 
+            NarrationTimer = 300;
+            PlayAudio(WarOfTheWorldsHeatRay);
+        }
+    }
+
+    public void MapSpace() {
+        SetBackground(new Color(1f/255f, 1f/255f, 36f/255f));
+    }
+
+    public void ResetProcessor() {
+        print("Reset test");
+        Processor.GetComponent<ProcessorController>().interpreter.ResetLine();
     }
 }
