@@ -39,7 +39,7 @@ public class Interactor : MonoBehaviour {
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
     public GameObject TutorialAssets, CampaignIntroAssets, CampaignIntroSatelliteAssets,  CampaignGroverAssets, CampaignGroverSatelliteAssets, CampaignPearlAssets, CampaignMidwayAssets, CampaignNexusAssets, CampaignAbyssAssets;
-    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
+    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
     public int CampaignIndex = 0;
     AbstractMapController Map;
     List<Narration> Narration = new List<Narration> {
@@ -892,6 +892,7 @@ public class Interactor : MonoBehaviour {
             
             OverlayZoomOut.SetActive(true);
             OverlayZoomIn.SetActive(true);
+            PlayAudio(WarOfTheWorldsBeepBoop);
 
             //MapScreenPanOverlay.SetActive(true);
             
@@ -900,23 +901,48 @@ public class Interactor : MonoBehaviour {
                 // PlayAudio(TutorialTarget);
             }
 
-        } else if (InputField.text.Contains("Processor")) {
-            OnCodeView();
+        } else if (InputField.text.Contains("Process")) {
+            // OnCodeView();.
+            ResetProcessor();
+            
         } else if (InputField.text.Contains("Cannon")) {
             GameObject.Find("CannonL")?.GetComponent<ComponentController>().Action(-1);
             GameObject.Find("CannonR")?.GetComponent<ComponentController>().Action(-1);
             PrinterLeft.SetActive(false);
-        } else if (InputField.text.Contains("Booster")) {
-            GameObject.Find("BoosterL")?.GetComponent<ComponentController>().Action(-1);
-            GameObject.Find("BoosterR")?.GetComponent<ComponentController>().Action(-1);
-        } else if (InputField.text.Contains("Sensor")) {
-            GameObject.Find("SensorL")?.GetComponent<ComponentController>().Action(-1);
-            GameObject.Find("SensorR")?.GetComponent<ComponentController>().Action(-1);
-        } else if (InputField.text.Contains("Thruster")) {
-            GameObject.Find("ThrusterR")?.GetComponent<ComponentController>().Action(25);
-            GameObject.Find("ThrusterL")?.GetComponent<ComponentController>().Action(25);
-            GameObject.Find("Thruster")?.GetComponent<ComponentController>().Action(25);
+        } else if (InputField.text.Contains("Left")) {
+            GameObject.Find("Left")?.GetComponent<ComponentController>().Action(15);
+        } else if (InputField.text.Contains("Right")) {
+            GameObject.Find("Right")?.GetComponent<ComponentController>().Action(15);
+        } else if (InputField.text.Contains("Scanner")) {
+            GameObject.Find("Scanner")?.GetComponent<ComponentController>().Action(0);
+        } else if (InputField.text.Contains("Engine")) {
+            GameObject.Find("Engine")?.GetComponent<ComponentController>().Action(25);
+        } else if (InputField.text.Contains("Turret")) {
+            GameObject.Find("Turret")?.GetComponent<ComponentController>().Action(15);
         }
+
+        
+        // if (name == "Right" && action == -1) {
+        //     GameObject.Find("Right").GetComponent<BoosterController>().Fire();
+        // }
+        // if (name == "Right" && action != -1) {
+        //     GameObject.Find("Right").GetComponent<BoosterController>().Action(action);
+        // }
+        // if (name == "Left" && action == -1) {
+        //     GameObject.Find("Left").GetComponent<BoosterController>().Fire();
+        // }
+        // if (name == "Left" && action != -1) {
+        //     GameObject.Find("Left").GetComponent<BoosterController>().Action(action);
+        // }
+        // if (name == "Engine") {
+        //     GameObject.Find("Engine").GetComponent<ThrusterController>().Action(action);
+        // }
+        // if (name == "Turret") {
+        //     GameObject.Find("Turret").GetComponent<GimbalController>().Action(action);
+        // }
+        // if (name == "Scanner") {
+        //     GameObject.Find("Scanner").GetComponent<SensorController>().Action(action);
+        // }
     }
     public static int Max(int val1, int val2) {
         return (val1>=val2)?val1:val2;
@@ -1292,44 +1318,51 @@ public class Interactor : MonoBehaviour {
             // PrinterLeft.SetActive(true);
             // PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Print";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
             // if (NarrationTimer > 0 && NarrationTimer < 240) {
             //     NarrationTimer = 240;
             //     PlayAudio(TutorialComponentsIcons);
             // }
         }
-        else if (InputField.text.Contains("Processor")) {
+        else if (InputField.text.Contains("Process")) {
             // InputField.text = "▩ " + InputField.text;
-            // PrinterPrint.SetActive(true);
-            // PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "▤ TUI";
+            PrinterPrint.SetActive(true);
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☇ Main";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
-        else if (InputField.text.Contains("Cannon")) {
+        else if (InputField.text.Contains("◍")) {
             // InputField.text = "◍ " + InputField.text;
             PrinterPrint.SetActive(true);
             PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◍ Fire";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
-        else if (InputField.text.Contains("Booster")) {
+        else if (InputField.text.Contains("◎")) {
             // InputField.text = "◎ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◎ Fire";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◎ Boost";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
-        else if (InputField.text.Contains("Sensor")) {
+        else if (InputField.text.Contains("◌")) {
             // InputField.text = "◌ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◌ Fire";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◌ Scan";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
-        else if (InputField.text.Contains("Thruster")) {
+        else if (InputField.text.Contains("◉")) {
             // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◉ Fire";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◉ Throttle";
+            // PrinterRight.SetActive(false);
+            // PrinterLeft.SetActive(false);
+        }
+        else if (InputField.text.Contains("▣")) {
+            // InputField.text = "◉ " + InputField.text;
+            PrinterPrint.SetActive(true);
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "▣ Rotate";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
@@ -1487,27 +1520,50 @@ public class Interactor : MonoBehaviour {
         Application.Quit();
     }
     public void Action(string name, int action) {
-        GameObject.Find(name.Substring(2)).GetComponent<ComponentController>().Action(action);
+        print ("ACTION" + name + " " + action);
+        if (name == "Right" && action == -1) {
+            GameObject.Find("Right").GetComponent<BoosterController>().Fire();
+        }
+        if (name == "Right" && action != -1) {
+            GameObject.Find("Right").GetComponent<BoosterController>().Action(action);
+        }
+        if (name == "Left" && action == -1) {
+            GameObject.Find("Left").GetComponent<BoosterController>().Fire();
+        }
+        if (name == "Left" && action != -1) {
+            GameObject.Find("Left").GetComponent<BoosterController>().Action(action);
+        }
+        if (name == "Engine") {
+            GameObject.Find("Engine").GetComponent<ThrusterController>().Action(action);
+        }
+        if (name == "Turret") {
+            GameObject.Find("Turret").GetComponent<GimbalController>().Action(action);
+        }
+        if (name == "Scanner") {
+            GameObject.Find("Scanner").GetComponent<SensorController>().Action(action);
+        }
+        // GameObject.Find(name).GetComponent<ComponentController>().Action(action);
     }
     public void Sound(string clip) {
         switch (clip) {
-            case "Back": Sound(SoundBack); break;
-            case "Click": Sound(SoundClick); break;
-            case "Error": Sound(SoundError); break;
-            case "OnMouse": Sound(SoundOnMouse); break;
-            case "Toggle": Sound(SoundToggle); break;
-            case "Processor": Sound(SoundProcessor); break;
-            case "Gimbal": Sound(SoundGimbal); break;
-            case "Cannon1": Sound(SoundCannon1); break;
-            case "Cannon2": Sound(SoundCannon2); break;
-            case "Cannon3": Sound(SoundCannon3); break;
-            case "Radar": Sound(SoundRadar); break;
-            case "Booster": Sound(SoundBooster); break;
-            case "Thruster": Sound(SoundThruster); break;
-            case "Torpedo1": Sound(SoundTorpedo1); break;
-            case "Torpedo2": Sound(SoundTorpedo2); break;
-            case "Warning": Sound(SoundWarning); break;
-            case "WarningOver": Sound(SoundWarningOver); break;
+            case "Back": PlayAudio(SoundBack); break;
+            case "Click": PlayAudio(SoundClick); break;
+            case "Error": PlayAudio(SoundError); break;
+            case "OnMouse": PlayAudio(SoundOnMouse); break;
+            case "Toggle": PlayAudio(SoundToggle); break;
+            case "Processor": PlayAudio(SoundProcessor); break;
+            case "Gimbal": PlayAudio(SoundGimbal); break;
+            case "Cannon1": PlayAudio(SoundCannon1); break;
+            case "Cannon2": PlayAudio(SoundCannon2); break;
+            case "Cannon3": PlayAudio(SoundCannon3); break;
+            case "Radar": PlayAudio(SoundRadar); break;
+            case "Booster": PlayAudio(SoundBooster); break;
+            case "Thruster": PlayAudio(SoundThruster); break;
+            case "Torpedo1": PlayAudio(SoundTorpedo1); break;
+            case "Torpedo2": PlayAudio(SoundTorpedo2); break;
+            case "Warning": PlayAudio(SoundWarning); break;
+            case "WarningOver": PlayAudio(SoundWarningOver); break;
+            case "TryAgain": PlayAudio(WarOfTheWorldsTryAgain); break;
         }
     }
     public void PlayTheme() {
@@ -1687,18 +1743,18 @@ public class Interactor : MonoBehaviour {
             NarrationTimer = 181;
             // PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
         }
-        if (NarrationTimer > 200 && NarrationTimer < 201) {
+        if (NarrationTimer > 204 && NarrationTimer < 205) {
             PlayAudio(WarOfTheWorldsGetMoving);
             // PlayMusic(WarOfTheWorldsTheme);
             if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 201;
+            NarrationTimer = 205;
         }
-        if (NarrationTimer > 201f && NarrationTimer < 206.5f) {
+        if (NarrationTimer > 205f && NarrationTimer < 209f) {
             Processor.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
         }
-        if (NarrationTimer > 206.5f && NarrationTimer < 207) {
+        if (NarrationTimer > 209f && NarrationTimer < 210) {
             // PlayAudio(WarOfTheWorldsFirstContact);
-            NarrationTimer = 207;
+            NarrationTimer = 210;
             Processor.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         }
         if (NarrationTimer > 300 && NarrationTimer < 330) {
@@ -1943,6 +1999,7 @@ public class Interactor : MonoBehaviour {
     int clip_index = 0;
     string credits_output = "";
     public void MapZoomed() {
+        Camera.main.orthographicSize = 6;
         Stage = "MapZoomed";
         Ship.Start();
         OverlayInteractor.UpdateOptions();
@@ -1960,7 +2017,7 @@ public class Interactor : MonoBehaviour {
                 // PlayAudio(LookupNarration("NewtonsLaws"));
                 NarrationTimer = 99;
                 TutorialAssets.SetActive(true);
-                Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
+                Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);",  "var Left = new Booster (-2.5, -1, 2, 3);", "var Right = new Booster (2.5, -1, 2, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
                 
                 GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
                 break;
@@ -2162,7 +2219,9 @@ public class Interactor : MonoBehaviour {
         }
     }
 
-    
+    public void EnableJoystick() {
+        InputJoystick.SetActive(true);
+    }
     public void SetEarth() {
         CampaignIntroAssets.SetActive(false);
         CampaignIntroSatelliteAssets.SetActive(false);
@@ -2242,14 +2301,14 @@ public class Interactor : MonoBehaviour {
                 OverlayInteractor.UpdateOptions();
                 OverlayInteractor.gameObject.SetActive(false);
                 MapScreenPanOverlay.SetActive(true);
-                InputJoystick.SetActive(true);
+                // InputJoystick.SetActive(true);
                 // InputUseWeapon.SetActive(true);
                 printing = false;
                 if (MarkerIndex != 0) {
                     CycleToggle.SetActive(true);
                     BinocularToggle.SetActive(true);
                     InputUseWeapon.SetActive(true);
-                    InputJoystick.SetActive(true);
+                    // InputJoystick.SetActive(true);
                     // volume_slider.SetActive(false);
         
                     if (MarkerIndex == 0) {

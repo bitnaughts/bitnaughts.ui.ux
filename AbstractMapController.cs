@@ -31,6 +31,8 @@ public class AbstractMapController : MonoBehaviour
     public Interactor Interactor;
     public float min_zoom = 10;
 
+    public GameObject Mars;
+
     public StructureController target;
 
     void Start()
@@ -61,15 +63,16 @@ public class AbstractMapController : MonoBehaviour
             spawnedObject.transform.localPosition = _map.GeoToWorldPosition(location, true) + new Vector3(0, 20, 0);
             spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale); 
         }
-        if (target.gameObject.transform.localPosition.y < 215) {
+        if (target.gameObject.transform.localPosition.y > 1 && target.gameObject.transform.localPosition.y < 215) {
             _map.UpdateMap(Mathf.Clamp(zoom - target.gameObject.transform.localPosition.y / 25f, 1f, min_zoom));
-            Camera.main.orthographicSize = Mathf.Clamp(zoom + 10f + target.gameObject.transform.localPosition.y / 5f, 10f, 250f);
+            Camera.main.orthographicSize = Mathf.Clamp(zoom + target.gameObject.transform.localPosition.y / 5f, 10f, 250f);
         }
         if (target.gameObject.transform.localPosition.y > 205 && target.gameObject.transform.localPosition.y < 215) {
             tint.GetComponent<SpriteRenderer>().color = new Color(200f/255f, 125f/255f, 0f/255f, 100f/255f - (target.gameObject.transform.localPosition.y - 205) / 20f);
             space.SetActive(true);
             space.GetComponent<SpriteRenderer>().color = new Color(255f/255f, 255f/255f, 255f/255f, (target.gameObject.transform.localPosition.y - 205) / 10f);
             space.transform.localPosition = new Vector3(target.gameObject.transform.localPosition.x * .9f, 50 + target.gameObject.transform.localPosition.y * .9f, 300);
+            Mars.SetActive(true);
         }
         if (target.gameObject.transform.localPosition.y > 215) {
             space.transform.localPosition = new Vector3(target.gameObject.transform.localPosition.x * .9f, 50 + target.gameObject.transform.localPosition.y * .9f, 300);

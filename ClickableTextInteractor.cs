@@ -365,20 +365,10 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.AppendText("$ make <b>▣_Gimbal</b>\n$ ");
                 Interactor.SetInputPlaceholder("Gimbal");
                 break;
-            case "RotateCW":
-            case "/*_Rotates_units_(CW)_*/":
-                Interactor.Sound("Gimbal");
-                Interactor.Action(Interactor.GetInput(), -15);
-                break;
-            case "RotateCCW":
-            case "/*_Rotates_units_(CCW)_*/":
-                Interactor.Sound("Gimbal");
-                Interactor.Action(Interactor.GetInput(), 15);
-                break;
-            case "/*_Rotation_control_*/":
+            case "/*_Gimbal_Control_*/":
             case "Rotate":
                 Interactor.Sound("Gimbal");
-                Interactor.Action(Interactor.GetInput(), 1);
+                Interactor.Action(Interactor.GetInput(), 15);
                 break;
             case "◍_Cannon": 
                 Interactor.AppendText("$ make <b>◍_Cannon</b>\n$ ");
@@ -395,16 +385,18 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetInputPlaceholder("Sensor");
                 break;
             case "Scan_()":
-            case "/*_Ray_caster_*/":
+            case "/*_Cast_Ray_*/":
                 Interactor.Sound("Radar");
+                Interactor.Action(Interactor.GetInput(), 0);
                 break;
             case "◉_Thruster": 
                 Interactor.AppendText("$ make <b>◉_Thruster</b>\n$ ");
                 Interactor.SetInputPlaceholder("Thruster");
                 break;
-            case "ThrustUp_()":
-            case "/*_Thrust_control_(+)_*/":
-                Interactor.FinishTutorial();
+            case "Throttle":
+            case "Throttle_()":
+            case "/*_Throttle_Control_*/":
+                // Interactor.FinishTutorial();
                 Interactor.Action(Interactor.GetInput(), 25);
                 Interactor.Sound("Thruster");
                 break;
@@ -418,11 +410,12 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetInputPlaceholder("Booster");
                 break;
             case "Launch_()":
-            case "/*_Torpedo_control_*/":
+            case "/*_Torpedo_Control_*/":
                 Interactor.Action(Interactor.GetInput(), -1);
                 break;
-            case "/*_Throttle_control_*/":
+            case "/*_Boost_Control_*/":
             case "Boost_()":
+            case "Boost":
                 Interactor.Action(Interactor.GetInput(), 25);
                 Interactor.Sound("Booster");
                 // Interactor.Action("Thruster", 100);
