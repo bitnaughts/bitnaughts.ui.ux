@@ -682,6 +682,7 @@ public class Interactor : MonoBehaviour {
         // "🔚", 43.5f
         // "⛈", 47f
     };
+    public bool Multiplayer = false;
     float NarrationTimer = 0;//-20f; //-60;
     int NarrationIndex = 0;
     public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
@@ -756,6 +757,7 @@ public class Interactor : MonoBehaviour {
         CycleToggle.SetActive(false);
         Map = GameObject.Find("Map")?.GetComponent<AbstractMapController>();
         // Map.SetMars();
+        Example.GetComponent<StructureController>().delete_timer = 9999;
     }
     public string GetBinocular() {
         return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
@@ -2324,7 +2326,8 @@ public class Interactor : MonoBehaviour {
                 // InputJoystick.SetActive(true);
                 // InputUseWeapon.SetActive(true);
                 printing = false;
-                Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-50f, 50f), UnityEngine.Random.Range(-50f, 50f), 0);
+                Multiplayer = true;
+                Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0);
                 if (MarkerIndex == 0) {
                     CycleToggle.SetActive(true);
                     BinocularToggle.SetActive(true);
