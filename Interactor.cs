@@ -142,64 +142,69 @@ public class Interactor : MonoBehaviour {
         // new Narration( 09.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\n<b>Click_/_tap</b>\n⇲_Zoom"),
         // new Narration( 10.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\nClick_/_tap\n<b>⇲_Zoom</b>"),
         // "Tutorial: Zooming In"
-        new Narration(060.00f, "<b>When_the_map_is_at</b>\n"), 
-        new Narration(061.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
-        new Narration(062.50f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed</b>\n"),
-        new Narration(064.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
-        new Narration(066.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
+        new Narration(062.00f, "<b>When_the_map_is_at</b>\n"), 
+        new Narration(063.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
+        new Narration(065.00f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed,</b>\n"),
+        new Narration(066.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
+        new Narration(068.00f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
         // "Tutorial: Intro"
-        new Narration(0100.00f, "⛈"),
-        new Narration(0102.25f, "⛅"),
-        new Narration(0106.80f, "7 ..."),
-        new Narration(0107.80f, "7 ...\n6 ..."),
-        new Narration(0108.80f, "7 ...\n6 ...\n5 ..."),
-        new Narration(0109.80f, "7 ...\n6 ...\n5 ...\n4 ..."),
-        new Narration(0110.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ..."),
-        new Narration(0111.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ..."),
-        new Narration(0112.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ...\n1 ..."),
-        new Narration(0114.80f, "Click / tap"),
-        new Narration(0115.80f, "Click / tap\nto continue ..."),
-        new Narration(0118.50f, "Today, orbitting\n"),
-        new Narration(0119.80f, "Today, orbitting\nsatellites of the"),
-        new Narration(0120.80f, "Today, orbitting\nsatellites of the\nNavy Navigation\n"),
-        new Narration(0121.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System"),
-        new Narration(0123.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\n"),
-        new Narration(0124.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise"),
-        new Narration(0126.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\n"), 
-        new Narration(0127.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space"), 
-        new Narration(0128.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\n"),
-        new Narration(0129.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,"),
-        new Narration(0130.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\n"),
-        new Narration(0131.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind"),
-        new Narration(0132.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind\nof weather.\n"),
-        new Narration(0134.30f, "⛈\n"),
-        new Narration(0139.00f, "Navigation\n"),
-        new Narration(0140.00f, "Navigation\nby satellite,"),
-        new Narration(0142.00f, "Navigation\nby satellite,\nhow and why\n"),
-        new Narration(0143.25f, "Navigation\nby satellite,\nhow and why\ndoes it work?"),
-        new Narration(0144.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\n"),
-        new Narration(0145.50f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics"),
-        new Narration(0146.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics\nto answer why.\n"),
-        new Narration(0148.25f, "⛈\n"),
-        new Narration(0154.50f, "Any satellite, man-\n"),
-        new Narration(0156.00f, "Any satellite, man-\nmade or not,"),
-        new Narration(0157.00f, "Any satellite, man-\nmade or not,\nremains in orbit\n"),
-        new Narration(0158.00f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with"),
-        new Narration(0159.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\n"),
-        new Narration(0160.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth"),
-        new Narration(0162.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\n"),
-        new Narration(0163.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull"),
-        new Narration(0164.75f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull\nof Earth."),
-        new Narration(0166.25f, "So it continues\n"),
-        new Narration(0167.25f, "So it continues\nmoving around Earth"),
-        new Narration(0168.75f, "So it continues\nmoving around Earth\nin an orbit whose\n"),
-        new Narration(0170.25f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very"),
-        new Narration(0171.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\n"),
-        new Narration(0172.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir"),
-        new Narration(0173.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\n"),
-        new Narration(0174.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\nand Johannes Kepler."),
-        new Narration(0176.80f, "Click / tap\n"),
-        new Narration(0177.80f, "Click / tap\nto continue ..."),
+        new Narration(0100.00f, "<b>First_off,_let's_intro-</b>"),
+        new Narration(0101.00f, "First_off,_let's_intro-\n<b>duce_the_Target_Window.</b>"),
+        new Narration(0104.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\n<b>Now_the_Target_Window</b>"),
+        new Narration(0105.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\n<b>appears_whenever_you</b>"),
+        new Narration(0106.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\n<b>look_at_a_unit</b>"),
+        new Narration(0107.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\n<b>with_the_crosshair.</b>"),
+        new Narration(0109.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\nwith_the_crosshair.\n\n<b>Have_a_go_at_this_now!</b>"),
+        // new Narration(0104.80f, "7 ..."),
+        // new Narration(0107.80f, "7 ...\n6 ..."),
+        // new Narration(0108.80f, "7 ...\n6 ...\n5 ..."),
+        // new Narration(0109.80f, "7 ...\n6 ...\n5 ...\n4 ..."),
+        // new Narration(0110.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ..."),
+        // new Narration(0111.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ..."),
+        // new Narration(0112.80f, "7 ...\n6 ...\n5 ...\n4 ...\n3 ...\n2 ...\n1 ..."),
+        // new Narration(0114.80f, "Click / tap"),
+        // new Narration(0115.80f, "Click / tap\nto continue ..."),
+        // new Narration(0118.50f, "Today, orbitting\n"),
+        // new Narration(0119.80f, "Today, orbitting\nsatellites of the"),
+        // new Narration(0120.80f, "Today, orbitting\nsatellites of the\nNavy Navigation\n"),
+        // new Narration(0121.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System"),
+        // new Narration(0123.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\n"),
+        // new Narration(0124.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise"),
+        // new Narration(0126.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\n"), 
+        // new Narration(0127.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space"), 
+        // new Narration(0128.50f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\n"),
+        // new Narration(0129.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,"),
+        // new Narration(0130.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\n"),
+        // new Narration(0131.00f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind"),
+        // new Narration(0132.30f, "Today, orbitting\nsatellites of the\nNavy Navigation\nSatellite System\nprovide around-the-\nclock ultra-precise\nposition fixes\nfrom space\nto units of\nthe fleet,\neverywhere,\nin any kind\nof weather.\n"),
+        // new Narration(0134.30f, "⛈\n"),
+        // new Narration(0139.00f, "Navigation\n"),
+        // new Narration(0140.00f, "Navigation\nby satellite,"),
+        // new Narration(0142.00f, "Navigation\nby satellite,\nhow and why\n"),
+        // new Narration(0143.25f, "Navigation\nby satellite,\nhow and why\ndoes it work?"),
+        // new Narration(0144.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\n"),
+        // new Narration(0145.50f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics"),
+        // new Narration(0146.75f, "Navigation\nby satellite,\nhow and why\ndoes it work?\n\nFirst, a little\nastrophysics\nto answer why.\n"),
+        // new Narration(0148.25f, "⛈\n"),
+        // new Narration(0154.50f, "Any satellite, man-\n"),
+        // new Narration(0156.00f, "Any satellite, man-\nmade or not,"),
+        // new Narration(0157.00f, "Any satellite, man-\nmade or not,\nremains in orbit\n"),
+        // new Narration(0158.00f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with"),
+        // new Narration(0159.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\n"),
+        // new Narration(0160.50f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth"),
+        // new Narration(0162.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\n"),
+        // new Narration(0163.25f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull"),
+        // new Narration(0164.75f, "Any satellite, man-\nmade or not,\nremains in orbit\nbecause the force with\nwhich it is trying to\nfly away from Earth\nis matched by the\ngravitational pull\nof Earth."),
+        // new Narration(0166.25f, "So it continues\n"),
+        // new Narration(0167.25f, "So it continues\nmoving around Earth"),
+        // new Narration(0168.75f, "So it continues\nmoving around Earth\nin an orbit whose\n"),
+        // new Narration(0170.25f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very"),
+        // new Narration(0171.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\n"),
+        // new Narration(0172.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir"),
+        // new Narration(0173.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\n"),
+        // new Narration(0174.00f, "So it continues\nmoving around Earth\nin an orbit whose\npath conforms very\nnearly to the\nclassic laws of Sir\nIsaac Newton\nand Johannes Kepler."),
+        // new Narration(0176.80f, "Click / tap\n"),
+        // new Narration(0177.80f, "Click / tap\nto continue ..."),
         // new Narration(120.00f, "Click_/_tap_anywhere\nto_skip_introduction"),
         // new Narration(124.25f, "<b>We're_inside_the</b>\n"), 
         // new Narration(125.25f, "We're_inside_the\n<b>operation_center:</b>"), 
@@ -264,20 +269,28 @@ public class Interactor : MonoBehaviour {
         // new Narration(304.00f, "Let's explain how\n"), 
         // new Narration(305.00f, "Let's explain how\nartillery works."),
 
-        // Looking Around
-        new Narration(180.00f, "First_off,_try\n"),
-        new Narration(181.00f, "First_off,_try\nlooking_around!"),
-        new Narration(182.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\n"),
-        new Narration(183.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for"),
-        new Narration(184.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for\ndog-fighting!"),
-        // Map Screen
-        new Narration(200.00f, "The_map_screen_shows\n"),
-        new Narration(201.00f, "The_map_screen_shows\nyou_your_mission_area,\n"),
-        new Narration(202.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,"),
-        new Narration(203.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\n"),
-        new Narration(204.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units."),
-        new Narration(205.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-"),
-        new Narration(206.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-\nlighted_in_yellow!"),
+        // // Looking Around
+        // new Narration(180.00f, "First_off,_try\n"),
+        // new Narration(181.00f, "First_off,_try\nlooking_around!"),
+        // new Narration(182.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\n"),
+        // new Narration(183.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for"),
+        // new Narration(184.00f, "First_off,_try\nlooking_around!\n\n360°_awareness\nis_needed_for\ndog-fighting!"),
+        // // Map Screen
+        // new Narration(200.00f, "The_map_screen_shows\n"),
+        // new Narration(201.00f, "The_map_screen_shows\nyou_your_mission_area,\n"),
+        // new Narration(202.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,"),
+        // new Narration(203.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\n"),
+        // new Narration(204.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units."),
+        new Narration(205.00f, "<b>Great!</b>"),//"The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-"),
+        new Narration(206.00f, "Great!\n\n<b>Time_to_get_this_baby</b>"),
+        new Narration(207.00f, "Great!\n\nTime_to_get_this_baby\n<b>airborne!</b>"),
+        new Narration(208.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\n<b>Set_your_throttle_to</b>"),
+        new Narration(209.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\n<b>maximum</b>!"),
+        new Narration(210.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!"),
+        new Narration(212.00f, "$"),
+        // new Narration(215.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!\n\nHint:_Fly_forward_to_take_off"),
+        // new Narration(216.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!\n\nHint:_Fly_forward_to\ntake_off_of_Mars!"),
+        //"The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-\nlighted_in_yellow!"),
         // new Narration(311.00f, "Click / tap\n"),
         // new Narration(312.00f, "Click / tap\n\"Pan\" or Drag"),
         // // "Tutorial: Target Button"
@@ -669,7 +682,7 @@ public class Interactor : MonoBehaviour {
         // "🔚", 43.5f
         // "⛈", 47f
     };
-    float NarrationTimer = -20f; //-60;
+    float NarrationTimer = 0;//-20f; //-60;
     int NarrationIndex = 0;
     public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
     public AudioClip NarratorSwitchToMap, NarratorZoomInMap, NarratorZoomInDetails, NarratorAimTheCrosshair, NarratorWelcome;
@@ -728,9 +741,11 @@ public class Interactor : MonoBehaviour {
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         // PlayVideo("SplashScreen");
-        PlayVideo("WarOfTheWorldsStinger");
+        // PlayVideo("WarOfTheWorldsStinger");
+        LoadingScreen.SetActive(false);
+        ResetVideo();
         OnMapView();
-        OverlayZoomIn.SetActive(false);
+        // OverlayZoomIn.SetActive(false);
         PrinterLeft.SetActive(false);
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
@@ -740,7 +755,7 @@ public class Interactor : MonoBehaviour {
         BinocularToggle.SetActive(false);
         CycleToggle.SetActive(false);
         Map = GameObject.Find("Map")?.GetComponent<AbstractMapController>();
-        Map.SetMars();
+        // Map.SetMars();
     }
     public string GetBinocular() {
         return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
@@ -978,6 +993,9 @@ public class Interactor : MonoBehaviour {
             GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value / 8;
             Camera.main.GetComponent<CameraController>().bDragging = false;
         }
+    }
+    public void PlayMusic() {
+        PlayMusic(WarOfTheWorldsTheme);
     }
     public void PlayMusic(AudioClip clip) {
         if (GameObject.Find("Video Player") != null) {
@@ -1517,7 +1535,8 @@ public class Interactor : MonoBehaviour {
         } 
     }
     public void OnExit() {
-        Application.Quit();
+        // Application.Quit();
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
     public void Action(string name, int action) {
         print ("ACTION" + name + " " + action);
@@ -1719,10 +1738,10 @@ public class Interactor : MonoBehaviour {
             PlayAudio(WarOfTheWorldsTargetWindow);
         }
         if (NarrationTimer >= 100 && NarrationTimer < 120) {
-            MapMarker.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            Printer.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
         }
         if (NarrationTimer > 120 && NarrationTimer < 121) {
-            MapMarker.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
             NarrationTimer = 121;
             PlayAudio(WarOfTheWorldsTargetWindowGood);
         }
@@ -1750,21 +1769,21 @@ public class Interactor : MonoBehaviour {
             NarrationTimer = 205;
         }
         if (NarrationTimer > 205f && NarrationTimer < 209f) {
-            Processor.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
         }
         if (NarrationTimer > 209f && NarrationTimer < 210) {
             // PlayAudio(WarOfTheWorldsFirstContact);
             NarrationTimer = 210;
-            Processor.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
         if (NarrationTimer > 300 && NarrationTimer < 330) {
-            GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+            // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
 
         }
         if (NarrationTimer > 330 && NarrationTimer < 331) {
-            GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 331;
-            Unzoom();
+            // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            // NarrationTimer = 331;
+            // Unzoom();
         }
         if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
         {
@@ -2020,6 +2039,7 @@ public class Interactor : MonoBehaviour {
                 Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);",  "var Left = new Booster (-2.5, -1, 2, 3);", "var Right = new Booster (2.5, -1, 2, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
                 
                 GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
+                // GameObject.Find("0").SetActive(false);
                 break;
             case 1:
                 Printer.SetActive(true);           
@@ -2068,7 +2088,7 @@ public class Interactor : MonoBehaviour {
                 break;
         }
 
-        Map?.Zoom(10);//15);
+        Map?.Zoom(15);//15);
     }
     public void MapUnzoomed() {
 
@@ -2304,11 +2324,12 @@ public class Interactor : MonoBehaviour {
                 // InputJoystick.SetActive(true);
                 // InputUseWeapon.SetActive(true);
                 printing = false;
-                if (MarkerIndex != 0) {
+                Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-50f, 50f), UnityEngine.Random.Range(-50f, 50f), 0);
+                if (MarkerIndex == 0) {
                     CycleToggle.SetActive(true);
                     BinocularToggle.SetActive(true);
                     InputUseWeapon.SetActive(true);
-                    // InputJoystick.SetActive(true);
+                    InputJoystick.SetActive(true);
                     // volume_slider.SetActive(false);
         
                     if (MarkerIndex == 0) {
@@ -2353,13 +2374,15 @@ public class Interactor : MonoBehaviour {
         // } else {
             // if (Stage == "MapInterface" || Stage == "MapZoom" || Stage == "MapZoomed") {
             // Wait for user interaction on Splash Screen  && (NarrationTimer < -1 || (NarrationTimer >= 0 && NarrationTimer != 179))
-            
+            // if (NarrationTimer > 210) {
+                // RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
+            // }
             // DISABLED FOR TESTING TODO ENABLE
             if (Stage != "Loading") NarrationTimer += Time.deltaTime;
 
             // if (Stage == "MapZoom") {
             // } else {
-            Timer.text = FloatToTime(NarrationTimer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
+            // Timer.text = FloatToTime(NarrationTimer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
             // } 
             // if (Stage == "Loading" && (ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1) {
             //     PlayVideo("SplashScreen");

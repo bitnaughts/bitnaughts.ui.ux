@@ -87,12 +87,12 @@ public class OverlayInteractor : MonoBehaviour
     {
         var name = OverlayDropdown.options[OverlayDropdown.value].text;
         if (name[1] == ' ') name = name.Substring(2);
-        print ("mode OnDropdownChange " + OverlayDropdown.value + " " + name);
+        // print ("mode OnDropdownChange " + OverlayDropdown.value + " " + name);
         MapScreenPanOverlay.SetActive(false);
         last_position = new Vector2 (999,999);
         Resize(name);
         if (State != "") {
-            print ("Code mode dropdown " + name);
+            // print ("Code mode dropdown " + name);
             OverlayDropdown.gameObject.SetActive(false);
             OverlayCodeInput.SetActive(true);
             OverlayCodeInput.GetComponent<InputField>().text += name + ".";
@@ -147,9 +147,9 @@ public class OverlayInteractor : MonoBehaviour
             if (State == "Function") {
                 injection += ");";
             }
-            print ("Sent " + injection);
+            // print ("Sent " + injection);
             Interactor.Processor.GetComponent<ProcessorController>().SetInstructions("Process", "Main", injection);
-            print ("received " + Interactor.Processor.GetComponent<ProcessorController>().interpreter.ToString("Process"));
+            // print ("received " + Interactor.Processor.GetComponent<ProcessorController>().interpreter.ToString("Process"));
             // State = "";
             Interactor.RenderComponent("Process");
             CloseAllOverlays();
