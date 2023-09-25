@@ -714,9 +714,11 @@ public class Interactor : MonoBehaviour {
     public List<GameObject> ButtonsCache = new List<GameObject>();
     int cache_size = 125;
     public AudioClip clip_queue;
+    string binocular = "off";
     public GameObject CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
     void Start()
     {
+        SetVolume();
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
         PrinterPrint = GameObject.Find("InputPrinterPrint");
@@ -760,14 +762,18 @@ public class Interactor : MonoBehaviour {
         Example.GetComponent<StructureController>().delete_timer = 9999;
     }
     public string GetBinocular() {
-        return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
+        return binocular;// = "⛭"
+        // return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
     }
     public void SetBinocular(string text) {
-        BinocularToggle.GetComponentsInChildren<Text>()[0].text = text;
-        if (NarrationIndex > 1 && NarrationIndex < 141 + 26 && text == "⛯") {
-            NarrationTimer = 880;
-            NarrationIndex = 141 + 26;
-        }
+        print ("Set binocular to" + text + ".");
+        binocular = text;
+        if (text == "on") BinocularToggle.GetComponentsInChildren<Text>()[0].text = "⛯";
+        else BinocularToggle.GetComponentsInChildren<Text>()[0].text = "⛭";
+        // if (NarrationIndex > 1 && NarrationIndex < 141 + 26 && text == "⛯") {
+        //     NarrationTimer = 880;
+        //     NarrationIndex = 141 + 26;
+        // }
     }
     public void HitSfx() {
         if (tutorial_clip_index == 6) {
@@ -901,12 +907,14 @@ public class Interactor : MonoBehaviour {
     // }
     bool printing = false;
     public void PrinterPrintFx() {
+        GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); 
+        Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         if (InputField.text.Contains("Printer")) {
             printing = true;
             PrinterLeft.SetActive(false);
             PrinterRight.SetActive(false);
             PrinterPrint.SetActive(false);
-            
+
             OverlayZoomOut.SetActive(true);
             OverlayZoomIn.SetActive(true);
             PlayAudio(WarOfTheWorldsBeepBoop);
@@ -920,6 +928,7 @@ public class Interactor : MonoBehaviour {
 
         } else if (InputField.text.Contains("Process")) {
             // OnCodeView();.
+            Sound("Processor");
             ResetProcessor();
             
         } else if (InputField.text.Contains("Cannon")) {
@@ -988,13 +997,14 @@ public class Interactor : MonoBehaviour {
     }
     public void SetVolume() 
     {
-        if (volume_slider.GetComponent<Slider>().value != camera.GetComponent<AudioSource>().volume) {
-
-            camera.GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
-            GameObject.Find("World").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
-            GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value / 8;
-            Camera.main.GetComponent<CameraController>().bDragging = false;
+        float volume = .33f;
+        if (volume_slider != null) {
+            volume = volume_slider.GetComponent<Slider>().value;
         }
+        Camera.main.GetComponent<AudioSource>().volume = volume;
+        GameObject.Find("World").GetComponent<AudioSource>().volume = volume;
+        GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume / 8;
+        Camera.main.GetComponent<CameraController>().bDragging = false;
     }
     public void PlayMusic() {
         PlayMusic(WarOfTheWorldsTheme);
@@ -1017,7 +1027,7 @@ public class Interactor : MonoBehaviour {
     string queue_audio = "";
     public void PlayVideo(string url) 
     {
-        print (url);
+        // print (url);
         // LoadingScreen.SetActive(false);
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
         queue_audio = trimmed_url;
@@ -1053,7 +1063,7 @@ public class Interactor : MonoBehaviour {
     }
     public AudioClip LookupNarration(string clip) 
     {
-        print (clip);
+        // print (clip);
         switch (clip)
         {
             case "Loading":
@@ -1223,17 +1233,20 @@ public class Interactor : MonoBehaviour {
     public void RenderComponent(string component) {
         if (component == "") return;
         var component_string = "";
-        if (component[1] == ' ') component = component.Substring(2);
+        // print("Rendering" + component);
+        if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component;
+        // if (component[1] == ' ') 
+        // component = component.Substring(1);
         if (Ship.IsComponent(component)) {
             component_string = Ship.GetComponentToString(component);
         }
         if (Enemy.IsComponent(component)) {
             component_string = Enemy.GetComponentToString(component);
         }
-
-        component_name = component_string.Substring(0, component_string.IndexOf("\n"));// + component_string.Substring(component_string.IndexOf("class ") + 6, component_string.IndexOf(":") - (component_string.IndexOf("class ") + 6));
+        component_name = component;
+        // component_name = component; component_string.Substring(0, component_string.IndexOf("\n"));// + component_string.Substring(component_string.IndexOf("class ") + 6, component_string.IndexOf(":") - (component_string.IndexOf("class ") + 6));
         // print("\"" + component_name + "\"");
-        InputField.text = component_name;
+        InputField.text = component;
         InterpreterZoomIn.SetActive(true);
         InterpreterZoomOut.SetActive(true);
         volume_slider.SetActive(false);
@@ -1338,7 +1351,7 @@ public class Interactor : MonoBehaviour {
             // PrinterLeft.SetActive(true);
             // PrinterRight.SetActive(true);
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
             // if (NarrationTimer > 0 && NarrationTimer < 240) {
             //     NarrationTimer = 240;
             //     PlayAudio(TutorialComponentsIcons);
@@ -1347,46 +1360,45 @@ public class Interactor : MonoBehaviour {
         else if (InputField.text.Contains("Process")) {
             // InputField.text = "▩ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☇ Main";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☇ Main";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("◍")) {
             // InputField.text = "◍ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◍ Fire";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Fire";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("◎")) {
             // InputField.text = "◎ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◎ Boost";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Boost";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("◌")) {
             // InputField.text = "◌ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◌ Scan";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Scan";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("◉")) {
             // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "◉ Throttle";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Throttle";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("▣")) {
             // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "▣ Rotate";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Rotate";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
-        if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component_name;
         component_text = component_string.Substring(component_string.IndexOf("\n") + 1);
         RenderText(component_text);
         // RenderText(component_text);
@@ -1402,8 +1414,9 @@ public class Interactor : MonoBehaviour {
         InputField.text = "";//placeholder;
     }
     public string GetInput() {
-        if (InputField.text[1] == ' ') return InputField.text.Substring(2);
-        return InputField.text;
+        // if (InputField.text[1] == ' ') 
+        return InputField.text.Substring(2);
+        // return InputField.text;
     }
     public int fontSize = 75;
     public void OnZoomIn() {
@@ -1541,7 +1554,7 @@ public class Interactor : MonoBehaviour {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
     public void Action(string name, int action) {
-        print ("ACTION" + name + " " + action);
+        // print ("ACTION" + name + " " + action);
         if (name == "Right" && action == -1) {
             GameObject.Find("Right").GetComponent<BoosterController>().Fire();
         }
@@ -1572,7 +1585,7 @@ public class Interactor : MonoBehaviour {
             case "Error": PlayAudio(SoundError); break;
             case "OnMouse": PlayAudio(SoundOnMouse); break;
             case "Toggle": PlayAudio(SoundToggle); break;
-            case "Processor": PlayAudio(SoundProcessor); break;
+            case "Processor": PlayAudio(WarOfTheWorldsBeepBoop); break;
             case "Gimbal": PlayAudio(SoundGimbal); break;
             case "Cannon1": PlayAudio(SoundCannon1); break;
             case "Cannon2": PlayAudio(SoundCannon2); break;
@@ -1687,11 +1700,17 @@ public class Interactor : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             click_duration = 0;
         }
+        Gamepad gamepad = Gamepad.current;
+        if (gamepad != null)
+        {
+            Vector2 stickL = gamepad.leftStick.ReadValue(); 
+            if (Mathf.Abs(stickL.x) > 0 || Mathf.Abs(stickL.y) > 0) Camera.main.GetComponent<CameraController>().bDragging = false;
+        }
         if (Stage == "SplashScreen" && NarrationTimer > -1f) {
                 OverlayZoomIn.SetActive(true);
                 OverlayZoomOut.SetActive(true);
                 MapScreenPanOverlay.SetActive(true);
-                print (NarrationTimer);
+                // print (NarrationTimer);
                 NarrationTimer = 0;
                 // SubtitlesShadow.SetActive(false);
                 // Subtitles.SetActive(false);
@@ -1759,7 +1778,7 @@ public class Interactor : MonoBehaviour {
             PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
         }
         if (NarrationTimer > 180 && NarrationTimer < 181) {
-            
+
             PrinterPrint.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             NarrationTimer = 181;
             // PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
@@ -1797,7 +1816,7 @@ public class Interactor : MonoBehaviour {
                 OverlayZoomIn.SetActive(true);
                 OverlayZoomOut.SetActive(true);
                 MapScreenPanOverlay.SetActive(true);
-                print (NarrationTimer);
+                // print (NarrationTimer);
                 NarrationTimer = 0;
                 // SubtitlesShadow.SetActive(false);
                 // Subtitles.SetActive(false);
@@ -2110,19 +2129,19 @@ public class Interactor : MonoBehaviour {
     }
     public void MapUnzoom() {
         if (Stage == "MapZoom") {
-            print ("unzoom");
+            // print ("unzoom");
             PlayAudio(SoundBack);
             NarrationIndex = -1;  
             // SubtitlesShadow.SetActive(false);
             // Subtitles.SetActive(false);   S
             Unzoom();
         } else {
-            if (NarrationTimer > 300 && NarrationTimer < 330) {
-                Unzoom();
-                CampaignIntroAssets.SetActive(false);
-                CampaignIntroSatelliteAssets.SetActive(false);
-                NarrationTimer = 330;
-            }
+            // if (NarrationTimer > 300 && NarrationTimer < 330) {
+            //     Unzoom();
+            //     CampaignIntroAssets.SetActive(false);
+            //     CampaignIntroSatelliteAssets.SetActive(false);
+            //     NarrationTimer = 330;
+            // }
         }
     }
     public void MapZoom() {
@@ -2153,7 +2172,7 @@ public class Interactor : MonoBehaviour {
     }
     public int MarkerIndex = -1;
     public void MapInteractor(string marker) {
-        print (marker);
+        // print (marker);
         // Sound("OnMouse");
         PlayAudio(WarOfTheWorldsClick);
         var target = GameObject.Find(marker);
@@ -2284,9 +2303,19 @@ public class Interactor : MonoBehaviour {
 
     }
     public void RenderProcess() {
-        if (InputField.text.Contains("▩")) {
-            RenderComponent("Process");
-        }
+        RenderComponent(component_name);
+        // if (InputField.text.Contains("▩")) {
+        //     RenderComponent("▩ Process");
+        // }
+        // if (InputField.text.Contains("◉")) {
+        //     RenderComponent("◉ Engine");
+        // }
+        // if (InputField.text.Contains("▣")) {
+        //     RenderComponent("▣ Turret");
+        // }
+        // if (InputField.text.Contains("▩")) {
+        //     RenderComponent("▩ Process");
+        // }
     }
     void FixedUpdate()
     {
@@ -2303,14 +2332,14 @@ public class Interactor : MonoBehaviour {
             if (print_index < GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>().Length) {
                 if (GameObject.Find("Printer").GetComponent<PrinterController>().print_index == -1) {
                     GameObject.Find("Printer").GetComponent<PrinterController>().print_index = 0;
-                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("Printer");
+                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("▦ Printer");
                 }
                 if (print_obj == null) {
                     print_obj = GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index++].gameObject;
                 }
                 if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(new Vector2(print_obj.transform.position.x, print_obj.transform.position.z))) {
                     print_obj.GetComponent<ComponentController>().Launch();
-                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("Printer");
+                    if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("▦ Printer");
                     print_obj = null;
                 }
             } else {
@@ -2327,7 +2356,7 @@ public class Interactor : MonoBehaviour {
                 // InputUseWeapon.SetActive(true);
                 printing = false;
                 Multiplayer = true;
-                Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0);
+                // Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0);
                 if (MarkerIndex == 0) {
                     CycleToggle.SetActive(true);
                     BinocularToggle.SetActive(true);
@@ -2593,7 +2622,7 @@ public class Interactor : MonoBehaviour {
     }
 
     public void ResetProcessor() {
-        print("Reset test");
+        // print("Reset test");
         Processor.GetComponent<ProcessorController>().interpreter.ResetLine();
     }
 }

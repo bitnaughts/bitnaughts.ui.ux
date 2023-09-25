@@ -38,14 +38,16 @@ public class OverlayInteractor : MonoBehaviour
         if (!populated) {
             UpdateOptions();
             populated = true;
+            return;
         }
+        Resize();
     }
     public void UpdateOptions() 
     {
         OverlayDropdown.options = new List<Dropdown.OptionData>();
         if (Ship.components != null) {
             foreach (var key in Ship.GetControllers()) {
-                print ("Adding dropdown option " + key);
+                // print ("Adding dropdown option " + key);
                 OverlayDropdown.options.Add(new Dropdown.OptionData(key));
             }
         }
@@ -56,49 +58,69 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void Resize() 
     {
+        // print (OverlayDropdown.value);
+        // print (OverlayDropdown.options[OverlayDropdown.value].text);
         Resize(OverlayDropdown.options[OverlayDropdown.value].text);
     }
     public void Resize(string name) 
     {
-        print (name);
-        Vector3 component_position, component_size;
+        Vector3 component_position, component_abs_position, component_size;
         float rotation;
         string option;
-        option = name;//OverlayDropdown.options[OverlayDropdown.value].text;
+        option = name;
         component_position = Ship.GetLocalPosition(option);
+        component_abs_position = Ship.GetPosition(option);
         component_size = Ship.GetSize(option);
         rotation = Ship.GetRotation(option);
-        Camera.main.transform.localPosition = new Vector3(component_position.x, component_position.y, -200);
-        Vector3 size_vector = new Vector3(component_size.x, 0, component_size.y);
-        Vector3 component_screen_tr_position = Camera.main.WorldToScreenPoint(component_position + size_vector / 2);
-        Vector3 component_screen_bl_position = Camera.main.WorldToScreenPoint(component_position - size_vector / 2);
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(component_screen_tr_position.x - component_screen_bl_position.x, component_screen_tr_position.y - component_screen_bl_position.y ); 
-        if (rotation != (int)rotation) {
-            this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(this.transform.GetComponent<RectTransform>().sizeDelta.y, this.transform.GetComponent<RectTransform>().sizeDelta.x);
+        Camera.main.transform.position = new Vector3(component_abs_position.x, 200, component_abs_position.z);
+        if (Interactor.GetBinocular() == "off") {
+            Vector2 rotated_vector = new Vector2(
+                map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.y * 625 / Camera.main.orthographicSize, component_size.x * 625 / Camera.main.orthographicSize),
+                map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.x * 625 / Camera.main.orthographicSize, component_size.y * 625 / Camera.main.orthographicSize)
+            );
+            if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
+                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width / 2 - 260)), 
+                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height - 260)));
+            } else {
+                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width - 260)), 
+                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
+            }
+        } else {
+            if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
+                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width / 2 - 260)), 
+                    Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height - 260)));
+            } else {
+                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width - 260)), 
+                    Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height / 2 - 260)));
+            }
         }
-        this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            Mathf.Clamp(200+this.transform.GetComponent<RectTransform>().sizeDelta.x, 500f, (Screen.width - 150)), 
-            Mathf.Clamp(240+this.transform.GetComponent<RectTransform>().sizeDelta.y, 500f, (Screen.height - 250)));
-        var rectTransform = OverlayDropdown.gameObject.transform.GetChild(2).gameObject.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y * 2);
+        var rectTransform = OverlayDropdown.gameObject.transform.Find("Dropdown List")?.gameObject.GetComponent<RectTransform>();
+        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 90f);
+    }
+    
+    float map(float s, float a1, float a2, float b1, float b2)
+    {
+        return b1 + (s-a1)*(b2-b1)/(a2-a1);
     }
     string function_parameter_type = "";
     public void OnDropdownChange(int index) 
     {
-        var name = OverlayDropdown.options[OverlayDropdown.value].text;
-        if (name[1] == ' ') name = name.Substring(2);
-        // print ("mode OnDropdownChange " + OverlayDropdown.value + " " + name);
+        var option = OverlayDropdown.options[OverlayDropdown.value].text;//.Substring(1);
         MapScreenPanOverlay.SetActive(false);
         last_position = new Vector2 (999,999);
-        Resize(name);
+        Resize(option);
         if (State != "") {
             // print ("Code mode dropdown " + name);
             OverlayDropdown.gameObject.SetActive(false);
             OverlayCodeInput.SetActive(true);
-            OverlayCodeInput.GetComponent<InputField>().text += name + ".";
+            OverlayCodeInput.GetComponent<InputField>().text += option.Substring(2) + ".";
             OverlayCodeCustomMethod.gameObject.SetActive(true);
-            OverlayCodeCustomMethod.transform.GetChild(0).GetComponent<Text>().text = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(name)[0];
-            function_parameter_type = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethodParameter(name, Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(name)[0]);
+            OverlayCodeCustomMethod.transform.GetChild(0).GetComponent<Text>().text = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(option.Substring(2))[0];
+            function_parameter_type = Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethodParameter(option.Substring(2), Interactor.Processor.GetComponent<ProcessorController>().interpreter.GetMethods(option.Substring(2))[0]);
 
         } else {
             OverlayDropdown.gameObject.SetActive(true);
@@ -122,15 +144,14 @@ public class OverlayInteractor : MonoBehaviour
             OverlayResizeShrinkRight.gameObject.SetActive(false);
 
             OverlayCodePrimitive.gameObject.SetActive(false); OverlayCodeObject.gameObject.SetActive(false); OverlayCodeFlowControl.gameObject.SetActive(false);// OverlayCodeComment.gameObject.SetActive(true); 
-            Interactor.RenderComponent(name);
+            Interactor.RenderComponent(option);
         }
 
     }
     
     public void OnSubmit() {
         Interactor.Sound("Click");
-        if (State != "") 
-        {
+        if (State != "") {
             var injection = OverlayCodeInput.GetComponent<InputField>().text;
             if (injection == "") {
                 this.gameObject.SetActive(false);
@@ -147,15 +168,10 @@ public class OverlayInteractor : MonoBehaviour
             if (State == "Function") {
                 injection += ");";
             }
-            // print ("Sent " + injection);
             Interactor.Processor.GetComponent<ProcessorController>().SetInstructions("Process", "Main", injection);
-            // print ("received " + Interactor.Processor.GetComponent<ProcessorController>().interpreter.ToString("Process"));
-            // State = "";
             Interactor.RenderComponent("Process");
             CloseAllOverlays();
-            // OnCodeEditor();
-        }
-        else {
+        } else {
             
             // Interactor.CancelTutorial();
             if (last_position.x == 999) {
@@ -168,7 +184,7 @@ public class OverlayInteractor : MonoBehaviour
             }
             else 
             {
-                OnDropdownChange(0);//OverlayDropdown.options[OverlayDropdown.value].text);
+                OnDropdownChange(0);
             }
         }
     }
@@ -190,7 +206,6 @@ public class OverlayInteractor : MonoBehaviour
     public void OnHelp()
     {
         Interactor.Sound("Warning");
-        // Interactor.StartTutorial();
     }
     public void OnReset() 
     {
@@ -199,21 +214,18 @@ public class OverlayInteractor : MonoBehaviour
     public void OnDelete() 
     {
         Interactor.Sound("Back");
-        // Interactor.CompleteTutorial();
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
             OverlayZoomIn.SetActive(true);
-            // Interactor.CancelTutorial();
             Interactor.ClearText();
-            // 
         }
         else { 
             Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
             if (last_size.x != 999) {
                 Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);
             }
-            OnDropdownChange(0);//-OverlayDropdown.options[OverlayDropdown.value].text); 
+            OnDropdownChange(0); 
         }
     }
     public void DeleteComponent(string component)
@@ -329,9 +341,6 @@ public class OverlayInteractor : MonoBehaviour
      
 
         OverlayDropdown.gameObject.SetActive(true);
-
-        // OverlayMove.gameObject.SetActive(false);
-        // OverlayResize.gameObject.SetActive(false);
         OverlayCodePrimitive.gameObject.SetActive(false);
         OverlayCodeObject.gameObject.SetActive(false);
         OverlayCodeFlowControl.gameObject.SetActive(false); // OverlayCodeComment.gameObject.SetActive(false);

@@ -105,7 +105,7 @@ public class ClickableTextInteractor : MonoBehaviour
         } 
         if (initialized_text == "$") {
             // If code editor:
-            print (Interactor.component_name);
+            // print (Interactor.component_name);
             if (Interactor.component_name != "") 
             {
                 OverlayInteractor.gameObject.SetActive(true);
