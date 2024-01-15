@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 // Starting Center 44.3812661305678, -97.9222112121185
+// 47.642531, -122.127465
 
+// Nova Scotia : 45, -62.999443
 
 // Mexico 19.419892, -99.088050
 
@@ -42,6 +44,8 @@ public class Interactor : MonoBehaviour {
     public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
     public int CampaignIndex = 0;
     AbstractMapController Map;
+    public Mapbox.Utils.Vector2d TargetLocation;
+    // InputField input;
     List<Narration> Narration = new List<Narration> {
         // "Campaign Intro"
         new Narration(-20.00f, "<b>⛅</b>"),
@@ -124,37 +128,37 @@ public class Interactor : MonoBehaviour {
         // new Narration( 02.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\n<b>to_issue_tactical</b>"),
         // new Narration( 03.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\n<b>commands.</b>"),
         // new Narration( 04.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands."),
-        new Narration(000.00f, "<b>⛅</b>"),
+        new Narration(-01.00f, "<b>⛅</b>"),
         
-        new Narration(001.00f, "<b>The_map_screen_shows</b>"),
-        new Narration(002.00f, "The_map_screen_shows\n<b>you_your_mission_area.</b>"),
-        new Narration(005.00f, "The_map_screen_shows\nyou_your_mission_area.\n\n<b>Select_units_high-</b>"),
-        new Narration(007.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\n<b>lighted_in_yellow!</b>"),
-        new Narration(008.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\nlighted_in_yellow!"),
+        // new Narration(001.00f, "<b>The_map_screen_shows</b>"),
+        // new Narration(002.00f, "The_map_screen_shows\n<b>you_your_mission_area.</b>"),
+        // new Narration(005.00f, "The_map_screen_shows\nyou_your_mission_area.\n\n<b>Select_units_high-</b>"),
+        // new Narration(007.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\n<b>lighted_in_yellow!</b>"),
+        // new Narration(008.00f, "The_map_screen_shows\nyou_your_mission_area.\n\nSelect_units_high-\nlighted_in_yellow!"),
         // new Narration( 01.00f, "<b>The_Map_Screen_shows</b>"),
         // new Narration( 02.00f, "The_Map_Screen_shows\n<b>you_your_mission_area</b>"),
 
-        new Narration(010.00f, "<b>$</b>"),
-        new Narration(011.00f, "$"),
+        // new Narration(000.00f, "<b>$</b>"),
+        // new Narration(001.00f, "$"),
         // "Tutorial: Zoom In"
         // new Narration( 06.00f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\n<b>Press_the_⇲_Zoom_key</b>\nto_zoom_in."), 
         // new Narration( 07.50f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands.\n\nPress_the_⇲_Zoom_key\n<b>to_zoom_in.</b>"),
         // new Narration( 09.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\n<b>Click_/_tap</b>\n⇲_Zoom"),
         // new Narration( 10.50f, "Press_the_⇲_Zoom_key\nto_zoom_in.\n\nClick_/_tap\n<b>⇲_Zoom</b>"),
         // "Tutorial: Zooming In"
-        new Narration(062.00f, "<b>When_the_map_is_at</b>\n"), 
-        new Narration(063.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
-        new Narration(065.00f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed,</b>\n"),
-        new Narration(066.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
-        new Narration(068.00f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
-        // "Tutorial: Intro"
-        new Narration(0100.00f, "<b>First_off,_let's_intro-</b>"),
-        new Narration(0101.00f, "First_off,_let's_intro-\n<b>duce_the_Target_Window.</b>"),
-        new Narration(0104.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\n<b>Now_the_Target_Window</b>"),
-        new Narration(0105.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\n<b>appears_whenever_you</b>"),
-        new Narration(0106.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\n<b>look_at_a_unit</b>"),
-        new Narration(0107.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\n<b>with_the_crosshair.</b>"),
-        new Narration(0109.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\nwith_the_crosshair.\n\n<b>Have_a_go_at_this_now!</b>"),
+        // new Narration(062.00f, "<b>When_the_map_is_at</b>\n"), 
+        // new Narration(063.00f, "When_the_map_is_at\n<b>maximum_zoom,_extra</b>\n"),
+        // new Narration(065.00f, "When_the_map_is_at\nmaximum_zoom,_extra\n<b>detail_is_revealed,</b>\n"),
+        // new Narration(066.75f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\n<b>such_as_fortifications</b>\n"),
+        // new Narration(068.00f, "When_the_map_is_at\nmaximum_zoom,_extra\ndetail_is_revealed,\nsuch_as_fortifications\n<b>and_individual_planes.</b>"),
+        // // "Tutorial: Intro"
+        // new Narration(0100.00f, "<b>First_off,_let's_intro-</b>"),
+        // new Narration(0101.00f, "First_off,_let's_intro-\n<b>duce_the_Target_Window.</b>"),
+        // new Narration(0104.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\n<b>Now_the_Target_Window</b>"),
+        // new Narration(0105.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\n<b>appears_whenever_you</b>"),
+        // new Narration(0106.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\n<b>look_at_a_unit</b>"),
+        // new Narration(0107.50f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\n<b>with_the_crosshair.</b>"),
+        // new Narration(0109.25f, "First_off,_let's_intro-\nduce_the_Target_Window.\n\nNow_the_Target_Window\nappears_whenever_you\nlook_at_a_unit\nwith_the_crosshair.\n\n<b>Have_a_go_at_this_now!</b>"),
         // new Narration(0104.80f, "7 ..."),
         // new Narration(0107.80f, "7 ...\n6 ..."),
         // new Narration(0108.80f, "7 ...\n6 ...\n5 ..."),
@@ -683,7 +687,7 @@ public class Interactor : MonoBehaviour {
         // "⛈", 47f
     };
     public bool Multiplayer = false;
-    float NarrationTimer = 0;//-20f; //-60;
+    float NarrationTimer = -20f; //-60;
     int NarrationIndex = 0;
     public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
     public AudioClip NarratorSwitchToMap, NarratorZoomInMap, NarratorZoomInDetails, NarratorAimTheCrosshair, NarratorWelcome;
@@ -701,6 +705,9 @@ public class Interactor : MonoBehaviour {
     private string command = "";
     private string history = "";
     public StructureController Ship, Enemy;
+    
+    public GameObject StructurePrefab;
+    public GameObject PrintStructure;
     public GameObject volume_slider;
     public GameObject InterpreterZoomIn, InterpreterZoomOut;
     public string start_text = "$"; 
@@ -708,14 +715,15 @@ public class Interactor : MonoBehaviour {
     public GameObject ClickableText;
     Text TabToggle;
     GameObject MapScreenPanOverlay, CycleToggle, BinocularToggle;
-    public Text InputField;
+    public InputField InputField;
     public Text Timer, TimerShadow, SplitTimer, SplitTimerShadow;
     GameObject camera;
     public List<GameObject> ButtonsCache = new List<GameObject>();
     int cache_size = 125;
     public AudioClip clip_queue;
     string binocular = "off";
-    public GameObject CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
+    public GameObject Asteroid, CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
+    public GameObject World;
     void Start()
     {
         SetVolume();
@@ -744,9 +752,9 @@ public class Interactor : MonoBehaviour {
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         // PlayVideo("SplashScreen");
-        // PlayVideo("WarOfTheWorldsStinger");
+        PlayVideo("WarOfTheWorldsStinger");
         LoadingScreen.SetActive(false);
-        ResetVideo();
+        // ResetVideo();
         OnMapView();
         // OverlayZoomIn.SetActive(false);
         PrinterLeft.SetActive(false);
@@ -910,6 +918,25 @@ public class Interactor : MonoBehaviour {
         GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); 
         Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         if (InputField.text.Contains("Printer")) {
+
+            // StructurePrefab
+            PrintStructure = Instantiate(StructurePrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+            PrintStructure.transform.SetParent(World.transform);
+            PrintStructure.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+
+            while (Printer.transform.GetChild(3).childCount > 0) {
+                if (Printer.transform.GetChild(3).GetChild(0).GetComponent<ProcessorController>() != null) 
+                {
+                    Printer.transform.GetChild(3).GetChild(0).GetComponent<ProcessorController>().interpreter_input = null;
+                }
+                Printer.transform.GetChild(3).GetChild(0).SetParent(PrintStructure.transform.GetChild(0));
+            }
+
+            camera.transform.SetParent(PrintStructure.transform.GetChild(0));
+            PrintStructure.GetComponent<StructureController>().Start();
+            Ship.Start();
+            OverlayInteractor.Ship = PrintStructure.GetComponent<StructureController>();
+            OverlayInteractor.gameObject.SetActive(false);
             printing = true;
             PrinterLeft.SetActive(false);
             PrinterRight.SetActive(false);
@@ -1034,11 +1061,11 @@ public class Interactor : MonoBehaviour {
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
         #if UNITY_WEBGL
         string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.unity/master/Assets/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
+        GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         #else 
         string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
         #endif
         // print (asset_location);
-        GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
         SetBackground(new Color(20f/255f, 20f/255f, 20f/255f));
         MapScreenPanOverlay.SetActive(false);
@@ -1237,12 +1264,15 @@ public class Interactor : MonoBehaviour {
         if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component;
         // if (component[1] == ' ') 
         // component = component.Substring(1);
-        if (Ship.IsComponent(component)) {
+        if (PrintStructure != null && PrintStructure.GetComponent<StructureController>().IsComponent(component)) {
+            component_string = PrintStructure.GetComponent<StructureController>().GetComponentToString(component);
+        }
+        else if (Ship.IsComponent(component)) {
             component_string = Ship.GetComponentToString(component);
         }
-        if (Enemy.IsComponent(component)) {
-            component_string = Enemy.GetComponentToString(component);
-        }
+        // if (Enemy != null && Enemy.IsComponent(component)) {
+        //     component_string = Enemy.GetComponentToString(component);
+        // }
         component_name = component;
         // component_name = component; component_string.Substring(0, component_string.IndexOf("\n"));// + component_string.Substring(component_string.IndexOf("class ") + 6, component_string.IndexOf(":") - (component_string.IndexOf("class ") + 6));
         // print("\"" + component_name + "\"");
@@ -1253,23 +1283,22 @@ public class Interactor : MonoBehaviour {
         if (InputField.text.Contains("Printer")) {
             // InputField.text = "▦ Printer";//" ⛴ Ship Select";
             switch (MarkerIndex) {
-                case 0:
-
+                case -1:
                     Processor.SetActive(true);
-                    CampaignIntroAssets.SetActive(true);
-                    CampaignIntroSatelliteAssets.SetActive(true);
+                    // CampaignIntroAssets.SetActive(true);
+                    // CampaignIntroSatelliteAssets.SetActive(true);
                     Ship.Start();
                     Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
-                        new ClassObj("▩ ScanProcess"),
-                        new ClassObj("▣ Turret"),
-                        new ClassObj("◌ Scanner"),//,
-                        new ClassObj("◎ Right"),
+                        new ClassObj("▩ Process"),
                         new ClassObj("◎ Left"),
-                        new ClassObj("◉ Engine")
-                        // new ClassObj("▨ Antenna")
+                        new ClassObj("▥ Bulk"),
+                        new ClassObj("◎ Right"),
+                        new ClassObj("◉ Engine"),
                     });
                     //         var components = new string[]{"Processor Process = new Processor (0, 3, 4, 5);","Bulkhead Bulk = new Bulkhead (0, 0, 4, 4);","Booster Right = new Booster (4, 3, 2, 1);", "Booster Left = new Booster (1, 2, 3, 4);", "Thruster Engine = new Thruster (3, 4, 5, 6);"};
 
+                        // new ClassObj("▣ Turret"),
+                        // new ClassObj("◌ Scanner"),//,
                     // Bulkhead.SetActive(true);
                     // Processor.GetComponent<ProcessorController>().interpreter = new InterpreterV3(new List<ClassObj>(){
                     //     new ClassObj("▩ Process"),
@@ -1433,7 +1462,19 @@ public class Interactor : MonoBehaviour {
     }
     
     public void OnInputFire() {
-        Processor.GetComponent<ProcessorController>().interpreter_input.fire = true;
+        
+        if (Stage == "MapInterface")
+        {
+            Stage = "MapZoom";
+            Map.min_zoom = 12;
+            InputUseWeapon.SetActive(false);
+            RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});");
+        } 
+        else 
+        {
+            Processor.GetComponent<ProcessorController>().interpreter_input.fire = true;
+
+        }
     }
     public void OnInput() {
         switch (GetCommand()) {
@@ -1730,82 +1771,82 @@ public class Interactor : MonoBehaviour {
                 MapMarker = GameObject.Find("0");
 
         } 
-        if (NarrationTimer > 1 && NarrationTimer < 2) {
-            PlayAudio(WarOfTheWorldsMapScreen);
-            NarrationTimer = 2;
-        }
-        if (NarrationTimer >= 2 && NarrationTimer < 5) {
-            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer >= 6 && NarrationTimer < 7) {
-            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        }
-        if (NarrationTimer >= 6 && NarrationTimer < 61) {
-            MapMarker.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer >= 61 && NarrationTimer < 62) {
-            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            MapMarker.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-            PlayAudio(NarratorZoomInDetails);
-            NarrationTimer = 62;
-        }
-        if (NarrationTimer >= 62 && NarrationTimer < 99) {
-            GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer > 99 && NarrationTimer < 100) {
-            GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 100;
-            PlayAudio(WarOfTheWorldsTargetWindow);
-        }
-        if (NarrationTimer >= 100 && NarrationTimer < 120) {
-            Printer.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer > 120 && NarrationTimer < 121) {
-            Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 121;
-            PlayAudio(WarOfTheWorldsTargetWindowGood);
-        }
-        if (NarrationTimer > 121 && NarrationTimer < 128) {
-            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer > 128 && NarrationTimer < 129) {
-            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 129;
-            PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
-        }
-        if (NarrationTimer > 129 && NarrationTimer < 180) {
-            PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer > 180 && NarrationTimer < 181) {
+        // if (NarrationTimer > 1 && NarrationTimer < 2) {
+        //     // PlayAudio(WarOfTheWorldsMapScreen);
+        //     // NarrationTimer = 2;
+        // }
+        // if (NarrationTimer >= 2 && NarrationTimer < 5) {
+        //     // GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer >= 6 && NarrationTimer < 7) {
+        //     GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        // }
+        // if (NarrationTimer >= 6 && NarrationTimer < 61) {
+        //     MapMarker.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer >= 61 && NarrationTimer < 62) {
+        //     GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     MapMarker.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        //     PlayAudio(NarratorZoomInDetails);
+        //     NarrationTimer = 62;
+        // }
+        // if (NarrationTimer >= 62 && NarrationTimer < 99) {
+        //     GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer > 99 && NarrationTimer < 100) {
+        //     GameObject.Find("MapScreenOverlay").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     NarrationTimer = 100;
+        //     PlayAudio(WarOfTheWorldsTargetWindow);
+        // }
+        // if (NarrationTimer >= 100 && NarrationTimer < 120) {
+        //     Printer.GetComponent<SpriteRenderer>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer > 120 && NarrationTimer < 121) {
+        //     Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        //     NarrationTimer = 121;
+        //     PlayAudio(WarOfTheWorldsTargetWindowGood);
+        // }
+        // if (NarrationTimer > 121 && NarrationTimer < 128) {
+        //     if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer > 128 && NarrationTimer < 129) {
+        //     if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     NarrationTimer = 129;
+        //     PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
+        // }
+        // if (NarrationTimer > 129 && NarrationTimer < 180) {
+        //     PrinterPrint.GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer > 180 && NarrationTimer < 181) {
 
-            PrinterPrint.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 181;
-            // PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
-        }
-        if (NarrationTimer > 204 && NarrationTimer < 205) {
-            PlayAudio(WarOfTheWorldsGetMoving);
-            // PlayMusic(WarOfTheWorldsTheme);
-            if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            NarrationTimer = 205;
-        }
-        if (NarrationTimer > 205f && NarrationTimer < 209f) {
-            InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
-        }
-        if (NarrationTimer > 209f && NarrationTimer < 210) {
-            // PlayAudio(WarOfTheWorldsFirstContact);
-            NarrationTimer = 210;
-            InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        }
-        if (NarrationTimer > 300 && NarrationTimer < 330) {
-            // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        //     PrinterPrint.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     NarrationTimer = 181;
+        //     // PlayAudio(WarOfTheWorldsTargetWindowIssueOrder);
+        // }
+        // if (NarrationTimer > 204 && NarrationTimer < 205) {
+        //     PlayAudio(WarOfTheWorldsGetMoving);
+        //     // PlayMusic(WarOfTheWorldsTheme);
+        //     if (GameObject.Find("OverlayBorder") != null) GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     NarrationTimer = 205;
+        // }
+        // if (NarrationTimer > 205f && NarrationTimer < 209f) {
+        //     InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
+        // }
+        // if (NarrationTimer > 209f && NarrationTimer < 210) {
+        //     // PlayAudio(WarOfTheWorldsFirstContact);
+        //     NarrationTimer = 210;
+        //     InputJoystick.transform.GetChild(0).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        // }
+        // if (NarrationTimer > 300 && NarrationTimer < 330) {
+        //     // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(.5f + (global_timer * 2) % 1, .5f + (global_timer * 2) % 1, 0, 1f);
 
-        }
-        if (NarrationTimer > 330 && NarrationTimer < 331) {
-            // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-            // NarrationTimer = 331;
-            // Unzoom();
-        }
+        // }
+        // if (NarrationTimer > 330 && NarrationTimer < 331) {
+        //     // GameObject.Find("OverlayZoomOut").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        //     // NarrationTimer = 331;
+        //     // Unzoom();
+        // }
         if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
         {
             ResetVideo();
@@ -1836,6 +1877,13 @@ public class Interactor : MonoBehaviour {
                 MapMarker = GameObject.Find("0");
                 // PlayAudio(SplashScreenComplete);
             } else {
+                if (Stage == "MapInterface" && click_duration < .1f && camera.GetComponent<CameraController>().CheckInsideEdge())
+                {
+                    InputUseWeapon.SetActive(false);
+                    Stage = "MapZoom";
+                    Map.min_zoom = 12;
+                    RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});");
+                } 
                 // if (NarrationTimer >= 100 && NarrationTimer < 180) {
                 //     Stage = "MapZoomed"; 
                 //     NarrationTimer = 180;
@@ -2041,8 +2089,12 @@ public class Interactor : MonoBehaviour {
     public void MapZoomed() {
         Camera.main.orthographicSize = 6;
         Stage = "MapZoomed";
+        Asteroid.SetActive(true);
+        Printer.SetActive(true);
+        Bulkhead.SetActive(true);
         Ship.Start();
         OverlayInteractor.UpdateOptions();
+        RenderText("$");
         // MapScreenPanOverlay.SetActive(true);
         // GameObject.Find("OverlayPanDown")?.SetActive(false);
         if (BinocularToggle != null) BinocularToggle.SetActive(false);
@@ -2114,7 +2166,7 @@ public class Interactor : MonoBehaviour {
     public void MapUnzoomed() {
 
         Stage = "MapInterface";
-        Map?.Zoom(0.825f);
+        Map?.Zoom(0.5f);
         if (NarrationTimer > 2000) {
             NarrationTimer = 2100;
             GameObject.Find("Video Player").GetComponent<AudioSource>().Stop();
@@ -2317,33 +2369,94 @@ public class Interactor : MonoBehaviour {
         //     RenderComponent("▩ Process");
         // }
     }
+
+    string FormatLatLong(Mapbox.Utils.Vector2d point)
+    {
+        double x = point.x, y = point.y;
+        string coordinate_output = "";
+        var coordinate_direction = "N";
+        if (x < 0) {
+            x = -x;
+            coordinate_direction = "S";
+        }
+        var degrees = Mathf.Floor((float)x);
+        x = (x - degrees) * 60;
+        var minutes = Mathf.Floor((float)x);
+        coordinate_output += degrees.ToString("00") + "º_" + minutes.ToString("00") + "'_" + coordinate_direction + ",_";
+        coordinate_direction = "E";
+        if (y < 0) 
+        {
+            y = -y;
+            coordinate_direction = "W";
+        }
+        y %= 180;
+        degrees = Mathf.Floor((float)y);
+        y = (y - degrees) * 60;
+        minutes = Mathf.Floor((float)y);
+        coordinate_output += degrees.ToString("00") + "º_" + minutes.ToString("00") + "'_" + coordinate_direction;
+        return coordinate_output;
+    }
+
+    bool reset_map_target = true;
     void FixedUpdate()
     {
         if (Stage == "Loading") {
             Stage = "SplashScreen";
-            Printer.SetActive(false);
+            // Printer.SetActive(false);
         }
-        // print (Stage);
+        if (Stage == "MapZoom") 
+        {
+            // GameObject.Find("Cursor")?.SetActive(false);
+            GameObject.Find("Cursor").GetComponent<RectTransform>().position = camera.GetComponent<CameraController>().GetMapCenter();
+        }
+
+        if (Stage == "MapInterface")
+        {
+            if (InputField.text.Contains("BitNaughts")) 
+            {
+                InputField.text = "";
+                InputUseWeapon.SetActive(true);
+            }
+            if (camera.GetComponent<CameraController>().CheckInsideEdge()) 
+            {
+                reset_map_target = true;
+                GameObject.Find("Cursor").GetComponent<RectTransform>().position = Input.mousePosition;
+                TargetLocation = Map.GetMap().WorldToGeoPosition(camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
+                RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
+
+            }
+            else if (reset_map_target) 
+            {
+                reset_map_target = false;
+                GameObject.Find("Cursor").GetComponent<RectTransform>().position = camera.GetComponent<CameraController>().GetMapCenter();
+                var pos = camera.GetComponent<Camera>().ScreenToWorldPoint(camera.GetComponent<CameraController>().GetMapCenter());
+                TargetLocation = Map.GetMap().WorldToGeoPosition(pos);
+                RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
+            }
+            
+        }
+        print (Stage);
         global_timer += Time.deltaTime;
         // if (TabToggle.text == "▤ TUI") { //InputField.text.Contains("Processor") && 
         //     RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
         // }
         if (printing) {
-            if (print_index < GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>().Length) {
-                if (GameObject.Find("Printer").GetComponent<PrinterController>().print_index == -1) {
-                    GameObject.Find("Printer").GetComponent<PrinterController>().print_index = 0;
+            if (print_index < PrintStructure.transform.GetChild(0).GetComponentsInChildren<ComponentController>().Length) {
+                if (Printer.GetComponent<PrinterController>().print_index == -1) {
+                    Printer.GetComponent<PrinterController>().print_index = 0;
                     if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("▦ Printer");
                 }
                 if (print_obj == null) {
-                    print_obj = GameObject.Find("Example").transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index++].gameObject;
+                    print_obj = PrintStructure.transform.GetChild(0).GetComponentsInChildren<ComponentController>()[print_index].gameObject;
                 }
-                if (GameObject.Find("Printer").GetComponent<PrinterController>().GoTo(new Vector2(print_obj.transform.position.x, print_obj.transform.position.z))) {
+                if (Printer.GetComponent<PrinterController>().GoTo(new Vector2(print_obj.transform.position.x, print_obj.transform.position.z))) {
                     print_obj.GetComponent<ComponentController>().Launch();
+                    print_index++;
                     if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("▦ Printer");
                     print_obj = null;
                 }
             } else {
-                Printer.SetActive(false);
+                // Printer.SetActive(false);
                 ClearText();
                 PrinterLeft.SetActive(false);
                 PrinterRight.SetActive(false);
@@ -2352,8 +2465,8 @@ public class Interactor : MonoBehaviour {
                 OverlayInteractor.UpdateOptions();
                 OverlayInteractor.gameObject.SetActive(false);
                 MapScreenPanOverlay.SetActive(true);
-                // InputJoystick.SetActive(true);
-                // InputUseWeapon.SetActive(true);
+                InputJoystick.SetActive(true);
+                InputUseWeapon.SetActive(true);
                 printing = false;
                 Multiplayer = true;
                 // Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0);
@@ -2414,7 +2527,7 @@ public class Interactor : MonoBehaviour {
 
             // if (Stage == "MapZoom") {
             // } else {
-            // Timer.text = FloatToTime(NarrationTimer) + "\t" + System.DateTime.Now.ToString("M/d") + "/1969";// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
+            Timer.text = "T " + FloatToTime(NarrationTimer) + " " + System.DateTime.Now.ToString();// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
             // } 
             // if (Stage == "Loading" && (ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1) {
             //     PlayVideo("SplashScreen");
@@ -2625,4 +2738,6 @@ public class Interactor : MonoBehaviour {
         // print("Reset test");
         Processor.GetComponent<ProcessorController>().interpreter.ResetLine();
     }
+
 }
+

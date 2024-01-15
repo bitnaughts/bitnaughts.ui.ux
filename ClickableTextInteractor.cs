@@ -31,7 +31,7 @@ public class ClickableTextInteractor : MonoBehaviour
 
 
 
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-((Interactor.fontSize - 5) / 1.5f) + (pos - (text.Length - 1)/2f) * Interactor.fontSize / 2, line * -Interactor.fontSize) + new Vector2(50f, -85f);// + (pos - (text.Length-1)/2f) * 50f, -125f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-((Interactor.fontSize - 5) / 1.5f) + (pos - (text.Length - 1)/2f) * Interactor.fontSize / 2, line * -Interactor.fontSize) + new Vector2(50f, -110f);// + (pos - (text.Length-1)/2f) * 50f, -125f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
         var text_length = text.Length * 50f;
         if (text.StartsWith("<color=#")) text_length -= 23 * 50f;
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * Interactor.fontSize / 2, Interactor.fontSize);//new Vector2(text_length, 100f);//new Vector2(text.Length * 37.5f, 75f);
@@ -76,6 +76,11 @@ public class ClickableTextInteractor : MonoBehaviour
             case "Torpedo":
             case "Ray":
             case "Heap":
+            case "LatLong":
+            case "SF":
+            case "LA":
+            case "NY":
+            case "DC":
             // case "Processor":
             // case "Cannon":
             // case "Gimbal":
@@ -144,6 +149,30 @@ public class ClickableTextInteractor : MonoBehaviour
         string output = "";
         var components = Interactor.GetComponents();
         switch (initialized_text) {
+            case "SF":
+            case "(37º_46'_N,_122º_25'_W);":
+                Interactor.TargetLocation = new Mapbox.Utils.Vector2d(37.77903f, -122.41991f);
+                Interactor.Stage = "MapZoom";
+                Interactor.RenderText("$ new LatLong (37º_46'_N,_122º_25'_W);");
+                break;
+            case "LA":
+            case "(34º_05'_N,_118º_18'_W);":
+                Interactor.TargetLocation = new Mapbox.Utils.Vector2d(34.05369f,-118.24277f);
+                Interactor.Stage = "MapZoom";
+                Interactor.RenderText("$ new LatLong (34º_05'_N,_118º_18'_W);");
+                break;
+            case "NY":
+            case "(40º_42'_N,_74º_00'_W);":
+                Interactor.TargetLocation = new Mapbox.Utils.Vector2d(40.71275f, -74.00599f);
+                Interactor.Stage = "MapZoom";
+                Interactor.RenderText("$ new LatLong (40º_42'_N,_74º_00'_W);");
+                break;
+            case "DC":
+            case "(38º_53'_N,_77º_02'_W);":
+                Interactor.TargetLocation = new Mapbox.Utils.Vector2d(38.89500f, -77.03667f);
+                Interactor.Stage = "MapZoom";
+                Interactor.RenderText("$ new LatLong (38º_53'_N,_77º_02'_W);");
+                break;
             case "help": 
                 switch (Interactor.GetCommand()) {
                     // case "git":

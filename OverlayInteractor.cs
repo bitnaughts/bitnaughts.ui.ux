@@ -72,31 +72,34 @@ public class OverlayInteractor : MonoBehaviour
         component_abs_position = Ship.GetPosition(option);
         component_size = Ship.GetSize(option);
         rotation = Ship.GetRotation(option);
+
         Camera.main.transform.position = new Vector3(component_abs_position.x, 200, component_abs_position.z);
-        if (Interactor.GetBinocular() == "off") {
-            Vector2 rotated_vector = new Vector2(
-                map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.y * 625 / Camera.main.orthographicSize, component_size.x * 625 / Camera.main.orthographicSize),
-                map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.x * 625 / Camera.main.orthographicSize, component_size.y * 625 / Camera.main.orthographicSize)
-            );
-            if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
-                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width / 2 - 260)), 
-                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height - 260)));
-            } else {
-                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width - 260)), 
-                    Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
-            }
+        if (Interactor.GetBinocular() == "on") {
+            rotation = Ship.GetLocalRotation(option);
+        }
+        Vector2 rotated_vector = new Vector2(
+            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.y * 625 / Camera.main.orthographicSize, component_size.x * 625 / Camera.main.orthographicSize),
+            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.x * 625 / Camera.main.orthographicSize, component_size.y * 625 / Camera.main.orthographicSize)
+        );
+        // } else {
+        //     if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
+        //         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+        //             Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width / 2 - 260)), 
+        //             Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height - 260)));
+        //     } else {
+        //         this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+        //             Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width - 260)), 
+        //             Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height / 2 - 260)));
+        //     }
+        // }
+        if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
+            this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width / 2 - 260)), 
+                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height - 260)));
         } else {
-            if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
-                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width / 2 - 260)), 
-                    Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height - 260)));
-            } else {
-                this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    Mathf.Clamp(200f+Mathf.Abs(component_size.x * 625 / Camera.main.orthographicSize), 350f, (Screen.width - 260)), 
-                    Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height / 2 - 260)));
-            }
+            this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width - 260)), 
+                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
         }
         var rectTransform = OverlayDropdown.gameObject.transform.Find("Dropdown List")?.gameObject.GetComponent<RectTransform>();
         if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 90f);

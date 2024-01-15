@@ -15,7 +15,7 @@ public class AbstractMapController : MonoBehaviour
 
     [SerializeField]
     [Geocode]
-    string[] _locationStrings;
+    List<string> _locationStrings;
     Vector2d[] _locations;
 
     [SerializeField]
@@ -26,10 +26,10 @@ public class AbstractMapController : MonoBehaviour
 
     List<GameObject> _spawnedObjects;
 
-    float zoom;
+    float zoom = .5f;
     public List<string> titles;
     public Interactor Interactor;
-    public float min_zoom = 15;
+    public float min_zoom = 12.5f;
 
     public GameObject Mars;
 
@@ -38,9 +38,9 @@ public class AbstractMapController : MonoBehaviour
     void Start()
     {
         Interactor = GameObject.Find("ScreenCanvas").GetComponent<Interactor>();
-        _locations = new Mapbox.Utils.Vector2d[_locationStrings.Length];
+        _locations = new Mapbox.Utils.Vector2d[_locationStrings.Count];
         _spawnedObjects = new List<GameObject>();
-        for (int i = 0; i < _locationStrings.Length; i++)//< _locationStrings.Length; i++)
+        for (int i = 0; i < _locationStrings.Count; i++)//< _locationStrings.Length; i++)
         {
             var locationString = _locationStrings[i];
             _locations[i] = Conversions.StringToLatLon(locationString);
@@ -51,6 +51,15 @@ public class AbstractMapController : MonoBehaviour
             instance.transform.GetComponentsInChildren<TextMesh>()[0].text = titles[i];
             _spawnedObjects.Add(instance);
         }
+    }
+    public AbstractMap GetMap() {
+        return _map;
+    }
+    public void AddLocation(string location, string name) 
+    {
+        _locationStrings.Add(location);
+        titles.Add(name);
+        Start();
     }
     public GameObject tint, space;
     private void Update()
@@ -105,8 +114,9 @@ public class AbstractMapController : MonoBehaviour
                 // _map.UpdateMap(15f); //new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 
                 Interactor.MapZoomed();
             } else {//if (Interactor.MarkerIndex != -1) {
-                _map.UpdateMap(_locations[Interactor.MarkerIndex], Mathf.Clamp(zoom, 1f, min_zoom));
-                Camera.main.orthographicSize = Mathf.Clamp(zoom + 10f, 10f, 250f);
+                _map.UpdateMap(Interactor.TargetLocation, Mathf.Clamp(zoom, .5f, min_zoom));
+                Camera.main.orthographicSize += Time.deltaTime * 1.5f;
+                //Camera.main.orthographicSize = Mathf.Clamp(zoom + 15f, 15f, 250f);
             }
         }
         if (Interactor.Stage == "MapUnzoom") {
@@ -119,13 +129,13 @@ public class AbstractMapController : MonoBehaviour
             Camera.main.transform.localRotation = Quaternion.identity;
             zoom -= Time.deltaTime * 1.5f;
             Camera.main.transform.localPosition = new Vector3(0, 0, -200);
-            if (zoom <= 0.825f) {
+            if (zoom <= 0.5f) {
                 // _map.UpdateMap(15f); //new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 
                 Interactor.MapUnzoomed();
             }
             else {
                 Zoom(zoom);
-                Camera.main.orthographicSize = Mathf.Clamp(zoom + 10f, 10f, 250f);
+                Camera.main.orthographicSize += Time.deltaTime * 1.5f; //Mathf.Clamp(zoom + 15f, 15f, 250f);
             }
         }
         // zoom -= target.translation.magnitude;
@@ -137,8 +147,9 @@ public class AbstractMapController : MonoBehaviour
     } 
     public void Zoom(float zoom) {
         this.zoom = zoom;
-        _map.UpdateMap(Mathf.Clamp(zoom, 1f, min_zoom));
-        Camera.main.orthographicSize = Mathf.Clamp(zoom + 10f, 10f, 250f);
+        print (zoom);
+        _map.UpdateMap(Mathf.Clamp(zoom, .5f, min_zoom));
+        Camera.main.orthographicSize = Mathf.Clamp(zoom + 15f, 15f, 250f);
     }
     public void SetMars()
     {
