@@ -200,6 +200,10 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.SetCommand("clone");
                 Interactor.AppendText("$ git clone <i>bitnaughts.db</i>\n            <i>bitnaughts.components</i>\n            <i>bitnaughts.ui.ux</i>\n            <i>bitnaughts.assets</i>\n            <i>bitnaughts.github.io</i>\n            <i>bitnaughts.interpreter</i>");
                 break;
+            case "Edit_()":
+            case "/*_Modify_Ship_*/":
+                Interactor.PrinterEditFx();
+                break;
             case "Print_()":
             case "/*_Construct_Ship_*/":
                 Interactor.PrinterPrintFx();

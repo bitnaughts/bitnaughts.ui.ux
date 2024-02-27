@@ -29,7 +29,7 @@ public class AbstractMapController : MonoBehaviour
     float zoom = .5f;
     public List<string> titles;
     public Interactor Interactor;
-    public float min_zoom = 12.5f;
+    public float min_zoom = 15f;
 
     public GameObject Mars;
 
@@ -107,18 +107,27 @@ public class AbstractMapController : MonoBehaviour
         //     Zoom(1);
         //     Interactor.SetEarth();
         // }
+        // print (min_zoom + " " + zoom);
         if (Interactor.Stage == "MapZoom") {
             Camera.main.transform.localPosition = new Vector3(0, 0, -200);
-            zoom += Time.deltaTime * 1;
             if (zoom >= min_zoom) {
                 // _map.UpdateMap(15f); //new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 
                 Interactor.MapZoomed();
             } else {//if (Interactor.MarkerIndex != -1) {
+                zoom += Time.deltaTime * 2.5f;
                 _map.UpdateMap(Interactor.TargetLocation, Mathf.Clamp(zoom, .5f, min_zoom));
-                Camera.main.orthographicSize += Time.deltaTime * 1.5f;
+                Camera.main.orthographicSize += Time.deltaTime * 2f;
                 //Camera.main.orthographicSize = Mathf.Clamp(zoom + 15f, 15f, 250f);
             }
         }
+        // if (Interactor.Stage == "MapZoomed") {
+        //     if (zoom <= min_zoom) {
+        //         // print (Interactor.PrintStructure.GetComponent<StructureController>().translation.magnitude);
+        //         zoom += Time.deltaTime * 2.5f * Interactor.PrintStructure.GetComponent<StructureController>().translation.magnitude;
+        //         _map.UpdateMap(Mathf.Clamp(zoom, .5f, min_zoom));
+        //         // Camera.main.orthographicSize += Time.deltaTime * 1.5f;
+        //     }
+        // }
         if (Interactor.Stage == "MapUnzoom") {
             // _map.UpdateMap(zoom); //_locations[0], 
             _spawnedObjects[0].SetActive(true);

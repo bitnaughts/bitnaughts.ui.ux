@@ -42,28 +42,69 @@ public class OverlayInteractor : MonoBehaviour
         }
         Resize();
     }
+    public void SetOptions(string[] options)
+    {
+        OverlayDropdown.options = new List<Dropdown.OptionData>();
+        for (int i = 0; i < options.Length; i++) {
+            OverlayDropdown.options.Add(new Dropdown.OptionData(options[i]));
+        }
+        OverlayDropdown.value = 0;
+    }
+    
+    public void SetOptions(string[] options, string option)
+    {
+        OverlayDropdown.options = new List<Dropdown.OptionData>();
+        OverlayDropdown.value = 0;
+        for (int i = 0; i < options.Length; i++) {
+            OverlayDropdown.options.Add(new Dropdown.OptionData(options[i]));
+            if (options[i] == option) {
+                OverlayDropdown.value = i;
+            }
+        }
+    }
+    public void SetComponentOptions()
+    {
+        OverlayDropdown.options = new List<Dropdown.OptionData>();
+        // OverlayDropdown.options.Add(new Dropdown.OptionData("▦ Printer"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("▩ Processor"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("▥ Bulkhead"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("▣ Gimbal"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("◉ Thruster"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("◎ Booster"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("◍ Cannon"));
+        OverlayDropdown.options.Add(new Dropdown.OptionData("◌ Sensor"));
+        // OverlayDropdown.value = 0;
+    }
     public void UpdateOptions() 
     {
         OverlayDropdown.options = new List<Dropdown.OptionData>();
+        OverlayDropdown.value = 0;
+        int counter = 0;
         if (Ship.components != null) {
             foreach (var key in Ship.GetControllers()) {
-                // print ("Adding dropdown option " + key);
                 OverlayDropdown.options.Add(new Dropdown.OptionData(key));
+                if (key == selected) {
+                    OverlayDropdown.value = counter;
+                }
+                counter++;// print ("Adding dropdown option " + key);
             }
         }
         else {
             print ("unexpected null components");
         }
-        this.gameObject.SetActive(false);
+        if (Interactor.printing_stage == "") this.gameObject.SetActive(false);
     }
+    string selected = "";
     public void Resize() 
     {
+        print ("Resize to " + selected);
         // print (OverlayDropdown.value);
         // print (OverlayDropdown.options[OverlayDropdown.value].text);
-        Resize(OverlayDropdown.options[OverlayDropdown.value].text);
+        Resize(selected);
     }
     public void Resize(string name) 
     {
+        // selected = OverlayDropdown.options[OverlayDropdown.value].text;
         Vector3 component_position, component_abs_position, component_size;
         float rotation;
         string option;
@@ -72,7 +113,8 @@ public class OverlayInteractor : MonoBehaviour
         component_abs_position = Ship.GetPosition(option);
         component_size = Ship.GetSize(option);
         rotation = Ship.GetRotation(option);
-
+        Ship.UpdateCollider(option);
+        // if (component_size.x > 0) Camera.main.orthographicSize = Mathf.Sqrt(component_size.x * component_size.y);//component_size.x;
         Camera.main.transform.position = new Vector3(component_abs_position.x, 200, component_abs_position.z);
         if (Interactor.GetBinocular() == "on") {
             rotation = Ship.GetLocalRotation(option);
@@ -102,7 +144,7 @@ public class OverlayInteractor : MonoBehaviour
                 Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
         }
         var rectTransform = OverlayDropdown.gameObject.transform.Find("Dropdown List")?.gameObject.GetComponent<RectTransform>();
-        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 90f);
+        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 205f);
     }
     
     float map(float s, float a1, float a2, float b1, float b2)
@@ -110,12 +152,126 @@ public class OverlayInteractor : MonoBehaviour
         return b1 + (s-a1)*(b2-b1)/(a2-a1);
     }
     string function_parameter_type = "";
+    GameObject edit_prefab = null;
     public void OnDropdownChange(int index) 
     {
         var option = OverlayDropdown.options[OverlayDropdown.value].text;//.Substring(1);
+        int i = 1;
+        Vector2 min_size = new Vector2();
+        switch (option)
+        {
+            case "▩ Processor":
+                // Component Prefab
+                edit_prefab = Instantiate(Interactor.ProcessorPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f); 
+                while (GameObject.Find("Processor" + i) != null) { i++; }
+                edit_prefab.name = "Processor" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "▩ " + edit_prefab.name);
+                Resize("▩ " + edit_prefab.name);
+                selected = "▩ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "▥ Bulkhead":
+                edit_prefab = Instantiate(Interactor.BulkheadPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Bulkhead" + i) != null) { i++; }
+                edit_prefab.name = "Bulkhead" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "▥ " + edit_prefab.name);
+                Resize("▥ " + edit_prefab.name);
+                selected = "▥ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "▣ Gimbal":
+                edit_prefab = Instantiate(Interactor.GimbalPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Gimbal" + i) != null) { i++; }
+                edit_prefab.name = "Gimbal" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "▣ " + edit_prefab.name);
+                Resize("▣ " + edit_prefab.name);
+                selected = "▣ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "◉ Thruster":
+                edit_prefab = Instantiate(Interactor.ThrusterPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Thruster" + i) != null) { i++; }
+                edit_prefab.name = "Thruster" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "◉ " + edit_prefab.name);
+                Resize("◉ " + edit_prefab.name);
+                selected = "◉ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "◎ Booster":
+                edit_prefab = Instantiate(Interactor.BoosterPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Booster" + i) != null) { i++; }
+                edit_prefab.name = "Booster" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "◎ " + edit_prefab.name);
+                Resize("◎ " + edit_prefab.name);
+                selected = "◎ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "◍ Cannon":
+                edit_prefab = Instantiate(Interactor.CannonPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Cannon" + i) != null) { i++; }
+                edit_prefab.name = "Cannon" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "◍ " + edit_prefab.name);
+                Resize("◍ " + edit_prefab.name);
+                selected = "◍ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+            case "◌ Sensor":
+                edit_prefab = Instantiate(Interactor.SensorPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+                edit_prefab.transform.SetParent(Interactor.Printer.transform.GetChild(3));
+                edit_prefab.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                edit_prefab.transform.localPosition = new Vector3(0, 0, 0);
+                edit_prefab.GetComponent<BoxCollider>().size = new Vector3(edit_prefab.GetComponent<BoxCollider>().size.x, edit_prefab.GetComponent<BoxCollider>().size.y, 10f);
+                while (GameObject.Find("Sensor" + i) != null) {}
+                edit_prefab.name = "Sensor" + i;
+                SetOptions(Interactor.GetPrinterComponents(), "◌ " + edit_prefab.name);
+                Resize("◌ " + edit_prefab.name);
+                selected = "◌ " + edit_prefab.name;
+                min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                return;
+        }
+        if (Interactor.printing_stage == "Delete") {
+            Interactor.PrinterPrint1.SetActive(true);
+            Interactor.PrinterPrint2.SetActive(true);
+            DeleteComponent(option);
+            UpdateOptions();
+            Interactor.printing_stage = "Edit";
+            return;
+        }
+        selected = option;
+        Resize(option);
         MapScreenPanOverlay.SetActive(false);
         last_position = new Vector2 (999,999);
-        Resize(option);
         if (State != "") {
             // print ("Code mode dropdown " + name);
             OverlayDropdown.gameObject.SetActive(false);
@@ -154,6 +310,39 @@ public class OverlayInteractor : MonoBehaviour
     
     public void OnSubmit() {
         Interactor.Sound("Click");
+                // UpdateOptions();
+        print (Interactor.printing_stage);
+        if (Interactor.printing_stage == "Edit" || Interactor.printing_stage == "Add") 
+        {
+            selected = Interactor.InputField.text;
+            print (Interactor.InputField.text);
+            // OverlayDropdown.transform.Find("OverlayDropdownLabel").GetComponent<Text>().text = "Reference";
+            if (Interactor.InputField.text.Contains("Printer"))
+            {
+                Interactor.PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "± Edit";
+                Interactor.PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+                UpdateOptions();
+                print ("Updated options");
+                Interactor.printing_stage = "";
+                return;
+            }
+            // Interactor.
+            for (int i = 0; i < OverlayDropdown.options.Count; i++) {
+                if (OverlayDropdown.options[i].text.Contains("Printer")) {
+                    if (OverlayDropdown.value != i) {
+                        OverlayDropdown.value = i; 
+                    }
+                }
+            }
+            OverlayDropdown.transform.Find("OverlayDropdownLabel").GetComponent<Text>().text = "▦ Printer";
+            // Interactor.printing_stage = "";
+            selected = "▦ Printer";
+            Resize("▦ Printer");
+            var component_size = Ship.GetSize(selected);
+            Camera.main.orthographicSize = Mathf.Sqrt(component_size.x * component_size.y);
+            Interactor.RenderComponent("▦ Printer");
+            return;
+        }
         if (State != "") {
             var injection = OverlayCodeInput.GetComponent<InputField>().text;
             if (injection == "") {
@@ -193,9 +382,20 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnExit() 
     {
+        print ("Printing Stage on Exit " + Interactor.printing_stage);
+        if (Interactor.printing_stage == "Add" || Interactor.printing_stage == "Edit")
+        {
+            if (edit_prefab != null) Destroy(edit_prefab);
+            Interactor.printing_stage = "";
+            Interactor.PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "± Edit";
+            Interactor.PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+            UpdateOptions();
+            return;
+        }
         Interactor.Sound("Back");
         if (gameObject.activeSelf) {
-            DeleteComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+            UpdateOptions();
+            DeleteComponent(selected);
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
             OverlayZoomIn.SetActive(true);
@@ -216,6 +416,29 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnDelete() 
     {
+        print ("Printing Stage on Exit " + Interactor.printing_stage);
+        if (Interactor.printing_stage == "Add" || Interactor.printing_stage == "Edit")
+        {
+            if (edit_prefab != null) Destroy(edit_prefab);
+            Interactor.PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "± Edit";
+            Interactor.PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+            Interactor.Example.GetComponent<StructureController>().EnableColliders();
+            Interactor.InputField.text = "▦ Printer";
+            OverlayDropdown.transform.Find("OverlayDropdownLabel").GetComponent<Text>().text = "▦ Printer";
+            Resize("▦ Printer");
+            Interactor.RenderComponent("▦ Printer");
+            UpdateOptions();
+            
+            for (int i = 0; i < OverlayDropdown.options.Count; i++) {
+                if (OverlayDropdown.options[i].text.Contains("Printer")) {
+                    if (OverlayDropdown.value != i) {
+                        OverlayDropdown.value = i; 
+                    }
+                }
+            }
+            Interactor.printing_stage = "";
+            return;
+        }
         Interactor.Sound("Back");
         if (last_position.x == 999) {
             this.gameObject.SetActive(false);
@@ -224,9 +447,9 @@ public class OverlayInteractor : MonoBehaviour
             Interactor.ClearText();
         }
         else { 
-            Ship.SetPosition(OverlayDropdown.options[OverlayDropdown.value].text, last_position);
+            Ship.SetPosition(selected, last_position);
             if (last_size.x != 999) {
-                Ship.SetSize(OverlayDropdown.options[OverlayDropdown.value].text, last_size);
+                Ship.SetSize(selected, last_size);
             }
             OnDropdownChange(0); 
         }
@@ -234,7 +457,14 @@ public class OverlayInteractor : MonoBehaviour
     public void DeleteComponent(string component)
     {
         Ship.Remove(component);
-        this.gameObject.SetActive(false);
+        if (Interactor.printing_stage == "Delete") 
+        {
+
+        }
+        else 
+        {
+            this.gameObject.SetActive(false);
+        }
         MapScreenPanOverlay.SetActive(true);
         OverlayZoomIn.SetActive(true);
         Interactor.ClearText();
@@ -243,7 +473,7 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void OnMove() 
     {
-        last_position = Ship.GetPosition(OverlayDropdown.options[OverlayDropdown.value].text);
+        last_position = Ship.GetPosition(selected);
         OverlayDelete.gameObject.SetActive(true);
         OverlayMove.gameObject.SetActive(false);
         OverlayResize.gameObject.SetActive(false);
@@ -257,65 +487,65 @@ public class OverlayInteractor : MonoBehaviour
     } 
     public void OnMoveUp() 
     {
-        Ship.Move(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Move(selected, new Vector2(0,1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnMoveLeft() 
     {
-        Ship.Move(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Move(selected, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnMoveRight() 
     {
-        Ship.Move(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Move(selected, new Vector2(1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnMoveDown() {
-        Ship.Move(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Move(selected, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnMoveRotateCW() 
     {
-        Ship.Rotate90(OverlayDropdown.options[OverlayDropdown.value].text); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Rotate90(selected); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnMoveRotateCCW() 
     {
-        Ship.RotateM90(OverlayDropdown.options[OverlayDropdown.value].text); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.RotateM90(selected); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeExpandUp() 
     {
-        Ship.Upsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Upsize(selected, new Vector2(0,1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeShrinkUp() 
     {
-        Ship.Downsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Downsize(selected, new Vector2(0,1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeExpandLeft() 
     {
-        Ship.Upsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Upsize(selected, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeShrinkLeft() 
     {
-        Ship.Downsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Downsize(selected, new Vector2(-1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeExpandRight() 
     {
-        Ship.Upsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Upsize(selected, new Vector2(1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeShrinkRight() 
     {
-        Ship.Downsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(1,0)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Downsize(selected, new Vector2(1,0)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeExpandDown() 
     {
-        Ship.Upsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Upsize(selected, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResizeShrinkDown() 
     {
-        Ship.Downsize(OverlayDropdown.options[OverlayDropdown.value].text, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(OverlayDropdown.options[OverlayDropdown.value].text);
+        Ship.Downsize(selected, new Vector2(0,-1)); Resize(); Interactor.RenderComponent(selected);
     }
     public void OnResize() 
     {
         OverlayMove.gameObject.SetActive(false);
         OverlayResize.gameObject.SetActive(false);
-        last_position = Ship.GetPosition(OverlayDropdown.options[OverlayDropdown.value].text);
-        last_size = Ship.GetSize(OverlayDropdown.options[OverlayDropdown.value].text);
+        last_position = Ship.GetPosition(selected);
+        last_size = Ship.GetSize(selected);
         OverlayResizeExpandUp.gameObject.SetActive(true);
         OverlayResizeShrinkUp.gameObject.SetActive(true);
         OverlayResizeExpandLeft.gameObject.SetActive(true);

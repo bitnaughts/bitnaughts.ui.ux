@@ -34,6 +34,7 @@ public class Narration {
     }
 }
 public class Interactor : MonoBehaviour {
+    public GameObject ProcessorPrefab, BulkheadPrefab, GimbalPrefab, ThrusterPrefab, BoosterPrefab, CannonPrefab, SensorPrefab;
     public string Stage = "SplashScreen";
     public GameObject InputJoystick, InputUseWeapon;
     public GameObject[] GridLayers;
@@ -88,14 +89,16 @@ public class Interactor : MonoBehaviour {
         new Narration(-19.00f, "<b>Across_an_immense</b>"),
         new Narration(-18.00f, "Across_an_immense\n<b>ethereal_gulf_...</b>"),
         new Narration(-17.00f, "Across_an_immense\nethereal_gulf_..."),
-        new Narration(-16.00f, "Across_an_immense\nethereal_gulf_...\n\n<b>Intellect,</b>"),
-        new Narration(-15.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast,_cool</b>"),
-        new Narration(-13.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic,</b>"),
-        new Narration(-11.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\n<b>regarded_this_Earth</b>"),
-        new Narration(-10.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\n<b>with_envious_eyes,_and</b>"),
-        new Narration(-07.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\n<b>slowly_and_surely_drew</b>"),
-        new Narration(-06.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\nslowly_and_surely_drew\n<b>their_plans_against_us!</b>"),
-        new Narration(-05.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic,\nregarded_this_Earth\nwith_envious_eyes,_and\nslowly_and_surely_drew\ntheir_plans_against_us!"),
+        new Narration(-16.00f, "Across_an_immense\nethereal_gulf_...\n\n<b>Intellect</b>"),
+        new Narration(-15.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast</b>"),
+        new Narration(-14.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, vast,_<b>cool</b>"),
+        new Narration(-13.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic_...</b>"),
+        new Narration(-11.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\n<b>Regarded_this_Earth</b>"),
+        new Narration(-10.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\n<b>with_envious_eyes_...</b>"),
+        new Narration(-07.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\n<b>And_slowly_and_surely</b>"),
+        new Narration(-06.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\n<b>drew_their_plans</b>"),
+        new Narration(-05.75f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\n<b>against_us!</b>"),
+        new Narration(-05.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\nagainst_us!"),
         new Narration(-03.00f, "<b>⛈</b>"),
         new Narration(-02.00f, "⛈"),
         // new Narration(-47.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\n<b>officially_confirmed_as</b>\n"),
@@ -128,7 +131,7 @@ public class Interactor : MonoBehaviour {
         // new Narration( 02.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\n<b>to_issue_tactical</b>"),
         // new Narration( 03.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\n<b>commands.</b>"),
         // new Narration( 04.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands."),
-        new Narration(-01.00f, "<b>⛅</b>"),
+        new Narration(-01.00f, "$"),
         
         // new Narration(001.00f, "<b>The_map_screen_shows</b>"),
         // new Narration(002.00f, "The_map_screen_shows\n<b>you_your_mission_area.</b>"),
@@ -285,13 +288,13 @@ public class Interactor : MonoBehaviour {
         // new Narration(202.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,"),
         // new Narration(203.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\n"),
         // new Narration(204.00f, "The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units."),
-        new Narration(205.00f, "<b>Great!</b>"),//"The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-"),
-        new Narration(206.00f, "Great!\n\n<b>Time_to_get_this_baby</b>"),
-        new Narration(207.00f, "Great!\n\nTime_to_get_this_baby\n<b>airborne!</b>"),
-        new Narration(208.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\n<b>Set_your_throttle_to</b>"),
-        new Narration(209.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\n<b>maximum</b>!"),
-        new Narration(210.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!"),
-        new Narration(212.00f, "$"),
+        // new Narration(205.00f, "<b>Great!</b>"),//"The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-"),
+        // new Narration(206.00f, "Great!\n\n<b>Time_to_get_this_baby</b>"),
+        // new Narration(207.00f, "Great!\n\nTime_to_get_this_baby\n<b>airborne!</b>"),
+        // new Narration(208.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\n<b>Set_your_throttle_to</b>"),
+        // new Narration(209.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\n<b>maximum</b>!"),
+        // new Narration(210.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!"),
+        // new Narration(212.00f, "$"),
         // new Narration(215.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!\n\nHint:_Fly_forward_to_take_off"),
         // new Narration(216.00f, "Great!\n\nTime_to_get_this_baby\nairborne!\n\nSet_your_throttle_to\nmaximum!\n\nHint:_Fly_forward_to\ntake_off_of_Mars!"),
         //"The_map_screen_shows\nyou_your_mission_area,\nall_friendly_units,\nand_any_detected\nenemy_units.\n\nSelect_units_high-\nlighted_in_yellow!"),
@@ -701,7 +704,7 @@ public class Interactor : MonoBehaviour {
     public AudioClip SoundBack, SoundClick, SoundError, SoundOnMouse, SoundStart, SoundToggle, SoundProcessor, SoundGimbal, SoundCannon1, SoundCannon2, SoundCannon3, SoundRadar, SoundThruster, SoundBooster, SoundTorpedo1, SoundTorpedo2, SoundWarning, SoundWarningOver;
     public GameObject Overlay, OverlayZoomIn, OverlayZoomOut;
     public GameObject Example;
-    public GameObject PrinterPrint, PrinterRight, PrinterLeft;
+    public GameObject PrinterPrint, PrinterPrint1, PrinterPrint2, PrinterRight, PrinterLeft;
     private string command = "";
     private string history = "";
     public StructureController Ship, Enemy;
@@ -730,6 +733,8 @@ public class Interactor : MonoBehaviour {
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
         PrinterPrint = GameObject.Find("InputPrinterPrint");
+        PrinterPrint1 = GameObject.Find("InputPrinterPrint1");
+        PrinterPrint2 = GameObject.Find("InputPrinterPrint2");
         PrinterRight = GameObject.Find("InputPrinterRight");
         PrinterLeft = GameObject.Find("InputPrinterLeft");
         OverlayZoomIn = GameObject.Find("OverlayZoomIn");
@@ -760,8 +765,11 @@ public class Interactor : MonoBehaviour {
         PrinterLeft.SetActive(false);
         PrinterRight.SetActive(false);
         PrinterPrint.SetActive(false);
+        PrinterPrint1.SetActive(false);
+        PrinterPrint2.SetActive(false);
         // Printer.SetActive(false);
         BinocularToggle = GameObject.Find("BinocularToggle");
+        SetBinocular("on");
         CycleToggle = GameObject.Find("CycleToggle");
         BinocularToggle.SetActive(false);
         CycleToggle.SetActive(false);
@@ -913,17 +921,75 @@ public class Interactor : MonoBehaviour {
     //     // }
         
     // }
+    public string ActiveStructure = "Example";
     bool printing = false;
+    public string printing_stage = "";
+    public void PrinterEditFx() 
+    {
+        if (printing_stage == "Edit") {
+            // Printer.
+            
+
+            printing_stage = "Add";
+            // Update dropdown with list of component types available
+            OverlayInteractor.SetComponentOptions();
+            OverlayInteractor.OverlayDropdown.Show();
+            return;
+        }
+        if (InputField.text.Contains("Printer")) {
+
+            Example.GetComponent<StructureController>().DisableColliders();
+            Printer.GetComponent<BoxCollider>().enabled = true;
+            
+            string[] options = new string[Printer.transform.GetChild(3).childCount+1];
+            options[0] = Printer.GetComponent<PrinterController>().GetIcon() + " " + Printer.name;
+            for (int i = 0; i < options.Length - 1; i++) {
+                Printer.transform.GetChild(3).GetChild(i).GetComponent<BoxCollider>().enabled = true;
+                options[i+1] = Printer.transform.GetChild(3).GetChild(i).GetComponent<ComponentController>().GetIcon() + " " + Printer.transform.GetChild(3).GetChild(i).name;
+            }
+            OverlayInteractor.SetOptions(options);
+
+            printing_stage = "Edit";
+            GameObject.Find(InputField.text.Substring(2))?.GetComponent<PrinterController>().Edit();
+
+            PrinterPrint.SetActive(false);
+            PrinterPrint1.SetActive(true);
+            PrinterPrint2.SetActive(true);
+            PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "+ Add";
+            PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "- Delete";
+            // ☑
+        }
+
+        if (InputField.text.Contains("◎")) {
+            GameObject.Find(InputField.text.Substring(2))?.GetComponent<ComponentController>().Action(25);
+        }
+    }
+    public string[] GetPrinterComponents() {
+        // Update dropdown with list of prefabs
+        string[] options = new string[Printer.transform.GetChild(3).childCount];
+        for (int i = 0; i < options.Length; i++) {
+            options[i] = Printer.transform.GetChild(3).GetChild(i).GetComponent<ComponentController>().GetIcon() + " " + Printer.transform.GetChild(3).GetChild(i).name;
+        }
+        return options;
+    }
     public void PrinterPrintFx() {
+        if (printing_stage == "Edit") {
+            printing_stage = "Delete";
+            OverlayInteractor.SetOptions(GetPrinterComponents());
+            OverlayInteractor.OverlayDropdown.Show();
+            return;
+        }
         GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); 
         Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         if (InputField.text.Contains("Printer")) {
+            GameObject.Find(InputField.text.Substring(2))?.GetComponent<PrinterController>().Print();
 
             // StructurePrefab
             PrintStructure = Instantiate(StructurePrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
             PrintStructure.transform.SetParent(World.transform);
             PrintStructure.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-
+            PrintStructure.name = "PrintedExample";
+            ActiveStructure = "PrintedExample";
             while (Printer.transform.GetChild(3).childCount > 0) {
                 if (Printer.transform.GetChild(3).GetChild(0).GetComponent<ProcessorController>() != null) 
                 {
@@ -941,6 +1007,8 @@ public class Interactor : MonoBehaviour {
             PrinterLeft.SetActive(false);
             PrinterRight.SetActive(false);
             PrinterPrint.SetActive(false);
+            PrinterPrint1.SetActive(false);
+            PrinterPrint2.SetActive(false);
 
             OverlayZoomOut.SetActive(true);
             OverlayZoomIn.SetActive(true);
@@ -962,10 +1030,10 @@ public class Interactor : MonoBehaviour {
             GameObject.Find("CannonL")?.GetComponent<ComponentController>().Action(-1);
             GameObject.Find("CannonR")?.GetComponent<ComponentController>().Action(-1);
             PrinterLeft.SetActive(false);
-        } else if (InputField.text.Contains("Left")) {
-            GameObject.Find("Left")?.GetComponent<ComponentController>().Action(15);
-        } else if (InputField.text.Contains("Right")) {
-            GameObject.Find("Right")?.GetComponent<ComponentController>().Action(15);
+        // } else if (InputField.text.Contains("Left")) {
+        //     GameObject.Find("Left")?.GetComponent<ComponentController>().Action(15);
+        // } else if (InputField.text.Contains("Right")) {
+        //     GameObject.Find("Right")?.GetComponent<ComponentController>().Action(15);
         } else if (InputField.text.Contains("Scanner")) {
             GameObject.Find("Scanner")?.GetComponent<ComponentController>().Action(0);
         } else if (InputField.text.Contains("Engine")) {
@@ -974,6 +1042,9 @@ public class Interactor : MonoBehaviour {
             GameObject.Find("Turret")?.GetComponent<ComponentController>().Action(15);
         }
 
+        if (InputField.text.Contains("◎")) {
+            GameObject.Find(InputField.text.Substring(2))?.GetComponent<ComponentController>().Action();
+        }
         
         // if (name == "Right" && action == -1) {
         //     GameObject.Find("Right").GetComponent<BoosterController>().Fire();
@@ -1210,7 +1281,7 @@ public class Interactor : MonoBehaviour {
     }
     public void ClearText() {
         if (history == "") history = "$";
-        InputField.text = "☄ BitNaughts";
+        InputField.text = //"☄ BitNaughts";
         component_name = "";
         // MapScreenPanOverlay.SetActive(true);
         // volume_slider.SetActive(false);
@@ -1258,10 +1329,13 @@ public class Interactor : MonoBehaviour {
     public string component_name = "";
     public string component_text = "";
     public void RenderComponent(string component) {
+        PrinterPrint.SetActive(false);
+        PrinterPrint1.SetActive(false);
+        PrinterPrint2.SetActive(false);
         if (component == "") return;
         var component_string = "";
         // print("Rendering" + component);
-        if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component;
+        // if (GameObject.Find("OverlayDropdownLabel") != null) GameObject.Find("OverlayDropdownLabel").GetComponent<Text>().text = component;
         // if (component[1] == ' ') 
         // component = component.Substring(1);
         if (PrintStructure != null && PrintStructure.GetComponent<StructureController>().IsComponent(component)) {
@@ -1379,8 +1453,27 @@ public class Interactor : MonoBehaviour {
             }
             // PrinterLeft.SetActive(true);
             // PrinterRight.SetActive(true);
-            PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+            PrinterPrint1.SetActive(true);
+            PrinterPrint2.SetActive(true);
+            if (printing_stage == "Edit")
+            {
+                string[] options = new string[Printer.transform.GetChild(3).childCount+1];
+                // options[0] = Printer.GetComponent<ComponentController>().GetIcon() + " " + Printer.name;
+                options[0] = Printer.GetComponent<PrinterController>().GetIcon() + " " + Printer.name;
+                for (int i = 0; i < options.Length - 1; i++) {
+                    Printer.transform.GetChild(3).GetChild(i).GetComponent<BoxCollider>().enabled = true;
+                    options[i+1] = Printer.transform.GetChild(3).GetChild(i).GetComponent<ComponentController>().GetIcon() + " " + Printer.transform.GetChild(3).GetChild(i).name;
+                }
+                OverlayInteractor.SetOptions(options);
+                PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "+ Add";
+                PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "- Delete";
+            }
+            else 
+            {
+                    
+                PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "± Edit";
+                PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "☈ Print";
+            }
             // if (NarrationTimer > 0 && NarrationTimer < 240) {
             //     NarrationTimer = 240;
             //     PlayAudio(TutorialComponentsIcons);
@@ -1396,35 +1489,52 @@ public class Interactor : MonoBehaviour {
         else if (InputField.text.Contains("◍")) {
             // InputField.text = "◍ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Fire";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "⚺ Fire";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
+        else if (InputField.text.Contains("▢")) {
+            // InputField.text = "◎ " + InputField.text;
+            // PrinterPrint.SetActive(true);
+            // PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Boost";
+            
+            PrinterPrint1.SetActive(true);
+            PrinterPrint2.SetActive(true);
+            PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "+ Add";
+            PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "- Delete";
+            // PrinterRight.SetActive(true);
+            // PrinterLeft.SetActive(true);
+        }
         else if (InputField.text.Contains("◎")) {
             // InputField.text = "◎ " + InputField.text;
-            PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Boost";
+            // PrinterPrint.SetActive(true);
+            // PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Boost";
+            
+            PrinterPrint1.SetActive(true);
+            PrinterPrint2.SetActive(true);
+            PrinterPrint1.transform.GetChild(0).GetComponent<Text>().text = "⚻ Boost";
+            PrinterPrint2.transform.GetChild(0).GetComponent<Text>().text = "⚺ Launch";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("◌")) {
             // InputField.text = "◌ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Scan";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "⚺ Scan";
             // PrinterRight.SetActive(true);
             // PrinterLeft.SetActive(true);
         }
         else if (InputField.text.Contains("◉")) {
             // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Throttle";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "⚻ Throttle";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
         else if (InputField.text.Contains("▣")) {
             // InputField.text = "◉ " + InputField.text;
             PrinterPrint.SetActive(true);
-            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "Rotate";
+            PrinterPrint.transform.GetChild(0).GetComponent<Text>().text = "⚹ Rotate";
             // PrinterRight.SetActive(false);
             // PrinterLeft.SetActive(false);
         }
@@ -1466,7 +1576,7 @@ public class Interactor : MonoBehaviour {
         if (Stage == "MapInterface")
         {
             Stage = "MapZoom";
-            Map.min_zoom = 12;
+            Map.min_zoom = 15;
             InputUseWeapon.SetActive(false);
             RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});");
         } 
@@ -1745,7 +1855,10 @@ public class Interactor : MonoBehaviour {
         if (gamepad != null)
         {
             Vector2 stickL = gamepad.leftStick.ReadValue(); 
-            if (Mathf.Abs(stickL.x) > 0 || Mathf.Abs(stickL.y) > 0) Camera.main.GetComponent<CameraController>().bDragging = false;
+            if (Mathf.Abs(stickL.x) > 0 || Mathf.Abs(stickL.y) > 0) {
+                Camera.main.GetComponent<CameraController>().bDragging = false;
+                Map.min_zoom = 15;
+            }
         }
         if (Stage == "SplashScreen" && NarrationTimer > -1f) {
                 OverlayZoomIn.SetActive(true);
@@ -1881,7 +1994,7 @@ public class Interactor : MonoBehaviour {
                 {
                     InputUseWeapon.SetActive(false);
                     Stage = "MapZoom";
-                    Map.min_zoom = 12;
+                    Map.min_zoom = 15;
                     RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});");
                 } 
                 // if (NarrationTimer >= 100 && NarrationTimer < 180) {
@@ -2092,6 +2205,7 @@ public class Interactor : MonoBehaviour {
         Asteroid.SetActive(true);
         Printer.SetActive(true);
         Bulkhead.SetActive(true);
+        InputField.placeholder.GetComponent<Text>().text = "Input GitHub";
         Ship.Start();
         OverlayInteractor.UpdateOptions();
         RenderText("$");
@@ -2109,7 +2223,7 @@ public class Interactor : MonoBehaviour {
                 // PlayAudio(LookupNarration("NewtonsLaws"));
                 NarrationTimer = 99;
                 TutorialAssets.SetActive(true);
-                Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);",  "var Left = new Booster (-2.5, -1, 2, 3);", "var Right = new Booster (2.5, -1, 2, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
+                // Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);",  "var Left = new Booster (-2.5, -1, 2, 3);", "var Right = new Booster (2.5, -1, 2, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
                 
                 GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
                 // GameObject.Find("0").SetActive(false);
@@ -2161,7 +2275,7 @@ public class Interactor : MonoBehaviour {
                 break;
         }
 
-        Map?.Zoom(15);//15);
+        Map?.Zoom(15);
     }
     public void MapUnzoomed() {
 
@@ -2435,7 +2549,7 @@ public class Interactor : MonoBehaviour {
             }
             
         }
-        print (Stage);
+        // print (Stage + " is printing " + printing);
         global_timer += Time.deltaTime;
         // if (TabToggle.text == "▤ TUI") { //InputField.text.Contains("Processor") && 
         //     RenderText(Processor.GetComponent<ProcessorController>().interpreter.ToString());
@@ -2451,6 +2565,7 @@ public class Interactor : MonoBehaviour {
                 }
                 if (Printer.GetComponent<PrinterController>().GoTo(new Vector2(print_obj.transform.position.x, print_obj.transform.position.z))) {
                     print_obj.GetComponent<ComponentController>().Launch();
+                    Bulkhead.GetComponent<BulkheadController>().Action(print_obj.GetComponent<ComponentController>().GetCost());
                     print_index++;
                     if (component_name == "Printer" || InputField.text.Contains("▦")) RenderComponent("▦ Printer");
                     print_obj = null;
@@ -2467,6 +2582,8 @@ public class Interactor : MonoBehaviour {
                 MapScreenPanOverlay.SetActive(true);
                 InputJoystick.SetActive(true);
                 InputUseWeapon.SetActive(true);
+                CycleToggle.SetActive(true);
+                BinocularToggle.SetActive(true);
                 printing = false;
                 Multiplayer = true;
                 // Example.transform.localPosition = new Vector3(UnityEngine.Random.Range(-100f, 100f), UnityEngine.Random.Range(-50f, 50f), 0);
