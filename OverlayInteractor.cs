@@ -144,7 +144,7 @@ public class OverlayInteractor : MonoBehaviour
                 Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
         }
         var rectTransform = OverlayDropdown.gameObject.transform.Find("Dropdown List")?.gameObject.GetComponent<RectTransform>();
-        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 205f);
+        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 90f);
     }
     
     float map(float s, float a1, float a2, float b1, float b2)

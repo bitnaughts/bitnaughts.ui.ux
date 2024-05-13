@@ -42,14 +42,14 @@ public class Interactor : MonoBehaviour {
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
     public GameObject TutorialAssets, CampaignIntroAssets, CampaignIntroSatelliteAssets,  CampaignGroverAssets, CampaignGroverSatelliteAssets, CampaignPearlAssets, CampaignMidwayAssets, CampaignNexusAssets, CampaignAbyssAssets;
-    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
+    public AudioClip SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsBitBot, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
     public int CampaignIndex = 0;
     AbstractMapController Map;
     public Mapbox.Utils.Vector2d TargetLocation;
     // InputField input;
     List<Narration> Narration = new List<Narration> {
         // "Campaign Intro"
-        new Narration(-20.00f, "<b>⛅</b>"),
+        // new Narration(-20.00f, "<b>⛅</b>"),
         // new Narration(-59.00f, "<b>We_know_now_that_in</b>"),
         // new Narration(-58.25f, "We_know_now_that_in\n<b>the_early_years_of_the</b>"),
         // new Narration(-57.50f, "We_know_now_that_in\nthe_early_years_of_the\n<b>twentieth_century_...</b>"), 
@@ -86,21 +86,74 @@ public class Interactor : MonoBehaviour {
         // new Narration(-24.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\n<b>inherited_out_of_the</b>"),
         // new Narration(-23.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\n<b>dark_mystery_of_time</b>"),
         // new Narration(-21.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\ndark_mystery_of_time\n<b>and_space_...</b>"),
-        new Narration(-19.00f, "<b>Across_an_immense</b>"),
-        new Narration(-18.00f, "Across_an_immense\n<b>ethereal_gulf_...</b>"),
-        new Narration(-17.00f, "Across_an_immense\nethereal_gulf_..."),
-        new Narration(-16.00f, "Across_an_immense\nethereal_gulf_...\n\n<b>Intellect</b>"),
-        new Narration(-15.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast</b>"),
-        new Narration(-14.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, vast,_<b>cool</b>"),
-        new Narration(-13.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic_...</b>"),
-        new Narration(-11.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\n<b>Regarded_this_Earth</b>"),
-        new Narration(-10.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\n<b>with_envious_eyes_...</b>"),
-        new Narration(-07.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\n<b>And_slowly_and_surely</b>"),
-        new Narration(-06.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\n<b>drew_their_plans</b>"),
-        new Narration(-05.75f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\n<b>against_us!</b>"),
-        new Narration(-05.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\nagainst_us!"),
-        new Narration(-03.00f, "<b>⛈</b>"),
-        new Narration(-02.00f, "⛈"),
+        // new Narration(-19.00f, "<b>Across_an_immense</b>"),
+        // new Narration(-18.00f, "Across_an_immense\n<b>ethereal_gulf_...</b>"),
+        // new Narration(-17.00f, "Across_an_immense\nethereal_gulf_..."),
+        // new Narration(-16.00f, "Across_an_immense\nethereal_gulf_...\n\n<b>Intellect</b>"),
+        // new Narration(-15.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast</b>"),
+        // new Narration(-14.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect, vast,_<b>cool</b>"),
+        // new Narration(-13.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\n<b>and_unsympathetic_...</b>"),
+        // new Narration(-11.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\n<b>Regarded_this_Earth</b>"),
+        // new Narration(-10.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\n<b>with_envious_eyes_...</b>"),
+        // new Narration(-07.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\n<b>And_slowly_and_surely</b>"),
+        // new Narration(-06.50f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\n<b>drew_their_plans</b>"),
+        // new Narration(-05.75f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\n<b>against_us!</b>"),
+        // new Narration(-05.00f, "Across_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cool\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_and_surely\ndrew_their_plans\nagainst_us!"),
+        // new Narration(-03.00f, "<b>⛈</b>"),
+        // new Narration(-02.00f, "⛈"),
+        /* Splash Screen */
+        new Narration(-29.00f, "<b>$</b>"),
+        new Narration(-29.00f, "$ <b>intro</b>"),
+        new Narration(-28.50f, "$ intro\n\n<b>Columbia_Broadcasting_Systems</b>"),
+        new Narration(-26.50f, "$ intro\n\nColumbia_Broadcasting_Systems\n <b>and_its_affiliated_stations</b>"),
+        new Narration(-25.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           <b>present:</b>"),// "The War of the Worlds" by H.G. Wells!\n<b>ethereal_gulf_...</b>"),
+        new Narration(-24.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   <b>\"The_War_of_the_Worlds\"</b>"),
+        new Narration(-22.50f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        <b>by_H.G._Wells!</b>"),
+        new Narration(-21.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!"),
+        new Narration(-01.00f, "$"),
+                // new Narration(-20.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n<b>♫</b>"),
+        // new Narration(-19.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n♫ <b>♫</b>"),
+        // new Narration(-18.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n♫ ♫ <b>♫</b>"),
+        // new Narration(-17.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n♫ ♫ ♫ <b>♫</b>"),
+        // new Narration(-16.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n♫ ♫ ♫ ♫ <b>♫</b>"),
+        // new Narration(-15.00f, "Columbia_Broadcasting_Systems\n and_its_affiliated_stations\n          present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n♫ ♫ ♫ ♫ ♫ <b>♫</b>"),
+        // new Narration(-19.50f, "Columbia_Broadcasting_System\nand_its_affiliated_stations\n         present:\n   \"The_War_of_the_Worlds\"\n       by_H.G._Wells!\n\n♮<b>♩</b>"),
+        // new Narration(-19.00f, "Columbia_Broadcasting_System\nand_its_affiliated_stations\n         present:\n   \"The_War_of_the_Worlds\"\n       by_H.G._Wells!\n\n♮♩<b>♩</b>"),
+        // new Narration(-18.50f, "Columbia_Broadcasting_System\nand_its_affiliated_stations\n         present:\n   \"The_War_of_the_Worlds\"\n       by_H.G._Wells!\n\n♮♩♩<b>♫</b>"),
+        // new Narration(-18.00f, "Columbia_Broadcasting_System\nand_its_affiliated_stations\n         present:\n   \"The_War_of_the_Worlds\"\n       by_H.G._Wells!\n\n♮♩♩♫<b>♪</b>"),
+        // new Narration(-17.50f, "Columbia_Broadcasting_System\nand_its_affiliated_stations\n         present:\n   \"The_War_of_the_Worlds\"\n       by_H.G._Wells!\n\n♮♩♩♫♪<b>♪</b>"),
+        new Narration(1000.50f, "$ <b>campaign</b>"),
+        new Narration(1000.50f, "$ campaign\n\n <b>Across_an_immense</b>"),
+        new Narration(1001.50f, "$ campaign\n\n Across_an_immense\n <b>ethereal_gulf_...</b>"),
+        new Narration(1002.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_..."),
+        new Narration(1003.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\n<b>Intellect</b>"),
+        new Narration(1005.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect, <b>vast</b>"),
+        new Narration(1006.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect, vast,_<b>cold</b>"),
+        new Narration(1007.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\n<b>and_unsympathetic_...</b>"),
+        new Narration(1008.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_..."),
+        new Narration(1009.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n <b>Regarded_this_Earth</b>"),
+        new Narration(1010.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n <b>with_envious_eyes_!</b>"),
+        new Narration(1011.00f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!"),
+        new Narration(1012.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!\n\n<b>And</b>"),
+        new Narration(1013.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!\n\nAnd <b>slowly_but_surely</b>"),
+        new Narration(1015.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!\n\nAnd_slowly_but_surely\n  <b>drew_their_plans</b>"),
+        new Narration(1016.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!\n\nAnd_slowly_but_surely\n  drew_their_plans\n    <b>against_us_!</b>"),
+        new Narration(1017.50f, "$ campaign\n\n Across_an_immense\n ethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n Regarded_this_Earth\n with_envious_eyes_!\n\nAnd_slowly_but_surely\n  drew_their_plans\n    against_us_!"),
+        new Narration(1018.00f, "<b>⛈</b>"),
+        new Narration(1019.00f, "⛈"),
+        new Narration(1020.00f, "<b>$</b>"),
+        new Narration(1021.00f, "$"),
+
+        new Narration(10000.00f, "$ <b>copilot</b>"),
+        new Narration(10000.50f, "$ copilot\n\n  <b>Hello,_I'm_BitBot!</b>"),
+        new Narration(10002.50f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  <b>Your_A.I._copilot!</b>"),
+        new Narration(10004.00f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!"),
+        new Narration(10005.50f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!\n\n<b>I'll_be_helping_you:</b>"), //, troubleshoot bugs, and 
+        new Narration(10006.50f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!\n\nI'll_be_helping_you:\n<b>-_Tackle_big_problems;</b>"),
+        new Narration(10008.00f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!\n\nI'll_be_helping_you:\n-_Tackle_big_problems;\n<b>-_Troubleshoot_bugs;</b>"),
+        new Narration(10010.00f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!\n\nI'll_be_helping_you:\n-_Tackle_big_problems;\n-_Troubleshoot_bugs;\n<b>-_Launch_into_the_unknown!</b>"),
+        new Narration(10011.50f, "$ copilot\n\n  Hello,_I'm_BitBot!\n  Your_A.I._copilot!\n\nI'll_be_helping_you:\n-_Tackle_big_problems;\n-_Troubleshoot_bugs;\n-_Launch_into_the_unknown!\n\n$"),
+        new Narration(10012.50f, "$ copilot"),
         // new Narration(-47.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\n<b>officially_confirmed_as</b>\n"),
         // new Narration(-46.00f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\n<b>a_full_scale_invasion</b>\n"), 
         // new Narration(-45.50f, "We're_switching_live_to\nWilson_Glen,_New_Jersey\nwhere_the_landing_of\nhundreds_of_unidentified\nspacecraft_have_now_been\nofficially_confirmed_as\na_full_scale_invasion\n<b>of_Earth_by_Martians!</b>"), 
@@ -131,7 +184,7 @@ public class Interactor : MonoBehaviour {
         // new Narration( 02.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\n<b>to_issue_tactical</b>"),
         // new Narration( 03.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\n<b>commands.</b>"),
         // new Narration( 04.25f, "Today_you_will_learn_to\nuse_the_Map_Interface\nto_issue_tactical\ncommands."),
-        new Narration(-01.00f, "$"),
+
         
         // new Narration(001.00f, "<b>The_map_screen_shows</b>"),
         // new Narration(002.00f, "The_map_screen_shows\n<b>you_your_mission_area.</b>"),
@@ -374,17 +427,17 @@ public class Interactor : MonoBehaviour {
         // new Narration(970.50f, "That is all for today!\nDismissed!"),
         // new Narration(972.50f, ""),
         // new Narration(999.00f, "Click / tap\n"),
-        new Narration(1000.0f, "⛈"),
-        new Narration(1001.0f, "⛅"),
+        // new Narration(1000.0f, "⛈"),
+        // new Narration(1001.0f, "⛅"),
         // CAMPAIGN LEVEL 1: INTRODUCTION
-        new Narration(2000.00f, "⛈\n"),
-        new Narration(2100.00f, "Professor_Pierson_has"),
-        new Narration(2101.00f, "Professor_Pierson_has\nbeen_located_where_he"),
-        new Narration(2102.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\n"),
-        new Narration(2103.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation"),
-        new Narration(2104.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!"),
-        new Narration(2105.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he"),
-        new Narration(2106.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he\nwill_give_his_assess"),
+        new Narration(2000.00f, "$\n"),
+        // new Narration(2100.00f, "Professor_Pierson_has"),
+        // new Narration(2101.00f, "Professor_Pierson_has\nbeen_located_where_he"),
+        // new Narration(2102.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\n"),
+        // new Narration(2103.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation"),
+        // new Narration(2104.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!"),
+        // new Narration(2105.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he"),
+        // new Narration(2106.00f, "Professor_Pierson_has\nbeen_located_where_he\nhas_established_an\nemergency_observation\npost!\n\nAs_a_scientist,_he\nwill_give_his_assess"),
         // new Narration(2001.25f, "Captain!\nThe radar scanner"),
         // new Narration(2002.25f, "indicates two shining\n"),
         // new Narration(2003.25f, "indicates two shining\npoints!"),
@@ -690,7 +743,7 @@ public class Interactor : MonoBehaviour {
         // "⛈", 47f
     };
     public bool Multiplayer = false;
-    float NarrationTimer = -20f; //-60;
+    float NarrationTimer = -29f; //-60;
     int NarrationIndex = 0;
     public AudioClip CampaignPearl, CampaignPearlMusic, CampaignMidway, CampaignMidwayMusic, MultiplayerSelect, MultiplayerSelectMusic;
     public AudioClip NarratorSwitchToMap, NarratorZoomInMap, NarratorZoomInDetails, NarratorAimTheCrosshair, NarratorWelcome;
@@ -729,6 +782,10 @@ public class Interactor : MonoBehaviour {
     public GameObject World;
     void Start()
     {
+        if (Screen.width < 2000)
+        {
+            fontSize = 50;
+        }
         SetVolume();
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
@@ -757,7 +814,7 @@ public class Interactor : MonoBehaviour {
         MapScreenPanOverlay = GameObject.Find("MapScreenPanOverlay");
         RenderText("$");
         // PlayVideo("SplashScreen");
-        PlayVideo("WarOfTheWorldsStinger");
+        PlayVideo("WarOfTheWorldsCredit");
         LoadingScreen.SetActive(false);
         // ResetVideo();
         OnMapView();
@@ -1131,22 +1188,15 @@ public class Interactor : MonoBehaviour {
         queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
         #if UNITY_WEBGL
-        string asset_location = "https://raw.githubusercontent.com/bitnaughts/bitnaughts.unity/master/Assets/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
+        string asset_location = "https://github.com/bitnaughts/bitnaughts.unity/raw/master/Assets/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         #else 
         string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
         #endif
         // print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
-        SetBackground(new Color(20f/255f, 20f/255f, 20f/255f));
-        MapScreenPanOverlay.SetActive(false);
-        OverlayZoomIn.SetActive(false);
-        OverlayZoomOut.SetActive(false);
-        volume_slider.SetActive(true);
-        InterpreterZoomIn.SetActive(true);
-        InterpreterZoomOut.SetActive(true);
-        InputJoystick.SetActive(false);
-        InputUseWeapon.SetActive(false);
+
+
         // SubtitlesShadow.SetActive(true);
         // Subtitles.SetActive(true);
     }
@@ -1176,6 +1226,9 @@ public class Interactor : MonoBehaviour {
                 return WarOfTheWorldsIntro;
             case "WarOfTheWorldsStinger":
                 return WarOfTheWorldsStinger;
+            case "WarOfTheWorldsBitBot":
+                NarrationTimer = 10000;
+                return WarOfTheWorldsBitBot;
             case "WarOfTheWorldsFirstContact":
                 return WarOfTheWorldsFirstContact;
             case "WarOfTheWorldsHeatRay":
@@ -1960,12 +2013,33 @@ public class Interactor : MonoBehaviour {
         //     // NarrationTimer = 331;
         //     // Unzoom();
         // }
+        if (NarrationTimer > 1021 && NarrationTimer < 2000)
+        {
+            Stage = "MapZoomed";
+            NarrationTimer = 2000;
+            NarrationIndex = 0;
+            GameObject.Find("World").GetComponent<AudioSource>().Stop();
+            PlayMusic(CampaignPearlMusic);
+            ResetVideo();
+            Map.SetMars();
+        }
+        if (NarrationTimer > 10014 && NarrationTimer < 10100)
+        {
+            // Stage = "MapZoomed";
+            NarrationTimer = 20000;
+            NarrationIndex = 0;
+            GameObject.Find("World").GetComponent<AudioSource>().Stop();
+            // PlayMusic(CampaignPearlMusic);
+            ResetVideo();
+            // Map.SetMars();
+        }
+                // 10012
         if (Input.GetMouseButtonUp(0) && CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
         {
-            ResetVideo();
             LoadingScreen.SetActive(false);
             if (Stage == "SplashScreen") // Splash Screen
             {
+                ResetVideo();
                 // Printer.SetActive(false);
                 OverlayZoomIn.SetActive(true);
                 OverlayZoomOut.SetActive(true);
@@ -2010,15 +2084,24 @@ public class Interactor : MonoBehaviour {
                 //     Printer.SetActive(true);
                 //     Ship.Start();
                 //     // Map.SetEarth();
-                // } else if (NarrationTimer >= 1100 && NarrationTimer < 1200) {
-                //     Stage = "MapZoomed";
-                //     NarrationTimer = 1200;
-                //     NarrationIndex = 0;
-                //     GameObject.Find("World").GetComponent<AudioSource>().Stop();
-                //     PlayMusic(CampaignPearlMusic);
-                //     ResetVideo();
-                //     Map.SetMars();
-                    
+                if (NarrationTimer >= 1000 && NarrationTimer < 2000) {
+                    Stage = "MapZoomed";
+                    NarrationTimer = 2000;
+                    NarrationIndex = 0;
+                    GameObject.Find("World").GetComponent<AudioSource>().Stop();
+                    PlayMusic(CampaignPearlMusic);
+                    ResetVideo();
+                    Map.SetMars();
+                }
+                if (NarrationTimer >= 10000 && NarrationTimer < 20000) {
+                    // Stage = "MapZoomed";
+                    NarrationTimer = 20000;
+                    NarrationIndex = 0;
+                    GameObject.Find("World").GetComponent<AudioSource>().Stop();
+                    // PlayMusic(CampaignPearlMusic);
+                    ResetVideo();
+                    // Map.SetMars();
+                }
                 //     Printer.SetActive(true);
                 //     Ship.Start();
                 //     MapScreenPanOverlay.SetActive(true);
@@ -2461,12 +2544,20 @@ public class Interactor : MonoBehaviour {
     }
     int print_index = 0;
     GameObject print_obj;
-    void ResetVideo() {
+    public void ResetVideo() {
         if (Stage == "MapInterface") GameObject.Find("World").GetComponent<AudioSource>().Stop();
         // SetBackground(new Color(128/255f, 167/255f, 174/255f));
         SetBackground(new Color(150f/255f, 150f/255f, 150f/255f));
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
 
+        MapScreenPanOverlay.SetActive(true);
+        OverlayZoomIn.SetActive(true);
+        OverlayZoomOut.SetActive(true);
+        volume_slider.SetActive(false);
+        InterpreterZoomIn.SetActive(false);
+        InterpreterZoomOut.SetActive(false);
+        InputJoystick.SetActive(false);
+        InputUseWeapon.SetActive(false);
     }
     public void RenderProcess() {
         RenderComponent(component_name);
@@ -2528,7 +2619,7 @@ public class Interactor : MonoBehaviour {
         {
             if (InputField.text.Contains("BitNaughts")) 
             {
-                InputField.text = "";
+                InputField.text = "✵ Earth";
                 InputUseWeapon.SetActive(true);
             }
             if (camera.GetComponent<CameraController>().CheckInsideEdge()) 
@@ -2536,7 +2627,7 @@ public class Interactor : MonoBehaviour {
                 reset_map_target = true;
                 GameObject.Find("Cursor").GetComponent<RectTransform>().position = Input.mousePosition;
                 TargetLocation = Map.GetMap().WorldToGeoPosition(camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
-                RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
+                RenderText($"$\n\nnew LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
 
             }
             else if (reset_map_target) 
@@ -2545,7 +2636,7 @@ public class Interactor : MonoBehaviour {
                 GameObject.Find("Cursor").GetComponent<RectTransform>().position = camera.GetComponent<CameraController>().GetMapCenter();
                 var pos = camera.GetComponent<Camera>().ScreenToWorldPoint(camera.GetComponent<CameraController>().GetMapCenter());
                 TargetLocation = Map.GetMap().WorldToGeoPosition(pos);
-                RenderText($"$ new LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
+                RenderText($"$\n\nnew LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
             }
             
         }
@@ -2616,8 +2707,32 @@ public class Interactor : MonoBehaviour {
                 if (CycleToggle != null) CycleToggle.SetActive(false);
                 if (BinocularToggle != null) BinocularToggle.SetActive(false);
                 PlayAudio(LookupNarration(queue_audio));
+                if (queue_audio == "WarOfTheWorldsStinger") 
+                { 
+                    NarrationIndex = 0;
+                    NarrationTimer = 1000;
+                }
+                if (queue_audio == "WarOfTheWorldsBitBot") 
+                { 
+                    NarrationIndex = 0;
+                    NarrationTimer = 10000;
+                }
+                // if (queue_audio == "WarOfTheWorldsStinger") 
+                // { 
+                //     NarrationTimer = 1000;
+                // }
                 queue_audio = "";
+                volume_slider.SetActive(true);
                 SetVolume();
+                SetBackground(new Color(20f/255f, 20f/255f, 20f/255f));
+                MapScreenPanOverlay.SetActive(false);
+                OverlayZoomIn.SetActive(false);
+                OverlayZoomOut.SetActive(false);
+                volume_slider.SetActive(true);
+                InterpreterZoomIn.SetActive(true);
+                InterpreterZoomOut.SetActive(true);
+                InputJoystick.SetActive(false);
+                InputUseWeapon.SetActive(false);
             }
             else {
                 // print ("play" + );
@@ -2644,7 +2759,7 @@ public class Interactor : MonoBehaviour {
 
             // if (Stage == "MapZoom") {
             // } else {
-            Timer.text = "T " + FloatToTime(NarrationTimer) + " " + System.DateTime.Now.ToString();// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
+            Timer.text = "T " + FloatToTime(NarrationTimer);  //" " + System.DateTime.Now.ToString();// + "\n" + NarrationIndex + ":" + FloatToTime(NarrationTimer);
             // } 
             // if (Stage == "Loading" && (ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1) {
             //     PlayVideo("SplashScreen");

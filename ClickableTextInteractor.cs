@@ -31,7 +31,7 @@ public class ClickableTextInteractor : MonoBehaviour
 
 
 
-        this.GetComponent<RectTransform>().localPosition = new Vector2(-((Interactor.fontSize - 5) / 1.5f) + (pos - (text.Length - 1)/2f) * Interactor.fontSize / 2, line * -Interactor.fontSize) + new Vector2(50f, -110f);// + (pos - (text.Length-1)/2f) * 50f, -125f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
+        this.GetComponent<RectTransform>().localPosition = new Vector2(-((Interactor.fontSize - 5) / 1.5f) + (pos - (text.Length - 1)/2f) * Interactor.fontSize / 2, line * -Interactor.fontSize) + new Vector2(25f, -100f);// + (pos - (text.Length-1)/2f) * 50f, -125f + line * -100f);//new Vector2(-50f + (pos - (text.Length-1)/2f) * 37.5f, -83f + line * -75f);
         var text_length = text.Length * 50f;
         if (text.StartsWith("<color=#")) text_length -= 23 * 50f;
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(text.Length * Interactor.fontSize / 2, Interactor.fontSize);//new Vector2(text_length, 100f);//new Vector2(text.Length * 37.5f, 75f);
@@ -118,7 +118,7 @@ public class ClickableTextInteractor : MonoBehaviour
             }
             else {
                 // else, TUI menu:
-                Interactor.AppendText("$ <b>about</b>\n  <b>start</b>\n  <b>clear</b>\n  <b>restart</b>\n  <b>back</b>");
+                Interactor.AppendText("$ <b>about</b>\n  <b>copilot</b>\n  <b>campaign</b>\n  <b>settings</b>\n  <b>clear</b>\n  <b>back</b>\n  <b>restart</b>\n");
             }
         }
         foreach (var component in Interactor.GetComponents()) {
@@ -240,8 +240,18 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.MapInteractor("0");
                 break;
             case "campaign":
-                Interactor.OnMapView();
-                Interactor.MapInteractor((Interactor.CampaignIndex + 1).ToString());
+                // Interactor.ResetVideo();
+                Interactor.PlayVideo("WarOfTheWorldsStinger");
+                // Interactor.PlayAudio(Interactor.LookupNarration("WarOfTheWorldsStinger"));
+                // Interactor.OnMapView();
+                // Interactor.MapInteractor((Interactor.CampaignIndex + 1).ToString());
+                break;
+            case "copilot":
+                // Interactor.ResetVideo();
+                // Interactor.PlayVideo("WarOfTheWorldsStinger");
+                Interactor.PlayVideo("WarOfTheWorldsBitBot");//Interactor.LookupNarration());
+                // Interactor.OnMapView();
+                // Interactor.MapInteractor((Interactor.CampaignIndex + 1).ToString());
                 break;
             case "multiplay":
                 Interactor.OnMapView();
@@ -249,7 +259,12 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "about": 
                 Interactor.Sound("Warning");
-                Interactor.AppendText("$ <b>about</b>\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n  <a>https://bitnaughts.io/</a>\n  <a>https://github.com/bitnaughts/</a>\n  <a>https://twitter.com/BitNaughts</a>\n  <a>https://www.youtube.com/@bitnaughts6237</a>\n  <a>https://www.twitch.tv/bitnaughts</a>\n$\n\n");
+                Interactor.AppendText("$ <b>about</b>\n\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n  <a>https://bitnaughts.io/</a>\n  <a>https://github.com/bitnaughts/</a>\n  <a>https://twitter.com/BitNaughts</a>\n  <a>https://www.youtube.com/@bitnaughts6237</a>\n  <a>https://www.twitch.tv/bitnaughts</a>\n\n$");
+                // Interactor.PlayTheme();
+                break;
+            case "settings": 
+                Interactor.Sound("Warning");
+                Interactor.AppendText("$ <b>settings</b>\n\n  Font_Size:_75 (+) (-)\n  Audio:_65% (+) (-)\n\n$");
                 // Interactor.PlayTheme();
                 break;
             // case "campaign":
