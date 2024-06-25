@@ -93,8 +93,13 @@ public class ClickableTextInteractor : MonoBehaviour
             //     initialized_text = Formatter.keyword(initialized_text);
             //     break;
         }
-
-        this.transform.GetChild(0).GetComponent<Text>().text = initialized_text.Replace("_", " ");
+        if (GetComponent<InputField>() != null) {
+            this.transform.GetComponent<InputField>().text = "";
+            this.transform.GetComponent<InputField>().placeholder.GetComponent<Text>().text = initialized_text.Replace("_", " ");
+        }
+        else {
+            this.transform.GetChild(0).GetComponent<Text>().text = initialized_text.Replace("_", " ");
+        }
         this.name = "Clickable" + text;
     }
     public void OnClick() {
@@ -118,7 +123,7 @@ public class ClickableTextInteractor : MonoBehaviour
             }
             else {
                 // else, TUI menu:
-                Interactor.AppendText("$ <b>about</b>\n  <b>copilot</b>\n  <b>campaign</b>\n  <b>settings</b>\n  <b>clear</b>\n  <b>back</b>\n  <b>restart</b>\n");
+                Interactor.AppendText("$ <b>...____________________</b>\n  <b>about</b>\n  <b>copilot</b>\n  <b>campaign</b>\n  <b>settings</b>\n  <b>clear</b>\n  <b>back</b>\n  <b>restart</b>\n");
             }
         }
         foreach (var component in Interactor.GetComponents()) {
@@ -241,7 +246,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 break;
             case "campaign":
                 // Interactor.ResetVideo();
-                Interactor.PlayVideo("WarOfTheWorldsStinger");
+                Interactor.PlayVideo("WarOfTheWorldsCredit");
                 // Interactor.PlayAudio(Interactor.LookupNarration("WarOfTheWorldsStinger"));
                 // Interactor.OnMapView();
                 // Interactor.MapInteractor((Interactor.CampaignIndex + 1).ToString());
@@ -258,7 +263,7 @@ public class ClickableTextInteractor : MonoBehaviour
                 Interactor.MapInteractor("6"); //7,8
                 break;
             case "about": 
-                Interactor.Sound("Warning");
+                Interactor.Sound("About");
                 Interactor.AppendText("$ <b>about</b>\n\n☄ BitNaughts is an educational\n  programming video-game;\n  It's code gamified!\n  <a>https://bitnaughts.io/</a>\n  <a>https://github.com/bitnaughts/</a>\n  <a>https://twitter.com/BitNaughts</a>\n  <a>https://www.youtube.com/@bitnaughts6237</a>\n  <a>https://www.twitch.tv/bitnaughts</a>\n\n$");
                 // Interactor.PlayTheme();
                 break;
