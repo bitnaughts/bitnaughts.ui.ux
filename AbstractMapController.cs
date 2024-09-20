@@ -19,7 +19,7 @@ public class AbstractMapController : MonoBehaviour
     Vector2d[] _locations;
 
     [SerializeField]
-    float _spawnScale = 100f;
+    float _spawnScale = 50f;
 
     [SerializeField]
     GameObject _markerPrefab;
@@ -114,16 +114,16 @@ public class AbstractMapController : MonoBehaviour
                 // _map.UpdateMap(15f); //new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 
                 Interactor.MapZoomed();
             } else {//if (Interactor.MarkerIndex != -1) {
-                zoom += Time.deltaTime * 2.5f;
+                zoom += Time.deltaTime * zoom;
                 _map.UpdateMap(Interactor.TargetLocation, Mathf.Clamp(zoom, .5f, min_zoom));
-                Camera.main.orthographicSize += Time.deltaTime * 2f;
+                Camera.main.orthographicSize += Time.deltaTime * zoom;
                 //Camera.main.orthographicSize = Mathf.Clamp(zoom + 15f, 15f, 250f);
             }
         }
         // if (Interactor.Stage == "MapZoomed") {
         //     if (zoom <= min_zoom) {
         //         // print (Interactor.PrintStructure.GetComponent<StructureController>().translation.magnitude);
-        //         zoom += Time.deltaTime * 2.5f * Interactor.PrintStructure.GetComponent<StructureController>().translation.magnitude;
+        //         zoom += Time.deltaTime * 5f * Interactor.PrintStructure.GetComponent<StructureController>().translation.magnitude;
         //         _map.UpdateMap(Mathf.Clamp(zoom, .5f, min_zoom));
         //         // Camera.main.orthographicSize += Time.deltaTime * 1.5f;
         //     }
@@ -136,7 +136,7 @@ public class AbstractMapController : MonoBehaviour
             GameObject.Find("Example").transform.GetChild(0).localRotation = Quaternion.identity;//new Vector3(0, 0, 0);
             // Camera.main.transform.localPosition = new Vector3(0, 0, -200);
             Camera.main.transform.localRotation = Quaternion.identity;
-            zoom -= Time.deltaTime * 1.5f;
+            zoom -= Time.deltaTime * zoom;
             Camera.main.transform.localPosition = new Vector3(0, 0, -200);
             if (zoom <= 0.5f) {
                 // _map.UpdateMap(15f); //new Mapbox.Utils.Vector2d(47.43855f, -122.3071241f), 
@@ -144,7 +144,7 @@ public class AbstractMapController : MonoBehaviour
             }
             else {
                 Zoom(zoom);
-                Camera.main.orthographicSize += Time.deltaTime * 1.5f; //Mathf.Clamp(zoom + 15f, 15f, 250f);
+                Camera.main.orthographicSize += Time.deltaTime * zoom; //Mathf.Clamp(zoom + 15f, 15f, 250f);
             }
         }
         // zoom -= target.translation.magnitude;

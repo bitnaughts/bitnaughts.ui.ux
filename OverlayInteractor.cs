@@ -97,7 +97,7 @@ public class OverlayInteractor : MonoBehaviour
     string selected = "";
     public void Resize() 
     {
-        print ("Resize to " + selected);
+        //print ("Resize to " + selected);
         // print (OverlayDropdown.value);
         // print (OverlayDropdown.options[OverlayDropdown.value].text);
         Resize(selected);
@@ -120,8 +120,8 @@ public class OverlayInteractor : MonoBehaviour
             rotation = Ship.GetLocalRotation(option);
         }
         Vector2 rotated_vector = new Vector2(
-            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.y * 625 / Camera.main.orthographicSize, component_size.x * 625 / Camera.main.orthographicSize),
-            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.x * 625 / Camera.main.orthographicSize, component_size.y * 625 / Camera.main.orthographicSize)
+            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.y * Screen.height / (Camera.main.orthographicSize * 2), component_size.x * Screen.height / (Camera.main.orthographicSize * 2)),
+            map(Mathf.Cos(rotation * 2 * Mathf.Deg2Rad), -1, 1, component_size.x * Screen.height / (Camera.main.orthographicSize * 2), component_size.y * Screen.height / (Camera.main.orthographicSize * 2))
         );
         // } else {
         //     if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
@@ -134,17 +134,17 @@ public class OverlayInteractor : MonoBehaviour
         //             Mathf.Clamp(200f+Mathf.Abs(component_size.y * 625 / Camera.main.orthographicSize), 350f, (Screen.height / 2 - 260)));
         //     }
         // }
-        if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
+        // if (Camera.main.GetComponent<CameraController>().orientation == "Horizontal") {
             this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width / 2 - 260)), 
-                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height - 260)));
-        } else {
-            this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width - 260)), 
-                Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height / 2 - 260)));
-        }
+                Mathf.Clamp(Mathf.Abs(rotated_vector.x) + 40f, 250f, (Screen.width - 284)), 
+                Mathf.Clamp(Mathf.Abs(rotated_vector.y) + 90f, 250f, (Screen.height - 280)));
+        // } else {
+        //     this.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(
+        //         Mathf.Clamp(200f+Mathf.Abs(rotated_vector.x), 350f, (Screen.width - 260)), 
+        //         Mathf.Clamp(200f+Mathf.Abs(rotated_vector.y), 350f, (Screen.height - 260)));
+        // }
         var rectTransform = OverlayDropdown.gameObject.transform.Find("Dropdown List")?.gameObject.GetComponent<RectTransform>();
-        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 90f);
+        if (rectTransform != null) rectTransform.sizeDelta = new Vector2 (rectTransform.sizeDelta.x, this.transform.GetComponent<RectTransform>().sizeDelta.y - 95f);
     }
     
     float map(float s, float a1, float a2, float b1, float b2)
@@ -173,7 +173,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("▩ " + edit_prefab.name);
                 selected = "▩ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "▥ Bulkhead":
                 edit_prefab = Instantiate(Interactor.BulkheadPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -187,7 +187,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("▥ " + edit_prefab.name);
                 selected = "▥ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "▣ Gimbal":
                 edit_prefab = Instantiate(Interactor.GimbalPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -201,7 +201,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("▣ " + edit_prefab.name);
                 selected = "▣ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "◉ Thruster":
                 edit_prefab = Instantiate(Interactor.ThrusterPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -215,7 +215,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("◉ " + edit_prefab.name);
                 selected = "◉ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "◎ Booster":
                 edit_prefab = Instantiate(Interactor.BoosterPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -229,7 +229,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("◎ " + edit_prefab.name);
                 selected = "◎ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "◍ Cannon":
                 edit_prefab = Instantiate(Interactor.CannonPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -243,7 +243,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("◍ " + edit_prefab.name);
                 selected = "◍ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
             case "◌ Sensor":
                 edit_prefab = Instantiate(Interactor.SensorPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -257,7 +257,7 @@ public class OverlayInteractor : MonoBehaviour
                 Resize("◌ " + edit_prefab.name);
                 selected = "◌ " + edit_prefab.name;
                 min_size = edit_prefab.GetComponent<ComponentController>().GetMinimumSize();
-                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 2;
+                Camera.main.orthographicSize = Mathf.Sqrt(min_size.x * min_size.y) + 10;
                 return;
         }
         if (Interactor.printing_stage == "Delete") {
@@ -339,7 +339,7 @@ public class OverlayInteractor : MonoBehaviour
             selected = "▦ Printer";
             Resize("▦ Printer");
             var component_size = Ship.GetSize(selected);
-            Camera.main.orthographicSize = Mathf.Sqrt(component_size.x * component_size.y);
+            Camera.main.orthographicSize = Mathf.Sqrt(component_size.x * component_size.y) + 10;
             Interactor.RenderComponent("▦ Printer");
             return;
         }
@@ -367,6 +367,8 @@ public class OverlayInteractor : MonoBehaviour
             
             // Interactor.CancelTutorial();
             if (last_position.x == 999) {
+                GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+                Interactor.volume_slider.SetActive(false);
                 this.gameObject.SetActive(false);
                 MapScreenPanOverlay.SetActive(true);
                 OverlayZoomIn.SetActive(true);
@@ -394,6 +396,7 @@ public class OverlayInteractor : MonoBehaviour
         }
         Interactor.Sound("Back");
         if (gameObject.activeSelf) {
+            
             UpdateOptions();
             DeleteComponent(selected);
             this.gameObject.SetActive(false);
@@ -403,7 +406,7 @@ public class OverlayInteractor : MonoBehaviour
             OverlayCodeInput.GetComponent<InputField>().text = "";
             State = "";
         } else {
-            Application.Quit();
+            //Application.Quit();
         }
     }
     public void OnHelp()
@@ -441,6 +444,8 @@ public class OverlayInteractor : MonoBehaviour
         }
         Interactor.Sound("Back");
         if (last_position.x == 999) {
+            GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+            Interactor.volume_slider.SetActive(false);
             this.gameObject.SetActive(false);
             MapScreenPanOverlay.SetActive(true);
             OverlayZoomIn.SetActive(true);
@@ -572,6 +577,7 @@ public class OverlayInteractor : MonoBehaviour
     }
     public void CloseAllOverlays() {
      
+            //GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
 
         OverlayDropdown.gameObject.SetActive(true);
         OverlayCodePrimitive.gameObject.SetActive(false);

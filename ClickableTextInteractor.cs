@@ -41,6 +41,12 @@ public class ClickableTextInteractor : MonoBehaviour
         if (initialized_text.Contains("/*") && initialized_text.Contains("*/")) {
             initialized_text = Formatter.comment(initialized_text);
         }
+        if (initialized_text.StartsWith("\'") && initialized_text.EndsWith("\'")) {
+            initialized_text = Formatter.stringify(initialized_text);
+        }
+        if (initialized_text.StartsWith("\"") && initialized_text.EndsWith("\"")) {
+            initialized_text = Formatter.stringify(initialized_text);
+        }
         switch (initialized_text) {
             case "final":
             case "class":
@@ -51,17 +57,22 @@ public class ClickableTextInteractor : MonoBehaviour
             case "delete":
             case "void":
             case "while":
-            case "int":
-            case "double":
             case "public":
             case "protected":
             case "private":
             case "for":
             case "if":
             case "var":
+            case "switch":
+            case "case":
             case "return":
                 initialized_text = Formatter.keyword(initialized_text);
                 break;
+            case "string":
+            case "int":
+            case "double":
+            case "char":
+            case "bool":
             case "Component":
             case "Booster":
             case "Thruster":
@@ -118,10 +129,10 @@ public class ClickableTextInteractor : MonoBehaviour
             // print (Interactor.component_name);
             if (Interactor.component_name != "") 
             {
-                OverlayInteractor.gameObject.SetActive(true);
-                OverlayInteractor.OnCodeEditor();
-            }
-            else {
+               // OverlayInteractor.gameObject.SetActive(true);
+                //OverlayInteractor.OnCodeEditor();
+           // }
+          //  else {
                 // else, TUI menu:
                 Interactor.AppendText("$ <b>...____________________</b>\n  <b>about</b>\n  <b>copilot</b>\n  <b>campaign</b>\n  <b>settings</b>\n  <b>clear</b>\n  <b>back</b>\n  <b>restart</b>\n");
             }

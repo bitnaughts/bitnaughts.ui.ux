@@ -34,6 +34,10 @@ public class Narration {
     }
 }
 public class Interactor : MonoBehaviour {
+
+    public GameObject Radio;
+    public GameObject Spectrum;
+    public GameObject[] Spectrums;
     bool printing = false, docking = false, docking_retracting = false, docking_unloading = false;
     
     public GameObject ProcessorPrefab, BulkheadPrefab, GimbalPrefab, ThrusterPrefab, BoosterPrefab, CannonPrefab, SensorPrefab;
@@ -44,7 +48,7 @@ public class Interactor : MonoBehaviour {
     public GameObject SplashScreen;
     public GameObject LoadingScreen;
     public GameObject TutorialAssets, CampaignIntroAssets, CampaignIntroSatelliteAssets,  CampaignGroverAssets, CampaignGroverSatelliteAssets, CampaignPearlAssets, CampaignMidwayAssets, CampaignNexusAssets, CampaignAbyssAssets;
-    public AudioClip BitNaughtsAbout, SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsBitBot, WarOfTheWorldsBitBotProblems, WarOfTheWorldsHistory, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
+    public AudioClip Morse, BitNaughtsParadise1, BitNaughtsParadise2, BitNaughtsAbout, SplashScreenComplete, SplashScreenHint, WarOfTheWorldsTryAgain, WarOfTheWorldsTheme, WarOfTheWorldsGetMoving, WarOfTheWorldsHeatRay, WarOfTheWorldsGood, WarOfTheWorldsStinger, WarOfTheWorldsBitBot, WarOfTheWorldsBitBotProblems, WarOfTheWorldsHistory, WarOfTheWorldsMapScreen, WarOfTheWorldsTargetWindow, WarOfTheWorldsTargetWindowGood, WarOfTheWorldsTargetWindowIssueOrder, WarOfTheWorldsBeep, WarOfTheWorldsBeepBoop, WarOfTheWorldsClick, WarOfTheWorldsHum, WarOfTheWorldsCredit, WarOfTheWorldsIntro, WarOfTheWorldsFirstContact, WarOfTheWorldsRedCross, WarOfTheWorldsGroversMill, LoadingNarration, IntroMusic, TutorialIntroduction, CampaignNexus, CampaignAbyss, CampaignCosmos0, CampaignCosmos1, CampaignCosmos2, CampaignCosmos3, CampaignCosmos4, CampaignCosmos5, CampaignPearlIntroduction, CampaignMidwayIntroduction;
     public int CampaignIndex = 0;
     AbstractMapController Map;
     public Mapbox.Utils.Vector2d TargetLocation;
@@ -88,27 +92,46 @@ public class Interactor : MonoBehaviour {
         // new Narration(-24.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\n<b>inherited_out_of_the</b>"),
         // new Narration(-23.00f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\n<b>dark_mystery_of_time</b>"),
         // new Narration(-21.50f, "With_infinite_complacence\npeople_went_to_and_fro\nover_the_Earth_about\ntheir_little_affairs_...\n\nWhich_by_chance_or\ndesign,_man_has\ninherited_out_of_the\ndark_mystery_of_time\n<b>and_space_...</b>"),
-        new Narration(-20.00f, "$ <b>intro</b>"),
-        new Narration(-19.50f, "$ intro\n\n<b>Across_an_immense</b>"),
-        new Narration(-18.50f, "$ intro\n\nAcross_an_immense\n<b>ethereal_gulf_...</b>"),
-        new Narration(-17.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_..."),
-        new Narration(-16.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\n<b>Intellect</b>"),
-        new Narration(-15.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast</b>"),
-        new Narration(-14.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect, vast,_<b>cold</b>"),
-        new Narration(-13.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\n<b>and_unsympathetic_...</b>"),
-        new Narration(-12.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_..."),
-        new Narration(-11.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n<b>Regarded_this_Earth</b>"),
-        new Narration(-10.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\n<b>with_envious_eyes_...</b>"),
-        new Narration(-08.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_..."),
-        new Narration(-07.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\n<b>And</b>"),
-        new Narration(-06.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd <b>slowly_but_surely</b>"),
-        new Narration(-04.25f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\n<b>drew_their_plans</b>"),
-        new Narration(-03.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\ndrew_their_plans\n<b>against_us!</b>"),
-        new Narration(-02.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\ndrew_their_plans\nagainst_us!"),
+        new Narration(-20.00f, ""),
+        new Narration(-19.50f, "<b>Across an immense</b>\n"),
+        new Narration(-18.50f, "Across an immense\n<b>ethereal gulf ...</b>"),
+        new Narration(-17.00f, "Across an immense\nethereal gulf ..."),
+        new Narration(-16.50f, "<b>Intellect ...</b>        \n"),
+        new Narration(-15.50f, "Intellect, <b>vast ...</b>  \n"),
+        new Narration(-14.50f, "Intellect, vast, <b>cold</b>\n"),
+        new Narration(-13.00f, "Intellect, vast, cold\n<b>and unsympathetic ...</b>"),
+        new Narration(-12.00f, "Intellect, vast, cold\nand unsympathetic ..."),
+        new Narration(-11.00f, "<b>Regarded this Earth</b>\n"),
+        new Narration(-10.00f, "Regarded this Earth\n<b>with envious eyes .</b>"),
+        new Narration(-08.00f, "Regarded this Earth\nwith envious eyes ."),
+        new Narration(-07.50f, "<b>And ...</b>              \n\n"),
+        new Narration(-06.50f, "And <b>slowly but surely</b>\n\n"),
+        new Narration(-04.25f, "And slowly but surely\n<b>drew their plans</b>\n"),
+        new Narration(-03.25f, "And slowly but surely\ndrew their plans\n<b>against us !</b>"),
+        new Narration(-02.25f, "And slowly but surely\ndrew their plans\nagainst us !"),
+        
+
+        // new Narration(-20.00f, "$ <b>intro</b>"),
+        // new Narration(-19.50f, "$ intro\n\n<b>Across_an_immense</b>"),
+        // new Narration(-18.50f, "$ intro\n\nAcross_an_immense\n<b>ethereal_gulf_...</b>"),
+        // new Narration(-17.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_..."),
+        // new Narration(-16.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\n<b>Intellect</b>"),
+        // new Narration(-15.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect, <b>vast</b>"),
+        // new Narration(-14.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect, vast,_<b>cold</b>"),
+        // new Narration(-13.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\n<b>and_unsympathetic_...</b>"),
+        // new Narration(-12.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_..."),
+        // new Narration(-11.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\n<b>Regarded_this_Earth</b>"),
+        // new Narration(-10.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\n<b>with_envious_eyes_...</b>"),
+        // new Narration(-08.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_..."),
+        // new Narration(-07.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\n<b>And</b>"),
+        // new Narration(-06.50f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd <b>slowly_but_surely</b>"),
+        // new Narration(-04.25f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\n<b>drew_their_plans</b>"),
+        // new Narration(-03.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\ndrew_their_plans\n<b>against_us!</b>"),
+        // new Narration(-02.00f, "$ intro\n\nAcross_an_immense\nethereal_gulf_...\n\nIntellect,_vast,_cold\nand_unsympathetic_...\n\nRegarded_this_Earth\nwith_envious_eyes_...\n\nAnd_slowly_but_surely\ndrew_their_plans\nagainst_us!"),
         // new Narration(-01.50f, "$ intro\n\nClick <b>Video</b> to continue;\n\n⮨"),
         // new Narration(-01.00f, "$ intro\n\nClick Video to continue;\n\n  ⮨"),
         // new Narration(-00.50f, "$ intro\n\nClick <b>Video</b> to continue;\n\n⮨"),
-        new Narration(-00.50f, "$"),
+        new Narration(-00.50f, ""),
         // new Narration(-02.00f, "$ intro\n\nClick <b>Video</b> to continue;\n\n⮨"),
         // new Narration(-01.50f, "$ intro\n\nClick Video to continue;\n\n  ⮨"),
         // new Narration(-01.00f, "$ intro\n\nClick <b>Video</b> to continue;\n\n⮨"),
@@ -124,20 +147,20 @@ public class Interactor : MonoBehaviour {
 
         /* Splash Screen */
         // new Narration(100.00f, "<b>$</b>"),
-        new Narration(100.00f, "$ <b>campaign</b>"),
-        new Narration(100.50f, "$ campaign\n\n<b>Columbia_Broadcasting_Systems</b>"),
-        new Narration(101.50f, "$ campaign\n\nColumbia_Broadcasting_Systems\n <b>and_its_affiliated_stations</b>"),
-        new Narration(103.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           <b>present:</b>"),// "The War of the Worlds" by H.G. Wells!\n<b>ethereal_gulf_...</b>"),
-        new Narration(104.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   <b>\"The_War_of_the_Worlds\"</b>"),
-        new Narration(105.50f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        <b>by_H.G._Wells!</b>"),
-        new Narration(107.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!"),
-        // new Narration(-01.00f, "$"),
-        new Narration(108.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          <b>♫</b>"),
-        new Narration(110.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ <b>♫</b>"),
-        new Narration(112.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ <b>♫</b>"),
-        new Narration(114.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ <b>♫</b>"),
-        new Narration(116.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ ♫ <b>♫</b>"),
-        new Narration(117.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ ♫ ♫"),
+        // new Narration(100.00f, "$ <b>campaign</b>"),
+        // new Narration(100.50f, "$ campaign\n\n<b>Columbia_Broadcasting_Systems</b>"),
+        // new Narration(101.50f, "$ campaign\n\nColumbia_Broadcasting_Systems\n <b>and_its_affiliated_stations</b>"),
+        // new Narration(103.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           <b>present:</b>"),// "The War of the Worlds" by H.G. Wells!\n<b>ethereal_gulf_...</b>"),
+        // new Narration(104.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   <b>\"The_War_of_the_Worlds\"</b>"),
+        // new Narration(105.50f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        <b>by_H.G._Wells!</b>"),
+        // new Narration(107.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!"),
+        // // new Narration(-01.00f, "$"),
+        // new Narration(108.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          <b>♫</b>"),
+        // new Narration(110.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ <b>♫</b>"),
+        // new Narration(112.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ <b>♫</b>"),
+        // new Narration(114.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ <b>♫</b>"),
+        // new Narration(116.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ ♫ <b>♫</b>"),
+        // new Narration(117.00f, "$ campaign\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n          ♫ ♫ ♫ ♫ ♫"),
         // new Narration(-09.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n$ Click <b>Video</b> to continue;\n\n⮨"),
         // new Narration(-08.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n$ Click Video to continue;\n\n  ⮨"),
         // new Narration(-07.00f, "$ intro\n\nColumbia_Broadcasting_Systems\n and_its_affiliated_stations\n           present:\n\n   \"The_War_of_the_Worlds\"\n        by_H.G._Wells!\n\n$ Click <b>Video</b> to continue;\n\n⮨"),
@@ -875,13 +898,18 @@ public class Interactor : MonoBehaviour {
     GameObject camera;
     public List<GameObject> ButtonsCache = new List<GameObject>();
     public GameObject InputButton;
-    int cache_size = 125;
+    int cache_size = 250;
     public AudioClip clip_queue;
     string binocular = "off";
     public GameObject Asteroid, CannonL, Processor, Bulkhead, BoosterR, ThrusterL, BoosterL, Thruster, ThrusterR, CannonR, SensorL, SensorR, Printer;
     public GameObject World;
     void Start()
     {
+        Spectrums = new GameObject[8];
+        for (int i = 0; i < Spectrums.Length; i++)
+        {
+            Spectrums[i] = Instantiate(Spectrum, this.transform);
+        }
         // if (Screen.width < 2000)
         // {
         //     fontSize = 50;
@@ -899,8 +927,8 @@ public class Interactor : MonoBehaviour {
         OverlayZoomOut = GameObject.Find("OverlayZoomOut");
         TabToggle = GameObject.Find("TabToggle")?.GetComponent<Text>();
         SplashScreen.SetActive(true);
-        // Subtitles = GameObject.Find("Subtitles");
-        // SubtitlesShadow = GameObject.Find("SubtitlesShadow");
+        Subtitles = GameObject.Find("Subtitles");
+        SubtitlesShadow = GameObject.Find("SubtitlesShadow");
         // SubtitlesShadow.SetActive(true);
         // Subtitles.SetActive(true);
         // MapSubtitles("$ I");
@@ -937,20 +965,22 @@ public class Interactor : MonoBehaviour {
         // Map.SetMars();
         Example.GetComponent<StructureController>().delete_timer = 9999;
         MapScreenPanOverlay.SetActive(false);
-        OverlayZoomIn.SetActive(false);
-        OverlayZoomOut.SetActive(false);
+        OverlayZoomIn.SetActive(true);
+        OverlayZoomOut.SetActive(true);
         volume_slider.SetActive(true);
         InterpreterZoomIn.SetActive(true);
         InterpreterZoomOut.SetActive(true);
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
+        PlayAudio(WarOfTheWorldsClick);
+
     }
     public string GetBinocular() {
         return binocular;// = "⛭"
         // return BinocularToggle.GetComponentsInChildren<Text>()[0].text;
     }
     public void SetBinocular(string text) {
-        print ("Set binocular to" + text + ".");
+        // print ("Set binocular to" + text + ".");
         binocular = text;
         if (text == "on") BinocularToggle.GetComponentsInChildren<Text>()[0].text = "⛯";
         else BinocularToggle.GetComponentsInChildren<Text>()[0].text = "⛭";
@@ -1140,6 +1170,7 @@ public class Interactor : MonoBehaviour {
         return options;
     }
     public void PrinterPrintFx() {
+                PlayAudio(WarOfTheWorldsClick);
         if (printing_stage == "Edit") {
             printing_stage = "Delete";
             OverlayInteractor.SetOptions(GetPrinterComponents());
@@ -1149,6 +1180,7 @@ public class Interactor : MonoBehaviour {
         GameObject.Find("OverlayBorder").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f); 
         Printer.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         if (InputField.text.Contains("Printer")) {
+            GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
             GameObject.Find(InputField.text.Substring(2))?.GetComponent<PrinterController>().Print();
 
             // StructurePrefab
@@ -1193,6 +1225,8 @@ public class Interactor : MonoBehaviour {
             // OnCodeView();.
             Sound("Processor");
             ResetProcessor();
+            InterpreterPanel.SetActive(true);
+            GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 0f, 1f);
             
         } else if (InputField.text.Contains("Cannon")) {
             GameObject.Find("CannonL")?.GetComponent<ComponentController>().Action(-1);
@@ -1253,7 +1287,7 @@ public class Interactor : MonoBehaviour {
                 GridLayers[i].GetComponent<SpriteRenderer>().sprite = PixelSprite;
             }
             else {
-                GridLayers[i].GetComponent<SpriteRenderer>().color = new Color(255/255f, 255/255f, 195/255f, .05f * (i + 2));//35f/255f, 95f/255f, 110f/255f, .66f);
+                GridLayers[i].GetComponent<SpriteRenderer>().color = new Color(255/255f, 255/255f, 195/255f, .025f * (i + 2));//35f/255f, 95f/255f, 110f/255f, .66f);
                 GridLayers[i].GetComponent<SpriteRenderer>().sprite = OverlaySprite;
             }
         }
@@ -1269,7 +1303,7 @@ public class Interactor : MonoBehaviour {
         }
         Camera.main.GetComponent<AudioSource>().volume = volume;
         GameObject.Find("World").GetComponent<AudioSource>().volume = volume;
-        GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume / 8;
+        GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume / 4;
         Camera.main.GetComponent<CameraController>().bDragging = false;
 
         if (Stage == "SplashScreen" && NarrationTimer < -29)
@@ -1283,18 +1317,18 @@ public class Interactor : MonoBehaviour {
         PlayMusic(WarOfTheWorldsTheme);
     }
     public void PlayMusic(AudioClip clip) {
-        if (GameObject.Find("Video Player") != null) {
-            GameObject.Find("Video Player").GetComponent<AudioSource>().clip = clip;
-            GameObject.Find("Video Player").GetComponent<AudioSource>().Play();
-            GameObject.Find("Video Player").GetComponent<AudioSource>().loop = true;
-            GameObject.Find("Video Player").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value / 8;
+        if (GameObject.Find("World") != null) {
+            GameObject.Find("World").GetComponent<AudioSource>().clip = clip;
+            GameObject.Find("World").GetComponent<AudioSource>().Play();
+            GameObject.Find("World").GetComponent<AudioSource>().loop = true;
+            GameObject.Find("World").GetComponent<AudioSource>().volume = volume_slider.GetComponent<Slider>().value;
         }
     }
     public void PlayAudio(AudioClip clip) {
         // if (camera != null) {
-        GameObject.Find("World").GetComponent<AudioSource>().clip = clip;
-        GameObject.Find("World").GetComponent<AudioSource>().loop = false;
-        GameObject.Find("World").GetComponent<AudioSource>().Play();
+        GameObject.Find("Video Player").GetComponent<AudioSource>().clip = clip;
+        GameObject.Find("Video Player").GetComponent<AudioSource>().loop = false;
+        GameObject.Find("Video Player").GetComponent<AudioSource>().Play();
         // }
     }
     string queue_audio = "";
@@ -1305,12 +1339,14 @@ public class Interactor : MonoBehaviour {
         var trimmed_url = url.Replace(" ", "").Replace("'", "");
         queue_audio = trimmed_url;
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = true;
-        #if UNITY_WEBGL
         string asset_location = "https://bitnaughts.io/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
-        //"https://github.com/bitnaughts/bitnaughts.unity/raw/master/Assets/StreamingAssets/BitNaughts" + trimmed_url + "480p.mp4";
+        #if UNITY_WEBGL
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
-        #else 
-        string asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
+        #elif UNITY_ANDROID
+        GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
+        #else
+        asset_location = System.IO.Path.Combine (Application.streamingAssetsPath, "BitNaughts" + trimmed_url + "480p.mp4");
+        GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().url = asset_location; 
         #endif
         // print (asset_location);
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().Play();
@@ -1539,11 +1575,11 @@ public class Interactor : MonoBehaviour {
         InputField.text = component;
         InterpreterZoomIn.SetActive(true);
         InterpreterZoomOut.SetActive(true);
-        volume_slider.SetActive(false);
+        //volume_slider.SetActive(false);
         if (InputField.text.Contains("Printer")) {
             // InputField.text = "▦ Printer";//" ⛴ Ship Select";
             switch (MarkerIndex) {
-                case -1:
+                case 0:
                     Processor.SetActive(true);
                     // CampaignIntroAssets.SetActive(true);
                     // CampaignIntroSatelliteAssets.SetActive(true);
@@ -1758,9 +1794,20 @@ public class Interactor : MonoBehaviour {
     }
     
     public void OnInputFire() {
-        
+                PlayAudio(WarOfTheWorldsClick);
+
+        Camera.main.GetComponent<CameraController>().bDragging = false;
         if (Stage == "MapInterface")
         {
+            GameObject.Find(MarkerIndex.ToString()).transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Lauching";
+
+            GameObject.Find("MapSideL").SetActive(false);
+            GameObject.Find("MapSideR").SetActive(false);
+            GameObject.Find("MapSideT").SetActive(false);
+            GameObject.Find("MapSideB").SetActive(false);
+            MapScreenPanOverlay.SetActive(false);
+            volume_slider.SetActive(true);
+            // InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text = "Zoom";
             Stage = "MapZoom";
             Map.min_zoom = 15;
             InputUseWeapon.SetActive(false);
@@ -1772,10 +1819,13 @@ public class Interactor : MonoBehaviour {
             {
                 Processor.GetComponent<ProcessorController>().interpreter_input.fire = true;
             }
-            else {
+            else if (InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text == "Dock") {
                 // dock
                 docking = true;
 
+            }
+            else {
+                InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text = "Zoom";
             }
         }
     }
@@ -1893,9 +1943,45 @@ public class Interactor : MonoBehaviour {
             Unzoom();
         } 
     }
-    public void OnExit() {
-        // Application.Quit();
+    public void OnReset() {
+                PlayAudio(WarOfTheWorldsClick);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void OnExit() {
+                PlayAudio(WarOfTheWorldsClick);
+        // print(MarkerIndex);
+        if (InterpreterPanel.activeSelf) {
+            InterpreterPanel.SetActive(false);
+            if (OverlayInteractor.gameObject.activeSelf)
+            {
+                //volume_slider.SetActive(true);
+                GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 0f, 1f);
+            }
+            else 
+            {
+                GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+                volume_slider.SetActive(false);
+                MapScreenPanOverlay.SetActive(true);
+            }
+        }
+        else if (OverlayInteractor.gameObject.activeSelf) {
+            OverlayInteractor.gameObject.SetActive(false);
+            GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+            MapScreenPanOverlay.SetActive(true);
+            volume_slider.SetActive(false);
+        }
+        else if (MarkerIndex != -1) {
+            MarkerIndex = -1;
+            volume_slider.SetActive(false);
+            MapScreenPanOverlay.SetActive(true);
+            InputUseWeapon.SetActive(false);
+            GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+        }
+        else {
+            // Application.Quit();
+            
+            // Unzoom();
+        }
     }
     public void Action(string name, int action) {
         // print ("ACTION" + name + " " + action);
@@ -2002,27 +2088,32 @@ public class Interactor : MonoBehaviour {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
             // else Subtitles.GetComponent<Text>().text = text;
-            RenderText(text);
+            Subtitles.GetComponent<Text>().text = text;//RenderText(text);
+            SubtitlesShadow.GetComponent<Text>().text = text;
         }
     }
     void SubtitlesAtTime(string text, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
             // else Subtitles.GetComponent<Text>().text = text;
-            RenderText(text);
+            Subtitles.GetComponent<Text>().text = text;//RenderText(text);
+            SubtitlesShadow.GetComponent<Text>().text = text;
         }
     }
     void MapSubtitlesAtTime(string text, float time) {
         if (timer >= time && timer < time + (Time.deltaTime * 2f)) {
             // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
             // else Subtitles.GetComponent<Text>().text = text;
-            RenderText(text);
+            Subtitles.GetComponent<Text>().text = text;//RenderText(text);
+            SubtitlesShadow.GetComponent<Text>().text = text;
         }
     }
     void MapSubtitles(string text) {
             // if (text.Contains("<b>")) Subtitles.GetComponent<Text>().text = text.Substring(text.IndexOf("<b>") + "<b>".Length, text.IndexOf("</b>") - text.IndexOf("<b>") - "<b>".Length);
             // else Subtitles.GetComponent<Text>().text = text;
-        RenderText(text);
+        Subtitles.GetComponent<Text>().text = text;
+        SubtitlesShadow.GetComponent<Text>().text = text;
+        //RenderText(text);
     }
     double click_duration = 0;
     public double GetClickDuration() {
@@ -2039,12 +2130,36 @@ public class Interactor : MonoBehaviour {
     GameObject MapMarker;
     void Update () {
         animation_timer += Time.deltaTime;
+        if (Input.GetMouseButton(1)) {
+            // if (InterpreterPanel.activeSelf) {
+            //     InterpreterPanel.SetActive(false);
+            //     GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+            // }
+            // click_duration += Time.deltaTime;
+        }
         if (Input.GetMouseButton(0)) {
             click_duration += Time.deltaTime;
         }
         if (Input.GetMouseButtonDown(0)) {
             click_duration = 0;
         }
+
+        float[] spectrum = new float[64];
+        GameObject.Find("World").GetComponent<AudioSource>().GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
+        for (int i = 0; i < spectrum.Length / 2; i += 4)
+        {
+            // print ("i" + i + " " + (32f / (i + 1)));
+            // print (32f / (i + 1));
+            var avgSpectrum = (spectrum[i] + spectrum[i + 1] + spectrum[i + 2] + spectrum[i + 3]) / 4;
+            Spectrums[i / 4].GetComponent<Image>().color = new Color(0, 1f - (i / 32f), (i / 32f), 1);
+            Spectrums[i / 4].GetComponent<RectTransform>().sizeDelta = new Vector2(2, Mathf.Clamp(avgSpectrum * ((i+5f)/5f) * 7500, 0, (Screen.height - 400f) * GetVolume()));
+            // Debug.DrawLine(new Vector3(i - 1, spectrum[i] + 10, 0), new Vector3(i, spectrum[i + 1] + 10, 0), Color.red);
+            // Debug.DrawLine(new Vector3(i - 1, Mathf.Log(spectrum[i - 1]) + 10, 2), new Vector3(i, Mathf.Log(spectrum[i]) + 10, 2), Color.cyan);
+            // Debug.DrawLine(new Vector3(Mathf.Log(i - 1), spectrum[i - 1] - 10, 1), new Vector3(Mathf.Log(i), spectrum[i] - 10, 1), Color.green);
+            // Debug.DrawLine(new Vector3(Mathf.Log(i - 1), Mathf.Log(spectrum[i - 1]), 3), new Vector3(Mathf.Log(i), Mathf.Log(spectrum[i]), 3), Color.blue);
+        } 
+
+
         Gamepad gamepad = Gamepad.current;
         if (gamepad != null)
         {
@@ -2156,18 +2271,18 @@ public class Interactor : MonoBehaviour {
         // }
         
     
-        if (NarrationTimer > 128 && NarrationTimer < 200)
-        {
+        // if (NarrationTimer > 128 && NarrationTimer < 200)
+        // {
 
-            LoadingScreen.SetActive(true);
-            NarrationTimer = 1000;
-            NarrationIndex = 0;
-            GameObject.Find("World").GetComponent<AudioSource>().Stop();
-            // PlayMusic(CampaignPearlMusic);
-            // ResetVideo();
-            RenderText("$ history");
-            PlayVideo("WarOfTheWorldsHistory");
-        }
+        //     LoadingScreen.SetActive(true);
+        //     NarrationTimer = 1000;
+        //     NarrationIndex = 0;
+        //     GameObject.Find("World").GetComponent<AudioSource>().Stop();
+        //     // PlayMusic(CampaignPearlMusic);
+        //     // ResetVideo();
+        //     RenderText("$ history");
+        //     PlayVideo("WarOfTheWorldsHistory");
+        // }
         if (NarrationTimer > 1095 && NarrationTimer < 2000)
         {
             Stage = "MapInterface";
@@ -2176,7 +2291,7 @@ public class Interactor : MonoBehaviour {
             GameObject.Find("World").GetComponent<AudioSource>().Stop();
             PlayMusic(CampaignPearlMusic);
             ResetVideo();
-            Map.SetMars();
+            //Map.SetMars();
             RenderText("$\n\n$");
         }
         if (NarrationTimer > 10014 && NarrationTimer < 10100)
@@ -2203,7 +2318,7 @@ public class Interactor : MonoBehaviour {
         }
                 // 10012            if (camera.GetComponent<CameraController>().CheckInsideEdge()) 
 
-        if ((NarrationTimer > -1f && NarrationTimer < 0) || (NarrationTimer > -29 && click_duration < .5f && Input.GetMouseButtonUp(0) && camera.GetComponent<CameraController>().CheckInsideEdge())) //&& CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
+        if ((NarrationTimer > -1.5f && NarrationTimer < 0) || (NarrationTimer > -29 && click_duration < .5f && Input.GetMouseButtonUp(0) && camera.GetComponent<CameraController>().CheckInsideEdge())) //&& CheckInsideEdge()) //&& GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame != -1) || ((ulong)GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame >= GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frameCount - 1 && GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().frame > 0))
         {
             // Sound("Click");
             // PlayAudio(SoundBack);
@@ -2229,17 +2344,17 @@ public class Interactor : MonoBehaviour {
                 volume_slider.SetActive(false);
                 InterpreterZoomIn.SetActive(true);
                 InterpreterZoomOut.SetActive(true);
-                PlayMusic(WarOfTheWorldsHum);
-                PlayAudio(WarOfTheWorldsBeep);
+                PlayMusic(BitNaughtsParadise1);
+                // PlayAudio(WarOfTheWorldsBeep);
                 MapMarker = GameObject.Find("0");
                 // PlayAudio(SplashScreenComplete);
             } else {
                 if (Stage == "MapInterface" && click_duration < .1f && camera.GetComponent<CameraController>().CheckInsideEdge() && !GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled)
                 {
-                    InputUseWeapon.SetActive(false);
-                    Stage = "MapZoom";
-                    Map.min_zoom = 15;
-                    RenderText($"{history}\n\n$ LatLong ({FormatLatLong(TargetLocation)});");
+                    // InputUseWeapon.SetActive(false);
+                    // Stage = "MapZoom";
+                    // Map.min_zoom = 15;
+                    // RenderText($"{history}\n\n$ LatLong ({FormatLatLong(TargetLocation)});");
                 } 
                 // if (NarrationTimer >= 100 && NarrationTimer < 180) {
                 //     Stage = "MapZoomed"; 
@@ -2261,22 +2376,22 @@ public class Interactor : MonoBehaviour {
                     GameObject.Find("World").GetComponent<AudioSource>().Stop();
                     PlayMusic(CampaignPearlMusic);
                     ResetVideo();
-                    Map.SetMars();
+                    //Map.SetMars();
                     LoadingScreen.SetActive(false);
                 }
-                if (NarrationTimer >= 100 && NarrationTimer < 200) {
-                    // Stage = "MapZoomed";
-                    LoadingScreen.SetActive(true);
-                    NarrationTimer = 1000;
-                    NarrationIndex = 0;
-                    GameObject.Find("World").GetComponent<AudioSource>().Stop();
-                    // PlayMusic(CampaignPearlMusic);
-                    // ResetVideo();
-                    PlayVideo("WarOfTheWorldsHistory");
-                    // RenderText($"{history}\n\n$ LatLong ({FormatLatLong(TargetLocation)});");
-                    // PlayAudio(LookupNarration("WarOfTheWorldsBitBotProblems"));
-                    // Map.SetMars();
-                }
+                // if (NarrationTimer >= 100 && NarrationTimer < 200) {
+                //     // Stage = "MapZoomed";
+                //     LoadingScreen.SetActive(true);
+                //     NarrationTimer = 1000;
+                //     NarrationIndex = 0;
+                //     GameObject.Find("World").GetComponent<AudioSource>().Stop();
+                //     // PlayMusic(CampaignPearlMusic);
+                //     // ResetVideo();
+                //     PlayVideo("WarOfTheWorldsHistory");
+                //     // RenderText($"{history}\n\n$ LatLong ({FormatLatLong(TargetLocation)});");
+                //     // PlayAudio(LookupNarration("WarOfTheWorldsBitBotProblems"));
+                //     // Map.SetMars();
+                // }
                 if (NarrationTimer >= 11000 && NarrationTimer < 12000)
                 {
                     LoadingScreen.SetActive(false);
@@ -2467,7 +2582,7 @@ public class Interactor : MonoBehaviour {
         // TODO
         // Needs to check horizonal versus verticle,
         // if over volume slider...
-        return (Input.mousePosition.y > 100 && Input.mousePosition.y < Screen.height - 160 && Input.mousePosition.x > 100 && Input.mousePosition.x < Screen.width - 100); //&& Input.mousePosition.x - Screen);
+        return (Input.mousePosition.y > 75 && Input.mousePosition.y < Screen.height - 95 && Input.mousePosition.x > 75 && Input.mousePosition.x < Screen.width - 75); //&& Input.mousePosition.x - Screen);
     }
     string[] campaign_clips = new string[] { "Radio Days", "Newton's Laws", "The Atom", "De Broglie Theory", "The Electron",  "Doppler Effect", "Modern War", "Doppler Shift", "Television", "Plank's Law", "Videotape Records", "Hawking Radiation", "Electronic Music", "Moravec's Paradox", "Radio Isotopes", "Fermi Paradox", "Hardness Test", "Pascal's Wager", "Conclusion", "Credits", "" };
     string[] tutorial_clips = new string[] { "Tutorial Introduction", "Digital Computers", "Binary", "Components", "Morse Code", "☄ BitNaughts   " };
@@ -2481,12 +2596,13 @@ public class Interactor : MonoBehaviour {
     int clip_index = 0;
     string credits_output = "";
     public void MapZoomed() {
+        // PlayMusic(BitNaughtsParadise2);
+        InputUseWeapon.SetActive(false);
         Camera.main.orthographicSize = 6;
         Stage = "MapZoomed";
-        Asteroid.SetActive(true);
-        Printer.SetActive(true);
-        Bulkhead.SetActive(true);
-        InputField.placeholder.GetComponent<Text>().text = "Input GitHub";
+        // InputField.placeholder.GetComponent<Text>().text = "Input GitHub";
+        GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 0f, 0f, 1f);
+
         Ship.Start();
         OverlayInteractor.UpdateOptions();
         RenderText("$");
@@ -2497,7 +2613,9 @@ public class Interactor : MonoBehaviour {
         GameObject.Find("OverlayZoomIn").GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         switch (MarkerIndex){
             case 0:
-                Printer.SetActive(true);      
+                Asteroid.SetActive(true);
+                Printer.SetActive(true);
+                Bulkhead.SetActive(true);
                 Ship.Start();
                 OverlayInteractor.UpdateOptions();
                 // PlayVideo("NewtonsLaws");
@@ -2506,23 +2624,30 @@ public class Interactor : MonoBehaviour {
                 TutorialAssets.SetActive(true);
                 // Printer.GetComponent<PrinterController>().components_declarations = new string[] {"var Process = new Processor (0, 2.5, 4, 5);", "var Scanner = new Sensor (0, -1, 3, 3);", "var Turret = new Gimbal (0, -1, 3, 3);",  "var Left = new Booster (-2.5, -1, 2, 3);", "var Right = new Booster (2.5, -1, 2, 3);", "var Engine = new Thruster (0, -3.5, 6, 3);"};
                 
-                GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
-                // GameObject.Find("0").SetActive(false);
+                // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Printer";
+                GameObject.Find("0").SetActive(false);
                 break;
             case 1:
-                Printer.SetActive(true);           
-                Ship.Start();
+                // Printer.SetActive(true);           
+                // Ship.Start();
+                Stage = "Radio";
+                CampaignIntroAssets.SetActive(true);
                 NarrationIndex = 0;
-                if (NarrationTimer < 1100) {
+                GameObject.Find("1").SetActive(false);
+                Radio.SetActive(true);
+                // Subtitles.GetComponent<Text>().text = $"~ Static ~";
+                // SubtitlesShadow.GetComponent<Text>().text = $"<b>Raise Volume</b> to Play! {spacing}➥\n";
                     
-                    PlayVideo("WarOfTheWorldsFirstContact");
-                    NarrationTimer = 1100;
-                }
-                else if (NarrationTimer < 3300) {
-                    PlayVideo("WarOfTheWorldsGroversMill");
-                    NarrationTimer = 3300;
+                // if (NarrationTimer < 1100) {
+                    
+                //     PlayVideo("WarOfTheWorldsFirstContact");
+                //     NarrationTimer = 1100;
+                // }
+                // else if (NarrationTimer < 3300) {
+                //     PlayVideo("WarOfTheWorldsGroversMill");
+                //     NarrationTimer = 3300;
 
-                }
+                // }
                 // GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "MK-31";
                 // PlayVideo("WarOfTheWorldsIntro");
                 // PlayVideo("MoravecsParadox");
@@ -2560,6 +2685,10 @@ public class Interactor : MonoBehaviour {
     }
     public void MapUnzoomed() {
 
+        GameObject.Find("MapSideL").SetActive(true);
+        GameObject.Find("MapSideR").SetActive(true);
+        GameObject.Find("MapSideT").SetActive(true);
+        GameObject.Find("MapSideB").SetActive(true);
         Stage = "MapInterface";
         Map?.Zoom(0.5f);
         if (NarrationTimer > 2000) {
@@ -2592,7 +2721,10 @@ public class Interactor : MonoBehaviour {
         }
     }
     public void MapZoom() {
+        
         OverlayZoomOut.SetActive(true);
+        // InputUseWeapon.SetActive(false);
+        //InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text = "Zoom";
         if (Stage == "MapZoom") {
             MapZoomed();
         } else {
@@ -2621,10 +2753,27 @@ public class Interactor : MonoBehaviour {
     public void MapInteractor(string marker) {
         // print (marker);
         // Sound("OnMouse");
+        Camera.main.GetComponent<CameraController>().bDragging = false;
         PlayAudio(WarOfTheWorldsClick);
         var target = GameObject.Find(marker);
         Camera.main.transform.localPosition = new Vector3(target.transform.position.x, target.transform.position.z, -100);
+        // InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text = "Zoom";
+        var oldIndex = MarkerIndex;
         if (int.TryParse(marker, out MarkerIndex)) {
+            // print(MarkerIndex);
+            if (oldIndex != MarkerIndex || InputUseWeapon.activeSelf == false) {
+                GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 0f, 1f);
+                MapScreenPanOverlay.SetActive(false);
+                volume_slider.SetActive(true);
+                InputUseWeapon.SetActive(true);
+                InputUseWeapon.transform.GetChild(0).GetComponent<Text>().text = "Launch";
+                return;
+            }
+            // if (oldIndex != -1 && oldIndex != MarkerIndex) {
+            //     return;
+            //     // if (GameObject.Find(oldIndex.ToString()) != null) GameObject.Find(oldIndex.ToString()).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            //     // if (GameObject.Find(MarkerIndex.ToString()) != null) GameObject.Find(MarkerIndex.ToString()).GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+            // }
             if (GameObject.Find("0") != null) GameObject.Find("0").GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);               
             // print (MarkerIndex);
             if (MarkerIndex == 0) {
@@ -2632,7 +2781,7 @@ public class Interactor : MonoBehaviour {
                 //     PlayAudio(TutorialOutro);
                 // }
                 // else {
-                GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Starting";
+                // GameObject.Find("0").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Lauching";
                 MapScreenPanOverlay.SetActive(false);
                 volume_slider.SetActive(true);
                 global_timer = 0;
@@ -2646,19 +2795,20 @@ public class Interactor : MonoBehaviour {
             } else if (MarkerIndex == 1) {
                 //Grover's Mill";
                 
+                GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "Lauching";
                 MapScreenPanOverlay.SetActive(false);
                 volume_slider.SetActive(true);
-                if (NarrationTimer < 1000) {
-                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";    
-                    NarrationTimer = 1000;
-                    global_timer = 0;
-                    // if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";
-                    PlayAudio(LookupNarration("WarOfTheWorldsCredit"));
-                } else if (NarrationTimer < 3200) {
-                    if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "□ Grover's"; 
-                    NarrationTimer = 3200;
-                    PlayAudio(LookupNarration("WarOfTheWorldsRedCross"));
-                }
+                // if (NarrationTimer < 1000) {
+                //     if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";    
+                //     NarrationTimer = 1000;
+                //     global_timer = 0;
+                //     // if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "⬠ Pentagon";
+                //     PlayAudio(LookupNarration("WarOfTheWorldsCredit"));
+                // } else if (NarrationTimer < 3200) {
+                //     if (GameObject.Find("1") != null) GameObject.Find("1").transform.GetChild(0).GetChild(0).gameObject.GetComponent<TextMesh>().text = "□ Grover's"; 
+                //     NarrationTimer = 3200;
+                //     PlayAudio(LookupNarration("WarOfTheWorldsRedCross"));
+                // }
                 NarrationIndex = 0;
                 Stage = "MapZoom";
                 // SubtitlesShadow.SetActive(true);
@@ -2744,16 +2894,16 @@ public class Interactor : MonoBehaviour {
     GameObject print_obj;
     public void ResetVideo() {
         if (Stage == "MapInterface") GameObject.Find("World").GetComponent<AudioSource>().Stop();
-        // SetBackground(new Color(128/255f, 167/255f, 174/255f));
-        SetBackground(new Color(150f/255f, 150f/255f, 150f/255f));
+        SetBackground(new Color(128/255f, 167/255f, 174/255f));
+        // SetBackground(new Color(150f/255f, 150f/255f, 150f/255f));
         GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled = false;
 
         MapScreenPanOverlay.SetActive(true);
         OverlayZoomIn.SetActive(true);
         OverlayZoomOut.SetActive(true);
         volume_slider.SetActive(false);
-        InterpreterZoomIn.SetActive(false);
-        InterpreterZoomOut.SetActive(false);
+        //InterpreterZoomIn.SetActive(false);
+        //InterpreterZoomOut.SetActive(false);
         InputJoystick.SetActive(false);
         InputUseWeapon.SetActive(false);
     }
@@ -2803,12 +2953,133 @@ public class Interactor : MonoBehaviour {
     bool reset_map_target = true;
     string spacing = "";
     int spacing_delay = 0;
+    // public static string GetRandomString(int length)
+    // {
+    //     var allowedChars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
+
+    //     var chars = new char[length];
+    //     var r = new System.Random();
+
+    //     for (var i = 0; i < length; i++)
+    //     {
+    //         chars[i] = allowedChars[r.Next(0, allowedChars.Length)];
+    //     }
+
+    //     return new string(chars);
+    // }
+
+    int copilot_index = 23;
+    string copilot_output = "$ Translate Morse Code\n";
+    string copilot_text = @"
+$ Translate Morse Code
+string Morse ( char input ) {
+    switch ( input ) {
+        case 'A' : return "".-"" ;
+        case 'B' : return ""-..."" ;
+        case 'C' : return ""-.-."" ;
+        case 'D' : return ""-.."" ;
+        case 'E' : return ""."" ;
+        case 'F' : return ""..-."" ;
+        case 'G' : return ""--."" ;
+        case 'H' : return ""...."" ;
+        case 'I' : return "".."" ;
+        case 'J' : return "".---"" ;
+        case 'K' : return ""-.-"" ;
+        case 'L' : return "".-.."" ;
+        case 'M' : return ""--"" ;
+        case 'N' : return ""-."" ;
+        case 'O' : return ""---"" ;
+        case 'P' : return "".--."" ;
+        case 'Q' : return ""--.-"" ;
+        case 'R' : return "".-."" ;
+        case 'S' : return ""..."" ;
+        case 'T' : return ""-"" ;
+        case 'U' : return ""..-"" ;
+        case 'V' : return ""...-"" ;
+        case 'W' : return "".--"" ;
+        case 'X' : return ""-..-"" ;
+        case 'Y' : return ""-.--"" ;
+        case 'Z' : return ""--.."" ;
+        case '1' : return "".----"" ;
+        case '2' : return ""..---"" ;
+        case '3' : return ""...--"" ;
+        case '4' : return ""....-"" ;
+        case '5' : return ""....."" ;
+        case '6' : return ""-...."" ;
+        case '7' : return ""--..."" ;
+        case '8' : return ""---.."" ;
+        case '9' : return ""----."" ;
+        case '0' : return ""-----"" ;
+    }
+}";
+
+    string radio_text = "Wp4B!ZvB";
+    int radio_count = 0;
+    public static char GetMorseChar()
+    {
+        var allowedChars = "•- ";
+        var r = new System.Random();
+        return allowedChars[r.Next(0, allowedChars.Length)];
+    }
+    public static char GetRandomChar()
+    {
+        var allowedChars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
+        var r = new System.Random();
+        return allowedChars[r.Next(0, allowedChars.Length)];
+    }
+    public void OnRadioOpen()
+    {
+        volume_slider.SetActive(true);
+        GameObject.Find("OverlayDelete").transform.GetChild(0).GetComponent<Text>().color = new Color(1f, 1f, 0f, 1f);
+        InterpreterPanel.SetActive(true);
+    }
     void FixedUpdate()
     {
-        print (Stage);
+        // print (Stage);
         if (Stage == "Loading") {
+            InterpreterPanel.SetActive(false);
             Stage = "SplashScreen";
             // Printer.SetActive(false);
+        }
+        if (Stage == "Radio")
+        {
+            if (radio_count++ > 9) {
+                radio_text += GetRandomChar();
+                radio_count = 0;
+            }//UnityEngine.Random.Range(0f, 1f) > .9f) radio_text += GetRandomChar();
+            if (radio_text.Length > 9) {
+                radio_text = radio_text.Substring(1);
+            }
+            Subtitles.GetComponent<Text>().text = radio_text + "\n" + ((GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value * 20) + 88).ToString("00.00") + " MHz";
+            SubtitlesShadow.GetComponent<Text>().text = radio_text + "\n" + ((GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value * 20) + 88).ToString("00.00") + " MHz";
+                    // print (GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value);
+            if (GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value < 0.25f){
+                GameObject.Find("RadioTuner").GetComponent<Scrollbar>().interactable = false;
+                Stage = "RadioTuned";
+                PlayMusic(Morse);
+            }
+                // 0.2506846
+            // )
+        }
+        if (Stage == "RadioTuned")
+        {
+            if (radio_count++ > 9) {
+                radio_text += GetMorseChar();
+                radio_count = 0;
+            }
+            if (radio_text.Length > 9) {
+                radio_text = radio_text.Substring(1);
+            }
+            Subtitles.GetComponent<Text>().text = radio_text + "\n" + ((GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value * 20) + 88).ToString("00.00") + " MHz";
+            SubtitlesShadow.GetComponent<Text>().text = radio_text + "\n" + ((GameObject.Find("RadioTuner").GetComponent<Scrollbar>().value * 20) + 88).ToString("00.00") + " MHz";
+            copilot_index++;
+            copilot_output += copilot_text[copilot_index % copilot_text.Length];
+            RenderText(copilot_output);
+            if (copilot_index > copilot_text.Length) {
+                PlayMusic(BitNaughtsParadise2);
+                Stage = "RadioDone";
+                history = copilot_output;
+            }
         }
         if (Stage == "MapZoom") 
         {
@@ -2835,15 +3106,15 @@ public class Interactor : MonoBehaviour {
             if (InputField.text.Contains("BitNaughts")) 
             {
                 InputField.text = "✵ Earth";
-                InputUseWeapon.SetActive(true);
+                // InputUseWeapon.SetActive(true);
             }
             if (camera.GetComponent<CameraController>().CheckInsideEdge() && !GameObject.Find("Video Player").GetComponent<UnityEngine.Video.VideoPlayer>().enabled) 
             {
                 
-                InputUseWeapon.SetActive(true);
+                // InputUseWeapon.SetActive(true);
                 reset_map_target = true;
-                GameObject.Find("Cursor").GetComponent<RectTransform>().position = Input.mousePosition;
-                TargetLocation = Map.GetMap().WorldToGeoPosition(camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
+                //GameObject.Find("Cursor").GetComponent<RectTransform>().position = Input.mousePosition;
+                TargetLocation = Map.GetMap().WorldToGeoPosition(camera.GetComponent<Camera>().ScreenToWorldPoint(camera.GetComponent<CameraController>().GetMapCenter()));//Input.mousePosition));
                 RenderText($"{history}\n\n$ LatLong ({FormatLatLong(TargetLocation)});\n├ SF (37º_46'_N,_122º_25'_W);\n├ LA (34º_05'_N,_118º_18'_W);\n├ NY (40º_42'_N,_74º_00'_W);\n└ DC (38º_53'_N,_77º_02'_W);\n");
 
             }
@@ -2912,7 +3183,7 @@ public class Interactor : MonoBehaviour {
                     
                 }
                 else {
-                    print(terrain.ToString());
+                    // print(terrain.ToString());
                     Bulkhead.GetComponent<BulkheadController>().Push(terrain);
                 }
             }
@@ -2937,6 +3208,7 @@ public class Interactor : MonoBehaviour {
 
             } else {
                 // Printer.SetActive(false);
+                PlayMusic(BitNaughtsParadise2);
                 ClearText();
                 PrinterLeft.SetActive(false);
                 PrinterRight.SetActive(false);
@@ -2946,6 +3218,7 @@ public class Interactor : MonoBehaviour {
                 OverlayInteractor.UpdateOptions();
                 OverlayInteractor.gameObject.SetActive(false);
                 MapScreenPanOverlay.SetActive(true);
+                volume_slider.SetActive(false);
                 InputJoystick.SetActive(true);
                 InputUseWeapon.SetActive(true);
                 CycleToggle.SetActive(true);
@@ -2982,7 +3255,7 @@ public class Interactor : MonoBehaviour {
                 LoadingScreen.SetActive(false);
                 if (CycleToggle != null) CycleToggle.SetActive(false);
                 if (BinocularToggle != null) BinocularToggle.SetActive(false);
-                PlayAudio(LookupNarration(queue_audio));
+                PlayMusic(LookupNarration(queue_audio));
                 if (queue_audio == "WarOfTheWorldsHistory") 
                 { 
                     NarrationIndex = 0;
@@ -3005,8 +3278,8 @@ public class Interactor : MonoBehaviour {
                 SetVolume();
                 SetBackground(new Color(20f/255f, 20f/255f, 20f/255f));
                 MapScreenPanOverlay.SetActive(false);
-                OverlayZoomIn.SetActive(false);
-                OverlayZoomOut.SetActive(false);
+                // OverlayZoomIn.SetActive(false);
+                // OverlayZoomOut.SetActive(false);
                 volume_slider.SetActive(true);
                 InterpreterZoomIn.SetActive(true);
                 InterpreterZoomOut.SetActive(true);
@@ -3037,18 +3310,22 @@ public class Interactor : MonoBehaviour {
             if (Stage != "Loading" && NarrationTimer >= -29) NarrationTimer += Time.deltaTime;
             else 
             {
-                if (spacing == "") spacing = new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 250) / (2 * fontSize)));
+                if (spacing == "") spacing = "";
                 if ((int)animation_timer % 2 == 0)
                 {
-                    RenderText($"$ intro\n\nRaise <b>Volume</b> to begin!{new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 250) / (2 * fontSize)))}{spacing}⮨");
-                    if (spacing_delay > 20) { spacing = spacing.Substring(2); spacing_delay = 0; }
-                    if (spacing.Length <= 2) spacing = new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 250) / (2 * fontSize)));
+                    Subtitles.GetComponent<Text>().text = $"{spacing}<b>Raise Volume</b> to Play! {spacing}➥\n";
+                    SubtitlesShadow.GetComponent<Text>().text = $"{spacing}<b>Raise Volume</b> to Play! {spacing}➥\n";
+                    // RenderText($"$ intro\n\n{new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 500) / (2 * fontSize)))}{spacing}⮨");
+                    if (spacing_delay > 20) { spacing += " "; spacing_delay = 0; }
+                    if (spacing.Length > 2) spacing = "";
                 }
                 else
                 {
-                    RenderText($"$ intro\n\nRaise Volume to begin!{new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 250) / (2 * fontSize)))}{spacing}⮨");
-                    if (spacing_delay > 20) { spacing = spacing.Substring(2); spacing_delay = 0; }
-                    if (spacing.Length <= 2) spacing = new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 250) / (2 * fontSize)));
+                    Subtitles.GetComponent<Text>().text = $"{spacing}Raise Volume to <b>Play!</b> {spacing}➥\n";
+                    SubtitlesShadow.GetComponent<Text>().text = $"{spacing}<b>Raise Volume</b> to Play! {spacing}➥\n";
+                    // RenderText($"$ intro\n\nRaise Volume to begin!{new string('\n', ((Mathf.Min(Screen.height, Screen.width) - 500) / (2 * fontSize)))}{spacing}⮨");
+                    if (spacing_delay > 20) { spacing += " "; spacing_delay = 0; }
+                    if (spacing.Length > 2) spacing = "";
                 }
                 spacing_delay++;
             }
